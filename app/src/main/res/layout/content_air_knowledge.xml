@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:scrollbars="none"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".feature.AirKnowledgeActivity"
+    tools:showIn="@layout/activity_air_knowledge">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_air_knowledge_1">
+
+            <LinearLayout
+                android:layout_width="@dimen/air_knowledge_left_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_air_knowledge_left_1"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="优" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AQI"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="0~50"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="0~35"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="无空气污染，正常户外活动"
+                android:textSize="@dimen/air_knowledge_info" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_air_knowledge_2">
+
+            <LinearLayout
+                android:layout_width="@dimen/air_knowledge_left_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_air_knowledge_left_2"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="良" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AQI"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="51~100"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="36~75"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="建议极少数异常敏感人群应减少户外活动"
+                android:textSize="@dimen/air_knowledge_info" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_air_knowledge_3">
+
+            <LinearLayout
+                android:layout_width="@dimen/air_knowledge_left_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_air_knowledge_left_3"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="轻度污染" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AQI"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="101~150"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="76~115"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="建议儿童、老年人及心脏病、呼吸系统疾病患者应减少长时间、高强度的户外锻炼"
+                android:textSize="@dimen/air_knowledge_info" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_air_knowledge_4">
+
+            <LinearLayout
+                android:layout_width="@dimen/air_knowledge_left_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_air_knowledge_left_4"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="中度污染" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AQI"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="151~200"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="116~150"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="建议疾病患者避免长时间、高强度的户外锻炼、一般人群适量减少户外运动"
+                android:textSize="@dimen/air_knowledge_info" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_air_knowledge_5">
+
+            <LinearLayout
+                android:layout_width="@dimen/air_knowledge_left_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_air_knowledge_left_5"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="重度污染" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AQI"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="201~300"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="151~250"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="建议儿童、老年人及心脏病、肺病患者应停留在室内，停止户外运动，一般人群减少户外运动"
+                android:textSize="@dimen/air_knowledge_info" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_air_knowledge_6">
+
+            <LinearLayout
+                android:layout_width="@dimen/air_knowledge_left_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_air_knowledge_left_6"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="严重污染" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AQI"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text=">300"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text=">250"
+                        android:textSize="@dimen/air_knowledge_aqi" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="建议儿童、老年人和病人应停留在室内，避免体力消耗，一般人群应避免户外活动"
+                android:textSize="@dimen/air_knowledge_info" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

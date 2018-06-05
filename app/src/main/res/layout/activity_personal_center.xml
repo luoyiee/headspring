@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".feature.PersonalCenterActivity">
 
     <include layout="@layout/layout_appbar" />
 
-    <include layout="@layout/content_main" />
-
+    <include layout="@layout/content_personal_center" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,6 +3,7 @@
     package="cc.xiaojiang.headerspring">
 
     <application
+        android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,13 +12,46 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".feature.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.AirKnowledgeActivity"
+            android:label="@string/title_activity_air_knowledge"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.AppUpdateActivity"
+            android:label="@string/title_activity_app_update"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.ProductListActivity"
+            android:label="@string/title_activity_device_choose"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.ConfigInfoActivity"
+            android:label="@string/title_activity_config_info"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.WifiConfirmActivity"
+            android:label="@string/title_activity_wifi_cofirm"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.PersonalCenterActivity"
+            android:label="@string/title_activity_personal_center"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
