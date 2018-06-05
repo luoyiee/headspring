@@ -22,4 +22,9 @@
     <color name="grey_block">#f6f6f6</color>
 
 
+    <color name="swipe_menu_modify">#bbc4d1</color>
+    <color name="swipe_menu_share">#82d8d0</color>
+    <color name="swipe_menu_delete">#f86b74</color>
+
+
 </resources>

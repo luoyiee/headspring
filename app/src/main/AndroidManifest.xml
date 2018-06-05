@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".feature.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,7 +25,7 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.RegisterActivity"
+            android:name=".feature.ForgetActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -51,6 +51,10 @@
         <activity
             android:name=".feature.PersonalCenterActivity"
             android:label="@string/title_activity_personal_center"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.DeviceListActivity"
+            android:label="@string/title_activity_device_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

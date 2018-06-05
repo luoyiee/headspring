@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            apptools:text="关于我们" />
+            apptools:text="我是标题" />
     </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>

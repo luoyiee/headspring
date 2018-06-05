@@ -10,41 +10,41 @@
     tools:showIn="@layout/activity_login">
 
     <RadioGroup
+        android:id="@+id/rg_login"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
+        android:layout_marginTop="100dp"
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/rb_login_login"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:button="@null"
             android:gravity="center"
             android:text="登陆"
+            android:textColor="@drawable/selector_login_text"
             android:textSize="24sp" />
 
         <RadioButton
+            android:id="@+id/rb_login_register"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:button="@null"
             android:gravity="center"
             android:text="注册"
+            android:textColor="@drawable/selector_login_text"
             android:textSize="24sp" />
 
     </RadioGroup>
 
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fl_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

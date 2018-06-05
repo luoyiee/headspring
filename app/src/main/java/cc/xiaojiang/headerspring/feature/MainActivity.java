@@ -1,4 +1,4 @@
-package cc.xiaojiang.headerspring;
+package cc.xiaojiang.headerspring.feature;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
 import cc.xiaojiang.headerspring.feature.AirKnowledgeActivity;
 import cc.xiaojiang.headerspring.feature.PersonalCenterActivity;
@@ -40,6 +41,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_test)
     public void onViewClicked() {
-        startToActivity(PersonalCenterActivity.class);
+        startToActivity(DeviceListActivity.class);
     }
 }
