@@ -12,6 +12,7 @@
     <string name="title_activity_wifi_cofirm">确认Wi-Fi</string>
     <string name="title_activity_personal_center">个人中心</string>
     <string name="title_activity_map">地图</string>
+    <string name="title_activity_history_data">历史数据</string>
     <string name="int2String">%d</string>
 
     <string name="action_save">保存</string>

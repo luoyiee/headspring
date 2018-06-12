@@ -37,6 +37,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_test)
     public void onViewClicked() {
-        startToActivity(MapActivity.class);
+        startToActivity(HistoryDataActivity.class);
     }
 }

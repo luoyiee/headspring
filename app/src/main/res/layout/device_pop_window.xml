@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <cc.xiaojiang.headerspring.view.CommonTextView
+        android:layout_gravity="center"
+        android:padding="12dp"
+        style="@style/common_14_black_text"
+        android:text="历史数据"/>
+
+    <include layout="@layout/layout_vertical_line"/>
+
+    <cc.xiaojiang.headerspring.view.CommonTextView
+        android:layout_gravity="center"
+        android:padding="12dp"
+
+        style="@style/common_14_black_text"
+        android:text="滤芯使用数据"/>
+</LinearLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
+    tools:context=".feature.DeviceControlActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/iv_pop_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_mine_next_small"/>
+    </android.support.v7.widget.Toolbar>
+
+
+    <cc.xiaojiang.headerspring.view.CommonTextView
+        android:id="@+id/tv_auto"
+        style="@style/common_14_white_text"
+        android:layout_marginTop="16dp"
+        android:text="自动"
+        app:layout_constraintEnd_toStartOf="@+id/tv_switch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"/>
+
+    <cc.xiaojiang.headerspring.view.CommonTextView
+        android:id="@+id/tv_switch"
+        style="@style/common_14_white_text"
+        android:text="开启"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_auto"
+        app:layout_constraintEnd_toStartOf="@+id/tv_timing"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_auto"/>
+
+    <cc.xiaojiang.headerspring.view.CommonTextView
+        android:id="@+id/tv_timing"
+        style="@style/common_14_white_text"
+        android:text="定时"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_switch"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.87"/>
+
+</android.support.constraint.ConstraintLayout>
