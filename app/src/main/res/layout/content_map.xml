@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/drawer_layout"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".feature.MapActivity"
+    tools:showIn="@layout/activity_map">
+<TextView
+    android:text="hello"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="280dp"
+        android:layout_gravity="end"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_ranking"
+            app:tabIndicatorColor="@color/swipe_menu_share"
+            app:tabSelectedTextColor="@color/swipe_menu_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/common_14_black_text"
+            android:layout_marginTop="12dp"
+            android:text="排名"
+            android:layout_marginStart="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/textView6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tl_ranking"/>
+
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/common_14_black_text"
+            android:text="省份"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
+            app:layout_constraintEnd_toStartOf="@+id/textView7"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView5"/>
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/common_14_black_text"
+            android:text="城市"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+            app:layout_constraintEnd_toStartOf="@+id/textView8"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"/>
+
+        <TextView
+            android:id="@+id/textView8"
+            style="@style/common_14_black_text"
+            android:text="AQI"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView7"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_rank_city"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"/>
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.DrawerLayout>

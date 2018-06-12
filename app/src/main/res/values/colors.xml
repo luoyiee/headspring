@@ -7,10 +7,9 @@
 
     <color name="primary_blue">#82d8d0</color>
 
-
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-
+    <color name="divider_bg">#F0EFF4</color>
     <color name="air_1">#82d8d0</color>
     <color name="air_2">#fded76</color>
     <color name="air_3">#fcc775</color>
@@ -21,10 +20,15 @@
     <color name="grey_1">#a9a9a9</color>
     <color name="grey_block">#f6f6f6</color>
 
-
     <color name="swipe_menu_modify">#bbc4d1</color>
     <color name="swipe_menu_share">#82d8d0</color>
     <color name="swipe_menu_delete">#f86b74</color>
 
+    <color name="light_grey">#EBEBEB</color>
+
+    <color name="personal_text_btn">#AEE1DB</color>
+    <color name="personal_bg_btn">#f2f2f2</color>
+    <color name="personal_picker_cancel">#949494</color>
+    <color name="dialog_text_btn">#879DF9</color>
 
 </resources>

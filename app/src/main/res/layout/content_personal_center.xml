@@ -10,6 +10,7 @@
     tools:showIn="@layout/activity_personal_center">
 
     <LinearLayout
+        android:id="@+id/ll_personal_info"
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:gravity="center_vertical"

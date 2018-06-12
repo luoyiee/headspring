@@ -1,28 +1,20 @@
 package cc.xiaojiang.headerspring.feature;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
-import cc.xiaojiang.headerspring.feature.AirKnowledgeActivity;
-import cc.xiaojiang.headerspring.feature.PersonalCenterActivity;
-import cc.xiaojiang.headerspring.feature.ProductListActivity;
+import cc.xiaojiang.headerspring.utils.SpanUtils;
 
 public class MainActivity extends BaseActivity {
 
-
     @BindView(R.id.btn_test)
     Button btnTest;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    @BindView(R.id.tv_outdoor_pm)
+    TextView mTvOutdoorPm;
 
     @Override
     protected int getLayoutId() {
@@ -31,7 +23,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void createInit() {
-
+        mTvOutdoorPm.setText(new SpanUtils()
+                .append("50").setFontSize(28,true).append("ug/m").append("3").setSuperscript()
+                .appendLine()
+                .appendLine("室外PM2.5")
+                .create());
     }
 
     @Override
@@ -41,6 +37,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_test)
     public void onViewClicked() {
-        startToActivity(DeviceListActivity.class);
+        startToActivity(MapActivity.class);
     }
 }

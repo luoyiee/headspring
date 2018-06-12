@@ -1,4 +1,29 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
+
+// 在MobSDK的扩展中注册MobPush的相关信息
+MobSDK {
+    appKey "moba6b6c6d6"
+    appSecret "b89d2427a3bc7ad1aea1e1e8c1d36bf3"
+
+    MobPush {
+        devInfo {
+            HUAWEI{
+                appId "100215127"
+            }
+//
+            MEIZU{
+                appId "112481"
+                appKey "03dd70b9be434446a7255c8586e1725a"
+            }
+
+            XIAOMI{
+                appId "2882303761517721670"
+                appKey "5671772162670"
+            }
+        }
+    }
+}
 
 android {
     compileSdkVersion 27
@@ -20,14 +45,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
+
 
 dependencies {
     implementation project(':baselibrary')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation 'com.android.support:support-vector-drawable:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
@@ -37,4 +64,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
+    //日期选择器
+    implementation 'com.contrarywind:Android-PickerView:3.2.7'
+    //图片选择,裁剪
+    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
 }
