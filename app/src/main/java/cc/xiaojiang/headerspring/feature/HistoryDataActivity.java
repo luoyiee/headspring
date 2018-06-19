@@ -28,10 +28,10 @@ public class HistoryDataActivity extends BaseActivity {
         MPChartUtils.configChart(mCombinedChart, TestDataUtils.getChartLabel(), 50, 5, true);
 
         // 2,获取数据Data，这里有2条曲线
-        LineDataSet tartgetDataSet = MPChartUtils.getLineData(TestDataUtils.getChartData(), "室外PM2.5", Color.BLACK, Color.BLUE, false);
-        LineDataSet lineDataSet = MPChartUtils.getLineData(TestDataUtils.getChartData(), "室内PM2.5", Color.BLACK, Color.YELLOW, false);
+        LineDataSet targetDataSet = MPChartUtils.getLineData(TestDataUtils.getChartData(), "室外PM2.5", Color.BLACK, Color.BLUE, false);
+        LineDataSet lineDataSet = MPChartUtils.getLineData(TestDataUtils.getChartData(), "室内PM2.5", Color.BLACK, Color.RED, false);
         //  3,初始化数据并绘制
-        MPChartUtils.initData(mCombinedChart, new LineData(lineDataSet, tartgetDataSet));
+        MPChartUtils.initData(mCombinedChart, new LineData(lineDataSet, targetDataSet));
     }
 
     @Override

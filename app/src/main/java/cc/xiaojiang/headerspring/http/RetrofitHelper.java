@@ -1,11 +1,7 @@
 package cc.xiaojiang.headerspring.http;
 
 
-import java.util.ArrayList;
-
 import cc.xiaojiang.baselibrary.BuildConfig;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -39,7 +35,7 @@ public class RetrofitHelper {
 //        builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(cc.xiaojiang.headerspring.http.HttpUrl.HOST)
+                .baseUrl(HttpUrl.HOST)
                 .client(builder.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

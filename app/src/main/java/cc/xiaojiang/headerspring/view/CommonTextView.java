@@ -189,9 +189,9 @@ public class CommonTextView extends AppCompatTextView {
         //border
         mBorderDashWidth = a.getDimensionPixelSize(R.styleable.CommonTextView_border_dash_width, 0);
         mBorderDashGap = a.getDimensionPixelSize(R.styleable.CommonTextView_border_dash_gap, 0);
-        mBorderWidthNormal = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_normal, 0);
-        mBorderWidthPressed = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_pressed, 0);
-        mBorderWidthUnable = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_unable, 0);
+        mBorderWidthNormal = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_normal, 2);
+        mBorderWidthPressed = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_pressed, 2);
+        mBorderWidthUnable = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_unable, 2);
         mBorderColorNormal = a.getColor(R.styleable.CommonTextView_border_color_normal, Color.TRANSPARENT);
         mBorderColorPressed = a.getColor(R.styleable.CommonTextView_border_color_pressed, Color.TRANSPARENT);
         mBorderColorUnable = a.getColor(R.styleable.CommonTextView_border_color_unable, Color.TRANSPARENT);

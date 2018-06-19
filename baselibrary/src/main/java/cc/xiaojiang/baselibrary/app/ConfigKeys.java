@@ -18,6 +18,6 @@ public class ConfigKeys {
     public static final int HANDLER = 4;
     @IntDef({API_HOST, APPLICATION_CONTEXT,CONFIG_READY,INTERCEPTOR,HANDLER})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Type {}
+    @interface Type {}
 
 }

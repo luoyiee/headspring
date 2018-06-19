@@ -16,6 +16,7 @@ import java.util.Objects;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cc.xiaojiang.headerspring.R;
+import cc.xiaojiang.headerspring.utils.ScreenUtils;
 
 
 /**
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.d("onCreate……");
+        ScreenUtils.setCustomDensity(this);
         setContentView(getLayoutId());
         //  ButterKnife注解注入
         unBinder = ButterKnife.bind(this);

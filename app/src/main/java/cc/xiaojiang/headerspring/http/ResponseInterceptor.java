@@ -21,6 +21,9 @@ public class ResponseInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         String token = DbUtils.getAccessToken();
+        request = request.newBuilder()
+                .addHeader("Connection","close")
+                .build();
         /**
          * 添加token
          */

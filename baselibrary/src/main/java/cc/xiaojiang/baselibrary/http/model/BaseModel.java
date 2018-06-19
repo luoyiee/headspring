@@ -1,4 +1,4 @@
-package cc.xiaojiang.headerspring.http;
+package cc.xiaojiang.baselibrary.http.model;
 
 public class BaseModel<T> {
     public static final int SUCCESS = 1000;

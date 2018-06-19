@@ -1,13 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".feature.LoginActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="16dp"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior"
+              tools:context=".feature.LoginActivity"
+              tools:showIn="@layout/activity_login">
 
+    <TextView
+        android:id="@+id/rb_login_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="登陆"
+        android:textColor="@color/black"
+        android:textSize="24sp"/>
 
-    <include layout="@layout/content_login" />
+        <EditText
+            android:id="@+id/et_phone_number"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/test_24dp"
+            android:hint="请输入手机号"
+            android:inputType="phone"
+            android:textSize="14sp"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
-</android.support.design.widget.CoordinatorLayout>
+            <EditText
+                android:id="@+id/et_verify_code"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/test_24dp"
+                android:hint="请输入验证码"
+                android:inputType="number"
+                android:textSize="14sp"/>
+
+            <cc.xiaojiang.headerspring.view.CommonTextView
+                android:id="@+id/ctv_get_verify_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"
+                android:paddingTop="10dp"
+                android:text="获取验证码"
+                android:textSize="14sp"
+                app:border_color_unable="@color/personal_picker_cancel"
+                app:border_color_normal="@color/primary_blue"
+                app:text_color_normal="@color/primary_blue"
+                app:text_color_unable="@color/personal_picker_cancel"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/test_24dp"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"/>
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/test_24dp"/>
+        </LinearLayout>
+
+        <include layout="@layout/layout_divider_line"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="注册默认您同意用户协议"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_button"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+</LinearLayout>

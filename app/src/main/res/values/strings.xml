@@ -22,6 +22,11 @@
     <string name="title_activity_device_list">设备列表</string>
     <string name="title_activity_personal_info">个人信息</string>
 
+    <string name="login_second_retry">%ds后重试</string>
+    <string name="login_get_verify_code">获取验证码</string>
+    <string name="login_toast_phone_not_null">手机号不能为空</string>
+    <string name="login_toast_verify_code_not_null">验证码不能为空</string>
+
     <string name="personal_avatar_picker_camera">拍照</string>
     <string name="personal_avatar_picker_album">从手机相册选择</string>
     <string name="personal_info_change_name">更改头像</string>
