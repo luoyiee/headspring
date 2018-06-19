@@ -14,9 +14,9 @@
     <include layout="@layout/layout_vertical_line"/>
 
     <cc.xiaojiang.headerspring.view.CommonTextView
+        android:id="@+id/ctv_popup_time_remain"
         android:layout_gravity="center"
         android:padding="12dp"
-
         style="@style/common_14_black_text"
-        android:text="滤芯使用数据"/>
+        android:text="滤芯使用时间"/>
 </LinearLayout>

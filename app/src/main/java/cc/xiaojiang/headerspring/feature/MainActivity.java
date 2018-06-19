@@ -7,7 +7,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
-import cc.xiaojiang.headerspring.utils.SpanUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -23,11 +22,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void createInit() {
-        mTvOutdoorPm.setText(new SpanUtils()
-                .append("50").setFontSize(28,true).append("ug/m").append("3").setSuperscript()
-                .appendLine()
-                .appendLine("室外PM2.5")
-                .create());
+//        mTvOutdoorPm.setText(new SpanUtils()
+//                .append("50").setFontSize(28,true).append("ug/m").append("3").setSuperscript()
+//                .appendLine()
+//                .appendLine("室外PM2.5")
+//                .create());
     }
 
     @Override
@@ -37,6 +36,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_test)
     public void onViewClicked() {
-        startToActivity(HistoryDataActivity.class);
+        startToActivity(FilterTimeRemainActivity.class);
     }
 }

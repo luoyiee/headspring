@@ -25,11 +25,13 @@
     <color name="swipe_menu_delete">#f86b74</color>
 
     <color name="light_grey">#EBEBEB</color>
+    <color name="status_label">#66ffffff</color>
 
     <color name="personal_text_btn">#AEE1DB</color>
-    <color name="personal_bg_btn">#f2f2f2</color>
+    <color name="app_background_grey">#f2f2f2</color>
     <color name="personal_picker_cancel">#949494</color>
     <color name="dialog_text_btn">#879DF9</color>
     <color name="char_text_color">@color/black</color>
-
+    <color name="divider_line">#a1a1a1</color>
+    <color name="device_control_bg">#45C686</color>
 </resources>
