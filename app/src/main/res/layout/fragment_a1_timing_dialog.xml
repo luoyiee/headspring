@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/app_background_grey"
+              android:orientation="vertical"
+              app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <TextView
+        android:id="@+id/tv_a1_timing_8"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="8小时"/>
+
+    <include layout="@layout/layout_vertical_line"/>
+
+    <TextView
+        android:id="@+id/tv_a1_timing_4"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="4小时"/>
+
+    <include layout="@layout/layout_vertical_line"/>
+
+    <TextView
+        android:id="@+id/tv_a1_timing_2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="2小时"/>
+
+    <include layout="@layout/layout_vertical_line"/>
+
+    <TextView
+        android:id="@+id/tv_a1_timing_1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="1小时"/>
+
+    <include layout="@layout/layout_vertical_line"/>
+
+    <TextView
+        android:id="@+id/tv_a1_timing_0"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="关闭定时"/>
+
+    <include layout="@layout/layout_vertical_line"/>
+
+</LinearLayout>

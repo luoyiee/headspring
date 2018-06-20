@@ -12,7 +12,10 @@
     <string name="title_activity_wifi_cofirm">确认Wi-Fi</string>
     <string name="title_activity_personal_center">个人中心</string>
     <string name="title_activity_map">地图</string>
+    <string name="title_activity_control">空智子</string>
+
     <string name="title_activity_history_data">历史数据</string>
+    <string name="title_activity_filter_element">滤芯</string>
     <string name="int2String">%d</string>
 
     <string name="action_save">保存</string>
@@ -27,6 +30,20 @@
     <string name="login_toast_phone_not_null">手机号不能为空</string>
     <string name="login_toast_verify_code_not_null">验证码不能为空</string>
 
+    <string name="air_purifier_rate_excellent">优</string>
+    <string name="air_purifier_rate_good">良</string>
+    <string name="air_purifier_rate_poor">差</string>
+    <string name="air_purifier_view2_type">PM2.5</string>
+    <string name="air_purifier_view2_type_unit">μg/m³</string>
+    <string name="air_purifier_view2_rate_string">室内空气:</string>
+    <string name="air_purifier_offline">-</string>
+
+    <string name="air_purifier_view1_wireless">无线</string>
+    <string name="air_purifier_view1_timing">定时</string>
+    <string name="air_purifier_view1_strainer">滤网</string>
+    <string name="air_purifier_view1_battery">电量</string>
+    <string name="air_purifier_view1_temperature">温度</string>
+    <string name="air_purifier_view1_humidity">湿度</string>
     <string name="personal_avatar_picker_camera">拍照</string>
     <string name="personal_avatar_picker_album">从手机相册选择</string>
     <string name="personal_info_change_name">更改头像</string>

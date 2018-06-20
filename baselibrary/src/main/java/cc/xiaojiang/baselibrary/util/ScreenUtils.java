@@ -1,4 +1,4 @@
-package cc.xiaojiang.headerspring.utils;
+package cc.xiaojiang.baselibrary.util;
 
 import android.app.Activity;
 import android.content.ComponentCallbacks;
@@ -6,14 +6,13 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.WindowManager;
 
 import cc.xiaojiang.baselibrary.app.XjConfig;
 
 
 public class ScreenUtils {
-    public static int dip2px(Context context, int dp) {
+    public static int dp2px(Context context, int dp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         float density = metrics.density;
         return (int) (dp * density);
@@ -24,11 +23,6 @@ public class ScreenUtils {
     public static int px2dp(Context context, float px) {
         float density = context.getResources().getDisplayMetrics().density;
         return (int) (px / density + 0.5f);
-    }
-
-    public static int sp2px(Context context, float sp) {
-        final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, displayMetrics);
     }
 
     /**

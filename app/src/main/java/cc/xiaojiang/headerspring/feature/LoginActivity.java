@@ -5,9 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.baselibrary.http.progress.ProgressObserver;
@@ -16,11 +13,8 @@ import cc.xiaojiang.baselibrary.util.ToastUtils;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
 import cc.xiaojiang.headerspring.http.RetrofitHelper;
-import cc.xiaojiang.headerspring.model.MobThrowable;
 import cc.xiaojiang.headerspring.model.bean.LoginModel;
 import cc.xiaojiang.headerspring.view.CommonTextView;
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 
 public class LoginActivity extends BaseActivity {
 
@@ -31,7 +25,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.et_verify_code)
     EditText mEtVerifyCode;
     private CountDownTimer mCountDownTimer;
-    private EventHandler mEventHandler;
+//    private EventHandler mEventHandler;
 
     @Override
     protected int getLayoutId() {
@@ -50,29 +44,29 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initEventHandler() {
-        mEventHandler = new EventHandler() {
-            @Override
-            public void afterEvent(final int event, int result, final Object data) {
-                runOnUiThread(() -> {
-                    if (data instanceof Throwable) {
-                        Throwable throwable = (Throwable) data;
-                        MobThrowable mobThrowable = new Gson().fromJson(throwable.getMessage
-                                (), MobThrowable.class);
-                        ToastUtils.show(mobThrowable.getDetail());
-                        Logger.e(throwable.getMessage());
-                    } else {
-                        if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                            mCountDownTimer.start();
-                            // 验证码获取成功
-                            Logger.d("验证码获取成功");
-                            ToastUtils.show("验证码获取成功");
-                        }
-                    }
-                });
-            }
-        };
+//        mEventHandler = new EventHandler() {
+//            @Override
+//            public void afterEvent(final int event, int result, final Object data) {
+//                runOnUiThread(() -> {
+//                    if (data instanceof Throwable) {
+//                        Throwable throwable = (Throwable) data;
+//                        MobThrowable mobThrowable = new Gson().fromJson(throwable.getMessage
+//                                (), MobThrowable.class);
+//                        ToastUtils.show(mobThrowable.getDetail());
+//                        Logger.e(throwable.getMessage());
+//                    } else {
+//                        if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+//                            mCountDownTimer.start();
+//                            // 验证码获取成功
+//                            Logger.d("验证码获取成功");
+//                            ToastUtils.show("验证码获取成功");
+//                        }
+//                    }
+//                });
+//            }
+//        };
         // 注册监听器
-        SMSSDK.registerEventHandler(mEventHandler);
+//        SMSSDK.registerEventHandler(mEventHandler);
     }
 
     /**
@@ -103,7 +97,7 @@ public class LoginActivity extends BaseActivity {
                     ToastUtils.show(getString(R.string.login_toast_phone_not_null));
                     return;
                 }
-                SMSSDK.getVerificationCode("86", phoneNumber);
+//                SMSSDK.getVerificationCode("86", phoneNumber);
                 break;
             case R.id.btn_login:
                 login();
@@ -140,6 +134,6 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mCountDownTimer.cancel();
-        SMSSDK.unregisterEventHandler(mEventHandler);
+//        SMSSDK.unregisterEventHandler(mEventHandler);
     }
 }
