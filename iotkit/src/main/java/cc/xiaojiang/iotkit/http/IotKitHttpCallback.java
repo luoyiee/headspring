@@ -1,0 +1,66 @@
+package cc.xiaojiang.iotkit.http;
+
+import com.orhanobut.logger.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import cc.xiaojiang.iotkit.util.LogUtil;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class IotKitHttpCallback implements Callback<ResponseBody> {
+    private static final String TAG = "IotKitHttpCallback";
+    private IotKitCallBack iotKitCallBack;
+
+    public IotKitHttpCallback(IotKitCallBack callBack) {
+        this.iotKitCallBack = callBack;
+    }
+
+
+    @Override
+    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        if (iotKitCallBack == null) {
+            Logger.e("please set IotKitCallBack");
+            return;
+        }
+        int httpCode = response.code();
+        switch (httpCode) {
+            case 200:
+                if (response.body() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        int code = jsonObject.getInt("code");
+                        String msg = jsonObject.getString("msg");
+                        if (code == 1000) {
+                            iotKitCallBack.onSuccess(response.body().string());
+                        } else {
+                            iotKitCallBack.onError(code, msg);
+                        }
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    LogUtil.e(TAG, "response.body() is null");
+                }
+                break;
+            default:
+                iotKitCallBack.onError(-1, "服务器异常");
+        }
+    }
+
+    @Override
+    public void onFailure(Call<ResponseBody> call, Throwable t) {
+        if (iotKitCallBack == null) {
+            Logger.e("please set IotKitCallBack");
+            return;
+        }
+        iotKitCallBack.onError(-2, t.getMessage());
+    }
+}
