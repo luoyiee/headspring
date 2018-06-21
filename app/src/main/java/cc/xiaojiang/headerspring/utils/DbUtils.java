@@ -13,7 +13,9 @@ public class DbUtils {
      * key string
      */
     private static final String USER_ID = "user_id";
+    private static final String XJ_USER_ID = "xj_user_id";
     private static final String ACCESS_TOKEN = "access_token";
+    private static final String REFRESH_TOKEN = "refresh_token";
 
     /**
      * 用户ID
@@ -27,7 +29,7 @@ public class DbUtils {
     }
 
     /**
-     * 授权token
+     * access_token
      */
     public static String getAccessToken() {
         return aSimpleCache.getAsString(ACCESS_TOKEN);
@@ -36,4 +38,28 @@ public class DbUtils {
     public static void setAccessToken(String accessToken) {
         aSimpleCache.put(ACCESS_TOKEN, accessToken);
     }
+
+    /**
+     * refresh_token
+     */
+    public static String getRefreshToken() {
+        return aSimpleCache.getAsString(REFRESH_TOKEN);
+    }
+
+    public static void setRefreshToken(String refreshToken) {
+        aSimpleCache.put(REFRESH_TOKEN, refreshToken);
+    }
+
+    /**
+     * 获取小匠云用户id
+     */
+    public static String getXJUserId() {
+        return aSimpleCache.getAsString(XJ_USER_ID);
+    }
+
+    public static void setXJUserId(String xjUserId) {
+        aSimpleCache.put(XJ_USER_ID, xjUserId);
+    }
+
+
 }

@@ -17,9 +17,9 @@ public class IotKitAccountManager {
     }
 
 
-    public void login(IotKitAccountCallback callback) {
+    public void login(IotKitLoginParams params, IotKitAccountCallback callback) {
         checkArg(callback);
-        iotKitAccountConfig.login(new IotKitLoginCallback(callback));
+        iotKitAccountConfig.login(params,new IotKitLoginCallback(callback));
     }
 
 

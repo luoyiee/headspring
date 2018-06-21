@@ -1,15 +1,5 @@
 package cc.xiaojiang.iotkit.wifi;
 
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
-
-import java.util.List;
-
-import cc.xiaojiang.iotkit.IotKit;
-import cc.xiaojiang.iotkit.util.LogUtil;
-
-import static android.content.Context.WIFI_SERVICE;
-
 public class ConnectManager {
 //    private static final String TAG = "ConnectManager";
 //    private static WifiManager mWifiManager;

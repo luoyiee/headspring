@@ -1,15 +1,14 @@
 package cc.xiaojiang.headerspring.feature;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,9 @@ import cc.xiaojiang.baselibrary.util.ToastUtils;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.adapter.ProductAdapter;
 import cc.xiaojiang.headerspring.base.BaseActivity;
-import cc.xiaojiang.headerspring.model.bean.Product;
+import cc.xiaojiang.headerspring.model.bean.ProductResp;
+import cc.xiaojiang.iotkit.http.IotKitCallBack;
+import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 
 public class ProductListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemClickListener {
@@ -31,7 +32,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     RecyclerView rvProduct;
 
     private ProductAdapter mProductAdapter;
-    private List<Product> mProducts;
+    private List<ProductResp.DataBean> mProducts;
 
     @Override
 
@@ -62,11 +63,19 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     }
 
     private void getProducts() {
-        for (int i = 0; i < 10; i++) {
-            Product product = new Product();
-            mProducts.add(product);
-        }
-        mProductAdapter.setNewData(mProducts);
+        IotKitDeviceManager.getInstance().productList(new IotKitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                ProductResp productResp = new Gson().fromJson(response, ProductResp.class);
+                mProductAdapter.setNewData(productResp.getData());
+            }
+
+            @Override
+            public void onError(int code, String errorMsg) {
+
+            }
+        });
+
     }
 
     @OnClick(R.id.ll_product_list_scan)

@@ -3,6 +3,8 @@ package cc.xiaojiang.iotkit.wifi;
 import android.os.Looper;
 import android.os.Message;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -12,8 +14,6 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import cc.xiaojiang.iotkit.util.LogUtil;
 
 public class UdpHelper {
     private static final int DEFAULT_RECEIVE_TIMEOUT = 30 * 1000;
@@ -29,7 +29,7 @@ public class UdpHelper {
         @Override
         public void handleMessage(Message msg) {
             if (mIUdpReceiveListener == null) {
-                LogUtil.w(TAG, "请设置IUdpReceiveListener!");
+                Logger.w( "请设置IUdpReceiveListener!");
                 return;
             }
             switch (msg.what) {
@@ -65,7 +65,7 @@ public class UdpHelper {
                     while (true) {
                         socket.receive(recPacket);
                         byte[] received = Arrays.copyOf(recPacket.getData(), recPacket.getLength());
-                        LogUtil.d(TAG, "receive <<<<<<" + Arrays.toString(received));
+                        Logger.d( "receive <<<<<<" + Arrays.toString(received));
                         Message message = new Message();
                         message.what = MSG_UDP_RECEIVED;
                         message.obj = received;
@@ -112,7 +112,7 @@ public class UdpHelper {
                     for (int i = 0; i < time; i++) {
                         DatagramPacket packet = new DatagramPacket(data, data.length, local, port);
                         socket.send(packet);
-                        LogUtil.i(TAG, "send >>>>>>" + Arrays.toString(data));
+                        Logger.i( "send >>>>>>" + Arrays.toString(data));
                         Thread.sleep(interval);
                     }
                 } catch (SocketException e) {

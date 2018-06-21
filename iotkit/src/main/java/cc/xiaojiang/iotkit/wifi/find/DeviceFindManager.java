@@ -4,6 +4,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -13,7 +14,6 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cc.xiaojiang.iotkit.util.LogUtil;
 import cc.xiaojiang.iotkit.wifi.DeviceInfo;
 import cc.xiaojiang.iotkit.wifi.HeadUtils;
 
@@ -42,7 +42,7 @@ public class DeviceFindManager {
         @Override
         public void handleMessage(Message msg) {
             if (mIDeviceFindListener == null) {
-                LogUtil.w(TAG, "please set IDeviceFindListener!");
+                Logger.w("please set IDeviceFindListener!");
                 return;
             }
             switch (msg.what) {
@@ -73,12 +73,12 @@ public class DeviceFindManager {
 
     public void stop() {
         if (mExecutorService == null || mExecutorService.isShutdown()) {
-            LogUtil.i(TAG, "mExecutorService is null or already shutdown");
+            Logger.i("mExecutorService is null or already shutdown");
             return;
         }
         mExecutorService.shutdownNow();
         mIDeviceFindListener = null;
-        LogUtil.i(TAG, "DeviceFindManager shutdown");
+        Logger.i("DeviceFindManager shutdown");
     }
 
     public class BroadcastRunnable implements Runnable {
@@ -98,7 +98,7 @@ public class DeviceFindManager {
                     DatagramPacket packet = new DatagramPacket(dataPacket, dataPacket.length,
                             local, 8888);
                     socket.send(packet);
-                    LogUtil.i(TAG, "send packet");
+                    Logger.i( "send packet");
                     Thread.sleep(SEND_INTERVAL);
                 }
             } catch (IOException e) {
@@ -117,7 +117,7 @@ public class DeviceFindManager {
             deviceFindPacket.setMsg_type("add_device");
             deviceFindPacket.setMsg_id(String.valueOf(System.currentTimeMillis()));
             String msg = new Gson().toJson(deviceFindPacket);
-            LogUtil.i(TAG, "packet: " + msg);
+            Logger.i("packet: " + msg);
             return msg.getBytes();
         }
     }
@@ -133,7 +133,7 @@ public class DeviceFindManager {
                 while (true) {
                     socket.receive(recPacket);
                     byte[] received = Arrays.copyOf(recPacket.getData(), recPacket.getLength());
-                    LogUtil.d(TAG, "receive: " + Arrays.toString(received));
+                    Logger.d("receive: " + Arrays.toString(received));
                     decodePacket(received);
                 }
             } catch (IOException e) {
@@ -144,7 +144,7 @@ public class DeviceFindManager {
 
         private void decodePacket(byte[] received) {
             String data = HeadUtils.unpackData(received);
-            LogUtil.i(TAG, "receive body: " + data);
+            Logger.i("receive body: " + data);
             DeviceFindBean deviceFindBean = new Gson().fromJson(data, DeviceFindBean.class);
             Message message = new Message();
             message.what = MSG_ON_FIND;

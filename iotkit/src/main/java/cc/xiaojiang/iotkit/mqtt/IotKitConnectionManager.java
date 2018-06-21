@@ -29,9 +29,8 @@ import cc.xiaojiang.iotkit.bean.Constants;
 import cc.xiaojiang.iotkit.http.IotKitCallBack;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
-import cc.xiaojiang.iotkit.http.IotkitInterceptor;
 import cc.xiaojiang.iotkit.http.PlatformRetrofitHelp;
-import cc.xiaojiang.iotkit.util.LogUtil;
+import cc.xiaojiang.iotkit.util.IotDbUtils;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -39,7 +38,7 @@ import okhttp3.RequestBody;
  * Created by zhu on 17-10-23.
  */
 
-public class IotKitConnectionManager implements IMqttActionListener {
+public class IotKitConnectionManager {
     private static final int QOS_AT_MOST_ONCE = 0;
     private static final int QOS_AT_LEAST_ONCE = 1;
     public static final int QOS_EXACTLY_ONCE = 2;
@@ -66,15 +65,6 @@ public class IotKitConnectionManager implements IMqttActionListener {
 
     public void init(Context context) {
         this.context = context;
-        connectPre(null);
-
-    }
-
-    public void connectPre(final IotKitConnectCallback iotKitConnectCallback) {
-        if (!IotKitAccountManager.getInstance().isLogin()) {
-            Logger.i("need login");
-            return;
-        }
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("developerKey", IotKitAccountManager.getInstance().getDevelopKey());
@@ -89,26 +79,8 @@ public class IotKitConnectionManager implements IMqttActionListener {
                             try {
                                 JSONObject jsonResponse = new JSONObject(response);
                                 JSONObject jsonData = jsonResponse.getJSONObject("data");
-                                IotkitInterceptor.token = jsonData.getString("access_token");
-                                IotKitDeviceManager.getInstance().userSecret(new IotKitCallBack() {
-                                    @Override
-                                    public void onSuccess(String response) {
-                                        try {
-                                            JSONObject jsonResponse = new JSONObject(response);
-                                            JSONObject jsonData = jsonResponse.getJSONObject
-                                                    ("data");
-                                            connect(jsonData.getString("userSecret"),
-                                                    iotKitConnectCallback);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(int code, String errorMsg) {
-
-                                    }
-                                });
+                                IotDbUtils.setApiToken(jsonData.getString("access_token"));
+                                connectPre(null);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -124,6 +96,32 @@ public class IotKitConnectionManager implements IMqttActionListener {
         }
 
 
+    }
+
+    public void connectPre(final IotKitConnectCallback iotKitConnectCallback) {
+        if (!IotKitAccountManager.getInstance().isLogin()) {
+            Logger.i("need login");
+            return;
+        }
+        IotKitDeviceManager.getInstance().userSecret(new IotKitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    JSONObject jsonData = jsonResponse.getJSONObject
+                            ("data");
+                    connect(jsonData.getString("userSecret"),
+                            iotKitConnectCallback);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(int code, String errorMsg) {
+
+            }
+        });
     }
 
     public void connect(String userSecret, IotKitConnectCallback iotKitConnectCallback) {
@@ -148,11 +146,28 @@ public class IotKitConnectionManager implements IMqttActionListener {
         mqttAndroidClient.setCallback(mMqttCallbackListener);
         try {
             MqttConnectOptions mqttConnectOptions = getMqttConnectOptions();
-            mqttAndroidClient.connect(mqttConnectOptions, null, iotKitConnectCallback);
-            LogUtil.i(TAG, "connect " + mMqttConfig.getMqttServerUrl() + "...");
+            Logger.i("connect " + mMqttConfig.getMqttServerUrl() + "...");
+            mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Logger.i("connect " + mMqttConfig.getMqttServerUrl() + " succeed");
+                    if (iotKitConnectCallback != null) {
+                        iotKitConnectCallback.onSuccess(asyncActionToken);
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Logger.e("connect " + mMqttConfig.getMqttServerUrl() + " failed: " +
+                            exception.getMessage());
+                    if (iotKitConnectCallback != null) {
+                        iotKitConnectCallback.onFailure(asyncActionToken, exception);
+                    }
+                }
+            });
         } catch (MqttException e) {
             e.printStackTrace();
-            LogUtil.e(TAG, "connect " + TAG + " error," + e.toString());
+            Logger.e("connect " + TAG + " error," + e.toString());
         }
     }
 
@@ -163,25 +178,25 @@ public class IotKitConnectionManager implements IMqttActionListener {
 
     public void addDataCallback(IotKitReceivedCallback dataCallback) {
         if (dataCallback == null) {
-            LogUtil.i(TAG, "remove all DataCallbacks");
+            Logger.i("remove all DataCallbacks");
             return;
         }
         mMqttCallbackListener.add(dataCallback);
-        LogUtil.i(TAG, "setDataCallback");
+        Logger.i("setDataCallback");
     }
 
     public void removeDataCallback(IotKitReceivedCallback dataCallback) {
         if (dataCallback == null) {
-            LogUtil.i(TAG, "remove all DataCallbacks");
+            Logger.i("remove all DataCallbacks");
             return;
         }
         mMqttCallbackListener.remove(dataCallback);
-        LogUtil.i(TAG, "remove called");
+        Logger.i("remove called");
     }
 
     public void removeAllDataCallback() {
         mMqttCallbackListener.removeAll();
-        LogUtil.i(TAG, "remove all DataCallback called");
+        Logger.i("remove all DataCallback called");
     }
 
     public MqttAndroidClient getMqttAndroidClient() {
@@ -220,11 +235,11 @@ public class IotKitConnectionManager implements IMqttActionListener {
             // TODO: 2018/6/1 屏蔽快速点击
             mqttAndroidClient.publish(topic, payload,
                     QOS_PUBLISH, false, null, callBack);
-            LogUtil.i(TAG, "send topic: " + topic);
-            LogUtil.i(TAG, ">>>>>>>>>> " + new String(payload));
+            Logger.i("send topic: " + topic);
+            Logger.i(">>>>>>>>>> " + new String(payload));
         } catch (MqttException e) {
             e.printStackTrace();
-            LogUtil.e(TAG, "Exception occurred during send data:" + e.getMessage());
+            Logger.e("Exception occurred during send data:" + e.getMessage());
         }
     }
 
@@ -234,10 +249,10 @@ public class IotKitConnectionManager implements IMqttActionListener {
         try {
             mqttAndroidClient.subscribe(topic, QOS_SUBCRIBE, null, callback);
             subscribeSet.add(topic);
-            LogUtil.i(TAG, "register topic: " + topic);
+            Logger.i("register topic: " + topic);
         } catch (MqttException e) {
             e.printStackTrace();
-            LogUtil.e(TAG, "Exception occurred during receive data:" + e.getMessage());
+            Logger.e("Exception occurred during receive data:" + e.getMessage());
         }
     }
 
@@ -248,7 +263,7 @@ public class IotKitConnectionManager implements IMqttActionListener {
             subscribeSet.remove(topic);
         } catch (MqttException e) {
             e.printStackTrace();
-            LogUtil.e(TAG, "Exception occurred during unSubscribe:" + e.getMessage());
+            Logger.e("Exception occurred during unSubscribe:" + e.getMessage());
         }
     }
 
@@ -259,24 +274,12 @@ public class IotKitConnectionManager implements IMqttActionListener {
             subscribeSet.clear();
         } catch (MqttException e) {
             e.printStackTrace();
-            LogUtil.e(TAG, "Exception occurred during disconnect:" + e.getMessage());
+            Logger.e("Exception occurred during disconnect:" + e.getMessage());
         }
     }
 
     public boolean isConnected() {
         return mqttAndroidClient != null && mqttAndroidClient.isConnected();
-    }
-
-
-    @Override
-    public void onSuccess(IMqttToken asyncActionToken) {
-        LogUtil.i(TAG, "connect " + mMqttConfig.getMqttServerUrl() + " succeed");
-    }
-
-    @Override
-    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-        LogUtil.e(TAG, "connect " + mMqttConfig.getMqttServerUrl() + " failed");
-        exception.printStackTrace();
     }
 
     private byte[] publishPayload(HashMap<String, Object> hashMap) {

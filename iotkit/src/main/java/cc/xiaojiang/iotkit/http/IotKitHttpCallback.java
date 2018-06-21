@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import cc.xiaojiang.iotkit.util.LogUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,21 +36,20 @@ public class IotKitHttpCallback implements Callback<ResponseBody> {
                         int code = jsonObject.getInt("code");
                         String msg = jsonObject.getString("msg");
                         if (code == 1000) {
-                            iotKitCallBack.onSuccess(response.body().string());
+                            iotKitCallBack.onSuccess(jsonObject.toString());
                         } else {
-                            iotKitCallBack.onError(code, msg);
+                            iotKitCallBack.onError(code, "服务器错误");
                         }
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 } else {
-                    LogUtil.e(TAG, "response.body() is null");
+                    Logger.e("response.body() is null");
                 }
+            case 401:
                 break;
             default:
-                iotKitCallBack.onError(-1, "服务器异常");
+                iotKitCallBack.onError(-1, "服务器错误");
         }
     }
 

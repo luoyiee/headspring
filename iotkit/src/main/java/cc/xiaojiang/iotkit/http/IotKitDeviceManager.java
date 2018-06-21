@@ -36,38 +36,6 @@ public class IotKitDeviceManager {
         return RequestBody.create(MediaType.parse(Constants.APPLICATION_STRING), jsonStr);
     }
 
-    public void init(Context context) {
-//        this.context = context;
-//        try {
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("developerKey", IotKitAccountManager.getInstance().getDevelopKey());
-//            jsonObject.put("developerSecret", IotKitAccountManager.getInstance().getDevelopSecret
-//                    ());
-//            PlatformRetrofitHelp.getService()
-//                    .developToken(createRequestBody(jsonObject.toString()))
-//                    .enqueue(new IotKitHttpCallback(new IotKitCallBack() {
-//                        @Override
-//                        public void onSuccess(String response) {
-//                            try {
-//                                JSONObject jsonResponse = new JSONObject(response);
-//                                JSONObject jsonData = jsonResponse.getJSONObject("data");
-//                                IotkitInterceptor.token = jsonData.getString("access_token");
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onError(int code, String errorMsg) {
-//
-//                        }
-//                    }));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-
     public void userSecret(IotKitCallBack iotKitCallBack) {
         if (TextUtils.isEmpty(IotKitAccountManager.getInstance().getXJUserId())) {
             Logger.e("userId is empty!");
@@ -129,6 +97,10 @@ public class IotKitDeviceManager {
     }
 
     public void deviceList(final IotKitCallBack callBack) {
+        if (!IotKitAccountManager.getInstance().isLogin()) {
+            callBack.onError(0, "need login");
+            return;
+        }
         PlatformRetrofitHelp.getService()
                 .deviceList(IotKitAccountManager.getInstance().getXJUserId())
                 .enqueue(new IotKitHttpCallback(callBack));
@@ -152,7 +124,7 @@ public class IotKitDeviceManager {
                 .enqueue(new IotKitHttpCallback(callBack));
     }
 
-    public void share(String deviceId, final IotKitCallBack callBack) {
+    public void deviceShare(String deviceId, final IotKitCallBack callBack) {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("userId", IotKitAccountManager.getInstance().getXJUserId());
@@ -165,7 +137,7 @@ public class IotKitDeviceManager {
         }
     }
 
-    public void acceptShare(String qrcode, final IotKitCallBack callBack) {
+    public void acceptDeviceShare(String qrcode, final IotKitCallBack callBack) {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("userId", IotKitAccountManager.getInstance().getXJUserId());

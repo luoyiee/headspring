@@ -5,6 +5,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +21,6 @@ import java.util.concurrent.Executors;
 import cc.xiaojiang.iotkit.bean.AddDevicePacket;
 import cc.xiaojiang.iotkit.bean.AppNotifyPacket;
 import cc.xiaojiang.iotkit.bean.ConfigWifiPacket;
-import cc.xiaojiang.iotkit.util.LogUtil;
 import cc.xiaojiang.iotkit.wifi.DeviceInfo;
 import cc.xiaojiang.iotkit.wifi.HeadUtils;
 
@@ -57,7 +57,7 @@ public class DeviceAddManager {
         @Override
         public void handleMessage(Message msg) {
             if (mIDeviceAddListener == null) {
-                LogUtil.w(TAG, "please set IDeviceAddListener!");
+                Logger.w("please set IDeviceAddListener!");
                 return;
             }
             switch (msg.what) {
@@ -88,12 +88,12 @@ public class DeviceAddManager {
 
     public void cancelAdd() {
         if (mExecutorService == null || mExecutorService.isShutdown()) {
-            LogUtil.i(TAG, "mExecutorService is null or already shutdown");
+            Logger.i( "mExecutorService is null or already shutdown");
             return;
         }
         mExecutorService.shutdownNow();
         mIDeviceAddListener = null;
-        LogUtil.i(TAG, "DeviceFindManager shutdown");
+        Logger.i("DeviceFindManager shutdown");
     }
 
     public void startAdd(DeviceInfo deviceInfo, String ap, String ssid, String password,
@@ -129,7 +129,7 @@ public class DeviceAddManager {
         configWifiPacket.setProduct_key(deviceInfo.getProductKey());
         configWifiPacket.setMsg_id(String.valueOf(System.currentTimeMillis()));
         String msg = new Gson().toJson(configWifiPacket);
-        LogUtil.i(TAG, "packet: " + msg);
+        Logger.i( "packet: " + msg);
         return HeadUtils.PackData(0, msg.getBytes());
     }
 
@@ -139,7 +139,7 @@ public class DeviceAddManager {
         appNotifyPacket.setMsg_id(String.valueOf(System.currentTimeMillis()));
         appNotifyPacket.setResult_code("0");
         String msg = new Gson().toJson(appNotifyPacket);
-        LogUtil.i(TAG, "app_notify packet: " + msg);
+        Logger.i("app_notify packet: " + msg);
         return HeadUtils.PackData(0, msg.getBytes());
     }
 
@@ -152,7 +152,7 @@ public class DeviceAddManager {
         dataBean.setApp_port("8888");
         addDevicePacket.setData(dataBean);
         String msg = new Gson().toJson(addDevicePacket);
-        LogUtil.i(TAG, "app_notify packet: " + msg);
+        Logger.i("app_notify packet: " + msg);
         return HeadUtils.PackData(0, msg.getBytes());
     }
 
@@ -171,7 +171,7 @@ public class DeviceAddManager {
                 for (int i = 0; i < SEND_TIME; i++) {
                     DatagramPacket packet = new DatagramPacket(bytes, bytes.length, local, 8888);
                     socket.send(packet);
-                    LogUtil.i(TAG, "send packet");
+                    Logger.i( "send packet");
                     Thread.sleep(SEND_INTERVAL);
                 }
             } catch (IOException e) {
@@ -195,7 +195,7 @@ public class DeviceAddManager {
                 while (true) {
                     socket.receive(recPacket);
                     byte[] received = Arrays.copyOf(recPacket.getData(), recPacket.getLength());
-                    LogUtil.d(TAG, "receive: " + Arrays.toString(received));
+                    Logger.d("receive: " + Arrays.toString(received));
                     decodePacket(received);
                 }
             } catch (IOException e) {
@@ -209,7 +209,7 @@ public class DeviceAddManager {
 
     private void decodePacket(byte[] received) {
         String dataStr = HeadUtils.unpackData(received);
-        LogUtil.i(TAG, "receive body: " + dataStr);
+        Logger.i("receive body: " + dataStr);
         try {
             JSONObject jsonObject = new JSONObject(dataStr);
             if (jsonObject.has("msg_type")) {
@@ -244,7 +244,7 @@ public class DeviceAddManager {
                 }
 
             } else {
-                LogUtil.e(TAG, "received error data type");
+                Logger.e("received error data type");
             }
         } catch (JSONException e) {
             e.printStackTrace();

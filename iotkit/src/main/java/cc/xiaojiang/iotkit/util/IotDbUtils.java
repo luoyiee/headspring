@@ -2,6 +2,8 @@ package cc.xiaojiang.iotkit.util;
 
 import android.content.Context;
 
+import com.orhanobut.logger.Logger;
+
 import cc.xiaojiang.iotkit.IotKit;
 
 public class IotDbUtils {
@@ -34,7 +36,7 @@ public class IotDbUtils {
     }
 
     public static void setApiToken(String accessToken) {
-        LogUtil.d(TAG, "set API_TOKEN: " + accessToken);
+        Logger.d("set API_TOKEN: " + accessToken);
         aSimpleCache.put(API_TOKEN, accessToken);
     }
 

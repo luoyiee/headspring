@@ -1,7 +1,5 @@
 package cc.xiaojiang.iotkit.account;
 
-import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
-
 /**
  * Created by facexxyz on 18-3-26.
  */
@@ -23,7 +21,7 @@ public interface IotKitAccountConfig {
      *
      * @param callback
      */
-    void login(IotKitAccountCallback callback);
+    void login(IotKitLoginParams params,IotKitAccountCallback callback);
 
     /**
      * 注销

@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,16 +21,13 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cc.xiaojiang.iotkit.IotKit;
 import cc.xiaojiang.iotkit.bean.AddDevicePacket;
-import cc.xiaojiang.iotkit.util.LogUtil;
 import cc.xiaojiang.iotkit.wifi.DeviceInfo;
 import cc.xiaojiang.iotkit.wifi.HeadUtils;
 import cc.xiaojiang.iotkit.wifi.add.IDeviceAddListener;
 import io.fogcloud.sdk.easylink.api.EasyLink;
 import io.fogcloud.sdk.easylink.helper.EasyLinkCallBack;
 import io.fogcloud.sdk.easylink.helper.EasyLinkParams;
-import io.fogcloud.sdk.easylink.plus.EasyLink_v2;
 
 public class EasyLinkHelper implements EasyLinkCallBack {
     // TODO: 18-4-20 策略模式
@@ -61,29 +59,29 @@ public class EasyLinkHelper implements EasyLinkCallBack {
         @Override
         public void handleMessage(Message msg) {
             if (mIDeviceAddListener == null) {
-                LogUtil.w(TAG, "please set IDeviceAddListener!");
+                Logger.w("please set IDeviceAddListener!");
                 return;
             }
             switch (msg.what) {
                 case MSG_DEVICE_CONNECTED:
                     mIDeviceAddListener.deviceConnected();
-                    LogUtil.d(TAG, "设备连网成功");
+                    Logger.d("设备连网成功");
                     //step5,收到设备联网成功指令,回复设备端
                     mExecutorService.execute(new AppNotifyReceiveRunnable());
                     sentAddDevice();
                     break;
                 case MSG_ADD_DEVICE_SUCCEED:
                     mIDeviceAddListener.deviceAddSucceed((String) msg.obj);
-                    LogUtil.d(TAG, "设备接入小匠云成功");
+                    Logger.d("设备接入小匠云成功");
                     break;
                 case MSG_ADD_DEVICE_FAILED:
                     mIDeviceAddListener.deviceAddFailed((String) msg.obj);
-                    LogUtil.d(TAG, "设备接入小匠云失败");
+                    Logger.d("设备接入小匠云失败");
                     break;
 
                 case MSG_TIMEOUT:
                     mIDeviceAddListener.deviceAddTimeout();
-                    LogUtil.d(TAG, "设备接入小匠云超时");
+                    Logger.d("设备接入小匠云超时");
                     break;
             }
         }
@@ -103,7 +101,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
                     DatagramPacket packet = new DatagramPacket(bytes, bytes.length, local,
                             9999);
                     socket.send(packet);
-                    LogUtil.i(TAG, "send packet");
+                    Logger.i("send packet");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +122,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
         mAppNotifyTimer.cancel();
         mEasyLink.stopEasyLink(this);
         mIDeviceAddListener = null;
-        LogUtil.i(TAG, "EasyLinkHelper cancel");
+        Logger.i("EasyLinkHelper cancel");
     }
 
     public void startAdd(Context context, DeviceInfo deviceInfo, String ssid, String password,
@@ -154,7 +152,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
         params.ssid = ssid;
         params.password = password;
         mEasyLink = new EasyLink(context);
-        LogUtil.d(TAG, "start easylink");
+        Logger.d("start easylink");
         mEasyLink.startEasyLink(params, this);
     }
 
@@ -167,7 +165,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
         dataBean.setApp_port("8888");
         addDevicePacket.setData(dataBean);
         String msg = new Gson().toJson(addDevicePacket);
-        LogUtil.i(TAG, "app_notify packet: " + msg);
+        Logger.i("app_notify packet: " + msg);
         return HeadUtils.PackData(0, msg.getBytes());
     }
 
@@ -192,7 +190,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
                     socket.receive(recPacket);
                     byte[] received = Arrays.copyOf(recPacket.getData(), recPacket.getLength());
                     mIp = recPacket.getAddress().getHostAddress();
-                    LogUtil.d(TAG, "receive: " + Arrays.toString(received));
+                    Logger.d("receive: " + Arrays.toString(received));
                     decodePacket(received);
                 }
             } catch (IOException e) {
@@ -206,7 +204,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
 
     private void decodePacket(byte[] received) {
         String dataStr = HeadUtils.unpackData(received);
-        LogUtil.i(TAG, "receive body: " + dataStr);
+        Logger.i("receive body: " + dataStr);
         if (dataStr == null) {
             return;
         }
@@ -237,7 +235,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
                 }
 
             } else {
-                LogUtil.e(TAG, "received error data type");
+                Logger.e("received error data type");
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,29 +1,29 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.mob.sdk'
+apply plugin: 'com.mob.sdk'
 
 // 在MobSDK的扩展中注册MobPush的相关信息
-//MobSDK {
-//    appKey "25b4d3fc5cb1c"
-//    appSecret "eea7fb158ffe34887e508e05a4f3271b"
-//    SMSSDK {}
-////    MobPush {
-////        devInfo {
-////            HUAWEI {
-////                appId "100215127"
-////            }
-//////
-////            MEIZU {
-////                appId "112481"
-////                appKey "03dd70b9be434446a7255c8586e1725a"
-////            }
+MobSDK {
+    appKey "2672c36a91131"
+    appSecret "498fb6256432551331ab38d6cf00c6f7"
+    SMSSDK {}
+//    MobPush {
+//        devInfo {
+//            HUAWEI {
+//                appId "100215127"
+//            }
 ////
-////            XIAOMI {
-////                appId "2882303761517721670"
-////                appKey "5671772162670"
-////            }
-////        }
-////    }
-//}
+//            MEIZU {
+//                appId "112481"
+//                appKey "03dd70b9be434446a7255c8586e1725a"
+//            }
+//
+//            XIAOMI {
+//                appId "2882303761517721670"
+//                appKey "5671772162670"
+//            }
+//        }
+//    }
+}
 
 android {
     compileSdkVersion 27
@@ -69,5 +69,5 @@ dependencies {
     //图片选择,裁剪
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
+    implementation project(':iotkit')
 }

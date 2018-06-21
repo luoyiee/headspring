@@ -16,25 +16,15 @@ class IotKitLoginCallback implements IotKitAccountCallback {
 
     @Override
     public void onSuccess() {
-        IotKitDeviceManager.getInstance().userSecret(new IotKitCallBack() {
+        IotKitConnectionManager.getInstance().connectPre(new IotKitConnectCallback() {
             @Override
-            public void onSuccess(String response) {
-                IotKitConnectionManager.getInstance().connectPre(new IotKitConnectCallback() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        iotKitAccountCallback.onSuccess();
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        iotKitAccountCallback.onFailed(exception.getMessage());
-                    }
-                });
+            public void onSuccess(IMqttToken asyncActionToken) {
+                iotKitAccountCallback.onSuccess();
             }
 
             @Override
-            public void onError(int code, String errorMsg) {
-                iotKitAccountCallback.onFailed(errorMsg);
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                iotKitAccountCallback.onFailed(exception.getMessage());
             }
         });
 

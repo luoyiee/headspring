@@ -5,7 +5,7 @@ public class BaseModel<T> {
 
     private int code;
     private String msg;
-    private T result;
+    private T data;
 
     public int getCode() {
         return code;
@@ -15,7 +15,7 @@ public class BaseModel<T> {
         return msg;
     }
 
-    public T getResult() {
-        return result;
+    public T getData() {
+        return data;
     }
 }

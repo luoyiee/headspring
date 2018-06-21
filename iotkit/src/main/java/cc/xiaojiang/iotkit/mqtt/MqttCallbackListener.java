@@ -5,14 +5,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.orhanobut.logger.Logger;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import cc.xiaojiang.iotkit.util.LogUtil;
 
 
 /**
@@ -28,7 +28,7 @@ public class MqttCallbackListener implements MqttCallbackExtended {
         @Override
         public void handleMessage(Message msg) {
             if (iotKitReceivedCallbacks == null) {
-                LogUtil.w(TAG, "请设置IDataCallback");
+                Logger.w("请设置IDataCallback");
                 return;
             }
             if (msg.what == MSG_RECEIVED) {
@@ -54,7 +54,7 @@ public class MqttCallbackListener implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
         if (reconnect) {
-            LogUtil.w(TAG, "reconnect to server: " + serverURI);
+            Logger.w("reconnect to server: " + serverURI);
             //断线重连后，重新订阅topic
 //            Set<String> subscribeTopics = IotKitConnectionManager.getInstance().getSubscribeSet();
 //            for (String topic : subscribeTopics) {
@@ -66,23 +66,23 @@ public class MqttCallbackListener implements MqttCallbackExtended {
 //                }
 //            }
         } else {
-            LogUtil.i(TAG, "connect to server: " + serverURI);
+            Logger.i("connect to server: " + serverURI);
         }
     }
 
     @Override
     public void connectionLost(Throwable cause) {
-        LogUtil.e(TAG, "connect lost");
+        Logger.e("connect lost");
     }
 
     @Override
     public void messageArrived(String topic, MqttMessage message) {
         String data = new String(message.getPayload());
-        LogUtil.i(TAG, "received topic: " + topic);
-        LogUtil.i(TAG, "<<<<<<<<< " + data);
+        Logger.i("received topic: " + topic);
+        Logger.i("<<<<<<<<< " + data);
         String[] splits = topic.split("/");
         if (splits.length != 4) {
-            LogUtil.i(TAG, "received error topic");
+            Logger.i("received error topic");
             return;
         }
         Message msg = new Message();

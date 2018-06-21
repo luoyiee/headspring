@@ -29,7 +29,7 @@ public class ResponseInterceptor implements Interceptor {
          */
         if (!TextUtils.isEmpty(token)) {
             request = request.newBuilder()
-                    .header("Authorization", "Bearer "+token)
+                    .header("Authorization", token)
                     .build();
         }
         /**
