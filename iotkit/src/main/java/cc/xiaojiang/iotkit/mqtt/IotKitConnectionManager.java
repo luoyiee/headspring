@@ -2,6 +2,7 @@ package cc.xiaojiang.iotkit.mqtt;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
@@ -146,7 +147,7 @@ public class IotKitConnectionManager {
         mqttAndroidClient.setCallback(mMqttCallbackListener);
         try {
             MqttConnectOptions mqttConnectOptions = getMqttConnectOptions();
-            Logger.i("connect " + mMqttConfig.getMqttServerUrl() + "...");
+            Logger.i("connect MQTT:" + mMqttConfig.getMqttServerUrl() + "...");
             mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -233,8 +234,20 @@ public class IotKitConnectionManager {
         byte[] payload = publishPayload(hashMap);
         try {
             // TODO: 2018/6/1 屏蔽快速点击
-            mqttAndroidClient.publish(topic, payload,
-                    QOS_PUBLISH, false, null, callBack);
+            mqttAndroidClient.publish(topic, payload, QOS_PUBLISH, false, null, new
+                    IMqttActionListener() {
+                        @Override
+                        public void onSuccess(IMqttToken asyncActionToken) {
+                            callBack.onSuccess(asyncActionToken);
+                            Logger.i("publish success: " + topic);
+                        }
+
+                        @Override
+                        public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                            callBack.onFailure(asyncActionToken, exception);
+                            Logger.e("publish failed: ");
+                        }
+                    });
             Logger.i("send topic: " + topic);
             Logger.i(">>>>>>>>>> " + new String(payload));
         } catch (MqttException e) {
@@ -247,19 +260,44 @@ public class IotKitConnectionManager {
     public void subscribe(String productKey, String deviceId, IotKitActionCallback callback) {
         String topic = "/get/" + productKey + "/" + deviceId;
         try {
-            mqttAndroidClient.subscribe(topic, QOS_SUBCRIBE, null, callback);
+            mqttAndroidClient.subscribe(topic, QOS_SUBCRIBE, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    callback.onSuccess(asyncActionToken);
+                    Logger.i("subscribe success: " + topic);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    callback.onFailure(asyncActionToken, exception);
+                    Logger.e("subscribe failed: ");
+                }
+            });
             subscribeSet.add(topic);
-            Logger.i("register topic: " + topic);
+            Logger.i("subscribe topic: " + topic);
         } catch (MqttException e) {
             e.printStackTrace();
-            Logger.e("Exception occurred during receive data:" + e.getMessage());
+            Logger.e("Exception occurred during subscribe, " + e.getMessage());
         }
     }
+
 
     public void unSubscribe(String productKey, String deviceId, IotKitActionCallback callback) {
         String topic = "/get/" + productKey + "/" + deviceId;
         try {
-            mqttAndroidClient.unsubscribe(topic, null, callback);
+            mqttAndroidClient.unsubscribe(topic, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    callback.onSuccess(asyncActionToken);
+                    Logger.i("unSubscribe success: " + topic);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    callback.onFailure(asyncActionToken, exception);
+                    Logger.e("unSubscribe failed: ");
+                }
+            });
             subscribeSet.remove(topic);
         } catch (MqttException e) {
             e.printStackTrace();

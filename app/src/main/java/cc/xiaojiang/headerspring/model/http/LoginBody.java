@@ -4,7 +4,8 @@ public class LoginBody {
     private long telphone;
     private int verifyCode;
     private String source;
-    private String developerId;
+    private String developerKey;
+    private String developerSecret;
     private String name;
 
     public void setTelphone(long telphone) {
@@ -19,8 +20,12 @@ public class LoginBody {
         this.source = source;
     }
 
-    public void setDeveloperId(String developerId) {
-        this.developerId = developerId;
+    public void setDeveloperKey(String developerKey) {
+        this.developerKey = developerKey;
+    }
+
+    public void setDeveloperSecret(String developerSecret) {
+        this.developerSecret = developerSecret;
     }
 
     public void setName(String name) {

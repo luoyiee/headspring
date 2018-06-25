@@ -44,12 +44,13 @@ public class IotKitHttpCallback implements Callback<ResponseBody> {
                         e.printStackTrace();
                     }
                 } else {
-                    Logger.e("response.body() is null");
+                    iotKitCallBack.onError(-4, "服务器错误");
                 }
             case 401:
+                iotKitCallBack.onError(-2, "未授权");
                 break;
             default:
-                iotKitCallBack.onError(-1, "服务器错误");
+                iotKitCallBack.onError(-3, "服务器错误");
         }
     }
 

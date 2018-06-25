@@ -1,5 +1,6 @@
 package cc.xiaojiang.headerspring.feature;
 
+import android.content.Context;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,24 +11,17 @@ import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.baselibrary.http.model.BaseModel;
-import cc.xiaojiang.baselibrary.http.progress.ProgressObserver;
-import cc.xiaojiang.baselibrary.util.RxUtils;
-import cc.xiaojiang.baselibrary.util.ToastUtils;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
-import cc.xiaojiang.headerspring.http.HttpResultFunc;
-import cc.xiaojiang.headerspring.http.RetrofitHelper;
 import cc.xiaojiang.headerspring.iotkit.IotKitAccountImpl;
 import cc.xiaojiang.headerspring.model.MobThrowable;
 import cc.xiaojiang.headerspring.model.http.LoginBody;
-import cc.xiaojiang.headerspring.model.http.LoginModel;
-import cc.xiaojiang.headerspring.utils.DbUtils;
+import cc.xiaojiang.headerspring.utils.AccountUtils;
+import cc.xiaojiang.headerspring.utils.ToastUtils;
 import cc.xiaojiang.headerspring.view.CommonTextView;
-import cc.xiaojiang.iotkit.IotKit;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
-import cc.xiaojiang.iotkit.account.IotKitLoginParams;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -135,15 +129,14 @@ public class LoginActivity extends BaseActivity {
         loginBody.setTelphone(Long.parseLong(phoneNumber));
         loginBody.setVerifyCode(Integer.parseInt(verifyCode));
         loginBody.setSource(IotKitAccountImpl.APP_Source);
-        loginBody.setDeveloperId(IotKitAccountImpl.DEVELOP_KEY);
-        loginBody.setName(null);
-        IotKitLoginParams iotKitLoginParams = new IotKitLoginParams();
-        iotKitLoginParams.setArg1(loginBody);
-        iotKitLoginParams.setContext(this);
-        IotKitAccountManager.getInstance().login(iotKitLoginParams, new IotKitAccountCallback() {
+        loginBody.setDeveloperKey(IotKitAccountImpl.DEVELOP_KEY);
+        loginBody.setDeveloperSecret(IotKitAccountImpl.DEVELOP_SECRET);
+        IotKitAccountManager.getInstance().login(this, loginBody, new IotKitAccountCallback() {
             @Override
             public void onSuccess() {
                 Logger.d("login success");
+                startToActivity(MainActivity.class);
+                finish();
             }
 
             @Override

@@ -1,13 +1,11 @@
 package cc.xiaojiang.headerspring.iotkit;
 
-import android.content.Intent;
-import android.text.TextUtils;
+import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
 import cc.xiaojiang.baselibrary.http.progress.ProgressObserver;
 import cc.xiaojiang.baselibrary.util.RxUtils;
-import cc.xiaojiang.headerspring.feature.MainActivity;
 import cc.xiaojiang.headerspring.http.HttpResultFunc;
 import cc.xiaojiang.headerspring.http.RetrofitHelper;
 import cc.xiaojiang.headerspring.model.http.LoginBody;
@@ -16,12 +14,11 @@ import cc.xiaojiang.headerspring.utils.AccountUtils;
 import cc.xiaojiang.headerspring.utils.DbUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
-import cc.xiaojiang.iotkit.account.IotKitLoginParams;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
-    public static final String APP_Source = "a0cfec0";
-    public static final String DEVELOP_KEY = "383d825b7b1e087f62ffc4184e09395f";
-    public static final String DEVELOP_SECRET = "3618d6a768d9365afe4329ae364cb02e";
+    public static final String APP_Source = "zd0c383";
+    public static final String DEVELOP_KEY = "6cda7fee67ebbc8e545dd6e7da150c98";
+    public static final String DEVELOP_SECRET = "3465690c0ba5d4597632e121bc61764f";
 
 
     @Override
@@ -37,23 +34,20 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
     }
 
     @Override
-    public void login(IotKitLoginParams params, IotKitAccountCallback callback) {
-        DbUtils.setXJUserId("a8bfc1eae87a431c9ecfe72d70c7bdd6");
-        DbUtils.setAccessToken("test");
-        callback.onSuccess();
-//        LoginBody loginBody = (LoginBody) params.getArg1();
-//        RetrofitHelper.getService().login(loginBody)
-//                .map(new HttpResultFunc<>())
-//                .compose(RxUtils.rxSchedulerHelper())
-//                .subscribe(new ProgressObserver<LoginModel>(params.getContext()) {
-//                    @Override
-//                    public void onSuccess(LoginModel loginModel) {
-//                        DbUtils.setXJUserId("a8bfc1eae87a431c9ecfe72d70c7bdd6");
-//                        DbUtils.setAccessToken(loginModel.getAccessToken());
-//                        DbUtils.setRefreshToken(loginModel.getRefreshToken());
-//                        callback.onSuccess();
-//                    }
-//                });
+    public void login(Context context, Object params, IotKitAccountCallback callback) {
+        LoginBody loginBody = (LoginBody) params;
+        RetrofitHelper.getService().login(loginBody)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<LoginModel>(context) {
+                    @Override
+                    public void onSuccess(LoginModel loginModel) {
+                        DbUtils.setXJUserId(loginModel.getUserId());
+                        DbUtils.setAccessToken(loginModel.getAccessToken());
+                        DbUtils.setRefreshToken(loginModel.getRefreshToken());
+                        callback.onSuccess();
+                    }
+                });
     }
 
     @Override

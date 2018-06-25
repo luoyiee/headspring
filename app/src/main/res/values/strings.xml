@@ -58,5 +58,6 @@
     <string name="device_hint_nickname">设备名称</string>
     <string name="confirm">确认</string>
     <string name="login_get_verification_code_success">验证码获取成功</string>
+    <string name="title_activity_splash">headspring</string>
 
 </resources>

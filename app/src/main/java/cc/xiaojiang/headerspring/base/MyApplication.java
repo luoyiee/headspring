@@ -23,10 +23,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        BaseLibrary.init(this);
+//        BaseLibrary.init(this);
 
-        XjConfig.init(this)
-                .configure();
+//        XjConfig.init(this)
+//                .configure();
         MobSDK.init(this);
         IotKit.init(this, new IotKitAccountImpl());
     }

@@ -3,8 +3,9 @@ package cc.xiaojiang.baselibrary.http.progress;
 import android.content.Context;
 
 
+import java.util.logging.Logger;
+
 import cc.xiaojiang.baselibrary.http.ApiException;
-import cc.xiaojiang.baselibrary.util.ToastUtils;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
@@ -54,7 +55,6 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
         com.orhanobut.logger.Logger.e(e.getMessage());
         com.orhanobut.logger.Logger.d("onError");
         if (ApiException.class.isInstance(e)) {
-            ToastUtils.show(e.getMessage());
             // TODO: 2018/5/16
         } else if (HttpException.class.isInstance(e)) {
             // TODO: 2018/5/16  

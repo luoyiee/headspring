@@ -28,7 +28,6 @@ public class MqttConfig implements IMqttConfig {
 
     }
 
-
     @Override
     public String getMqttServerUrl() {
         return TEST_MQTT_SERVER_URL;
@@ -36,7 +35,8 @@ public class MqttConfig implements IMqttConfig {
 
     @Override
     public String getMqttClientId() {
-        String clientId = "a-" + userId + "securemode=" + SECUREMODE_TLS + ",signmethod=hmacsha1," +
+        String clientId = "a-" + userId + "-securemode=" + SECUREMODE_TLS + "," +
+                "signmethod=hmacsha1," +
                 "timestamp=" + timeStamp;
         Logger.d("mqtt clientId: " + clientId);
         return clientId;

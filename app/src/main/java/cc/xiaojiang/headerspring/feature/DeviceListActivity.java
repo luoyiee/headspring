@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cc.xiaojiang.baselibrary.util.ToastUtils;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.adapter.DeviceAdapter;
 import cc.xiaojiang.headerspring.base.BaseActivity;
@@ -53,21 +53,19 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     @Override
     protected void resumeInit() {
-//        getDevices();
-        for (int i = 0; i < 10; i++) {
-            mDevices.add(new DeviceResp.DataBean());
-        }
-        mDeviceAdapter.setNewData(mDevices);
+        getDevices();
+//        for (int i = 0; i < 10; i++) {
+//            mDevices.add(new DeviceResp.DataBean());
+//        }
+//        mDeviceAdapter.setNewData(mDevices);
     }
 
     private void getDevices() {
         IotKitDeviceManager.getInstance().deviceList(new IotKitCallBack() {
             @Override
             public void onSuccess(String response) {
-                for (int i = 0; i < 10; i++) {
-                    mDevices.add(new DeviceResp.DataBean());
-                }
-                mDeviceAdapter.setNewData(mDevices);
+                DeviceResp deviceResp = new Gson().fromJson(response, DeviceResp.class);
+                mDeviceAdapter.setNewData(deviceResp.getData());
             }
 
             @Override
@@ -90,10 +88,10 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 modifyDevice(dataBean.getDeviceId(), "test");
                 break;
             case R.id.tv_device_swipe_menu_share:
-                shareDevice(dataBean.getDeviceId());
+                shareDevice(dataBean.getProductKey(), dataBean.getDeviceId());
                 break;
             case R.id.tv_device_swipe_menu_delete:
-                deleteDevice(dataBean.getDeviceId());
+                deleteDevice(dataBean.getProductKey(), dataBean.getDeviceId());
                 break;
 
         }
@@ -113,23 +111,8 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         });
     }
 
-    private void shareDevice(String deviceId) {
-        IotKitDeviceManager.getInstance().deviceShare(deviceId, new
-                IotKitCallBack() {
-                    @Override
-                    public void onSuccess(String response) {
-
-                    }
-
-                    @Override
-                    public void onError(int code, String errorMsg) {
-
-                    }
-                });
-    }
-
-    private void deleteDevice(String deviceId) {
-        IotKitDeviceManager.getInstance().deviceUnbind(deviceId, new IotKitCallBack() {
+    private void shareDevice(String productKey, String deviceId) {
+        IotKitDeviceManager.getInstance().deviceShare(productKey, deviceId, new IotKitCallBack() {
             @Override
             public void onSuccess(String response) {
 
@@ -140,6 +123,19 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
             }
         });
-        ToastUtils.show("删除");
+    }
+
+    private void deleteDevice(String productKey, String deviceId) {
+        IotKitDeviceManager.getInstance().deviceUnbind(productKey, deviceId, new IotKitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+
+            }
+
+            @Override
+            public void onError(int code, String errorMsg) {
+
+            }
+        });
     }
 }

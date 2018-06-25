@@ -1,5 +1,7 @@
 package cc.xiaojiang.iotkit.account;
 
+import android.content.Context;
+
 public class IotKitAccountManager {
     private IotKitAccountConfig iotKitAccountConfig;
     private static final IotKitAccountManager ourInstance = new IotKitAccountManager();
@@ -17,9 +19,9 @@ public class IotKitAccountManager {
     }
 
 
-    public void login(IotKitLoginParams params, IotKitAccountCallback callback) {
+    public void login(Context context, Object params, IotKitAccountCallback callback) {
         checkArg(callback);
-        iotKitAccountConfig.login(params,new IotKitLoginCallback(callback));
+        iotKitAccountConfig.login(context,params, new IotKitLoginCallback(callback));
     }
 
 

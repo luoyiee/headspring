@@ -1,5 +1,7 @@
 package cc.xiaojiang.iotkit.account;
 
+import android.content.Context;
+
 /**
  * Created by facexxyz on 18-3-26.
  */
@@ -21,7 +23,7 @@ public interface IotKitAccountConfig {
      *
      * @param callback
      */
-    void login(IotKitLoginParams params,IotKitAccountCallback callback);
+    void login(Context context, Object params, IotKitAccountCallback callback);
 
     /**
      * 注销

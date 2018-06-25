@@ -15,11 +15,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.baselibrary.util.ToastUtils;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.adapter.ProductAdapter;
 import cc.xiaojiang.headerspring.base.BaseActivity;
 import cc.xiaojiang.headerspring.model.bean.ProductResp;
+import cc.xiaojiang.headerspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.http.IotKitCallBack;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 
