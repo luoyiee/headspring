@@ -7,5 +7,5 @@
 | -2     | 未授权 | sdk token无效 |
 | -3     | 服务器错误       | httpCode=500 |
 | -4 | 服务器错误 | 用户中心http response body=null |
-|        |        |  |
+|  |  |  |
 

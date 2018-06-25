@@ -22,7 +22,6 @@ import java.util.Set;
 public class MqttCallbackListener implements MqttCallbackExtended {
     private static final String TAG = "MqttCallbackListener";
     private static final int MSG_RECEIVED = 1;
-
     private Set<IotKitReceivedCallback> iotKitReceivedCallbacks;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override

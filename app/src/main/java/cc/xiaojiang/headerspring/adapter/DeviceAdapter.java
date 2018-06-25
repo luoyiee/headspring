@@ -8,17 +8,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import cc.xiaojiang.headerspring.R;
-import cc.xiaojiang.headerspring.model.bean.DeviceResp;
+import cc.xiaojiang.headerspring.model.bean.DeviceResponse;
 
-public class DeviceAdapter extends BaseQuickAdapter<DeviceResp.DataBean, BaseViewHolder> {
-    public DeviceAdapter(int layoutResId, @Nullable List<DeviceResp.DataBean> data) {
+public class DeviceAdapter extends BaseQuickAdapter<DeviceResponse.DataBean, BaseViewHolder> {
+    public DeviceAdapter(int layoutResId, @Nullable List<DeviceResponse.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, DeviceResp.DataBean item) {
-//        helper.setVisible(R.id.tv_device_swipe_menu_modify, false);
-        helper.addOnClickListener(R.id.tv_device_swipe_menu_modify)
+    protected void convert(BaseViewHolder helper, DeviceResponse.DataBean item) {
+        helper.addOnClickListener(R.id.ll_device_content)
+                .addOnClickListener(R.id.tv_device_swipe_menu_modify)
                 .addOnClickListener(R.id.tv_device_swipe_menu_share)
                 .addOnClickListener(R.id.tv_device_swipe_menu_delete);
 

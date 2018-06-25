@@ -36,8 +36,7 @@ public class MqttConfig implements IMqttConfig {
     @Override
     public String getMqttClientId() {
         String clientId = "a-" + userId + "-securemode=" + SECUREMODE_TLS + "," +
-                "signmethod=hmacsha1," +
-                "timestamp=" + timeStamp;
+                "signmethod=hmacsha1," + "timestamp=" + timeStamp;
         Logger.d("mqtt clientId: " + clientId);
         return clientId;
     }
@@ -52,7 +51,7 @@ public class MqttConfig implements IMqttConfig {
     @Override
     public String getMqttPassword() {
         String hashStr = "clientId" + userId + "deviceId" + userId + "productKey" +
-                developKey + "timestamp" + System.currentTimeMillis();
+                developKey + "timestamp" + timeStamp;
         String mqttPassword = SignUtil.hamcsha1(userSecret.getBytes(), hashStr.getBytes());
         Logger.d("mqtt Password: " + mqttPassword);
         return mqttPassword;

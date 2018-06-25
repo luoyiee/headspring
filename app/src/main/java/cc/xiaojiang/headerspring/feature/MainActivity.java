@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_bind:
-                IotKitDeviceManager.getInstance().deviceBind("bff503", "KW53MWpG8SSpjELGRi7C", new
+                IotKitDeviceManager.getInstance().deviceBind("bff503", "bopVpXFcyVbkYBhrhmHK", new
                         IotKitCallBack() {
                             @Override
                             public void onSuccess(String response) {

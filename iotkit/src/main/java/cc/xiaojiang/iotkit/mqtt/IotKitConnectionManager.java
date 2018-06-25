@@ -2,7 +2,6 @@ package cc.xiaojiang.iotkit.mqtt;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
@@ -228,24 +227,38 @@ public class IotKitConnectionManager {
     }
 
 
-    public void publish(String productKey, String deviceId, HashMap<String, Object> hashMap,
-                        IotKitActionCallback callBack) {
+    public void queryStatus(String productKey, String deviceId, IotKitActionCallback callback) {
+        String userId = IotKitAccountManager.getInstance().getXJUserId();
+        String topic = "/status/" + productKey + "/" + deviceId + "/by/" + userId;
+        publish(topic, null, callback);
+    }
+
+    public void sendCmd(String productKey, String deviceId, HashMap<String, Object> hashMap,
+                        IotKitActionCallback callback) {
         String topic = "/set/" + productKey + "/" + deviceId;
         byte[] payload = publishPayload(hashMap);
+        publish(topic, payload, callback);
+    }
+
+    private void publish(String topic, byte[] payload, IotKitActionCallback callback) {
         try {
             // TODO: 2018/6/1 屏蔽快速点击
             mqttAndroidClient.publish(topic, payload, QOS_PUBLISH, false, null, new
                     IMqttActionListener() {
                         @Override
                         public void onSuccess(IMqttToken asyncActionToken) {
-                            callBack.onSuccess(asyncActionToken);
-                            Logger.i("publish success: " + topic);
+                            if (callback != null) {
+                                callback.onSuccess(asyncActionToken);
+                            }
+                            Logger.i("sendCmd success: " + topic);
                         }
 
                         @Override
                         public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                            callBack.onFailure(asyncActionToken, exception);
-                            Logger.e("publish failed: ");
+                            if (callback != null) {
+                                callback.onFailure(asyncActionToken, exception);
+                            }
+                            Logger.e("sendCmd failed: ");
                         }
                     });
             Logger.i("send topic: " + topic);
@@ -263,13 +276,17 @@ public class IotKitConnectionManager {
             mqttAndroidClient.subscribe(topic, QOS_SUBCRIBE, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    callback.onSuccess(asyncActionToken);
+                    if (callback != null) {
+                        callback.onSuccess(asyncActionToken);
+                    }
                     Logger.i("subscribe success: " + topic);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    callback.onFailure(asyncActionToken, exception);
+                    if (callback != null) {
+                        callback.onFailure(asyncActionToken, exception);
+                    }
                     Logger.e("subscribe failed: ");
                 }
             });
@@ -288,13 +305,17 @@ public class IotKitConnectionManager {
             mqttAndroidClient.unsubscribe(topic, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    callback.onSuccess(asyncActionToken);
+                    if (callback != null) {
+                        callback.onSuccess(asyncActionToken);
+                    }
                     Logger.i("unSubscribe success: " + topic);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    callback.onFailure(asyncActionToken, exception);
+                    if (callback != null) {
+                        callback.onFailure(asyncActionToken, exception);
+                    }
                     Logger.e("unSubscribe failed: ");
                 }
             });

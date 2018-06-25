@@ -8,15 +8,22 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
+import cc.xiaojiang.headerspring.model.bean.DeviceResponse;
+import cc.xiaojiang.headerspring.utils.ToastUtils;
 import cc.xiaojiang.headerspring.view.AP1View4;
 import cc.xiaojiang.headerspring.view.CommonTextView;
 import cc.xiaojiang.headerspring.widget.AP1TimingDialog;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
-public class DeviceControlActivity extends BaseActivity implements AP1View4.OnSeekBarChangeListener {
+public class DeviceControlActivity extends BaseActivity implements
+        AP1View4.OnSeekBarChangeListener {
     @BindView(R.id.iv_pop_window)
     ImageView mIvPopWindow;
     @BindView(R.id.ic_air_purifier_wifi_off)
@@ -31,6 +38,7 @@ public class DeviceControlActivity extends BaseActivity implements AP1View4.OnSe
     TextView mTvAirPurifierView3Humidity;
     @BindView(R.id.custom_air_purifier_view4_gear)
     AP1View4 mCustomAirPurifierView4Gear;
+    private DeviceResponse.DataBean deviceData;
 
     private int mGear = 0;
 
@@ -41,24 +49,59 @@ public class DeviceControlActivity extends BaseActivity implements AP1View4.OnSe
 
     @Override
     protected void createInit() {
+        initView();
+        initData();
+
+    }
+
+    private void initData() {
+        deviceData = getIntent().getParcelableExtra("device_data");
+        if (deviceData == null) {
+            ToastUtils.show("内部错误！");
+            finish();
+        }
+    }
+
+    private void initView() {
         getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         mCustomAirPurifierView4Gear.setOnSeekBarChangeListener(this);
     }
 
     @Override
     protected void resumeInit() {
+        IotKitConnectionManager.getInstance().addDataCallback(new IotKitReceivedCallback() {
+            @Override
+            public void messageArrived(String deviceId, String data) {
+                com.orhanobut.logger.Logger.d("deviceId:" + deviceId + ", data: " + data);
+
+            }
+
+            @Override
+            public boolean filter(String deviceId) {
+                return true;
+            }
+        });
 
     }
 
-    @OnClick({R.id.iv_pop_window,R.id.tv_auto, R.id.tv_switch, R.id.tv_timing, R.id.iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
+    @OnClick({R.id.iv_pop_window, R.id.tv_auto, R.id.tv_switch, R.id.tv_timing, R.id
+            .iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_pop_window:
                 showPupWindow();
                 break;
             case R.id.tv_auto:
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("Switch", "0");
+                IotKitConnectionManager.getInstance().sendCmd(deviceData.getProductKey(),
+                        deviceData.getDeviceId(), hashMap, null);
                 break;
             case R.id.tv_switch:
+                HashMap<String, Object> hashMap2 = new HashMap<>();
+                hashMap2.put("Switch", "1");
+                IotKitConnectionManager.getInstance().sendCmd(deviceData.getProductKey(),
+                        deviceData.getDeviceId(), hashMap2, null);
                 break;
             case R.id.tv_timing:
                 doTiming();
@@ -77,9 +120,12 @@ public class DeviceControlActivity extends BaseActivity implements AP1View4.OnSe
         final PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        contentView.findViewById(R.id.ctv_popup_time_remain).setOnClickListener(v->startToActivity(FilterTimeRemainActivity.class));
-        popupWindow.showAsDropDown(mIvPopWindow, -popupWindow.getContentView().getMeasuredWidth() + 40, 20);
+        popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec
+                .UNSPECIFIED);
+        contentView.findViewById(R.id.ctv_popup_time_remain).setOnClickListener(v ->
+                startToActivity(FilterTimeRemainActivity.class));
+        popupWindow.showAsDropDown(mIvPopWindow, -popupWindow.getContentView().getMeasuredWidth()
+                + 40, 20);
     }
 
     private void gearPlus() {
@@ -102,7 +148,7 @@ public class DeviceControlActivity extends BaseActivity implements AP1View4.OnSe
     }
 
     private void gearMinus() {
-        if (mGear > 0 && mGear <=3) {
+        if (mGear > 0 && mGear <= 3) {
             mGear--;
             handOutGear();
         }
