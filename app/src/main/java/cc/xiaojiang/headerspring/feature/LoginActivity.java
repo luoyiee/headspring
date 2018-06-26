@@ -114,7 +114,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
-//        startToActivity(ProductListActivity.class);
         final String phoneNumber = mCetPhoneNumber.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             ToastUtils.show(getString(R.string.login_toast_phone_not_null));

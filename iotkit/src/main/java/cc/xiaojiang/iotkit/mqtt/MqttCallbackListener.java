@@ -102,7 +102,7 @@ public class MqttCallbackListener implements MqttCallbackExtended {
     }
 
     public void remove(IotKitReceivedCallback dataCallback) {
-        iotKitReceivedCallbacks.add(dataCallback);
+        iotKitReceivedCallbacks.remove(dataCallback);
     }
 
     public void removeAll() {
