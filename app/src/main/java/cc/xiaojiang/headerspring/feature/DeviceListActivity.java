@@ -29,17 +29,17 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     RecyclerView rvDeviceList;
     private DeviceAdapter mDeviceAdapter;
     private List<DeviceResponse.DataBean> mDevices;
-    private IotKitReceivedCallback mIotKitReceivedCallback = new IotKitReceivedCallback() {
-        @Override
-        public void messageArrived(String deviceId, String data) {
-            com.orhanobut.logger.Logger.d("deviceId:" + deviceId + ", data: " + data);
-        }
-
-        @Override
-        public boolean filter(String deviceId) {
-            return false;
-        }
-    };
+//    private IotKitReceivedCallback mIotKitReceivedCallback = new IotKitReceivedCallback() {
+//        @Override
+//        public void messageArrived(String deviceId, String data) {
+////            com.orhanobut.logger.Logger.d("deviceId:" + deviceId + ", data: " + data);
+//        }
+//
+//        @Override
+//        public boolean filter(String deviceId) {
+//            return false;
+//        }
+//    };
 
 
     @Override
@@ -60,13 +60,13 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     @Override
     protected void resumeInit() {
-        IotKitConnectionManager.getInstance().addDataCallback(mIotKitReceivedCallback);
+//        IotKitConnectionManager.getInstance().addDataCallback(mIotKitReceivedCallback);
         getDevices();
     }
 
     @Override
     protected void onPause() {
-        IotKitConnectionManager.getInstance().removeDataCallback(mIotKitReceivedCallback);
+//        IotKitConnectionManager.getInstance().removeDataCallback(mIotKitReceivedCallback);
         super.onPause();
 
     }

@@ -2,28 +2,39 @@ package cc.xiaojiang.headerspring.feature;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
+
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cc.xiaojiang.headerspring.R;
 import cc.xiaojiang.headerspring.base.BaseActivity;
+import cc.xiaojiang.headerspring.iotkit.DeviceDataModel;
 import cc.xiaojiang.headerspring.model.bean.DeviceResponse;
 import cc.xiaojiang.headerspring.utils.ToastUtils;
+import cc.xiaojiang.headerspring.view.AP1View2;
 import cc.xiaojiang.headerspring.view.AP1View4;
 import cc.xiaojiang.headerspring.view.CommonTextView;
 import cc.xiaojiang.headerspring.widget.AP1TimingDialog;
+import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
 public class DeviceControlActivity extends BaseActivity implements
-        AP1View4.OnSeekBarChangeListener {
+        AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback {
     @BindView(R.id.iv_pop_window)
     ImageView mIvPopWindow;
     @BindView(R.id.ic_air_purifier_wifi_off)
@@ -36,11 +47,37 @@ public class DeviceControlActivity extends BaseActivity implements
     TextView mTvAirPurifierView1Strainer;
     @BindView(R.id.tv_air_purifier_view3_humidity)
     TextView mTvAirPurifierView3Humidity;
-    @BindView(R.id.custom_air_purifier_view4_gear)
-    AP1View4 mCustomAirPurifierView4Gear;
-    private DeviceResponse.DataBean deviceData;
+    @BindView(R.id.view_air_purifier_pm25)
+    AP1View2 mViewAirPurifierPm25;
+    @BindView(R.id.view_air_purifier_gear)
+    AP1View4 mViewAirPurifierGear;
+    @BindView(R.id.textView16)
+    TextView mTextView16;
+    @BindView(R.id.textView17)
+    TextView mTextView17;
+    @BindView(R.id.textView15)
+    TextView mTextView15;
+    @BindView(R.id.textView14)
+    TextView mTextView14;
+    @BindView(R.id.tv_auto)
+    CommonTextView mTvAuto;
+    @BindView(R.id.tv_switch)
+    CommonTextView mTvSwitch;
+    @BindView(R.id.tv_timing)
+    CommonTextView mTvTiming;
 
-    private int mGear = 0;
+    private DeviceResponse.DataBean deviceData;
+    private IotKitReceivedCallback mIotKitReceivedCallback;
+
+    private int mControlGear;
+    private int mSwitch;
+    private int mControlMode;
+    private int mTimingShutdown;
+    private int mUseTime;
+    private int mPM205;
+    private int mTempture;
+    private int mHumidity;
+
 
     @Override
     protected int getLayoutId() {
@@ -64,24 +101,30 @@ public class DeviceControlActivity extends BaseActivity implements
 
     private void initView() {
         getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
-        mCustomAirPurifierView4Gear.setOnSeekBarChangeListener(this);
+        mViewAirPurifierGear.setOnSeekBarChangeListener(this);
     }
 
     @Override
     protected void resumeInit() {
-        IotKitConnectionManager.getInstance().addDataCallback(new IotKitReceivedCallback() {
+        IotKitConnectionManager.getInstance().addDataCallback(this);
+        IotKitConnectionManager.getInstance().queryStatus(deviceData.getProductKey(), deviceData
+                .getDeviceId(), new IotKitActionCallback() {
             @Override
-            public void messageArrived(String deviceId, String data) {
-                com.orhanobut.logger.Logger.d("deviceId:" + deviceId + ", data: " + data);
+            public void onSuccess(IMqttToken asyncActionToken) {
 
             }
 
             @Override
-            public boolean filter(String deviceId) {
-                return true;
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
             }
         });
+    }
 
+    @Override
+    protected void onPause() {
+        IotKitConnectionManager.getInstance().removeDataCallback(this);
+        super.onPause();
     }
 
     @OnClick({R.id.iv_pop_window, R.id.tv_auto, R.id.tv_switch, R.id.tv_timing, R.id
@@ -92,16 +135,10 @@ public class DeviceControlActivity extends BaseActivity implements
                 showPupWindow();
                 break;
             case R.id.tv_auto:
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("Switch", "0");
-                IotKitConnectionManager.getInstance().sendCmd(deviceData.getProductKey(),
-                        deviceData.getDeviceId(), hashMap, null);
+                sendMode(mControlMode);
                 break;
             case R.id.tv_switch:
-                HashMap<String, Object> hashMap2 = new HashMap<>();
-                hashMap2.put("Switch", "1");
-                IotKitConnectionManager.getInstance().sendCmd(deviceData.getProductKey(),
-                        deviceData.getDeviceId(), hashMap2, null);
+                sendSwitch(mSwitch);
                 break;
             case R.id.tv_timing:
                 doTiming();
@@ -113,6 +150,18 @@ public class DeviceControlActivity extends BaseActivity implements
                 gearPlus();
                 break;
         }
+    }
+
+    private void sendSwitch(int aSwitch) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("Switch", String.valueOf(aSwitch == 0 ? 1 : 0));
+        sendCmd(hashMap);
+    }
+
+    private void sendMode(int controlMode) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("ControlMode", String.valueOf(controlMode == 0 ? 1 : 0));
+        sendCmd(hashMap);
     }
 
     private void showPupWindow() {
@@ -129,9 +178,8 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     private void gearPlus() {
-        if (mGear >= 0 && mGear < 3) {
-            mGear++;
-            handOutGear();
+        if (mControlGear >= 0 && mControlGear < 5) {
+            sendGear(mControlGear + 1);
         }
     }
 
@@ -141,16 +189,23 @@ public class DeviceControlActivity extends BaseActivity implements
         dialog.setOnTimeSelectedListener(new AP1TimingDialog.OnTimeSelectedListener() {
             @Override
             public void onTimeSelected(int hour) {
-//                onCmdChange(Endec_A1.CMD_TIMING, (byte) hour);
+                if (hour == 4) {
+                    hour = 3;
+                }
+                if (hour == 8) {
+                    hour = 4;
+                }
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put("TimingShutdown", hour + "");
+                sendCmd(hashMap);
             }
         });
         dialog.show(getSupportFragmentManager(), "");
     }
 
     private void gearMinus() {
-        if (mGear > 0 && mGear <= 3) {
-            mGear--;
-            handOutGear();
+        if (mControlGear > 0 && mControlGear <= 5) {
+            sendGear(mControlGear - 1);
         }
     }
 
@@ -166,16 +221,85 @@ public class DeviceControlActivity extends BaseActivity implements
 
     @Override
     public void onStop(int gear) {
-        mGear = gear;
-        handOutGear();
+        sendGear(gear);
     }
 
-    private void handOutGear() {
-        //        onCmdChange(Endec_A1.CMD_GEAR, (byte) mGear);
-        setGear();
+    private void sendGear(int gear) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("ControlGear", String.valueOf(gear));
+        sendCmd(hashMap);
     }
 
-    private void setGear() {
-        mCustomAirPurifierView4Gear.setGear(mGear);
+    private void sendCmd(HashMap<String, String> hashMap) {
+        IotKitConnectionManager.getInstance().sendCmd(deviceData.getProductKey(), deviceData
+                .getDeviceId(), hashMap, new IotKitActionCallback() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                ToastUtils.show("发送失败，请重试");
+            }
+        });
+    }
+
+
+    @Override
+    public void messageArrived(String deviceId, String data) {
+        if (!deviceId.equals(deviceData.getDeviceId())) {
+            Logger.e("error device!");
+            return;
+        }
+        DeviceDataModel model = new Gson().fromJson(data, DeviceDataModel.class);
+        DeviceDataModel.ParamsBean paramsBean = model.getParams();
+        if (paramsBean == null) {
+            Logger.e("error getParams!");
+            return;
+        }
+        setView(paramsBean);
+    }
+
+    private void setView(DeviceDataModel.ParamsBean paramsBean) {
+        mSwitch = Integer.parseInt(paramsBean.getSwitch().getValue());
+        mControlMode = Integer.parseInt(paramsBean.getControlMode().getValue());
+        mControlGear = Integer.parseInt(paramsBean.getControlGear().getValue());
+        mTimingShutdown = Integer.parseInt(paramsBean.getTimingShutdown().getValue());
+        mUseTime = Integer.parseInt(paramsBean.getUseTime().getValue());
+        mPM205 = Integer.parseInt(paramsBean.getPM205().getValue());
+        mTempture = Integer.parseInt(paramsBean.getTempture().getValue());
+        mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
+        //绘制界面
+        mTvAirPurifierView1Timing.setText(mTimingShutdown + "h");
+        mTvAirPurifierView1Strainer.setText(mUseTime + "h");
+        mTvAirPurifierView3Temp.setText(mTempture + "");
+        mTvAirPurifierView3Humidity.setText(mHumidity + "");
+        mViewAirPurifierPm25.setValue(mPM205);
+        mViewAirPurifierGear.setGear(mControlGear);
+
+        if (mControlMode == 0) {
+            mTvAuto.setText("自动");
+        } else {
+            mTvAuto.setText("手动");
+        }
+
+        if (mSwitch == 0) {
+            mTvSwitch.setText("关机");
+        } else {
+            mTvSwitch.setText("开机");
+        }
+    }
+
+    @Override
+    public boolean filter(String deviceId) {
+        return !deviceId.equals(deviceData.getDeviceId());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

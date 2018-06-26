@@ -32,7 +32,7 @@ public class AP1View4 extends View {
     /**
      * gear count
      */
-    private int mGearCount = 4;
+    private int mGearCount = 6;
     /**
      * background
      */

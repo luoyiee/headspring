@@ -94,8 +94,6 @@ public class IotKitConnectionManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void connectPre(final IotKitConnectCallback iotKitConnectCallback) {
@@ -230,10 +228,10 @@ public class IotKitConnectionManager {
     public void queryStatus(String productKey, String deviceId, IotKitActionCallback callback) {
         String userId = IotKitAccountManager.getInstance().getXJUserId();
         String topic = "/status/" + productKey + "/" + deviceId + "/by/" + userId;
-        publish(topic, null, callback);
+        publish(topic, new byte[0], callback);
     }
 
-    public void sendCmd(String productKey, String deviceId, HashMap<String, Object> hashMap,
+    public void sendCmd(String productKey, String deviceId, HashMap<String, String> hashMap,
                         IotKitActionCallback callback) {
         String topic = "/set/" + productKey + "/" + deviceId;
         byte[] payload = publishPayload(hashMap);
@@ -341,7 +339,7 @@ public class IotKitConnectionManager {
         return mqttAndroidClient != null && mqttAndroidClient.isConnected();
     }
 
-    private byte[] publishPayload(HashMap<String, Object> hashMap) {
+    private byte[] publishPayload(HashMap<String, String> hashMap) {
         JSONObject playload = new JSONObject();
         try {
             playload.put("msg_type", "set");
@@ -349,7 +347,7 @@ public class IotKitConnectionManager {
             JSONObject paramsObject = new JSONObject();
             JSONArray attrObject = new JSONArray();
             for (String key : hashMap.keySet()) {
-                Object value = hashMap.get(key);
+                String value = hashMap.get(key);
                 attrObject.put(key);
                 JSONObject valueObject = new JSONObject();
                 valueObject.put("value", value);
