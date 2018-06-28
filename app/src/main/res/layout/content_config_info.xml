@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".feature.ConfigInfoActivity"
+    tools:context="cc.xiaojiang.headspring.feature.ConfigInfoActivity"
     tools:showIn="@layout/activity_config_info">
 
     <LinearLayout
@@ -30,6 +30,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_config_info_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

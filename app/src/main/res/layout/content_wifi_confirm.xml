@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".feature.WifiConfirmActivity"
+    tools:context="cc.xiaojiang.headspring.feature.WifiConfirmActivity"
     tools:showIn="@layout/activity_wifi_confirm">
 
     <LinearLayout
@@ -22,17 +22,21 @@
             android:src="@drawable/test_24dp" />
 
         <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edTxt_wifi_confirm_ssid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="当前wifi" />
 
         <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edTxt_wifi_confirm_password"
             android:layout_width="match_parent"
+            android:text="test062516"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_wifi_conform_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

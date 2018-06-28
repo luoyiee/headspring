@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/device_control_bg"
-    tools:context=".feature.DeviceControlActivity">
+    tools:context="cc.xiaojiang.headspring.feature.DeviceControlActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -33,7 +33,7 @@
             android:src="@drawable/ic_mine_next_small" />
     </android.support.v7.widget.Toolbar>
 
-    <cc.xiaojiang.headerspring.view.CommonTextView
+    <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/ic_air_purifier_wifi_off"
         style="@style/device_control_bottom_text_icon"
         android:layout_marginTop="16dp"
@@ -115,7 +115,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_air_purifier_view1_timing"
         app:layout_constraintStart_toStartOf="@+id/tv_air_purifier_view1_timing" />
 
-    <cc.xiaojiang.headerspring.view.AP1View2
+    <cc.xiaojiang.headspring.view.AP1View2
         android:id="@+id/view_air_purifier_pm25"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -127,7 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.288" />
 
-    <cc.xiaojiang.headerspring.view.AP1View4
+    <cc.xiaojiang.headspring.view.AP1View4
         android:id="@+id/view_air_purifier_gear"
         android:layout_width="0dp"
         android:layout_height="80dp"
@@ -139,7 +139,7 @@
         app:layout_constraintStart_toEndOf="@+id/iv_air_purifier_view4_minus" />
 
 
-    <cc.xiaojiang.headerspring.view.CommonTextView
+    <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/tv_auto"
         style="@style/device_control_bottom_text_icon"
         android:layout_marginBottom="32dp"
@@ -150,7 +150,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <cc.xiaojiang.headerspring.view.CommonTextView
+    <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/tv_switch"
         style="@style/device_control_bottom_text_icon"
         android:text="开启"
@@ -160,7 +160,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_auto" />
 
-    <cc.xiaojiang.headerspring.view.CommonTextView
+    <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/tv_timing"
         style="@style/device_control_bottom_text_icon"
         android:text="定时"

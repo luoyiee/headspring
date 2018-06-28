@@ -192,7 +192,7 @@ public class IotKitDeviceManager {
         }
     }
 
-    public void deviceShare(String productKey,String deviceId, final IotKitCallBack callBack) {
+    public void sendDeviceShare(String productKey, String deviceId, final IotKitCallBack callBack) {
         if (isLogin(callBack)) {
             try {
                 JSONObject jsonObject = new JSONObject();

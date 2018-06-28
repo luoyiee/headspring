@@ -11,7 +11,7 @@ MobSDK {
 //            HUAWEI {
 //                appId "100215127"
 //            }
-////
+//
 //            MEIZU {
 //                appId "112481"
 //                appKey "03dd70b9be434446a7255c8586e1725a"
@@ -28,7 +28,7 @@ MobSDK {
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "cc.xiaojiang.headerspring"
+        applicationId "cc.xiaojiang.headspring"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1

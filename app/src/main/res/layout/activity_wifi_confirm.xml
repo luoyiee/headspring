@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.WifiConfirmActivity">
+    tools:context="cc.xiaojiang.headspring.feature.WifiConfirmActivity">
 
     <include layout="@layout/layout_appbar" />
 
     <include layout="@layout/content_wifi_confirm" />
-
 
 </android.support.design.widget.CoordinatorLayout>

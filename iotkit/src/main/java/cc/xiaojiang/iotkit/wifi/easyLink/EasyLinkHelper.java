@@ -29,7 +29,7 @@ import io.fogcloud.sdk.easylink.api.EasyLink;
 import io.fogcloud.sdk.easylink.helper.EasyLinkCallBack;
 import io.fogcloud.sdk.easylink.helper.EasyLinkParams;
 
-public class EasyLinkHelper implements EasyLinkCallBack {
+public class EasyLinkHelper {
     // TODO: 18-4-20 策略模式
     private static final EasyLinkHelper ourInstance = new EasyLinkHelper();
     private static final String TAG = "EasyLinkHelper";
@@ -47,6 +47,17 @@ public class EasyLinkHelper implements EasyLinkCallBack {
     private EasyLink mEasyLink;
     private boolean wifiConnected = false;
     private Timer mAppNotifyTimer = new Timer();
+    private EasyLinkCallBack mEasyLinkCallBack = new EasyLinkCallBack() {
+        @Override
+        public void onSuccess(int code, String message) {
+
+        }
+
+        @Override
+        public void onFailure(int code, String message) {
+
+        }
+    };
 
     public static EasyLinkHelper getInstance() {
         return ourInstance;
@@ -78,7 +89,6 @@ public class EasyLinkHelper implements EasyLinkCallBack {
                     mIDeviceAddListener.deviceAddFailed((String) msg.obj);
                     Logger.d("设备接入小匠云失败");
                     break;
-
                 case MSG_TIMEOUT:
                     mIDeviceAddListener.deviceAddTimeout();
                     Logger.d("设备接入小匠云超时");
@@ -120,7 +130,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
     public void cancelAdd() {
         mExecutorService.shutdownNow();
         mAppNotifyTimer.cancel();
-        mEasyLink.stopEasyLink(this);
+        mEasyLink.stopEasyLink(mEasyLinkCallBack);
         mIDeviceAddListener = null;
         Logger.i("EasyLinkHelper cancel");
     }
@@ -153,7 +163,7 @@ public class EasyLinkHelper implements EasyLinkCallBack {
         params.password = password;
         mEasyLink = new EasyLink(context);
         Logger.d("start easylink");
-        mEasyLink.startEasyLink(params, this);
+        mEasyLink.startEasyLink(params, mEasyLinkCallBack);
     }
 
     private byte[] getAddDevicePacket() {
@@ -167,14 +177,6 @@ public class EasyLinkHelper implements EasyLinkCallBack {
         String msg = new Gson().toJson(addDevicePacket);
         Logger.i("app_notify packet: " + msg);
         return HeadUtils.PackData(0, msg.getBytes());
-    }
-
-    @Override
-    public void onSuccess(int code, String message) {
-    }
-
-    @Override
-    public void onFailure(int code, String message) {
     }
 
 
