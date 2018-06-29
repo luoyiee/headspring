@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.headspring.feature.WifiConfirmActivity"
+    tools:context="cc.xiaojiang.headspring.activity.WifiConfirmActivity"
     tools:showIn="@layout/activity_wifi_confirm">
 
     <LinearLayout

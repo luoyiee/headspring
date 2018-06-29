@@ -61,5 +61,15 @@
     <string name="title_activity_splash">headspring</string>
     <string name="menu_add">添加</string>
     <string name="title_activity_wifi_connect">WifiConnectActivity</string>
+    <string name="title_activity_shop">商城</string>
+    <string name="product_scan">扫描二维码添加设备</string>
+    <string name="title_activity_dynamic">量波动态</string>
+    <string name="title_activity_lunar">农历节气</string>
+    <string name="title_activity_instruction">说明书</string>
+    <string name="title_activity_feedback">意见反馈</string>
+    <string name="title_activity_top_activity">排行榜</string>
+    <string name="filter_use_time">滤芯使用时间：%d小时</string>
+    <string name="share">分享</string>
+    <string name="title_activity_dynamic_list">量波动态</string>
 
 </resources>

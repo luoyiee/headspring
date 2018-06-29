@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.headspring.feature.AppUpdateActivity"
+    tools:context="cc.xiaojiang.headspring.activity.AppUpdateActivity"
     tools:showIn="@layout/activity_app_update">
 
 </android.support.constraint.ConstraintLayout>

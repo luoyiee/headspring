@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/device_control_bg"
-    tools:context="cc.xiaojiang.headspring.feature.DeviceControlActivity">
+    tools:context="cc.xiaojiang.headspring.activity.DeviceControlActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

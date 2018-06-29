@@ -9,6 +9,7 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="transparent">#00ffffff</color>
     <color name="divider_bg">#F0EFF4</color>
     <color name="air_1">#82d8d0</color>
     <color name="air_2">#fded76</color>
@@ -34,4 +35,9 @@
     <color name="char_text_color">@color/black</color>
     <color name="divider_line">#a1a1a1</color>
     <color name="device_control_bg">#45C686</color>
+
+    <color name="device_status_on">@color/primary_blue</color>
+    <color name="device_status_off">#E5E7E6</color>
+    <color name="device_status_offline">#FEF089</color>
+
 </resources>

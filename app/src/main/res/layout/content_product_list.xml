@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.headspring.feature.ProductListActivity"
+    tools:context="cc.xiaojiang.headspring.activity.ProductListActivity"
     tools:showIn="@layout/activity_product_list">
 
     <LinearLayout
@@ -21,12 +21,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/test_24dp" />
+            android:src="@drawable/ic_product_scan" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="扫描二维码添加设备" />
+            android:layout_marginLeft="5dp"
+            android:text="@string/product_scan" />
     </LinearLayout>
 
     <include layout="@layout/layout_divider_block" />

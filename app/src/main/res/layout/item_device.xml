@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:contentView="@id/ll_device_content"
@@ -10,7 +11,7 @@
     <LinearLayout
         android:id="@+id/ll_device_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
@@ -19,32 +20,49 @@
         android:paddingTop="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_product_icon"
+            android:id="@+id/iv_device_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/test_24dp"
-            app:civ_border_color="@color/grey_1"
-            app:civ_border_width="1dp" />
+            app:civ_border_color="@color/device_status_on"
+            app:civ_border_width="1dp"
+            tools:src="@drawable/test_24dp" />
 
-        <TextView
-            android:id="@+id/tv_product_name"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:layout_weight="1"
-            android:text="空智子" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/black"
+                tools:text="空智子" />
+
+            <TextView
+                android:id="@+id/tv_device_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textSize="12sp"
+                tools:text="已开启" />
+        </LinearLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/test_24dp" />
+            android:id="@+id/iv_device_admin"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            tools:src="@drawable/ic_device_admin" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_device_swipe_menu"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="72dp">
 
         <TextView
             android:id="@+id/tv_device_swipe_menu_modify"
@@ -52,6 +70,7 @@
             android:layout_height="match_parent"
             android:background="@color/swipe_menu_modify"
             android:gravity="center"
+            android:visibility="gone"
             android:padding="16dp"
             android:text="修改"
             android:textColor="@color/white" />
@@ -63,6 +82,7 @@
             android:background="@color/swipe_menu_share"
             android:gravity="center"
             android:padding="16dp"
+            android:visibility="gone"
             android:text="共享"
             android:textColor="@color/white" />
 

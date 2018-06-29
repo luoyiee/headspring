@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".feature.WifiConnectActivity"
+    tools:context=".activity.WifiConnectActivity"
     tools:showIn="@layout/activity_wifi_connect">
 
     <Button

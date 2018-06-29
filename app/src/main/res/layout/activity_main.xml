@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cc.xiaojiang.headspring.feature.MainActivity">
+    android:background="@drawable/bg_main"
+    tools:context="cc.xiaojiang.headspring.activity.MainActivity">
 
-    <include layout="@layout/layout_appbar" />
 
     <include layout="@layout/content_main" />
 
