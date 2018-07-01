@@ -2,6 +2,7 @@ package cc.xiaojiang.headspring.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.mob.MobSDK;
 
@@ -25,5 +26,12 @@ public class MyApplication extends Application {
 //                .configure();
         MobSDK.init(this);
         IotKit.init(this, new IotKitAccountImpl());
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+
     }
 }
