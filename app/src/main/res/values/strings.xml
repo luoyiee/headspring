@@ -71,5 +71,6 @@
     <string name="filter_use_time">滤芯使用时间：%d小时</string>
     <string name="share">分享</string>
     <string name="title_activity_dynamic_list">量波动态</string>
+    <string name="title_activity_air_map">地图</string>
 
 </resources>

@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
 //                                });
                 break;
             case R.id.btn_map:
-                startToActivity(MapActivity.class);
+                startToActivity(AirMapActivity.class);
                 break;
             case R.id.btn_device:
                 startToActivity(DeviceListActivity.class);
