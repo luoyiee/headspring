@@ -9,6 +9,8 @@ import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.utils.ToastUtils;
+import cc.xiaojiang.iotkit.http.IotKitCallBack;
+import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.btn_chain)
@@ -45,6 +47,7 @@ public class MainActivity extends BaseActivity {
 //                .create());
     }
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -55,6 +58,19 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_chain:
                 ToastUtils.show("区块链");
+//                IotKitDeviceManager.getInstance().deviceBind("bff503",
+//                        "xBcqwpFWINOUzjO21X3E", new
+//                                IotKitCallBack() {
+//                                    @Override
+//                                    public void onSuccess(String response) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(int code, String errorMsg) {
+//
+//                                    }
+//                                });
                 break;
             case R.id.btn_map:
                 startToActivity(MapActivity.class);

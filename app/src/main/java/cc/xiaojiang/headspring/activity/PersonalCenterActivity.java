@@ -50,7 +50,7 @@ public class PersonalCenterActivity extends BaseActivity {
                 startToActivity(PersonalInfoActivity.class);
                 break;
             case R.id.ll_personal_dynamic:
-                startToActivity(DynamicActivity.class);
+                startToActivity(DynamicListActivity.class);
                 break;
             case R.id.ll_personal_share:
                 ToastUtils.show("共享服务");

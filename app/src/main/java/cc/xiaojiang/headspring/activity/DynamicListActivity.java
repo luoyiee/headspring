@@ -33,7 +33,6 @@ public class DynamicListActivity extends BaseActivity implements BaseQuickAdapte
             mDynamicModels.add(new DynamicModel());
         }
         initView();
-
     }
 
     private void initView() {
