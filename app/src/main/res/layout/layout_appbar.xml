@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:apptools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -8,7 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways">
 
         <TextView
             android:id="@+id/tv_title"
@@ -17,7 +20,7 @@
             android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            apptools:text="我是标题" />
+            apptools:text="我是标题"/>
     </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>

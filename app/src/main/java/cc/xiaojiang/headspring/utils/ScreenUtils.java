@@ -19,6 +19,12 @@ public class ScreenUtils {
         return (int) (dp * density);
     }
 
+    public static int dip2px(int dp) {
+        DisplayMetrics metrics = XjConfig.getApplicationContext().getResources().getDisplayMetrics();
+        float density = metrics.density;
+        return (int) (dp * density);
+    }
+
 
     //px转dp
     public static int px2dp(Context context, float px) {

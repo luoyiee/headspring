@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base context theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -24,6 +24,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="commonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="common_16_black_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -31,19 +37,34 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="common_14_black_text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14sp</item>
+    <style name="common_14_black_text" parent="commonText">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="common_14_white_text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14sp</item>
+    <style name="common_14_white_text" parent="commonText">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="horizontalBlockView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">8dp</item>
+        <item name="android:background">@color/app_background_grey</item>
+    </style>
+
+    <style name="homeTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="icon_direction">top</item>
+        <item name="icon_width">20dp</item>
+        <item name="icon_height">20dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="border_color_normal">@color/light_grey</item>
+        <item name="border_width_normal">1dp</item>
+        <item name="corner_radius">100dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
     <style name="control_status_label">
         <item name="android:layout_width">wrap_content</item>

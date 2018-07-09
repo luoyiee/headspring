@@ -96,7 +96,7 @@ public class WaveProgressView extends View {
     private Path mWaveLimitPath;
     private Path mWavePath;
     //水波高度
-    private float mWaveHeight = 40;
+    private float mWaveHeight = 28;
     //水波数量
     private int mWaveNum;
     //深色水波
@@ -116,9 +116,9 @@ public class WaveProgressView extends View {
     private int mHalfPointCount;
 
     private ValueAnimator mProgressAnimator;
-    private int mDarkWaveAnimTime = 1000;
+    private int mDarkWaveAnimTime = 2000;
     private ValueAnimator mDarkWaveAnimator;
-    private int mLightWaveAnimTime = 1000;
+    private int mLightWaveAnimTime = 2000;
     private ValueAnimator mLightWaveAnimator;
     //前一次绘制时的进度
     private float mPrePercent;

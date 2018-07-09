@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.headspring.activity.AppUpdateActivity"
-    tools:showIn="@layout/activity_app_update">
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/include4"
+        layout="@layout/layout_appbar"/>
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/tv_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon_src_normal="@drawable/ic_logo2"
+        app:icon_direction="top"
+        app:icon_height="56dp"
+        app:icon_width="56dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include4"/>
+
+    <View
+        android:id="@+id/view"
+        style="@style/horizontalBlockView"
+        android:layout_height="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"/>
+
+    <cc.xiaojiang.headspring.view.ItemView
+        android:id="@+id/item_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemKey="最新版本"
+        app:itemValue="立即升级"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view"/>
+
+    <View
+        android:id="@+id/view6"
+        style="@style/horizontalBlockView"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_update"/>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginBottom="8dp"
+        android:text="上海竞源环保设备有限公司"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 
 </android.support.constraint.ConstraintLayout>

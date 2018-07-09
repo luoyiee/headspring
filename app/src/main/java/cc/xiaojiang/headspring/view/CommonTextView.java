@@ -38,6 +38,7 @@ import cc.xiaojiang.headspring.R;
  */
 public class CommonTextView extends AppCompatTextView {
 
+
     //default value
     public static final int ICON_DIR_LEFT = 1, ICON_DIR_TOP = 2, ICON_DIR_RIGHT = 3, ICON_DIR_BOTTOM = 4;
 
@@ -189,9 +190,9 @@ public class CommonTextView extends AppCompatTextView {
         //border
         mBorderDashWidth = a.getDimensionPixelSize(R.styleable.CommonTextView_border_dash_width, 0);
         mBorderDashGap = a.getDimensionPixelSize(R.styleable.CommonTextView_border_dash_gap, 0);
-        mBorderWidthNormal = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_normal, 2);
-        mBorderWidthPressed = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_pressed, 2);
-        mBorderWidthUnable = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_unable, 2);
+        mBorderWidthNormal = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_normal, 0);
+        mBorderWidthPressed = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_pressed, 0);
+        mBorderWidthUnable = a.getDimensionPixelSize(R.styleable.CommonTextView_border_width_unable, 0);
         mBorderColorNormal = a.getColor(R.styleable.CommonTextView_border_color_normal, Color.TRANSPARENT);
         mBorderColorPressed = a.getColor(R.styleable.CommonTextView_border_color_pressed, Color.TRANSPARENT);
         mBorderColorUnable = a.getColor(R.styleable.CommonTextView_border_color_unable, Color.TRANSPARENT);
@@ -229,12 +230,12 @@ public class CommonTextView extends AppCompatTextView {
 
         a.recycle();
 
-        mHasPressedBgColor = mBackgroundColorPressed < 0;
-        mHasUnableBgColor = mBackgroundColorUnable < 0;
-        mHasPressedBorderColor = mBorderColorPressed < 0;
-        mHasUnableBorderColor = mBorderColorUnable < 0;
-        mHasPressedBorderWidth = mBorderWidthPressed < 0;
-        mHasUnableBorderWidth = mBorderWidthUnable < 0;
+        mHasPressedBgColor = mBackgroundColorPressed != 0;
+        mHasUnableBgColor = mBackgroundColorUnable != 0;
+        mHasPressedBorderColor = mBorderColorPressed != 0;
+        mHasUnableBorderColor = mBorderColorUnable != 0;
+        mHasPressedBorderWidth = mBorderWidthPressed != 0;
+        mHasUnableBorderWidth = mBorderWidthUnable != 0;
 
         //setup
         setup();
@@ -288,13 +289,6 @@ public class CommonTextView extends AppCompatTextView {
             mIcon = mIconUnable;
         } else {
             mIcon = mIconNormal;
-        }
-        //未设置图片大小
-        if (mIconHeight == 0 && mIconWidth == 0) {
-            if (mIcon != null) {
-                mIconWidth = mIcon.getIntrinsicWidth();
-                mIconHeight = mIcon.getIntrinsicHeight();
-            }
         }
 
         /**
@@ -541,6 +535,13 @@ public class CommonTextView extends AppCompatTextView {
     }
 
     private void setIcon() {
+        //未设置图片大小
+        if (mIconHeight == 0 && mIconWidth == 0) {
+            if (mIcon != null) {
+                mIconWidth = mIcon.getIntrinsicWidth();
+                mIconHeight = mIcon.getIntrinsicHeight();
+            }
+        }
         setIcon(mIcon, mIconWidth, mIconHeight, mIconDirection);
     }
 
@@ -894,5 +895,6 @@ public class CommonTextView extends AppCompatTextView {
             return false;
         }
     }
+
 
 }

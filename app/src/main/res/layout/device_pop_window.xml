@@ -9,7 +9,7 @@
         android:layout_gravity="center"
         android:padding="12dp"
         style="@style/common_14_black_text"
-        android:text="历史数据"/>
+        android:text="@string/title_activity_history_data"/>
 
     <include layout="@layout/layout_vertical_line"/>
 
@@ -18,5 +18,5 @@
         android:layout_gravity="center"
         android:padding="12dp"
         style="@style/common_14_black_text"
-        android:text="滤芯使用时间"/>
+        android:text="@string/history_filter_user_time"/>
 </LinearLayout>

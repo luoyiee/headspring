@@ -132,6 +132,7 @@ public class MPChartUtils {
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         // 不从y轴发出横向直线
         yAxis.setDrawGridLines(false);
+        yAxis.setEnabled(false);
         //x方向网格线的颜色
         //        yAxis.setEnabled(false);
         // 是否显示y轴坐标线
@@ -203,8 +204,8 @@ public class MPChartUtils {
         // 是否绘制数据值
         dataSet.setDrawValues(false);
         // 是否绘制圆点
-        dataSet.setDrawCircles(true);
-        dataSet.setDrawCircleHole(true);
+        dataSet.setDrawCircles(false);
+        dataSet.setDrawCircleHole(false);
         dataSet.setCircleColorHole(lineColor);
         // 这里有一个坑，当我们想隐藏掉高亮线的时候，MarkerView 跟着不见了
         // 因此只有将它设置成透明色
@@ -221,7 +222,7 @@ public class MPChartUtils {
         //设置圆点的颜色
         dataSet.setCircleColor(Color.WHITE);
         // 设置圆点半径
-        dataSet.setCircleRadius(10f);
+        dataSet.setCircleRadius(8f);
         dataSet.setCircleHoleRadius(2f);
         // 设置线的宽度
         dataSet.setLineWidth(1f);

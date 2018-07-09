@@ -1,61 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.headspring.activity.MainActivity"
-    tools:showIn="@layout/activity_main">
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="主页"
         android:textColor="@color/white"
-        android:textSize="16sp" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btn_chain"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="区块链" />
-
-        <Button
-            android:id="@+id/btn_map"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="地图" />
-
-        <Button
-            android:id="@+id/btn_device"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="设备" />
-
-        <Button
-            android:id="@+id/btn_shop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="商城" />
-
-        <Button
-            android:id="@+id/btn_personal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="个人" />
-    </LinearLayout>
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
-</LinearLayout>
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/ctv_chain"
+        style="@style/homeTextStyle"
+        android:layout_marginTop="8dp"
+        android:text="区块链"
+        app:icon_src_normal="@drawable/home_block_chain"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"/>
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/ctv_map"
+        style="@style/homeTextStyle"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="  地图  "
+        app:icon_src_normal="@drawable/home_map"
+        app:layout_constraintStart_toStartOf="@+id/ctv_chain"
+        app:layout_constraintTop_toBottomOf="@+id/ctv_chain"/>
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/ctv_device"
+        style="@style/homeTextStyle"
+        android:layout_marginBottom="16dp"
+        android:text="  设备  "
+        app:icon_src_normal="@drawable/home_equipment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"/>
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/ctv_shop"
+        style="@style/homeTextStyle"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
+        android:text="  商城  "
+        app:icon_src_normal="@drawable/home_mall"
+        app:layout_constraintEnd_toEndOf="@+id/ctv_personal"
+        app:layout_constraintTop_toBottomOf="@+id/ctv_personal"/>
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/ctv_personal"
+        style="@style/homeTextStyle"
+        android:layout_marginTop="8dp"
+        android:text="  个人  "
+        app:icon_src_normal="@drawable/home_personal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"/>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/ctv_device"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/home_logo"/>
+
+
+</android.support.constraint.ConstraintLayout>

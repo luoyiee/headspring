@@ -6,13 +6,11 @@ import android.text.TextUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.util.HashMap;
 import java.util.List;
 
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.model.bean.DeviceResponse;
 import cc.xiaojiang.headspring.utils.ImageLoader;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DeviceAdapter extends BaseQuickAdapter<DeviceResponse.DataBean, BaseViewHolder> {
     public DeviceAdapter(int layoutResId, @Nullable List<DeviceResponse.DataBean> data) {

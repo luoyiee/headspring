@@ -1,10 +1,13 @@
 package cc.xiaojiang.headspring.activity;
 
 import android.Manifest;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +24,8 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.orhanobut.logger.Logger;
 
-import java.math.BigDecimal;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,7 +35,9 @@ import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
+import cc.xiaojiang.headspring.model.event.ShareBitmapEvent;
 import cc.xiaojiang.headspring.model.http.AqiModel;
+import cc.xiaojiang.headspring.utils.ToastUtils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -60,47 +66,6 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         //监听地图移动和缩放
         aMap.setOnCameraChangeListener(this);
         AirMapActivityPermissionsDispatcher.showMyLocationWithPermissionCheck(this);
-
-
-    }
-
-    private void getAqi(float level, LatLng northeast, LatLng southwest) {
-        // TODO: 2018/7/5 根据最终api文档修改参数
-//        RetrofitHelper.getService().getAqi(level, northeast.longitude, northeast.latitude,
-// southwest
-//                .longitude, southwest.latitude)
-        RetrofitHelper.getService().getAqi(1, 2, 3, 4, 5)
-                .map(new HttpResultFunc<>())
-                .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<List<AqiModel>>(this) {
-                    @Override
-                    public void onSuccess(List<AqiModel> aqiModels) {
-                        for (AqiModel aqiModel : aqiModels) {
-                            showMarker(aqiModel);
-                        }
-                    }
-                });
-    }
-
-
-    private void showMarker(AqiModel aqiModel) {
-        LatLng latLng = new LatLng(aqiModel.getLatitude(), aqiModel
-                .getLongitude());
-        //自定义marker
-        View view = getLayoutInflater().inflate(R.layout.layout_marker, null);
-        TextView aqi = view.findViewById(R.id.tv_marker_aqi);
-        ImageView ivMarker = view.findViewById(R.id.iv_marker_marker);
-        // TODO: 2018/7/5 根据aqi设置不同颜色的marker
-//        ivMarker.setImageResource(R.drawable.ic_air_map_marker);
-        aqi.setText(String.valueOf(aqiModel.getAqi()));
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromView(view));
-        Marker marker = aMap.addMarker(markerOptions);
-        marker.setObject(aqiModel);
-        aMap.setOnMarkerClickListener(this);
-        aMap.setInfoWindowAdapter(this);
-
     }
 
     @Override
@@ -114,6 +79,37 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         mMapView.onDestroy();
         super.onDestroy();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_rank) {
+            startToActivity(AirMapRankListActivity.class);
+        } else if (itemId == R.id.action_share) {
+            aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
+                @Override
+                public void onMapScreenShot(Bitmap bitmap) {
+                    if (null == bitmap) {
+                        ToastUtils.show("截取失败,无法分享");
+                        return;
+                    }
+                    EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
+                    startToActivity(ShareActivity.class);
+                }
+                @Override
+                public void onMapScreenShot(Bitmap bitmap, int status) {
+
+                }
+            });
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_map, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -235,5 +231,42 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         LatLngBounds latLngBounds = aMap.getProjection().getVisibleRegion().latLngBounds;
         float zoom = aMap.getCameraPosition().zoom;
         getAqi(zoom, latLngBounds.northeast, latLngBounds.southwest);
+    }
+
+    private void getAqi(float level, LatLng northeast, LatLng southwest) {
+        // TODO: 2018/7/5 根据最终api文档修改参数
+        //        RetrofitHelper.getService().getAqi(level, northeast.longitude, northeast.latitude,
+        // southwest
+        //                .longitude, southwest.latitude)
+        RetrofitHelper.getService().getAqi(1, 2, 3, 4, 5)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<List<AqiModel>>(this) {
+                    @Override
+                    public void onSuccess(List<AqiModel> aqiModels) {
+                        for (AqiModel aqiModel : aqiModels) {
+                            showMarker(aqiModel);
+                        }
+                    }
+                });
+    }
+
+    private void showMarker(AqiModel aqiModel) {
+        LatLng latLng = new LatLng(aqiModel.getLatitude(), aqiModel
+                .getLongitude());
+        //自定义marker
+        View view = getLayoutInflater().inflate(R.layout.layout_marker, null);
+        TextView aqi = view.findViewById(R.id.tv_marker_aqi);
+        ImageView ivMarker = view.findViewById(R.id.iv_marker_marker);
+        // TODO: 2018/7/5 根据aqi设置不同颜色的marker
+        //        ivMarker.setImageResource(R.drawable.ic_air_map_marker);
+        aqi.setText(String.valueOf(aqiModel.getAqi()));
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromView(view));
+        Marker marker = aMap.addMarker(markerOptions);
+        marker.setObject(aqiModel);
+        aMap.setOnMarkerClickListener(this);
+        aMap.setInfoWindowAdapter(this);
     }
 }

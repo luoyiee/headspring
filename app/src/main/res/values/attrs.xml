@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="ItemView">
+        <attr name="itemKey" format="string"/>
+        <attr name="itemValue" format="string"/>
+        <attr name="showArrow" format="boolean"/>
+    </declare-styleable>
 
     <!-- RTextView -->
     <declare-styleable name="CommonTextView">

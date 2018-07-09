@@ -1,5 +1,6 @@
 package cc.xiaojiang.headspring.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +25,6 @@ public class DynamicActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-
     }
 
     private void initData() {
@@ -34,6 +34,7 @@ public class DynamicActivity extends BaseActivity {
         initView();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initView() {
         setTitle(mTitle);
         WebSettings settings = mWvDynamic.getSettings();

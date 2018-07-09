@@ -2,27 +2,25 @@ package cc.xiaojiang.headspring.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.utils.ToastUtils;
-import cc.xiaojiang.iotkit.http.IotKitCallBack;
-import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
+import cc.xiaojiang.headspring.view.CommonTextView;
 
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.btn_chain)
-    Button mBtnChain;
-    @BindView(R.id.btn_map)
-    Button mBtnMap;
-    @BindView(R.id.btn_device)
-    Button mBtnDevice;
-    @BindView(R.id.btn_shop)
-    Button mBtnShop;
-    @BindView(R.id.btn_personal)
-    Button mBtnPersonal;
+    @BindView(R.id.ctv_chain)
+    CommonTextView mBtnChain;
+    @BindView(R.id.ctv_map)
+    CommonTextView mBtnMap;
+    @BindView(R.id.ctv_device)
+    CommonTextView mBtnDevice;
+    @BindView(R.id.ctv_shop)
+    CommonTextView mBtnShop;
+    @BindView(R.id.ctv_personal)
+    CommonTextView mBtnPersonal;
 
 //    @BindView(R.id.tv_outdoor_pm)
 //    TextView mTvOutdoorPm;
@@ -53,10 +51,10 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-    @OnClick({R.id.btn_chain, R.id.btn_map, R.id.btn_device, R.id.btn_shop, R.id.btn_personal})
+    @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_chain:
+            case R.id.ctv_chain:
                 ToastUtils.show("区块链");
 //                IotKitDeviceManager.getInstance().deviceBind("bff503",
 //                        "xBcqwpFWINOUzjO21X3E", new
@@ -72,16 +70,16 @@ public class MainActivity extends BaseActivity {
 //                                    }
 //                                });
                 break;
-            case R.id.btn_map:
+            case R.id.ctv_map:
                 startToActivity(AirMapActivity.class);
                 break;
-            case R.id.btn_device:
+            case R.id.ctv_device:
                 startToActivity(DeviceListActivity.class);
                 break;
-            case R.id.btn_shop:
+            case R.id.ctv_shop:
                 startToActivity(ShopActivity.class);
                 break;
-            case R.id.btn_personal:
+            case R.id.ctv_personal:
                 startToActivity(PersonalCenterActivity.class);
                 break;
         }
