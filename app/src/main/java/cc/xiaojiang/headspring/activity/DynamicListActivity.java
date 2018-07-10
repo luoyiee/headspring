@@ -53,7 +53,7 @@ public class DynamicListActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         DynamicModel dynamicModel = (DynamicModel) adapter.getItem(position);
-        Intent intent = new Intent(this, DynamicActivity.class);
+        Intent intent = new Intent(this, BrowserActivity.class);
         intent.putExtra("dynamic_title", "title");
         intent.putExtra("dynamic_url", "https://www.baidu.com");
         startActivity(intent);

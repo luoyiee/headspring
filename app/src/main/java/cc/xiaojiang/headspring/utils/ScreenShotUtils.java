@@ -31,8 +31,8 @@ public class ScreenShotUtils {
         int height = ScreenUtils.getScreenHeight();
         int toolBarHeight =   getToolBarHeight(activity);
         Bitmap ret = Bitmap.createBitmap(bmp, 0,
-                statusBarHeight+toolBarHeight+ScreenUtils.dip2px(48),
-                width, height - statusBarHeight-toolBarHeight-ScreenUtils.dip2px(148));
+                statusBarHeight+toolBarHeight/2,
+                width, height - statusBarHeight-toolBarHeight-ScreenUtils.dip2px(160));
         view.destroyDrawingCache();
         return ret;
     }

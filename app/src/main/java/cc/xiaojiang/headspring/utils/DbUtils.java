@@ -61,5 +61,8 @@ public class DbUtils {
         aSimpleCache.put(XJ_USER_ID, xjUserId);
     }
 
+    public static void clear(){
+        aSimpleCache.clear();
+    }
 
 }

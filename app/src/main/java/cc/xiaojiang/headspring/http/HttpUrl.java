@@ -9,4 +9,8 @@ public class HttpUrl {
     public static final String FEEDBACK = "user/stockholder";
     //获取空气
     public static final String AIR = "weather/air/qry";
+    /**
+     * Token刷新接口
+     */
+    public static final String REFRESH = "token/refresh";
 }

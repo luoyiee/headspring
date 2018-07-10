@@ -1,7 +1,9 @@
 package cc.xiaojiang.headspring.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +25,11 @@ import cc.xiaojiang.headspring.model.bean.ProductResp;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.http.IotKitCallBack;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class ProductListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemClickListener {
 
@@ -72,8 +78,25 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
 
     @OnClick(R.id.ll_product_list_scan)
     public void onViewClicked() {
-        ToastUtils.show("scan");
+        ProductListActivityPermissionsDispatcher.startToScanCodeActivityWithPermissionCheck(this);
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ProductListActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
+                grantResults);
+    }
+
+    @NeedsPermission({Manifest.permission.CAMERA})
+     void startToScanCodeActivity() {
+        startToActivity(ScanCodeActivity.class);
+    }
+
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    void onCameraDenied() {
+        ToastUtils.show(R.string.scan_code_permission_tip);
     }
 
     @Override

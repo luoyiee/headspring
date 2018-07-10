@@ -24,6 +24,7 @@ import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
+//todo:回复
 public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.ctv_get_verify_code)
@@ -62,13 +63,10 @@ public class LoginActivity extends BaseActivity {
         SMSSDK.registerEventHandler(mEventHandler);
         initCounterTimer();
     }
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
     }
-
-
     /**
      * 初始化获取验证码定时器
      */

@@ -26,6 +26,7 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import butterknife.BindView;
@@ -230,15 +231,16 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
         LatLngBounds latLngBounds = aMap.getProjection().getVisibleRegion().latLngBounds;
         float zoom = aMap.getCameraPosition().zoom;
+
         getAqi(zoom, latLngBounds.northeast, latLngBounds.southwest);
     }
 
     private void getAqi(float level, LatLng northeast, LatLng southwest) {
         // TODO: 2018/7/5 根据最终api文档修改参数
-        //        RetrofitHelper.getService().getAqi(level, northeast.longitude, northeast.latitude,
-        // southwest
-        //                .longitude, southwest.latitude)
-        RetrofitHelper.getService().getAqi(1, 2, 3, 4, 5)
+        RetrofitHelper.getService().getAqi(1, BigDecimal.valueOf(northeast.longitude),
+                BigDecimal.valueOf(northeast.latitude),
+                BigDecimal.valueOf(southwest.longitude),
+                BigDecimal.valueOf(southwest.latitude))
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
                 .subscribe(new ProgressObserver<List<AqiModel>>(this) {

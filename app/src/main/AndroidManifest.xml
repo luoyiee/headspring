@@ -31,6 +31,8 @@
 
         <!-- Mqtt Service -->
         <service android:name="org.eclipse.paho.android.service.MqttService"/>
+        <service android:name="com.amap.api.location.APSService">
+        </service>
 
         <!-- <activity -->
         <!-- android:name="com.tencent.bugly.beta.ui.BetaActivity" -->
@@ -74,7 +76,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.PersonalInfoActivity"
-            android:label="@string/title_activity_device_list"
+            android:label="@string/title_activity_personal_info"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.AirMapRankListActivity"
@@ -139,6 +141,12 @@
             android:label="@string/title_activity_air_map"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.ShareActivity">
+        </activity>
+        <activity
+            android:name=".activity.ScanCodeActivity"
+            android:label="@string/title_activity_scan_code">
+        </activity>
+        <activity android:name=".activity.BrowserActivity">
         </activity>
     </application>
 
