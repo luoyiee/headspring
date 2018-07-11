@@ -5,7 +5,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -15,17 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
-import cc.xiaojiang.headspring.model.event.ShareBitmapEvent;
+import cc.xiaojiang.headspring.model.event.LocationEvent;
+import cc.xiaojiang.headspring.utils.LocationClient;
 import cc.xiaojiang.headspring.utils.ScreenShotUtils;
 import cc.xiaojiang.headspring.utils.SpanUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
@@ -36,7 +34,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends BaseActivity implements AMapLocationListener {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.ctv_chain)
     CommonTextView mBtnChain;
     @BindView(R.id.ctv_map)
@@ -59,10 +57,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     ImageView mIvHomeControl;
     @BindView(R.id.tv_home_location)
     TextView mTvHomeLocation;
-    //声明AMapLocationClient类对象，定位发起端
-    private AMapLocationClient mLocationClient = null;
-    //声明mLocationOption对象，定位参数
-    public AMapLocationClientOption mLocationOption = null;
 
     private boolean mAnimatorTag = true;
 
@@ -76,41 +70,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        //开始定位
+        EventBus.getDefault().register(this);
         MainActivityPermissionsDispatcher.locationWithPermissionCheck(this);
-    }
-
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
-            .ACCESS_COARSE_LOCATION})
-     void location() {
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getApplicationContext());
-        //设置定位回调监听
-        mLocationClient.setLocationListener(this);
-        //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为Hight_Accuracy高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-        //设置是否只定位一次,默认为false
-        mLocationOption.setOnceLocation(false);
-        //设置是否允许模拟位置,默认为false，不允许模拟位置
-        mLocationOption.setMockEnable(false);
-        //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(1000*60);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationClient.startLocation();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
-                grantResults);
     }
 
     private void initView() {
@@ -133,42 +94,52 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(mLocationClient!=null) {
-            mLocationClient.onDestroy();//销毁定位客户端。
-        }
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(mLocationClient!=null) {
-            mLocationClient.startLocation(); // 启动定位
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(mLocationClient!=null) {
-            mLocationClient.stopLocation();//停止定位
-        }
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocationClient.getInstance().onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
+    void location() {
+        LocationClient.getInstance().initClient();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
+                grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //开始定位
+        LocationClient.getInstance().startLocation();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocationClient.getInstance().stopLocation();
+    }
+
     @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal, R.id.iv_home_control,
-    R.id.iv_home_share})
+            R.id.iv_home_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_home_control:
                 startAnimator();
                 break;
             case R.id.iv_home_share:
-                share();
+                ScreenShotUtils.share(this);
                 break;
             case R.id.ctv_chain:
                 ToastUtils.show("区块链");
@@ -201,33 +172,14 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         }
     }
 
-    private void share() {
-        Bitmap bitmap = ScreenShotUtils.screenShot(this);
-        EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
-        startToActivity(ShareActivity.class);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
-            //获取控件原先的位置
-            mChainPoint = getPoint(mBtnChain);
-            mMapPoint = getPoint(mBtnMap);
-            mDevicePoint = getPoint(mBtnDevice);
-            mShopPoint = getPoint(mBtnShop);
-            mPersonalPoint = getPoint(mBtnPersonal);
-        }
-    }
-
     private void startAnimator() {
         AnimatorSet animSet = new AnimatorSet();
         animSet.setDuration(200);
-        animSet.playTogether(createAnimator(mBtnChain,mChainPoint),
-                createAnimator(mBtnDevice,mDevicePoint),
-                createAnimator(mBtnPersonal,mPersonalPoint),
-                createAnimator(mBtnShop,mShopPoint),
-                createAnimator(mBtnMap,mMapPoint));
+        animSet.playTogether(createAnimator(mBtnChain, mChainPoint),
+                createAnimator(mBtnDevice, mDevicePoint),
+                createAnimator(mBtnPersonal, mPersonalPoint),
+                createAnimator(mBtnShop, mShopPoint),
+                createAnimator(mBtnMap, mMapPoint));
         animSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -237,22 +189,12 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         animSet.start();
     }
 
-    private Point getPoint(View view) {
-        return new Point(view.getX(), view.getY());
-    }
-
-    private Point getEndPoint() {
-        int centerX = (mIvHomeControl.getLeft() + mIvHomeControl.getRight()) / 2;
-        int centerY = (mIvHomeControl.getBottom() + mIvHomeControl.getTop()) / 2;
-        return new Point(centerX - mBtnChain.getWidth() / 2, centerY - mBtnChain.getHeight() / 2);
-    }
-
-    private ValueAnimator createAnimator(View view,Point startPoint) {
+    private ValueAnimator createAnimator(View view, Point startPoint) {
         ValueAnimator animator;
-        if(mAnimatorTag){
-             animator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, getEndPoint());
-        }else{
-            animator = ValueAnimator.ofObject(new PointEvaluator(),  getEndPoint(),startPoint);
+        if (mAnimatorTag) {
+            animator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, getEndPoint());
+        } else {
+            animator = ValueAnimator.ofObject(new PointEvaluator(), getEndPoint(), startPoint);
         }
         animator.addUpdateListener(animation -> {
             Point point = (Point) animation.getAnimatedValue();
@@ -264,14 +206,38 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         return animator;
     }
 
+    private Point getEndPoint() {
+        int centerX = (mIvHomeControl.getLeft() + mIvHomeControl.getRight()) / 2;
+        int centerY = (mIvHomeControl.getBottom() + mIvHomeControl.getTop()) / 2;
+        return new Point(centerX - mBtnChain.getWidth() / 2, centerY - mBtnChain.getHeight() / 2);
+    }
+
     @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            //获取控件原先的位置
+            mChainPoint = getPoint(mBtnChain);
+            mMapPoint = getPoint(mBtnMap);
+            mDevicePoint = getPoint(mBtnDevice);
+            mShopPoint = getPoint(mBtnShop);
+            mPersonalPoint = getPoint(mBtnPersonal);
+        }
+    }
+
+    private Point getPoint(View view) {
+        return new Point(view.getX(), view.getY());
+    }
+
+    @Subscribe
+    public void onLocationEvent(LocationEvent locationEvent) {
+        AMapLocation aMapLocation = locationEvent.getMapLocation();
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 //定位成功回调信息，设置相关消息
                 String district = aMapLocation.getDistrict();//城区信息
                 String street = aMapLocation.getStreet();//街道信息
-                mTvHomeLocation.setText(district+street);
+                mTvHomeLocation.setText(district + street);
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"
@@ -281,7 +247,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             }
         }
     }
-
 
     //    @OnClick({R.id.btn_bind, R.id.btn_device_list})
     //    public void onViewClicked(View view) {

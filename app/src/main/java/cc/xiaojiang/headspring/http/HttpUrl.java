@@ -6,7 +6,7 @@ public class HttpUrl {
     //登陆
     public static final String LOGIN = "user/login";
     //意见反馈
-    public static final String FEEDBACK = "user/stockholder";
+    public static final String FEEDBACK = "feedback/view";
     //获取空气
     public static final String AIR = "weather/air/qry";
     /**

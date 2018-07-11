@@ -12,7 +12,9 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface XJApis {
 
@@ -21,7 +23,7 @@ public interface XJApis {
 
     @FormUrlEncoded
     @POST(HttpUrl.FEEDBACK)
-    Observable<BaseModel> feedback(@Field("view") String content);
+    Observable<BaseModel<Object>> feedback(@Field("view") String content);
 
     @FormUrlEncoded
     @POST(HttpUrl.REFRESH)
@@ -33,11 +35,10 @@ public interface XJApis {
 //                                                 @Query("latitude") double latitude,
 //                                                 @Query("longtitude2") double longtitude2,
 //                                                 @Query("latitude2") double latitude2);
-    @FormUrlEncoded
-    @POST(HttpUrl.AIR)
-    Observable<BaseModel<List<AqiModel>>> getAqi(@Field("level") int level,
-                                                 @Field("longtitude") BigDecimal longtitude,
-                                                 @Field("latitude") BigDecimal latitude,
-                                                 @Field("longtitude2") BigDecimal longtitude2,
-                                                 @Field("latitude2") BigDecimal latitude2);
+    @GET(HttpUrl.AIR)
+    Observable<BaseModel<List<AqiModel>>> getAqi(@Query("level") int level,
+                                                 @Query("longtitude") BigDecimal longtitude,
+                                                 @Query("latitude") BigDecimal latitude,
+                                                 @Query("longtitude2") BigDecimal longtitude2,
+                                                 @Query("latitude2") BigDecimal latitude2);
 }

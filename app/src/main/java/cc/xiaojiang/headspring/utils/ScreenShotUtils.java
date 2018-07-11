@@ -6,7 +6,12 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+
 import cc.xiaojiang.headspring.R;
+import cc.xiaojiang.headspring.activity.ShareActivity;
+import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.model.event.ShareBitmapEvent;
 
 /**
  * @author :jinjiafeng
@@ -31,8 +36,8 @@ public class ScreenShotUtils {
         int height = ScreenUtils.getScreenHeight();
         int toolBarHeight =   getToolBarHeight(activity);
         Bitmap ret = Bitmap.createBitmap(bmp, 0,
-                statusBarHeight+toolBarHeight/2,
-                width, height - statusBarHeight-toolBarHeight-ScreenUtils.dip2px(160));
+                statusBarHeight+toolBarHeight*4/5,
+                width, height - statusBarHeight-toolBarHeight-ScreenUtils.dip2px(162));
         view.destroyDrawingCache();
         return ret;
     }
@@ -53,5 +58,11 @@ public class ScreenShotUtils {
         int toolBarHeight = ta.getDimensionPixelSize(0, -1);
         ta.recycle();
         return toolBarHeight;
+    }
+
+    public static void share(BaseActivity activity){
+        Bitmap bitmap = ScreenShotUtils.screenShot(activity);
+        EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
+        activity.startToActivity(ShareActivity.class);
     }
 }

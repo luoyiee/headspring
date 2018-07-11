@@ -56,7 +56,7 @@ public class DynamicActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_share) {
+        if (item.getItemId() == R.id.action_share) {
             ToastUtils.show("分享");
         }
         return super.onOptionsItemSelected(item);

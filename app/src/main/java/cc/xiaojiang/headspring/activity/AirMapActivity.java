@@ -29,8 +29,10 @@ import org.greenrobot.eventbus.EventBus;
 import java.math.BigDecimal;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import cc.xiaojiang.baselibrary.http.progress.ProgressObserver;
+import cc.xiaojiang.baselibrary.util.LoggerUtil;
 import cc.xiaojiang.baselibrary.util.RxUtils;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
@@ -52,7 +54,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     @BindView(R.id.mv_map)
     MapView mMapView;
-
+    @BindString(R.string.air_knowledge_excellent)
+    String mStrAirExcellent;
     private AMap aMap;
     private View mInfoWindow;
 
@@ -98,6 +101,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
                     EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
                     startToActivity(ShareActivity.class);
                 }
+
                 @Override
                 public void onMapScreenShot(Bitmap bitmap, int status) {
 
@@ -231,16 +235,19 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
         LatLngBounds latLngBounds = aMap.getProjection().getVisibleRegion().latLngBounds;
         float zoom = aMap.getCameraPosition().zoom;
-
-        getAqi(zoom, latLngBounds.northeast, latLngBounds.southwest);
+        LoggerUtil.d("zoom:"+zoom);
+        if(zoom<=9){
+            getAqi(1, latLngBounds.northeast, latLngBounds.southwest);
+        }else{
+            getAqi(2, latLngBounds.northeast, latLngBounds.southwest);
+        }
     }
 
-    private void getAqi(float level, LatLng northeast, LatLng southwest) {
-        // TODO: 2018/7/5 根据最终api文档修改参数
-        RetrofitHelper.getService().getAqi(1, BigDecimal.valueOf(northeast.longitude),
-                BigDecimal.valueOf(northeast.latitude),
-                BigDecimal.valueOf(southwest.longitude),
-                BigDecimal.valueOf(southwest.latitude))
+    private void getAqi(int level, LatLng northeast, LatLng southwest) {
+        RetrofitHelper.getService().getAqi(level, BigDecimal.valueOf(southwest.longitude),
+                BigDecimal.valueOf(southwest.latitude),
+                BigDecimal.valueOf(northeast.longitude),
+                BigDecimal.valueOf(northeast.latitude))
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
                 .subscribe(new ProgressObserver<List<AqiModel>>(this) {
@@ -254,14 +261,17 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     }
 
     private void showMarker(AqiModel aqiModel) {
-        LatLng latLng = new LatLng(aqiModel.getLatitude(), aqiModel
-                .getLongitude());
+        LatLng latLng = new LatLng(aqiModel.getLatitude(), aqiModel.getLongtitude());
         //自定义marker
         View view = getLayoutInflater().inflate(R.layout.layout_marker, null);
         TextView aqi = view.findViewById(R.id.tv_marker_aqi);
         ImageView ivMarker = view.findViewById(R.id.iv_marker_marker);
         // TODO: 2018/7/5 根据aqi设置不同颜色的marker
-        //        ivMarker.setImageResource(R.drawable.ic_air_map_marker);
+        if (aqiModel.getAqi()<=50) {
+            ivMarker.setImageResource(R.drawable.ic_air_map_marker_excellent);
+        } else {
+            ivMarker.setImageResource(R.drawable.ic_air_map_marker);
+        }
         aqi.setText(String.valueOf(aqiModel.getAqi()));
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)

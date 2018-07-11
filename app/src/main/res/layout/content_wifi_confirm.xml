@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -9,40 +11,51 @@
     tools:context="cc.xiaojiang.headspring.activity.WifiConfirmActivity"
     tools:showIn="@layout/activity_wifi_confirm">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/wifi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/edTxt_wifi_confirm_ssid"
+        android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_marginTop="32dp"
+        android:hint="当前wifi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/test_24dp" />
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/edTxt_wifi_confirm_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="test062516"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxt_wifi_confirm_ssid"/>
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/edTxt_wifi_confirm_ssid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="当前wifi" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/edTxt_wifi_confirm_password"
-            android:layout_width="match_parent"
-            android:text="test062516"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/btn_wifi_conform_next"
-        android:layout_width="match_parent"
+        android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/bg_button"
         android:text="下一步"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

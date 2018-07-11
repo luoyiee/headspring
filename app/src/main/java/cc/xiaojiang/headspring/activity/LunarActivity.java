@@ -1,31 +1,40 @@
 package cc.xiaojiang.headspring.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
+import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.CalendarView;
+
+import butterknife.BindView;
 import cc.xiaojiang.headspring.R;
+import cc.xiaojiang.headspring.base.BaseActivity;
 
-public class LunarActivity extends AppCompatActivity {
+public class LunarActivity extends BaseActivity implements CalendarView.OnDateSelectedListener,
+        CalendarView.OnYearChangeListener {
+
+    @BindView(R.id.calendarView)
+    CalendarView mCalendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lunar);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnYearChangeListener(this);
     }
 
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_lunar;
+    }
+
+    @Override
+    public void onDateSelected(Calendar calendar, boolean isClick) {
+
+    }
+
+    @Override
+    public void onYearChange(int year) {
+
+    }
 }

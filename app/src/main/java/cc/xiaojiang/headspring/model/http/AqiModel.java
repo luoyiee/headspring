@@ -1,209 +1,121 @@
 package cc.xiaojiang.headspring.model.http;
 
 public class AqiModel {
-
-
     /**
-     * level : 0
-     * aqi : 33
-     * pm25 : 33
-     * pm10 : 32
-     * so2 : 15
-     * no2 : 24
-     * co : 0.6
-     * o3 : 105
-     * qunlity : null
-     * longitude : 121.836
-     * latitude : 29.9108
-     * station : 区环保大楼
-     * city : null
-     * province : null
-     * primaryPollutant : null
-     * quality : null
-     * time : null
-     * lastUpdate : null
-     * timezone : null
-     * timezoneOffset : null
+     * o3 : 89
+     * level : 1
+     * city : 呼伦贝尔
+     * timezone : Asia/Shanghai
+     * latitude : 49.212189
+     * timezone_offset : +08:00
+     * pm10 : 17
+     * longtitude : 119.736279
+     * co : 0.3
+     * quality : 优
+     * no2 : 11
+     * pm25 : 8
+     * province : 内蒙古
+     * so2 : 2
+     * last_update : 1531213200000
+     * aqi : 28
+     * station : null
+     * primary_pollutant : null
+     * time : 2018071018
      */
 
-    private int level;
-    private int aqi;
-    private int pm25;
-    private int pm10;
-    private int so2;
-    private int no2;
-    private double co;
     private int o3;
-    private Object qunlity;
-    private double longitude;
+    private int level;
+    private String city;
+    private String timezone;
     private double latitude;
-    private String station;
-    private Object city;
-    private Object province;
-    private Object primaryPollutant;
-    private Object quality;
-    private Object time;
-    private Object lastUpdate;
-    private Object timezone;
-    private Object timezoneOffset;
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getAqi() {
-        return aqi;
-    }
-
-    public void setAqi(int aqi) {
-        this.aqi = aqi;
-    }
-
-    public int getPm25() {
-        return pm25;
-    }
-
-    public void setPm25(int pm25) {
-        this.pm25 = pm25;
-    }
-
-    public int getPm10() {
-        return pm10;
-    }
-
-    public void setPm10(int pm10) {
-        this.pm10 = pm10;
-    }
-
-    public int getSo2() {
-        return so2;
-    }
-
-    public void setSo2(int so2) {
-        this.so2 = so2;
-    }
-
-    public int getNo2() {
-        return no2;
-    }
-
-    public void setNo2(int no2) {
-        this.no2 = no2;
-    }
-
-    public double getCo() {
-        return co;
-    }
-
-    public void setCo(double co) {
-        this.co = co;
-    }
+    private String timezone_offset;
+    private int pm10;
+    private double longtitude;
+    private double co;
+    private String quality;
+    private int no2;
+    private int pm25;
+    private String province;
+    private int so2;
+    private long last_update;
+    private int aqi;
+    private Object station;
+    private Object primary_pollutant;
+    private int time;
 
     public int getO3() {
         return o3;
     }
 
-    public void setO3(int o3) {
-        this.o3 = o3;
+    public int getLevel() {
+        return level;
     }
 
-    public Object getQunlity() {
-        return qunlity;
+    public String getCity() {
+        return city == null ? "" : city;
     }
 
-    public void setQunlity(Object qunlity) {
-        this.qunlity = qunlity;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public String getTimezone() {
+        return timezone == null ? "" : timezone;
     }
 
     public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public String getTimezone_offset() {
+        return timezone_offset == null ? "" : timezone_offset;
     }
 
-    public String getStation() {
+    public int getPm10() {
+        return pm10;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public double getCo() {
+        return co;
+    }
+
+    public String getQuality() {
+        return quality == null ? "" : quality;
+    }
+
+    public int getNo2() {
+        return no2;
+    }
+
+    public int getPm25() {
+        return pm25;
+    }
+
+    public String getProvince() {
+        return province == null ? "" : province;
+    }
+
+    public int getSo2() {
+        return so2;
+    }
+
+    public long getLast_update() {
+        return last_update;
+    }
+
+    public int getAqi() {
+        return aqi;
+    }
+
+    public Object getStation() {
         return station;
     }
 
-    public void setStation(String station) {
-        this.station = station;
+    public Object getPrimary_pollutant() {
+        return primary_pollutant;
     }
 
-    public Object getCity() {
-        return city;
-    }
-
-    public void setCity(Object city) {
-        this.city = city;
-    }
-
-    public Object getProvince() {
-        return province;
-    }
-
-    public void setProvince(Object province) {
-        this.province = province;
-    }
-
-    public Object getPrimaryPollutant() {
-        return primaryPollutant;
-    }
-
-    public void setPrimaryPollutant(Object primaryPollutant) {
-        this.primaryPollutant = primaryPollutant;
-    }
-
-    public Object getQuality() {
-        return quality;
-    }
-
-    public void setQuality(Object quality) {
-        this.quality = quality;
-    }
-
-    public Object getTime() {
+    public int getTime() {
         return time;
-    }
-
-    public void setTime(Object time) {
-        this.time = time;
-    }
-
-    public Object getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Object lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public Object getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(Object timezone) {
-        this.timezone = timezone;
-    }
-
-    public Object getTimezoneOffset() {
-        return timezoneOffset;
-    }
-
-    public void setTimezoneOffset(Object timezoneOffset) {
-        this.timezoneOffset = timezoneOffset;
     }
 }

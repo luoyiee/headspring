@@ -5,10 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import butterknife.BindView;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.utils.ScreenShotUtils;
 
 public class AirMapRankListActivity extends BaseActivity implements TabLayout.OnTabSelectedListener{
 
@@ -41,8 +43,16 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_map_city_rank, menu);
+        getMenuInflater().inflate(R.menu.menu_share, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_share){
+            ScreenShotUtils.share(this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -62,6 +72,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout.On
                 break;
         }
     }
+
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {

@@ -80,7 +80,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.AirMapRankListActivity"
-            android:label="@string/title_activity_map"
+            android:label="@string/title_activity_top_activity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.DeviceControlActivity"
