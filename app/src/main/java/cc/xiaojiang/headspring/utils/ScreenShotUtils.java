@@ -19,6 +19,12 @@ import cc.xiaojiang.headspring.model.event.ShareBitmapEvent;
  * description:
  */
 public class ScreenShotUtils {
+    public static void share(BaseActivity activity) {
+        Bitmap bitmap = ScreenShotUtils.screenShot(activity);
+        EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
+        activity.startToActivity(ShareActivity.class);
+    }
+
     /**
      * 获取当前屏幕截图，不包含状态栏（Status Bar）。
      *
@@ -32,13 +38,14 @@ public class ScreenShotUtils {
         Bitmap bmp = view.getDrawingCache();
         int statusBarHeight = getStatusBarHeight(activity);
 
+
         int width = ScreenUtils.getScreenWidth(activity);
         int height = ScreenUtils.getScreenHeight(activity);
         int toolBarHeight = getToolBarHeight(activity);
         Bitmap ret = Bitmap.createBitmap(bmp, 0,
-                statusBarHeight + toolBarHeight * 4 / 5,
+                statusBarHeight + toolBarHeight,
                 width, height - statusBarHeight - toolBarHeight - ScreenUtils.dip2px(activity,
-                        162));
+                        160));
         view.destroyDrawingCache();
         return ret;
     }
@@ -62,9 +69,4 @@ public class ScreenShotUtils {
         return toolBarHeight;
     }
 
-    public static void share(BaseActivity activity) {
-        Bitmap bitmap = ScreenShotUtils.screenShot(activity);
-        EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
-        activity.startToActivity(ShareActivity.class);
-    }
 }

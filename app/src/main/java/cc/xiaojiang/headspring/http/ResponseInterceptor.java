@@ -35,6 +35,7 @@ public class ResponseInterceptor implements Interceptor {
             //do nothing
         } else if (request.url().toString().contains(HttpUrl.REFRESH)) {
             request.newBuilder()
+                    .removeHeader(ACCESS_TOKEN)
                     .addHeader("refreshToken", DbUtils.getRefreshToken())
                     .build();
             com.orhanobut.logger.Logger.d("add header: refreshToken=" + DbUtils.getRefreshToken());

@@ -1,10 +1,9 @@
 package cc.xiaojiang.headspring.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -15,12 +14,17 @@ import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.headspring.view.WaveProgressView;
 
 public class FilterTimeRemainActivity extends BaseActivity {
+    private static final String INTENT_FILTER_TIME = "intent_filter_time";
     @BindView(R.id.view_filter_time_remain)
     WaveProgressView mViewFilterTimeRemain;
     @BindView(R.id.tv_filter_use_time)
     TextView mTvFilterUseTime;
-    @BindView(R.id.ll_filter_reset)
-    LinearLayout mLlFilterReset;
+
+    public static void actionStart(Context context, int userTime) {
+        Intent intent = new Intent(context, FilterTimeRemainActivity.class);
+        intent.putExtra(INTENT_FILTER_TIME, userTime);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +34,10 @@ public class FilterTimeRemainActivity extends BaseActivity {
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        int useTime = intent.getIntExtra("use_time", 0);
+        int useTime = getIntent().getIntExtra(INTENT_FILTER_TIME, 0);
 //        int useTime = intent.getIntExtra("use_time", 0);
-//        mViewFilterTimeRemain.setValue(useTime);
+        mViewFilterTimeRemain.setMaxValue(2000);
+        mViewFilterTimeRemain.setValue(2000-useTime);
         mTvFilterUseTime.setText(getString(R.string.filter_use_time, useTime));
 
     }
@@ -44,7 +48,7 @@ public class FilterTimeRemainActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.ll_filter_reset)
+    @OnClick(R.id.tv_filter_reset)
     public void onViewClicked() {
         ToastUtils.show("重置滤芯");
     }

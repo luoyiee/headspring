@@ -46,11 +46,11 @@ public class LocationClient implements AMapLocationListener {
         //设置是否返回地址信息（默认返回地址信息）
         locationOption.setNeedAddress(true);
         //设置是否只定位一次,默认为false
-        locationOption.setOnceLocation(false);
+        locationOption.setOnceLocation(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         locationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
-        locationOption.setInterval(1000 * 60);
+//        locationOption.setInterval(1000 * 60);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(locationOption);
     }

@@ -3,6 +3,7 @@ package cc.xiaojiang.headspring.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -16,7 +17,7 @@ public class PersonalCenterActivity extends BaseActivity {
     @BindView(R.id.ll_personal_info)
     LinearLayout mLlPersonalInfo;
     @BindView(R.id.ll_personal_dynamic)
-    LinearLayout mLlPersonalDynamic;
+    RelativeLayout mLlPersonalDynamic;
     @BindView(R.id.ll_personal_share)
     LinearLayout mLlPersonalShare;
     @BindView(R.id.ll_personal_air_knowledge)

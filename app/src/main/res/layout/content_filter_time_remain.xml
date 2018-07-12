@@ -42,26 +42,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_filter_reset"
+    <TextView
+        android:id="@+id/tv_filter_reset"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="@color/white"
         android:layout_marginBottom="24dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/test_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="滤芯复位"
-            android:textColor="@color/white" />
-    </LinearLayout>
+        android:text="滤芯复位"
+        android:drawablePadding="4dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:drawableTop="@drawable/filter_reset"
+        android:layout_height="wrap_content"/>
 
 
 </FrameLayout>
