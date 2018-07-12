@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import cc.xiaojiang.baselibrary.app.AppManager;
+import com.orhanobut.logger.Logger;
+
 import cc.xiaojiang.headspring.activity.LoginActivity;
+import cc.xiaojiang.headspring.base.MyApplication;
 import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 
 public class AccountUtils {
@@ -16,10 +18,9 @@ public class AccountUtils {
     public static void logout() {
         DbUtils.clear();
         IotKitConnectionManager.getInstance().disconnected();
-        Activity topActivity = AppManager.getInstance().getTopActivity();
-        Intent intent = new Intent(topActivity, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        topActivity.startActivity(intent);
-        topActivity.finish();
+        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        MyApplication.getInstance().getApplicationContext().startActivity(intent);
+        Logger.d("重新登陆");
     }
 }

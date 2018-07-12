@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         finish();
     }
 

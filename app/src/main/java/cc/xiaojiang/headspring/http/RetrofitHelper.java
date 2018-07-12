@@ -1,7 +1,7 @@
 package cc.xiaojiang.headspring.http;
 
 
-import cc.xiaojiang.baselibrary.BuildConfig;
+import cc.xiaojiang.headspring.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

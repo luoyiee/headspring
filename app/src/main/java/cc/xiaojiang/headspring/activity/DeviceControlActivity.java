@@ -70,6 +70,7 @@ public class DeviceControlActivity extends BaseActivity implements
     private int mControlGear;
     private int mSwitch;
     private int mControlMode;
+
     private int mTimingShutdown;
     private int mUseTime;
     private int mPM205;

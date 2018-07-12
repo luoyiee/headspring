@@ -54,7 +54,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
-import cc.xiaojiang.baselibrary.app.XjConfig;
+
+import cc.xiaojiang.headspring.base.MyApplication;
 
 import static android.graphics.BlurMaskFilter.Blur;
 
@@ -1148,7 +1149,7 @@ public final class SpanUtils {
 
         private CustomImageSpan(final Bitmap b, final int verticalAlignment) {
             super(verticalAlignment);
-            mDrawable = new BitmapDrawable(XjConfig.getApplicationContext().getResources(), b);
+            mDrawable = new BitmapDrawable(MyApplication.getInstance().getResources(), b);
             mDrawable.setBounds(
                     0, 0, mDrawable.getIntrinsicWidth(), mDrawable.getIntrinsicHeight()
             );
@@ -1181,9 +1182,9 @@ public final class SpanUtils {
                 Bitmap bitmap;
                 try {
                     InputStream is =
-                            XjConfig.getApplicationContext().getContentResolver().openInputStream(mContentUri);
+                            MyApplication.getInstance().getContentResolver().openInputStream(mContentUri);
                     bitmap = BitmapFactory.decodeStream(is);
-                    drawable = new BitmapDrawable(XjConfig.getApplicationContext().getResources(), bitmap);
+                    drawable = new BitmapDrawable(MyApplication.getInstance().getResources(), bitmap);
                     drawable.setBounds(
                             0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()
                     );
@@ -1195,7 +1196,7 @@ public final class SpanUtils {
                 }
             } else {
                 try {
-                    drawable = ContextCompat.getDrawable(XjConfig.getApplicationContext(), mResourceId);
+                    drawable = ContextCompat.getDrawable(MyApplication.getInstance(), mResourceId);
                     drawable.setBounds(
                             0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()
                     );

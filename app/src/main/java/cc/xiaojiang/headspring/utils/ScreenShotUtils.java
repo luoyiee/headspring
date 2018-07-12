@@ -32,19 +32,21 @@ public class ScreenShotUtils {
         Bitmap bmp = view.getDrawingCache();
         int statusBarHeight = getStatusBarHeight(activity);
 
-        int width = ScreenUtils.getScreenWidth();
-        int height = ScreenUtils.getScreenHeight();
-        int toolBarHeight =   getToolBarHeight(activity);
+        int width = ScreenUtils.getScreenWidth(activity);
+        int height = ScreenUtils.getScreenHeight(activity);
+        int toolBarHeight = getToolBarHeight(activity);
         Bitmap ret = Bitmap.createBitmap(bmp, 0,
-                statusBarHeight+toolBarHeight*4/5,
-                width, height - statusBarHeight-toolBarHeight-ScreenUtils.dip2px(162));
+                statusBarHeight + toolBarHeight * 4 / 5,
+                width, height - statusBarHeight - toolBarHeight - ScreenUtils.dip2px(activity,
+                        162));
         view.destroyDrawingCache();
         return ret;
     }
 
     public static int getStatusBarHeight(Context context) {
         int height = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen",
+                "android");
         if (resourceId > 0) {
             height = context.getResources().getDimensionPixelSize(resourceId);
         }
@@ -53,14 +55,14 @@ public class ScreenShotUtils {
     }
 
     public static int getToolBarHeight(Activity activity) {
-        int[] attrs = new int[] {R.attr.actionBarSize};
+        int[] attrs = new int[]{R.attr.actionBarSize};
         TypedArray ta = activity.obtainStyledAttributes(attrs);
         int toolBarHeight = ta.getDimensionPixelSize(0, -1);
         ta.recycle();
         return toolBarHeight;
     }
 
-    public static void share(BaseActivity activity){
+    public static void share(BaseActivity activity) {
         Bitmap bitmap = ScreenShotUtils.screenShot(activity);
         EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
         activity.startToActivity(ShareActivity.class);

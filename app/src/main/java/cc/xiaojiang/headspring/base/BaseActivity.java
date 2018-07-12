@@ -16,8 +16,8 @@ import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cc.xiaojiang.baselibrary.app.AppManager;
 import cc.xiaojiang.headspring.R;
+import cc.xiaojiang.headspring.utils.AppManager;
 import cc.xiaojiang.headspring.utils.ScreenUtils;
 
 

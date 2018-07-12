@@ -6,11 +6,11 @@ import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.baselibrary.http.progress.ProgressObserver;
-import cc.xiaojiang.baselibrary.util.RxUtils;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
+import cc.xiaojiang.headspring.http.progress.ProgressObserver;
+import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 
 public class FeedbackActivity extends BaseActivity {

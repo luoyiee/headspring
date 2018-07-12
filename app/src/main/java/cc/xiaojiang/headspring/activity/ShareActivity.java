@@ -23,6 +23,7 @@ public class ShareActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("");
         getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         EventBus.getDefault().register(this);
     }
@@ -33,16 +34,17 @@ public class ShareActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_share) {
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        super.onTitleChanged("", color);
     }
 
     @Subscribe(sticky = true)
@@ -56,11 +58,5 @@ public class ShareActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().removeStickyEvent(ShareBitmapEvent.class);
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 }

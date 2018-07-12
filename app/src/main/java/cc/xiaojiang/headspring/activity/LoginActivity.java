@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -18,7 +19,6 @@ import cc.xiaojiang.headspring.iotkit.IotKitAccountImpl;
 import cc.xiaojiang.headspring.model.MobThrowable;
 import cc.xiaojiang.headspring.model.http.LoginBody;
 import cc.xiaojiang.headspring.utils.ToastUtils;
-import cc.xiaojiang.headspring.view.CommonTextView;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cn.smssdk.EventHandler;
@@ -27,8 +27,8 @@ import cn.smssdk.SMSSDK;
 //todo:回复
 public class LoginActivity extends BaseActivity {
 
-    @BindView(R.id.ctv_get_verify_code)
-    CommonTextView mCtvGetVerifyCode;
+    @BindView(R.id.tv_get_verify_code)
+    TextView mTvGetVerifyCode;
     @BindView(R.id.et_phone_number)
     EditText mCetPhoneNumber;
     @BindView(R.id.et_verify_code)
@@ -63,10 +63,12 @@ public class LoginActivity extends BaseActivity {
         SMSSDK.registerEventHandler(mEventHandler);
         initCounterTimer();
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
     }
+
     /**
      * 初始化获取验证码定时器
      */
@@ -74,24 +76,24 @@ public class LoginActivity extends BaseActivity {
         mCountDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                mCtvGetVerifyCode.setEnabled(false);
+                mTvGetVerifyCode.setClickable(false);
                 String tip = String.format(getResources().getString(R.string.login_second_retry),
                         millisUntilFinished / 1000);
-                mCtvGetVerifyCode.setText(tip);
+                mTvGetVerifyCode.setText(tip);
             }
 
             @Override
             public void onFinish() {
-                mCtvGetVerifyCode.setText(R.string.login_get_verify_code);
-                mCtvGetVerifyCode.setEnabled(true);
+                mTvGetVerifyCode.setText(R.string.login_get_verify_code);
+                mTvGetVerifyCode.setClickable(true);
             }
         };
     }
 
-    @OnClick({R.id.ctv_get_verify_code, R.id.btn_login})
+    @OnClick({R.id.tv_get_verify_code, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ctv_get_verify_code:
+            case R.id.tv_get_verify_code:
                 final String phoneNumber = mCetPhoneNumber.getText().toString();
                 if (TextUtils.isEmpty(phoneNumber)) {
                     ToastUtils.show(getString(R.string.login_toast_phone_not_null));

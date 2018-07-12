@@ -1,8 +1,8 @@
 package cc.xiaojiang.headspring.utils;
 
 
-import cc.xiaojiang.baselibrary.util.ASimpleCache;
 import cc.xiaojiang.headspring.base.MyApplication;
+import cc.xiaojiang.iotkit.util.ASimpleCache;
 
 public class DbUtils {
     private static final String CACHE_NAME = "db_headspring";

@@ -31,15 +31,14 @@ import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import cc.xiaojiang.baselibrary.http.progress.ProgressObserver;
-import cc.xiaojiang.baselibrary.util.LoggerUtil;
-import cc.xiaojiang.baselibrary.util.RxUtils;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
+import cc.xiaojiang.headspring.http.progress.ProgressObserver;
 import cc.xiaojiang.headspring.model.event.ShareBitmapEvent;
 import cc.xiaojiang.headspring.model.http.AqiModel;
+import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -174,12 +173,14 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         TextView mTvInfoWindowPm10 = infoWindow.findViewById(R.id.tv_info_window_pm10);
         TextView mTvInfoWindowSo2 = infoWindow.findViewById(R.id.tv_info_window_so2);
         TextView mTvInfoWindowCo = infoWindow.findViewById(R.id.tv_info_window_co);
+        TextView mTvInfoWindowLocation = infoWindow.findViewById(R.id.tv_info_window_location);
         mTvInfoWindowPm25.setText(String.valueOf(aqiModel.getPm25()));
         mTvInfoWindowNo2.setText(String.valueOf(aqiModel.getNo2()));
         mTvInfoWindowO3.setText(String.valueOf(aqiModel.getO3()));
         mTvInfoWindowPm10.setText(String.valueOf(aqiModel.getPm10()));
         mTvInfoWindowSo2.setText(String.valueOf(aqiModel.getSo2()));
         mTvInfoWindowCo.setText(String.valueOf(aqiModel.getCo()));
+        mTvInfoWindowLocation.setText(aqiModel.getCity() + aqiModel.getStation());
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
@@ -235,10 +236,10 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
         LatLngBounds latLngBounds = aMap.getProjection().getVisibleRegion().latLngBounds;
         float zoom = aMap.getCameraPosition().zoom;
-        LoggerUtil.d("zoom:"+zoom);
-        if(zoom<=9){
+        Logger.d("zoom:" + zoom);
+        if (zoom <= 9) {
             getAqi(1, latLngBounds.northeast, latLngBounds.southwest);
-        }else{
+        } else {
             getAqi(2, latLngBounds.northeast, latLngBounds.southwest);
         }
     }
@@ -253,11 +254,16 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
                 .subscribe(new ProgressObserver<List<AqiModel>>(this) {
                     @Override
                     public void onSuccess(List<AqiModel> aqiModels) {
-                        for (AqiModel aqiModel : aqiModels) {
-                            showMarker(aqiModel);
-                        }
+                        aMap.clear();
+                        showMarkers(aqiModels);
                     }
                 });
+    }
+
+    private void showMarkers(List<AqiModel> aqiModels) {
+        for (AqiModel aqiModel : aqiModels) {
+            showMarker(aqiModel);
+        }
     }
 
     private void showMarker(AqiModel aqiModel) {
@@ -266,12 +272,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         View view = getLayoutInflater().inflate(R.layout.layout_marker, null);
         TextView aqi = view.findViewById(R.id.tv_marker_aqi);
         ImageView ivMarker = view.findViewById(R.id.iv_marker_marker);
-        // TODO: 2018/7/5 根据aqi设置不同颜色的marker
-        if (aqiModel.getAqi()<=50) {
-            ivMarker.setImageResource(R.drawable.ic_air_map_marker_excellent);
-        } else {
-            ivMarker.setImageResource(R.drawable.ic_air_map_marker);
-        }
+
+        ivMarker.setImageResource(getMarkerIcon(aqiModel.getAqi()));
         aqi.setText(String.valueOf(aqiModel.getAqi()));
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
@@ -280,5 +282,23 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         marker.setObject(aqiModel);
         aMap.setOnMarkerClickListener(this);
         aMap.setInfoWindowAdapter(this);
+    }
+
+    private int getMarkerIcon(int aqi) {
+        int resourceId;
+        if (aqi <= 50) {
+            resourceId = R.drawable.ic_aqi_1;
+        } else if (aqi <= 100) {
+            resourceId = R.drawable.ic_aqi_2;
+        } else if (aqi <= 150) {
+            resourceId = R.drawable.ic_aqi_3;
+        } else if (aqi <= 200) {
+            resourceId = R.drawable.ic_aqi_4;
+        } else if (aqi <= 300) {
+            resourceId = R.drawable.ic_aqi_5;
+        } else {
+            resourceId = R.drawable.ic_aqi_6;
+        }
+        return resourceId;
     }
 }

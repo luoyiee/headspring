@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,7 +90,7 @@ public class MainActivity extends BaseActivity {
                 .create());
 
         mTvIndoorPm.setText(new SpanUtils()
-                .append("0.25").setFontSize(42, true)
+                .append("0.25").setFontSize(50, true)
                 .append("ug/m").setFontSize(20, true).append("3").setSuperscript().setFontSize
                         (16, true)
                 .create());
@@ -109,7 +110,7 @@ public class MainActivity extends BaseActivity {
 
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
     void location() {
-        LocationClient.getInstance().initClient();
+        LocationClient.getInstance().initClient(this);
     }
 
     @Override
@@ -218,6 +219,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        Logger.d("onWindowFocusChanged");
         if (hasFocus) {
             //获取控件原先的位置
             mChainPoint = getPoint(mBtnChain);

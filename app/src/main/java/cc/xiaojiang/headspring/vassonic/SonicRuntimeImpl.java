@@ -21,6 +21,7 @@ import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceResponse;
 
+import com.orhanobut.logger.Logger;
 import com.tencent.sonic.sdk.SonicRuntime;
 import com.tencent.sonic.sdk.SonicSessionClient;
 
@@ -29,7 +30,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import cc.xiaojiang.baselibrary.util.LoggerUtil;
 import cc.xiaojiang.headspring.BuildConfig;
 
 /**
@@ -70,13 +70,13 @@ public class SonicRuntimeImpl extends SonicRuntime {
     public void log(String tag, int level, String message) {
         switch (level) {
             case Log.ERROR:
-                LoggerUtil.e(tag, message);
+                Logger.e(tag, message);
                 break;
             case Log.INFO:
-                LoggerUtil.i(tag, message);
+                Logger.i(tag, message);
                 break;
             default:
-                LoggerUtil.d(tag, message);
+                Logger.d(tag, message);
         }
     }
 

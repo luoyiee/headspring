@@ -1,9 +1,7 @@
 package cc.xiaojiang.headspring.http;
 
 
-import cc.xiaojiang.baselibrary.http.ApiException;
-import cc.xiaojiang.baselibrary.http.model.BaseModel;
-import cc.xiaojiang.iotkit.ble.BleProto;
+import cc.xiaojiang.headspring.http.model.BaseModel;
 
 public class HttpResultFunc<T> implements io.reactivex.functions.Function<BaseModel<T>, T> {
 

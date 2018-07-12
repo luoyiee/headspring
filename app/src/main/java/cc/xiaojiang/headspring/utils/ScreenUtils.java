@@ -9,18 +9,11 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
-import cc.xiaojiang.baselibrary.app.XjConfig;
 
 
 public class ScreenUtils {
     public static int dip2px(Context context, int dp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        float density = metrics.density;
-        return (int) (dp * density);
-    }
-
-    public static int dip2px(int dp) {
-        DisplayMetrics metrics = XjConfig.getApplicationContext().getResources().getDisplayMetrics();
         float density = metrics.density;
         return (int) (dp * density);
     }
@@ -42,8 +35,8 @@ public class ScreenUtils {
      *
      * @return 屏幕高px
      */
-    public static int getScreenHeight() {
-        WindowManager windowManager = (WindowManager)  XjConfig.getApplicationContext().getSystemService(Context
+    public static int getScreenHeight(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context
                 .WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();// 创建了一张白纸
         if (windowManager != null) {
@@ -57,8 +50,8 @@ public class ScreenUtils {
      *
      * @return 屏幕宽px
      */
-    public static int getScreenWidth() {
-        WindowManager windowManager = (WindowManager) XjConfig.getApplicationContext().getSystemService(Context
+    public static int getScreenWidth(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context
                 .WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();// 创建了一张白纸
         // 给白纸设置宽高

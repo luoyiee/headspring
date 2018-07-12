@@ -3,7 +3,7 @@ package cc.xiaojiang.headspring.http;
 import java.math.BigDecimal;
 import java.util.List;
 
-import cc.xiaojiang.baselibrary.http.model.BaseModel;
+import cc.xiaojiang.headspring.http.model.BaseModel;
 import cc.xiaojiang.headspring.model.http.AqiModel;
 import cc.xiaojiang.headspring.model.http.LoginBody;
 import cc.xiaojiang.headspring.model.http.LoginModel;
@@ -25,7 +25,6 @@ public interface XJApis {
     @POST(HttpUrl.FEEDBACK)
     Observable<BaseModel<Object>> feedback(@Field("view") String content);
 
-    @FormUrlEncoded
     @POST(HttpUrl.REFRESH)
     Call<BaseModel<LoginModel>> refreshToken();
 

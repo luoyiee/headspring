@@ -1,5 +1,7 @@
 package cc.xiaojiang.headspring.utils;
 
+import android.content.Context;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -7,7 +9,6 @@ import com.amap.api.location.AMapLocationListener;
 
 import org.greenrobot.eventbus.EventBus;
 
-import cc.xiaojiang.baselibrary.app.XjConfig;
 import cc.xiaojiang.headspring.model.event.LocationEvent;
 
 /**
@@ -28,14 +29,14 @@ public class LocationClient implements AMapLocationListener {
     }
 
     public void startLocation() {
-        if(mLocationClient!=null){
+        if (mLocationClient != null) {
             mLocationClient.startLocation();
         }
     }
 
-    public void initClient() {
+    public void initClient(Context context) {
         //初始化定位
-        mLocationClient = new AMapLocationClient(XjConfig.getApplicationContext());
+        mLocationClient = new AMapLocationClient(context.getApplicationContext());
         //设置定位回调监听
         mLocationClient.setLocationListener(this);
         //初始化定位参数

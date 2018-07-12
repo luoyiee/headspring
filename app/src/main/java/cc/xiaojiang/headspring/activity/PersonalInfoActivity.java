@@ -28,6 +28,7 @@ import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.PermissionManager.TPermissionType;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -40,11 +41,11 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.baselibrary.util.LoggerUtil;
 import cc.xiaojiang.headspring.Constant;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.model.bean.AreaJsonBean;
+import cc.xiaojiang.headspring.utils.AccountUtils;
 import cc.xiaojiang.headspring.utils.GetJsonDataUtil;
 import cc.xiaojiang.headspring.utils.ImageLoader;
 import cc.xiaojiang.headspring.utils.TakePhotoUtils;
@@ -52,7 +53,8 @@ import cc.xiaojiang.headspring.widget.OptionPickerHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.schedulers.Schedulers;
 
-public class PersonalInfoActivity extends BaseActivity implements TakePhoto.TakeResultListener, InvokeListener {
+public class PersonalInfoActivity extends BaseActivity implements TakePhoto.TakeResultListener,
+        InvokeListener {
     private static final int SIZE_UPDATE_MAP = 6;
     private static final String FILE_NAME = "area.json";
     @BindView(R.id.civ_avatar)
@@ -146,7 +148,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         return super.onCreateOptionsMenu(menu);
     }
 
-    @OnClick({R.id.rl_avatar, R.id.rl_nickname, R.id.rl_sex, R.id.rl_birthday, R.id.btn_log_out, R.id.rl_area})
+    @OnClick({R.id.rl_avatar, R.id.rl_nickname, R.id.rl_sex, R.id.rl_birthday, R.id.btn_log_out,
+            R.id.rl_area})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_avatar:
@@ -165,6 +168,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                 showCityPicker();
                 break;
             case R.id.btn_log_out:
+                AccountUtils.logout();
                 break;
             default:
                 break;
@@ -200,7 +204,10 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
             final ArrayList<String> optionsSex = new ArrayList<>(2);
             optionsSex.add("男");
             optionsSex.add("女");
-            mSexPicker = OptionPickerHelper.createPicker(this, "性别", optionsSex, s, (options1, options2, options3, v) -> {
+            mSexPicker = OptionPickerHelper.createPicker(this, "性别", optionsSex, s, (options1,
+                                                                                     options2,
+                                                                                     options3, v)
+                    -> {
                 String sexTx = optionsSex.get(options1);
                 mTvSex.setText(sexTx);
                 mUpdateMap.put(Constant.KEY_SEX, options1 == 0 ? "M" : "F");
@@ -239,7 +246,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
 
     private void showCityPicker() {
         if (pvCityOptions == null) {
-            pvCityOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
+            pvCityOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v)
+                    -> {
                 province = options1Items.get(options1).getPickerViewText();
                 city = options2Items.get(options1).get(options2);
                 mTvArea.setText(city);
@@ -264,7 +272,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
      */
     protected TakePhoto getTakePhoto() {
         if (mTakePhoto == null) {
-            mTakePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+            mTakePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl
+                    (this, this));
             mTakePhoto.onEnableCompress(CompressConfig.ofDefaultConfig(), true);
         }
         return mTakePhoto;
@@ -289,9 +298,11 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode,
+                permissions, grantResults);
         PermissionManager.handlePermissionsResult(this, type, mInvokeParam, this);
     }
 
@@ -303,17 +314,18 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
 
     @Override
     public void takeFail(TResult result, String msg) {
-        LoggerUtil.d("take photo fail");
+        Logger.d("take photo fail");
     }
 
     @Override
     public void takeCancel() {
-        LoggerUtil.d("take photo cancel");
+        Logger.d("take photo cancel");
     }
 
     @Override
     public TPermissionType invoke(InvokeParam invokeParam) {
-        TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod());
+        TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(this),
+                invokeParam.getMethod());
         if (TPermissionType.WAIT.equals(type)) {
             this.mInvokeParam = invokeParam;
         }
