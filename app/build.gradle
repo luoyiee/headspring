@@ -71,12 +71,18 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 
 dependencies {
     implementation project(':baselibrary')
-    implementation project(':iotkit')
+    implementation(name: 'iotkit-debug', ext: 'aar')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
@@ -98,7 +104,6 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.amap.api:3dmap:latest.integration'
     implementation 'com.amap.api:location:latest.integration'
-    implementation project(':iotkit')
     implementation('com.github.hotchemi:permissionsdispatcher:3.3.1') {
         exclude module: "support-v13"
     }
@@ -107,4 +112,13 @@ dependencies {
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
     implementation 'com.tencent.sonic:sdk:3.0.0'
     implementation 'com.haibin:calendarview:3.3.6'
+    //iotkit
+    implementation 'io.fogcloud.sdk:easylinkv3:0.1.4'
+    implementation 'com.clj.fastble:FastBleLib:2.3.2'
+    implementation 'com.google.protobuf:protobuf-lite:3.0.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.orhanobut:logger:2.2.0'
+
+
 }

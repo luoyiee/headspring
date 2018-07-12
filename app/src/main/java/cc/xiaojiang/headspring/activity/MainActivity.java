@@ -76,7 +76,8 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         mTvOutdoorPm.setText(new SpanUtils()
-                .append("50").setFontSize(30, true).append("ug/m").setFontSize(18, true).append("3").setSuperscript().setFontSize(16, true)
+                .append("50").setFontSize(30, true).append("ug/m").setFontSize(18, true).append
+                        ("3").setSuperscript().setFontSize(16, true)
                 .create());
 
         mTvOutdoorTemperature.setText(new SpanUtils()
@@ -89,7 +90,8 @@ public class MainActivity extends BaseActivity {
 
         mTvIndoorPm.setText(new SpanUtils()
                 .append("0.25").setFontSize(42, true)
-                .append("ug/m").setFontSize(20, true).append("3").setSuperscript().setFontSize(16, true)
+                .append("ug/m").setFontSize(20, true).append("3").setSuperscript().setFontSize
+                        (16, true)
                 .create());
     }
 
@@ -131,8 +133,8 @@ public class MainActivity extends BaseActivity {
         LocationClient.getInstance().stopLocation();
     }
 
-    @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal, R.id.iv_home_control,
-            R.id.iv_home_share})
+    @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal, R
+            .id.iv_home_control, R.id.iv_home_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_home_control:
@@ -152,7 +154,8 @@ public class MainActivity extends BaseActivity {
                 //                                    }
                 //
                 //                                    @Override
-                //                                    public void onError(int code, String errorMsg) {
+                //                                    public void onError(int code, String
+                // errorMsg) {
                 //
                 //                                    }
                 //                                });
@@ -252,7 +255,8 @@ public class MainActivity extends BaseActivity {
     //    public void onViewClicked(View view) {
     //        switch (view.getId()) {
     //            case R.id.btn_bind:
-    //                IotKitDeviceManager.getInstance().deviceBind("bff503", "bopVpXFcyVbkYBhrhmHK", new
+    //                IotKitDeviceManager.getInstance().deviceBind("bff503",
+    // "bopVpXFcyVbkYBhrhmHK", new
     //                        IotKitCallBack() {
     //                            @Override
     //                            public void onSuccess(String response) {
