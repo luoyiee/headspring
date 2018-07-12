@@ -18,6 +18,4 @@ public class AirKnowledgeActivity extends BaseActivity {
         return R.layout.activity_air_knowledge;
     }
 
-
-
 }

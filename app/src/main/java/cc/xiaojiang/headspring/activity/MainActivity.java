@@ -110,6 +110,7 @@ public class MainActivity extends BaseActivity {
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
     void location() {
         LocationClient.getInstance().initClient();
+        LocationClient.getInstance().startLocation();
     }
 
     @Override

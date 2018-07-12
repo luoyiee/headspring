@@ -1,7 +1,10 @@
 package cc.xiaojiang.headspring.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+
+import com.tencent.bugly.beta.Beta;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -22,7 +25,14 @@ public class AppUpdateActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTvAppVersion.setText(getString(R.string.update_version_name, BuildConfig.VERSION_NAME));
-        mItemUpdate.setItemValue(getString(R.string.update_version_name, BuildConfig.VERSION_NAME));
+
+        String appVersionName = Beta.appVersionName;
+        if (TextUtils.isEmpty(appVersionName)) {
+            mItemUpdate.setItemValue(getString(R.string.update_version_name, BuildConfig
+                    .VERSION_NAME));
+        } else {
+            mItemUpdate.setItemValue(getString(R.string.update_version_name, appVersionName));
+        }
     }
 
     @Override
@@ -32,6 +42,6 @@ public class AppUpdateActivity extends BaseActivity {
 
     @OnClick(R.id.item_update)
     public void onViewClicked(View view) {
-
+        Beta.checkUpgrade();
     }
 }

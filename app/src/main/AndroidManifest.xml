@@ -17,6 +17,9 @@
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"

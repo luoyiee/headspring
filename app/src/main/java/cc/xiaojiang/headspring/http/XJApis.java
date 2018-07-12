@@ -25,16 +25,9 @@ public interface XJApis {
     @POST(HttpUrl.FEEDBACK)
     Observable<BaseModel<Object>> feedback(@Field("view") String content);
 
-    @FormUrlEncoded
     @POST(HttpUrl.REFRESH)
     Call<BaseModel<LoginModel>> refreshToken();
 
-//    @GET(HttpUrl.AIR)
-//    Observable<BaseModel<List<AqiModel>>> getAqi(@Query("level") float level,
-//                                                 @Query("longtitude") double longtitude,
-//                                                 @Query("latitude") double latitude,
-//                                                 @Query("longtitude2") double longtitude2,
-//                                                 @Query("latitude2") double latitude2);
     @GET(HttpUrl.AIR)
     Observable<BaseModel<List<AqiModel>>> getAqi(@Query("level") int level,
                                                  @Query("longtitude") BigDecimal longtitude,

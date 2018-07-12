@@ -3,6 +3,7 @@ package cc.xiaojiang.headspring.activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,6 +23,8 @@ import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.iotkit.DeviceDataModel;
 import cc.xiaojiang.headspring.model.bean.DeviceResponse;
+import cc.xiaojiang.headspring.utils.AP1Utils;
+import cc.xiaojiang.headspring.utils.ScreenShotUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.headspring.view.AP1View2;
 import cc.xiaojiang.headspring.view.AP1View4;
@@ -41,8 +44,6 @@ public class DeviceControlActivity extends BaseActivity implements
     TextView mTvAirPurifierView1Timing;
     @BindView(R.id.tv_air_purifier_view3_temp)
     TextView mTvAirPurifierView3Temp;
-    @BindView(R.id.tv_air_purifier_view1_strainer)
-    TextView mTvAirPurifierView1Strainer;
     @BindView(R.id.tv_air_purifier_view3_humidity)
     TextView mTvAirPurifierView3Humidity;
     @BindView(R.id.view_air_purifier_pm25)
@@ -53,8 +54,6 @@ public class DeviceControlActivity extends BaseActivity implements
     TextView mTextView16;
     @BindView(R.id.textView17)
     TextView mTextView17;
-    @BindView(R.id.textView15)
-    TextView mTextView15;
     @BindView(R.id.textView14)
     TextView mTextView14;
     @BindView(R.id.tv_auto)
@@ -90,6 +89,10 @@ public class DeviceControlActivity extends BaseActivity implements
         return R.layout.activity_device_control;
     }
 
+    private void initView() {
+        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+        mViewAirPurifierGear.setOnSeekBarChangeListener(this);
+    }
 
     private void initData() {
         deviceData = getIntent().getParcelableExtra("device_data");
@@ -98,31 +101,6 @@ public class DeviceControlActivity extends BaseActivity implements
             finish();
         }
     }
-
-    private void initView() {
-        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
-        mViewAirPurifierGear.setOnSeekBarChangeListener(this);
-    }
-
-//    private void setBackground(int PM205) {
-//        String rate = AP1Utils.getRate(this, PM205);
-//        int switch_status = mqttData_a1.getSwitch_status();
-//        if (switch_status == Endec_A1.SWITCH_ON) {
-//            if (rate.equals(getString(R.string.air_purifier_rate_excellent))) {
-//                getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
-//                        .color.air_purifier_background_excellent));
-//            } else if (rate.equals(getString(R.string.air_purifier_rate_good))) {
-//                getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
-//                        .color.air_purifier_background_good));
-//            } else if (rate.equals(getString(R.string.air_purifier_rate_poor))) {
-//                getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
-//                        .color.air_purifier_background_poor));
-//            }
-//        } else {
-//            getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color
-//                    .air_purifier_background_off));
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -190,10 +168,22 @@ public class DeviceControlActivity extends BaseActivity implements
         final PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        contentView.findViewById(R.id.tv_popup_history_data).setOnClickListener(v -> {
+            startToActivity(HistoryDataActivity.class);
+            popupWindow.dismiss();
+        });
         popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec
                 .UNSPECIFIED);
-        contentView.findViewById(R.id.ctv_popup_time_remain).setOnClickListener(v ->
-                startToActivity(FilterTimeRemainActivity.class));
+        contentView.findViewById(R.id.tv_popup_time_remain).setOnClickListener(v -> {
+            FilterTimeRemainActivity.actionStart(this, mUseTime);
+            popupWindow.dismiss();
+
+        });
+        contentView.findViewById(R.id.tv_popup_share_data).setOnClickListener(v -> {
+            ScreenShotUtils.share(this);
+            popupWindow.dismiss();
+        });
+
         popupWindow.showAsDropDown(mIvPopWindow, -popupWindow.getContentView().getMeasuredWidth()
                 + 40, 20);
     }
@@ -203,7 +193,6 @@ public class DeviceControlActivity extends BaseActivity implements
             sendGear(mControlGear + 1);
         }
     }
-
 
     private void doTiming() {
         AP1TimingDialog dialog = new AP1TimingDialog();
@@ -266,7 +255,6 @@ public class DeviceControlActivity extends BaseActivity implements
         });
     }
 
-
     @Override
     public void messageArrived(String deviceId, String data) {
         if (!deviceId.equals(deviceData.getDeviceId())) {
@@ -291,12 +279,12 @@ public class DeviceControlActivity extends BaseActivity implements
         mPM205 = Integer.parseInt(paramsBean.getPM205().getValue());
         mTempture = Integer.parseInt(paramsBean.getTempture().getValue());
         mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
-//        setBackground(mPM205);
+        setBackground(mPM205);
         //绘制界面
         mTvAirPurifierView1Timing.setText(mTimingShutdown + "h");
-        mTvAirPurifierView1Strainer.setText(mUseTime + "h");
-        mTvAirPurifierView3Temp.setText(mTempture + "");
-        mTvAirPurifierView3Humidity.setText(mHumidity + "");
+//        mTvAirPurifierView1Strainer.setText(mUseTime + "h");
+        mTvAirPurifierView3Temp.setText(mTempture + "°C");
+        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
         mViewAirPurifierPm25.setValue(mPM205);
         mViewAirPurifierGear.setGear(mControlGear);
 
@@ -310,6 +298,25 @@ public class DeviceControlActivity extends BaseActivity implements
             mTvSwitch.setText("关机");
         } else {
             mTvSwitch.setText("开机");
+        }
+    }
+
+    private void setBackground(int PM205) {
+        String rate = AP1Utils.getRate(this, PM205);
+        if (mSwitch ==1) {
+            if (rate.equals(getString(R.string.air_purifier_rate_excellent))) {
+                getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
+                        .color.air_purifier_background_excellent));
+            } else if (rate.equals(getString(R.string.air_purifier_rate_good))) {
+                getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
+                        .color.air_purifier_background_good));
+            } else if (rate.equals(getString(R.string.air_purifier_rate_poor))) {
+                getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
+                        .color.air_purifier_background_poor));
+            }
+        } else {
+            getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color
+                    .air_purifier_background_off));
         }
     }
 

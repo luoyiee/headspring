@@ -204,8 +204,8 @@ public class MPChartUtils {
         // 是否绘制数据值
         dataSet.setDrawValues(false);
         // 是否绘制圆点
-        dataSet.setDrawCircles(false);
-        dataSet.setDrawCircleHole(false);
+        dataSet.setDrawCircles(true);
+        dataSet.setDrawCircleHole(true);
         dataSet.setCircleColorHole(lineColor);
         // 这里有一个坑，当我们想隐藏掉高亮线的时候，MarkerView 跟着不见了
         // 因此只有将它设置成透明色

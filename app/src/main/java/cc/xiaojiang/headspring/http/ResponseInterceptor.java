@@ -38,6 +38,7 @@ public class ResponseInterceptor implements Interceptor {
         //判断刷新token连接，直接返回，不走下面代码，避免死循环。
         if (request.url().toString().contains(HttpUrl.REFRESH) && "POST".equals(request.method())) {
             request.newBuilder()
+                    .removeHeader(ACCESS_TOKEN)
                     .addHeader("refreshToken", DbUtils.getRefreshToken())
                     .build();
             return chain.proceed(request);
