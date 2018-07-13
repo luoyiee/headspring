@@ -1,1 +1,3 @@
 include ':app'
+include ':iotkit'
+project(':iotkit').projectDir = new File('../IotKit-Android/iotkit')

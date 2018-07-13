@@ -38,6 +38,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     @BindView(R.id.rv_product)
     RecyclerView rvProduct;
 
+
     private ProductAdapter mProductAdapter;
     private List<ProductResp.DataBean> mProducts;
 

@@ -2,11 +2,15 @@
  * Tencent is pleased to support the open source community by making VasSonic available.
  *
  * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the BSD 3-Clause License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the BSD 3-Clause License (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
  *
  * https://opensource.org/licenses/BSD-3-Clause
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  *
  */
@@ -44,15 +48,18 @@ public class SonicRuntimeImpl extends SonicRuntime {
 
     /**
      * 获取用户UA信息
+     *
      * @return return "sonic-demo-master";
      */
     @Override
     public String getUserAgent() {
-        return "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36";
+        return "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 " +
+                "(KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36";
     }
 
     /**
      * 获取用户ID信息
+     *
      * @return
      */
     @Override
@@ -81,8 +88,9 @@ public class SonicRuntimeImpl extends SonicRuntime {
     }
 
     @Override
-    public Object createWebResourceResponse(String mimeType, String encoding, InputStream data, Map<String, String> headers) {
-        WebResourceResponse resourceResponse =  new WebResourceResponse(mimeType, encoding, data);
+    public Object createWebResourceResponse(String mimeType, String encoding, InputStream data,
+                                            Map<String, String> headers) {
+        WebResourceResponse resourceResponse = new WebResourceResponse(mimeType, encoding, data);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             resourceResponse.setResponseHeaders(headers);
         }
@@ -130,14 +138,15 @@ public class SonicRuntimeImpl extends SonicRuntime {
     @Override
     public File getSonicCacheDir() {
         if (BuildConfig.DEBUG) {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "sonic/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File
+                    .separator + "sonic/";
             File file = new File(path.trim());
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.mkdir();
             }
             return file;
         }
-       return super.getSonicCacheDir();
+        return super.getSonicCacheDir();
     }
 
     @Override
