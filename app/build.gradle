@@ -57,8 +57,7 @@ repositories {
 
 
 dependencies {
-//    implementation project(':baselibrary')
-    implementation(name: 'iotkit-debug', ext: 'aar')
+    implementation project(':iotkit')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'

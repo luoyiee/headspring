@@ -59,7 +59,8 @@ public class WifiConfirmActivity extends BaseActivity {
     public void onViewClicked() {
         String password = mEdTxtWifiConfirmPassword.getText().toString();
         DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setProductKey(mProductKey);
+//        deviceInfo.setProductKey(mProductKey);
+        deviceInfo.setProductKey("duu990");
         EasyLinkHelper.getInstance().startAdd(this, deviceInfo, mSsid, password, new
                 IDeviceAddListener() {
                     @Override
