@@ -19,13 +19,21 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.http.HttpResultFunc;
+import cc.xiaojiang.headspring.http.RetrofitHelper;
+import cc.xiaojiang.headspring.http.progress.ProgressObserver;
+import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.headspring.model.event.LocationEvent;
 import cc.xiaojiang.headspring.utils.LocationClient;
+import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.headspring.utils.ScreenShotUtils;
+import cc.xiaojiang.headspring.utils.ScreenUtils;
 import cc.xiaojiang.headspring.utils.SpanUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.headspring.view.CommonTextView;
@@ -58,6 +66,12 @@ public class MainActivity extends BaseActivity {
     ImageView mIvHomeControl;
     @BindView(R.id.tv_home_location)
     TextView mTvHomeLocation;
+    @BindView(R.id.tv_weather_today)
+    TextView mTvWeatherToday;
+    @BindView(R.id.tv_weather_tomorrow)
+    TextView mTvWeatherTomorrow;
+    @BindView(R.id.tv_weather_after_tomorrow)
+    TextView mTvWeatherAfterTomorrow;
 
     private boolean mAnimatorTag = true;
 
@@ -70,30 +84,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         EventBus.getDefault().register(this);
         MainActivityPermissionsDispatcher.locationWithPermissionCheck(this);
-    }
-
-    private void initView() {
-        mTvOutdoorPm.setText(new SpanUtils()
-                .append("50").setFontSize(30, true).append("ug/m").setFontSize(18, true).append
-                        ("3").setSuperscript().setFontSize(16, true)
-                .create());
-
-        mTvOutdoorTemperature.setText(new SpanUtils()
-                .append("20").setFontSize(30, true).append("°C").setFontSize(18, true)
-                .create());
-
-        mTvOutdoorHumidity.setText(new SpanUtils()
-                .append("49").setFontSize(30, true).append("%").setFontSize(18, true)
-                .create());
-
-        mTvIndoorPm.setText(new SpanUtils()
-                .append("0.25").setFontSize(50, true)
-                .append("ug/m").setFontSize(20, true).append("3").setSuperscript().setFontSize
-                        (16, true)
-                .create());
     }
 
     @Override
@@ -111,6 +103,7 @@ public class MainActivity extends BaseActivity {
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
     void location() {
         LocationClient.getInstance().initClient(this);
+        LocationClient.getInstance().startLocation();
     }
 
     @Override
@@ -125,7 +118,7 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         //开始定位
-        LocationClient.getInstance().startLocation();
+//        LocationClient.getInstance().startLocation();
     }
 
     @Override
@@ -243,6 +236,7 @@ public class MainActivity extends BaseActivity {
                 String district = aMapLocation.getDistrict();//城区信息
                 String street = aMapLocation.getStreet();//街道信息
                 mTvHomeLocation.setText(district + street);
+                requestWeatherAirData(aMapLocation.getCity());
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"
@@ -251,6 +245,76 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void requestWeatherAirData(String city) {
+        RetrofitHelper.getService().queryCityWeatherAir(city)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<HomeWeatherAirModel>(this) {
+                    @Override
+                    public void onSuccess(HomeWeatherAirModel homeWeatherAirModel) {
+                        setView(homeWeatherAirModel);
+                    }
+                });
+    }
+
+    private void setView(HomeWeatherAirModel homeWeatherAirModel) {
+        setAirView(homeWeatherAirModel);
+
+        setWeather(homeWeatherAirModel.getNextWeather());
+
+    }
+
+    private void setWeather(List<HomeWeatherAirModel.NextWeatherBean> nextWeatherBeans) {
+        HomeWeatherAirModel.NextWeatherBean todayBean = nextWeatherBeans.get(0);
+        HomeWeatherAirModel.NextWeatherBean tomorrowBean = nextWeatherBeans.get(1);
+        HomeWeatherAirModel.NextWeatherBean AfterTomorrowBean = nextWeatherBeans.get(2);
+        setWeatherView(mTvWeatherToday,todayBean);
+        setWeatherView(mTvWeatherTomorrow,tomorrowBean);
+        setWeatherView(mTvWeatherAfterTomorrow,AfterTomorrowBean);
+    }
+
+    private void setWeatherView(TextView textView,HomeWeatherAirModel.NextWeatherBean weatherBean) {
+        int space = ScreenUtils.dip2px(this, 2);
+        int day = weatherBean.getDay();
+        //方法1、
+        int qianWei=day%10000/1000;
+        int baiWei=day%1000/100;
+        int shiWei=day%100/10;
+        int geWei=day%10;
+        textView.setText(new SpanUtils()
+                .appendLine(""+qianWei+baiWei+"/"+shiWei+geWei)
+                .appendLine().setLineHeight(space)
+                .appendImage(R.drawable.ic_logo2)
+                .appendLine()
+                .appendLine().setLineHeight(space)
+                .appendLine(weatherBean.getLowTemp()+"-"+weatherBean.getHighTemp()+"°C")
+                .create());
+    }
+
+    private void setAirView(HomeWeatherAirModel homeWeatherAirModel) {
+        mTvOutdoorPm.setText(new SpanUtils()
+                .append(homeWeatherAirModel.getPm25() + "").setFontSize(30, true).append("ug/m")
+                .setFontSize(18, true).append
+                        ("3").setSuperscript().setFontSize(16, true)
+                .create());
+
+        mTvOutdoorTemperature.setText(new SpanUtils()
+                .append(homeWeatherAirModel.getOutTemp() + "").setFontSize(30, true).append("°C")
+                .setFontSize(18, true)
+                .create());
+
+        mTvOutdoorHumidity.setText(new SpanUtils()
+                .append(homeWeatherAirModel.getOutHumidity() + "").setFontSize(30, true).append
+                        ("%").setFontSize(18, true)
+                .create());
+
+        mTvIndoorPm.setText(new SpanUtils()
+                .append("0.25").setFontSize(50, true)
+                .append("ug/m").setFontSize(20, true).append("3").setSuperscript().setFontSize
+                        (16, true)
+                .create());
     }
 
     //    @OnClick({R.id.btn_bind, R.id.btn_device_list})

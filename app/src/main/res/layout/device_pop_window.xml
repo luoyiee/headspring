@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_popup_history_data"
-        android:layout_gravity="center"
         android:padding="12dp"
         android:drawablePadding="2dp"
         style="@style/common_14_black_text"
@@ -18,7 +17,6 @@
 
     <TextView
         android:id="@+id/tv_popup_time_remain"
-        android:layout_gravity="center"
         android:drawablePadding="2dp"
         android:padding="12dp"
         android:drawableStart="@drawable/ic_device_remain_time"
@@ -29,7 +27,6 @@
 
     <TextView
         android:id="@+id/tv_popup_share_data"
-        android:layout_gravity="center"
         android:drawablePadding="2dp"
         android:padding="12dp"
         android:drawableStart="@drawable/ic_menu_share"

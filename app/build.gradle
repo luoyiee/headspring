@@ -1,30 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.mob.sdk'
 apply plugin: 'com.getkeepsafe.dexcount'
-
-// 在MobSDK的扩展中注册MobPush的相关信息
-MobSDK {
-    appKey "2672c36a91131"
-    appSecret "498fb6256432551331ab38d6cf00c6f7"
-    SMSSDK {}
-//    MobPush {
-//        devInfo {
-//            HUAWEI {
-//                appId "100215127"
-//            }
-//
-//            MEIZU {
-//                appId "112481"
-//                appKey "03dd70b9be434446a7255c8586e1725a"
-//            }
-//
-//            XIAOMI {
-//                appId "2882303761517721670"
-//                appKey "5671772162670"
-//            }
-//        }
-//    }
-}
+apply from: '../MobSDK.gradle'
 
 android {
     compileSdkVersion 27

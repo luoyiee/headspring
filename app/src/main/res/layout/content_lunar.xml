@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.LunarActivity"
-    tools:showIn="@layout/activity_lunar">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".activity.LunarActivity"
+                                             tools:showIn="@layout/activity_lunar">
 
     <com.haibin.calendarview.CalendarView
         android:id="@+id/calendarView"
@@ -50,6 +50,55 @@
         style="@style/horizontalBlockView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"/>
+
+    <TextView
+        android:id="@+id/tv_calendar_day"
+        style="@style/commonText"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/primary_blue"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.23000002"
+        tools:text="15"/>
+
+    <TextView
+        android:id="@+id/tv_solar_terms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_calendar_day"
+        app:layout_constraintTop_toBottomOf="@+id/tv_calendar_day"
+        tools:text="TextView"/>
+
+    <TextView
+        android:id="@+id/tv_lunar_time"
+        style="@style/common_14_black_text"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_lunar_year"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="TextView"/>
+
+    <TextView
+        android:id="@+id/tv_lunar_year"
+        style="@style/common_14_black_text"
+        tools:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/tv_lunar_month_day"
+        app:layout_constraintStart_toStartOf="@+id/tv_lunar_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lunar_time"/>
+
+    <TextView
+        android:id="@+id/tv_lunar_month_day"
+        style="@style/common_14_black_text"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_lunar_year"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lunar_year"
+        tools:text="TextView"/>
 
 </android.support.constraint.ConstraintLayout>

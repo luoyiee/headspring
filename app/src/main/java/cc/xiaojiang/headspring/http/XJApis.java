@@ -4,9 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import cc.xiaojiang.headspring.http.model.BaseModel;
+import cc.xiaojiang.headspring.model.http.AirRankModel;
 import cc.xiaojiang.headspring.model.http.AqiModel;
+import cc.xiaojiang.headspring.model.http.DynamicModel;
+import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.headspring.model.http.LoginBody;
 import cc.xiaojiang.headspring.model.http.LoginModel;
+import cc.xiaojiang.headspring.model.http.LunarInfoModel;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -34,4 +38,18 @@ public interface XJApis {
                                                  @Query("latitude") BigDecimal latitude,
                                                  @Query("longtitude2") BigDecimal longtitude2,
                                                  @Query("latitude2") BigDecimal latitude2);
+
+    @GET(HttpUrl.WEATHER_AIR_HOUR)
+    Observable<BaseModel<HomeWeatherAirModel>> queryCityWeatherAir(@Query("city") String city);
+
+    @GET(HttpUrl.DYNAMIC_LIST)
+    Observable<BaseModel<List<DynamicModel>>> dynamicList();
+
+    @GET(HttpUrl.AIR_RANK)
+    Observable<BaseModel<List<AirRankModel>>> airRankList(@Query("city") String city,
+                                                          @Query("type") String type);
+
+    @GET(HttpUrl.LUNAR_INFO)
+    Observable<BaseModel<LunarInfoModel>> lunarInfo(@Query("day") String day);
+
 }

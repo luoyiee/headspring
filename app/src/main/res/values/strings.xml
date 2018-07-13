@@ -14,6 +14,11 @@
     <string name="title_activity_map">地图</string>
     <string name="title_activity_top_activity">排行榜</string>
 
+    <string name="day">日</string>
+    <string name="week">周</string>
+    <string name="month">月</string>
+
+
     <string name="title_activity_control">空智子</string>
     <string name="title_activity_scan_code">扫描二维码</string>
     <string name="title_activity_dynamic">量波动态</string>
@@ -78,6 +83,11 @@
     <string name="product_scan">扫描二维码添加设备</string>
 
     <string name="lunar_year_month">%d年%d月</string>
+
+    <string name="lunar_info_time">%d %s %s日</string>
+    <string name="lunar_info_year">%s【%s】年</string>
+    <string name="lunar_info_month_day">%s月  %s日</string>
+
     <string name="filter_use_time">滤芯使用时间：%dh</string>
     <string name="share">分享</string>
     <string name="title_activity_dynamic_list">量波动态</string>
@@ -90,4 +100,9 @@
     <string name="update_version_name">当前版本V%s</string>
     <string name="scan_code_permission_tip">需要同意相机权限才能正常使用</string>
     <string name="wifi_config_explain">配置说明:\n 1.请将空智子连接电源; \n 2.长按空智子面板WIFI图标配置按键3秒以上;\n 3.液晶屏有WIFI图标闪烁时点击下一步。</string>
+    <string name="share_to">分享到</string>
+    <string name="share_wechat_friend">微信好友</string>
+    <string name="share_wecaht_comment">微信朋友圈</string>
+    <string name="share_qq">手机QQ</string>
+    <string name="share_qq_zone">QQ空间</string>
 </resources>
