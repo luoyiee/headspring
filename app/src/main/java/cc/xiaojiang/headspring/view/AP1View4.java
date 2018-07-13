@@ -28,7 +28,7 @@ public class AP1View4 extends View {
     private Context mContext;
     private float mInterval;
     private int mGear = 0;
-    private boolean isSeekable = false;
+    private boolean isSeekable = true;
     /**
      * gear count
      */
