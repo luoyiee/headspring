@@ -31,7 +31,8 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
         });
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnYearChangeListener(this);
-        mTvTitle.setText(getString(R.string.lunar_year_month, mCalendarView.getCurYear(), mCalendarView.getCurMonth()));
+        mTvTitle.setText(getString(R.string.lunar_year_month, mCalendarView.getCurYear(),
+                mCalendarView.getCurMonth()));
     }
 
 
@@ -42,7 +43,8 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
 
     @Override
     public void onDateSelected(Calendar calendar, boolean isClick) {
-        mTvTitle.setText(getString(R.string.lunar_year_month, calendar.getYear(), calendar.getMonth()));
+        mTvTitle.setText(getString(R.string.lunar_year_month, calendar.getYear(), calendar
+                .getMonth()));
         mYear = calendar.getYear();
     }
 

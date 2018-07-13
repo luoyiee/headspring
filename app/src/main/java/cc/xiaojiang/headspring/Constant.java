@@ -6,6 +6,9 @@ package cc.xiaojiang.headspring;
  * Description:
  */
 public class Constant {
+
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String REFRESH_TOKEN = "refreshToken";
     public static final String KEY_AVATAR = "avatar";
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_SEX = "sex";

@@ -1,8 +1,10 @@
 package cc.xiaojiang.headspring.http.progress;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import cc.xiaojiang.headspring.http.ApiException;
+import cc.xiaojiang.headspring.utils.ToastUtils;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
@@ -49,6 +51,7 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
+        ToastUtils.show(e.getMessage());
         com.orhanobut.logger.Logger.e(e.getMessage());
         com.orhanobut.logger.Logger.d("onError");
         if (ApiException.class.isInstance(e)) {
