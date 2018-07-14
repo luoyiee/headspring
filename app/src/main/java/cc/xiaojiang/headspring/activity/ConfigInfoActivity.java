@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.iotkit.ProductInfoModel;
 import cc.xiaojiang.headspring.utils.ToastUtils;
+import cc.xiaojiang.iotkit.bean.http.ProductInfo;
 import cc.xiaojiang.iotkit.http.IotKitCallBack;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
+import cc.xiaojiang.iotkit.http.IotKitHttpCallback2;
 
 public class ConfigInfoActivity extends BaseActivity {
 
@@ -34,15 +39,18 @@ public class ConfigInfoActivity extends BaseActivity {
     }
 
     private void getProductInfo(String productKey) {
-        IotKitDeviceManager.getInstance().productInfo(productKey, new IotKitCallBack() {
+        IotKitDeviceManager.getInstance().productInfo(productKey, new IotKitHttpCallback2<ProductInfo>() {
             @Override
-            public void onSuccess(String response) {
+            public void onSuccess(ProductInfo data) {
 
             }
+
             @Override
-            public void onError(int code, String errorMsg) {
+            public void onError(String code, String errorMsg) {
 
             }
+
+
         });
     }
 

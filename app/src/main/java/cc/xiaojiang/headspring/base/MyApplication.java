@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import cc.xiaojiang.headspring.BuildConfig;
 import cc.xiaojiang.headspring.iotkit.IotKitAccountImpl;
@@ -31,6 +32,7 @@ public class MyApplication extends Application {
         Beta.autoCheckUpgrade = false;
         Bugly.init(getApplicationContext(), "be4413cd77", false);
 //        }
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     @Override

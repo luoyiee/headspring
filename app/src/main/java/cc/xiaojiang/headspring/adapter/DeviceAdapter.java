@@ -11,14 +11,15 @@ import java.util.List;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.model.bean.DeviceResponse;
 import cc.xiaojiang.headspring.utils.ImageLoader;
+import cc.xiaojiang.iotkit.bean.http.Device;
 
-public class DeviceAdapter extends BaseQuickAdapter<DeviceResponse.DataBean, BaseViewHolder> {
-    public DeviceAdapter(int layoutResId, @Nullable List<DeviceResponse.DataBean> data) {
+public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
+    public DeviceAdapter(int layoutResId, @Nullable List<Device> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, DeviceResponse.DataBean item) {
+    protected void convert(BaseViewHolder helper, Device item) {
         if ("Y".equals(item.getIsAdmin())) {
             helper.setGone(R.id.iv_device_admin, false);
             helper.setGone(R.id.tv_device_swipe_menu_modify, true);

@@ -1,9 +1,12 @@
 package cc.xiaojiang.headspring.iotkit;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.orhanobut.logger.Logger;
 
+import cc.xiaojiang.headspring.activity.LoginActivity;
+import cc.xiaojiang.headspring.base.MyApplication;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
@@ -14,6 +17,7 @@ import cc.xiaojiang.headspring.utils.DbUtils;
 import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
     public static final String APP_Source = "zd0c383";
@@ -52,7 +56,12 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     @Override
     public void logout(IotKitAccountCallback iotKitAccountCallback) {
-
+        DbUtils.clear();
+        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        MyApplication.getInstance().getApplicationContext().startActivity(intent);
+        Logger.d("重新登陆");
+        iotKitAccountCallback.onSuccess();
     }
 
     @Override

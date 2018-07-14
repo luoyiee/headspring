@@ -11,15 +11,16 @@ import java.util.List;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.model.bean.ProductResp;
 import cc.xiaojiang.headspring.utils.ImageLoader;
+import cc.xiaojiang.iotkit.bean.http.Product;
 
-public class ProductAdapter extends BaseQuickAdapter<ProductResp.DataBean, BaseViewHolder> {
-    public ProductAdapter(int layoutResId, @Nullable List<ProductResp.DataBean> data) {
+public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
+    public ProductAdapter(int layoutResId, @Nullable List<Product> data) {
         super(layoutResId, data);
     }
 
 
     @Override
-    protected void convert(BaseViewHolder helper, ProductResp.DataBean item) {
+    protected void convert(BaseViewHolder helper, Product item) {
         helper.setText(R.id.tv_product_name, item.getProductName());
         if (TextUtils.isEmpty(item.getProductIcon())) {
             // TODO: 2018/6/21 加载本地图片

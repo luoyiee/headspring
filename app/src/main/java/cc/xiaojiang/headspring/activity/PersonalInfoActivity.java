@@ -49,7 +49,10 @@ import cc.xiaojiang.headspring.utils.AccountUtils;
 import cc.xiaojiang.headspring.utils.GetJsonDataUtil;
 import cc.xiaojiang.headspring.utils.ImageLoader;
 import cc.xiaojiang.headspring.utils.TakePhotoUtils;
+import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.headspring.widget.OptionPickerHelper;
+import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
+import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.schedulers.Schedulers;
 
@@ -168,7 +171,17 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                 showCityPicker();
                 break;
             case R.id.btn_log_out:
-                AccountUtils.logout();
+                IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
+                    @Override
+                    public void onSuccess() {
+                        ToastUtils.show("请重新登录");
+                    }
+
+                    @Override
+                    public void onFailed(String msg) {
+
+                    }
+                });
                 break;
             default:
                 break;

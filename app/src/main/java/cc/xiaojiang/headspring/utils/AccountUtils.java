@@ -16,11 +16,6 @@ public class AccountUtils {
     }
 
     public static void logout() {
-        DbUtils.clear();
-        IotKitConnectionManager.getInstance().disconnected();
-        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        MyApplication.getInstance().getApplicationContext().startActivity(intent);
-        Logger.d("重新登陆");
+
     }
 }

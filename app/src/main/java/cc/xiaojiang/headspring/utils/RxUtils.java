@@ -26,10 +26,10 @@ public class RxUtils {
 //     * @param <T> 指定的泛型类型
 //     * @return ObservableTransformer
 //     */
-//    public static <T> ObservableTransformer<BaseModel<T>, T> handleResult() {
+//    public static <T> ObservableTransformer<BaseCallModel<T>, T> handleResult() {
 //        return httpResponseObservable ->
-//                httpResponseObservable.flatMap((Function<BaseModel<T>, Observable<T>>) baseResponse -> {
-//            if(baseResponse.getCode() == BaseModel.SUCCESS && baseResponse.getResult() != null) {
+//                httpResponseObservable.flatMap((Function<BaseCallModel<T>, Observable<T>>) baseResponse -> {
+//            if(baseResponse.getCode() == BaseCallModel.SUCCESS && baseResponse.getResult() != null) {
 //                return createData(baseResponse.getResult());
 //            } else {
 //                return Observable.error(new ApiException(baseResponse.getMsg()));
