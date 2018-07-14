@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:layout_marginBottom="8dp"
-        android:text="上海竞源环保设备有限公司"
+        android:text="江苏量波智能科技有限公司"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
