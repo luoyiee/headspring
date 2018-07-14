@@ -1,50 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_rank"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+              android:id="@+id/ll_rank"
+              android:layout_width="match_parent"
+              android:layout_height="48dp"
+              android:gravity="center"
+              android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+    <TextView
+        android:id="@+id/tv_rank_rank"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:text="1"
+        android:textColor="@color/white"/>
 
-        <TextView
-            android:id="@+id/tv_rank_rank"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/tv_rank_province"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="浙江"
+        android:textColor="@color/white"/>
 
-        <TextView
-            android:id="@+id/tv_rank_province"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="浙江"
-            android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/tv_rank_city"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="宁波市"
+        android:textColor="@color/white"/>
 
-        <TextView
-            android:id="@+id/tv_rank_city"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="宁波市"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/tv_rank_aqi"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="73"
-            android:textColor="@color/white" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_rank_aqi"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="73"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

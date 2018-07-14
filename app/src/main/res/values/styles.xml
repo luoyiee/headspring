@@ -72,6 +72,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="shareTextStyle" parent="common_14_black_text">
+        <item name="icon_direction">top</item>
+        <item name="icon_width">40dp</item>
+        <item name="icon_height">40dp</item>
+    </style>
+
 
     <style name="control_status_label" parent="common_14_white_text">
 

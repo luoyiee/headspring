@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,10 +44,10 @@ public class ScreenShotUtils {
         int width = ScreenUtils.getScreenWidth(activity);
         int height = ScreenUtils.getScreenHeight(activity);
         int toolBarHeight = getToolBarHeight(activity);
-        Bitmap ret = Bitmap.createBitmap(bmp, 0,
-                statusBarHeight + toolBarHeight,
-                width, height - statusBarHeight - toolBarHeight - ScreenUtils.dip2px(activity,
-                        160));
+        Bitmap ret = Bitmap.createBitmap(bmp, 0, statusBarHeight + toolBarHeight * 7/ 10,
+                width,
+                height - statusBarHeight - toolBarHeight * 7/ 10 - ScreenUtils.dip2px(activity,
+                        180));
         view.destroyDrawingCache();
         return ret;
     }
@@ -67,6 +69,30 @@ public class ScreenShotUtils {
         int toolBarHeight = ta.getDimensionPixelSize(0, -1);
         ta.recycle();
         return toolBarHeight;
+    }
+
+
+    //把布局变成Bitmap
+    public static Bitmap getViewBitmap(View view) {
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();  //启用DrawingCache并创建位图
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
+        view.setDrawingCacheEnabled(false);
+        return bitmap;//禁用DrawingCahce否则会影响性能
+    }
+
+    public static  Bitmap loadBitmapFromView(View v) {
+        int w = v.getWidth();
+        int h = v.getHeight();
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmp);
+
+        c.drawColor(Color.WHITE);
+        /** 如果不设置canvas画布为白色，则生成透明 */
+
+        v.layout(0, 0, w, h);
+        v.draw(c);
+        return bmp;
     }
 
 }

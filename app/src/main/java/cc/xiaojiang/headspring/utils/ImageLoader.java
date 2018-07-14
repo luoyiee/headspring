@@ -46,4 +46,11 @@ public class ImageLoader {
                 .load(file)
                 .into(imageView);
     }
+
+    public static void loadImageNoMemory(Context context, String url, ImageView imageView) {
+        Glide.with(context)
+                .load(url)
+                .skipMemoryCache(true)
+                .into(imageView);
+    }
 }
