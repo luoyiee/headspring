@@ -21,6 +21,7 @@ import cc.xiaojiang.headspring.model.http.LoginBody;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
+import cc.xiaojiang.iotkit.wifi2.IotKitWifiSetupManager;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 

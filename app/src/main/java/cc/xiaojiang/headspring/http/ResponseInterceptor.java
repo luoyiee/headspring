@@ -9,6 +9,8 @@ import cc.xiaojiang.headspring.http.model.BaseModel;
 import cc.xiaojiang.headspring.model.http.LoginModel;
 import cc.xiaojiang.headspring.utils.AccountUtils;
 import cc.xiaojiang.headspring.utils.DbUtils;
+import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
+import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -61,7 +63,7 @@ public class ResponseInterceptor implements Interceptor {
                 return chain.proceed(newRequest);//重新发起请求，此时是新的token
             } else {
                 //                AppStatusUtils.logout();
-                AccountUtils.logout();
+                IotKitAccountManager.getInstance().logout(null);
             }
         }
         return response;

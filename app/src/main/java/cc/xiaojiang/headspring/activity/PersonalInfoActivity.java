@@ -332,7 +332,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
 
     @Override
     public void takeCancel() {
-        Logger.d("take photo cancel");
+        Logger.d("take photo stopWifiConnect");
     }
 
     @Override

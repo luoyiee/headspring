@@ -58,7 +58,7 @@ public class WifiConfirmActivity extends BaseActivity {
         String ssid = mEdTxtWifiConfirmSsid.getText().toString();
         WifiSetupInfo wifiSetupInfo = new WifiSetupInfo();
         wifiSetupInfo.setProductKey(mProductKey);
-        wifiSetupInfo.setProductVendor(WifiSetupInfo.VENDOR_ESPRESSIF);
+        wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_ESPRESSIF);
         Intent intent = new Intent(this, WifiConnectActivity.class);
         intent.putExtra(Constant.WIFI_SSID, ssid);
         intent.putExtra(Constant.WIFI_PASSWORD, password);
