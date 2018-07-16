@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
 
 import cc.xiaojiang.headspring.R;
@@ -14,6 +15,8 @@ import cc.xiaojiang.headspring.utils.ImageLoader;
 import cc.xiaojiang.iotkit.bean.http.Device;
 
 public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
+    private HashMap<String, Boolean> mOnlineStatusMap = new HashMap<>();
+
     public DeviceAdapter(int layoutResId, @Nullable List<Device> data) {
         super(layoutResId, data);
     }
@@ -42,5 +45,10 @@ public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
                 .addOnClickListener(R.id.tv_device_swipe_menu_share)
                 .addOnClickListener(R.id.tv_device_swipe_menu_delete);
 
+    }
+
+    public void updateOnlineStatus(String deviceId, boolean isOnline) {
+        mOnlineStatusMap.put(deviceId, isOnline);
+        notifyDataSetChanged();
     }
 }

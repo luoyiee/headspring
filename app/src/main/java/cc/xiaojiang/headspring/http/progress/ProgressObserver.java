@@ -39,13 +39,13 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
     public void onSubscribe(Disposable d) {
         mDisposable = d;
         showProgressDialog();
-        com.orhanobut.logger.Logger.d("onSubscribe");
+//        com.orhanobut.logger.Logger.d("onSubscribe");
     }
 
     @Override
     public void onNext(T t) {
         onSuccess(t);
-        com.orhanobut.logger.Logger.d("onNext");
+//        com.orhanobut.logger.Logger.d("onNext");
     }
 
     @Override
@@ -53,7 +53,6 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
         dismissProgressDialog();
         ToastUtils.show(e.getMessage());
         com.orhanobut.logger.Logger.e(e.getMessage());
-        com.orhanobut.logger.Logger.d("onError");
         if (ApiException.class.isInstance(e)) {
             // TODO: 2018/5/16
         } else if (HttpException.class.isInstance(e)) {
@@ -66,12 +65,12 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
     @Override
     public void onComplete() {
         dismissProgressDialog();
-        com.orhanobut.logger.Logger.d("onComplete");
+//        com.orhanobut.logger.Logger.d("onComplete");
     }
 
     @Override
     public void onCancelProgress() {
-        com.orhanobut.logger.Logger.d("onCancelProgress");
+//        com.orhanobut.logger.Logger.d("onCancelProgress");
         mDisposable.dispose();
     }
 

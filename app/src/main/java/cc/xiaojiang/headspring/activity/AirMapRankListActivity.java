@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,8 +26,10 @@ import cc.xiaojiang.headspring.model.http.AirRankModel;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
+import cc.xiaojiang.headspring.utils.DbUtils;
 import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.headspring.utils.ScreenShotUtils;
+import cc.xiaojiang.headspring.utils.ToastUtils;
 
 public class AirMapRankListActivity extends BaseActivity implements TabLayout
         .OnTabSelectedListener {
@@ -84,24 +87,17 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
         mRankAdapter = new RankAdapter(R.layout.item_rank, mRankModels);
         mRvRankCity.setLayoutManager(new LinearLayoutManager(this));
         mRvRankCity.setAdapter(mRankAdapter);
-//        mRankAdapter.addHeaderView(getHeaderView());
         getRankList();
-    }
-
-    private View getHeaderView() {
-        View headerView = getLayoutInflater().inflate(R.layout.item_rank, null);
-        LinearLayout linearLayout = headerView.findViewById(R.id.ll_rank);
-        linearLayout.setBackgroundColor(Color.parseColor("#9ADFDA"));
-        mHeaderRank = headerView.findViewById(R.id.tv_rank_rank);
-        mHeaderProvice = headerView.findViewById(R.id.tv_rank_province);
-        mHeaderCity = headerView.findViewById(R.id.tv_rank_city);
-        mHeaderAqi = headerView.findViewById(R.id.tv_rank_aqi);
-        return headerView;
     }
 
     private void getRankList() {
         mRankModels.clear();
-        RetrofitHelper.getService().airRankList("宁波", TYPE_DAY)
+        String city = DbUtils.getLocationCity();
+        if (TextUtils.isEmpty(city)) {
+            ToastUtils.show("请同意我们的定位权限");
+            return;
+        }
+        RetrofitHelper.getService().airRankList(city, TYPE_DAY)
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
                 .subscribe(new ProgressObserver<List<AirRankModel>>(this) {
@@ -111,7 +107,6 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
                     }
                 });
     }
-
 
 
     @Override

@@ -30,6 +30,7 @@ import cc.xiaojiang.headspring.http.RetrofitHelper;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
 import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.headspring.model.event.LocationEvent;
+import cc.xiaojiang.headspring.utils.DbUtils;
 import cc.xiaojiang.headspring.utils.LocationClient;
 import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.headspring.utils.ScreenShotUtils;
@@ -139,20 +140,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ctv_chain:
                 ToastUtils.show("区块链");
-                //                IotKitDeviceManager.getInstance().deviceBind("bff503",
-                //                        "xBcqwpFWINOUzjO21X3E", new
-                //                                IotKitCallBack() {
-                //                                    @Override
-                //                                    public void onSuccess(String response) {
-                //
-                //                                    }
-                //
-                //                                    @Override
-                //                                    public void onError(int code, String
-                // errorMsg) {
-                //
-                //                                    }
-                //                                });
                 break;
             case R.id.ctv_map:
                 startToActivity(AirMapActivity.class);
@@ -232,9 +219,12 @@ public class MainActivity extends BaseActivity {
         AMapLocation aMapLocation = locationEvent.getMapLocation();
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
+                Logger.d(aMapLocation.toString());
                 //定位成功回调信息，设置相关消息
                 String district = aMapLocation.getDistrict();//城区信息
                 String street = aMapLocation.getStreet();//街道信息
+                String city = aMapLocation.getCity();//街道信息
+                DbUtils.setLocationCity(city);
                 mTvHomeLocation.setText(district + street);
                 requestWeatherAirData(aMapLocation.getCity());
             } else {
@@ -261,35 +251,40 @@ public class MainActivity extends BaseActivity {
 
     private void setView(HomeWeatherAirModel homeWeatherAirModel) {
         setAirView(homeWeatherAirModel);
-
         setWeather(homeWeatherAirModel.getNextWeather());
 
     }
 
     private void setWeather(List<HomeWeatherAirModel.NextWeatherBean> nextWeatherBeans) {
-        HomeWeatherAirModel.NextWeatherBean todayBean = nextWeatherBeans.get(0);
-        HomeWeatherAirModel.NextWeatherBean tomorrowBean = nextWeatherBeans.get(1);
-        HomeWeatherAirModel.NextWeatherBean AfterTomorrowBean = nextWeatherBeans.get(2);
-        setWeatherView(mTvWeatherToday,todayBean);
-        setWeatherView(mTvWeatherTomorrow,tomorrowBean);
-        setWeatherView(mTvWeatherAfterTomorrow,AfterTomorrowBean);
+        int size = nextWeatherBeans.size();
+        if (size == 3) {
+            HomeWeatherAirModel.NextWeatherBean todayBean = nextWeatherBeans.get(0);
+            HomeWeatherAirModel.NextWeatherBean tomorrowBean = nextWeatherBeans.get(1);
+            HomeWeatherAirModel.NextWeatherBean AfterTomorrowBean = nextWeatherBeans.get(2);
+            setWeatherView(mTvWeatherToday, todayBean);
+            setWeatherView(mTvWeatherTomorrow, tomorrowBean);
+            setWeatherView(mTvWeatherAfterTomorrow, AfterTomorrowBean);
+        } else {
+            Logger.e("error weather length:" + size);
+        }
     }
 
-    private void setWeatherView(TextView textView,HomeWeatherAirModel.NextWeatherBean weatherBean) {
+    private void setWeatherView(TextView textView, HomeWeatherAirModel.NextWeatherBean
+            weatherBean) {
         int space = ScreenUtils.dip2px(this, 2);
         int day = weatherBean.getDay();
         //方法1、
-        int qianWei=day%10000/1000;
-        int baiWei=day%1000/100;
-        int shiWei=day%100/10;
-        int geWei=day%10;
+        int qianWei = day % 10000 / 1000;
+        int baiWei = day % 1000 / 100;
+        int shiWei = day % 100 / 10;
+        int geWei = day % 10;
         textView.setText(new SpanUtils()
-                .appendLine(""+qianWei+baiWei+"/"+shiWei+geWei)
+                .appendLine("" + qianWei + baiWei + "/" + shiWei + geWei)
                 .appendLine().setLineHeight(space)
                 .appendImage(R.drawable.ic_logo2)
                 .appendLine()
                 .appendLine().setLineHeight(space)
-                .appendLine(weatherBean.getLowTemp()+"-"+weatherBean.getHighTemp()+"°C")
+                .appendLine(weatherBean.getLowTemp() + "-" + weatherBean.getHighTemp() + "°C")
                 .create());
     }
 
@@ -316,40 +311,4 @@ public class MainActivity extends BaseActivity {
                         (16, true)
                 .create());
     }
-
-    //    @OnClick({R.id.btn_bind, R.id.btn_device_list})
-    //    public void onViewClicked(View view) {
-    //        switch (view.getId()) {
-    //            case R.id.btn_bind:
-    //                IotKitDeviceManager.getInstance().deviceBind("bff503",
-    // "bopVpXFcyVbkYBhrhmHK", new
-    //                        IotKitCallBack() {
-    //                            @Override
-    //                            public void onSuccess(String response) {
-    //                                ToastUtils.show("绑定成功");
-    //
-    //                            }
-    //
-    //                            @Override
-    //                            public void onError(int code, String errorMsg) {
-    //
-    //                            }
-    //                        });
-    //                break;
-    //            case R.id.btn_device_list:
-    //                IotKitDeviceManager.getInstance().deviceList(new IotKitCallBack() {
-    //                    @Override
-    //                    public void onSuccess(String response) {
-    //                        startToActivity(DeviceListActivity.class);
-    //
-    //                    }
-    //
-    //                    @Override
-    //                    public void onError(int code, String errorMsg) {
-    //
-    //                    }
-    //                });
-    //                break;
-    //        }
-    //    }
 }

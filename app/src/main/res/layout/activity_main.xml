@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             android:background="@drawable/bg_main">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main">
 
     <TextView
         android:id="@+id/textView21"
@@ -14,7 +14,7 @@
         android:text="主页"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -25,7 +25,7 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/home_share"/>
+        app:srcCompat="@drawable/home_share" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/ctv_chain"
@@ -35,7 +35,7 @@
         app:icon_src_normal="@drawable/home_block_chain"
         app:layout_constraintEnd_toStartOf="@+id/iv_home_control"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_home_control"/>
+        app:layout_constraintTop_toTopOf="@+id/iv_home_control" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/ctv_map"
@@ -45,7 +45,7 @@
         android:text="  地图  "
         app:icon_src_normal="@drawable/home_map"
         app:layout_constraintStart_toStartOf="@+id/ctv_chain"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_chain"/>
+        app:layout_constraintTop_toBottomOf="@+id/ctv_chain" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/ctv_device"
@@ -55,7 +55,7 @@
         app:icon_src_normal="@drawable/home_equipment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/iv_home_control"
-        app:layout_constraintStart_toStartOf="@+id/iv_home_control"/>
+        app:layout_constraintStart_toStartOf="@+id/iv_home_control" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/ctv_shop"
@@ -65,7 +65,7 @@
         android:text="  商城  "
         app:icon_src_normal="@drawable/home_mall"
         app:layout_constraintEnd_toEndOf="@+id/ctv_personal"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_personal"/>
+        app:layout_constraintTop_toBottomOf="@+id/ctv_personal" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/ctv_personal"
@@ -75,7 +75,7 @@
         app:icon_src_normal="@drawable/home_personal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_home_control"
-        app:layout_constraintTop_toTopOf="@+id/iv_home_control"/>
+        app:layout_constraintTop_toTopOf="@+id/iv_home_control" />
 
     <ImageView
         android:id="@+id/iv_home_control"
@@ -85,7 +85,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ctv_device"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/home_logo"/>
+        app:srcCompat="@drawable/home_logo" />
 
     <TextView
         android:id="@+id/tv_home_location"
@@ -96,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView21"
-        tools:text="鄞州区"/>
+        tools:text="鄞州区" />
 
     <TextView
         android:id="@+id/tv_outdoor_pm"
@@ -107,7 +107,7 @@
         app:layout_constraintEnd_toEndOf="@+id/textView27"
         app:layout_constraintStart_toStartOf="@+id/textView27"
         app:layout_constraintTop_toBottomOf="@+id/textView30"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_outdoor_temperature"
@@ -115,7 +115,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_pm"
         app:layout_constraintEnd_toEndOf="@+id/textView28"
         app:layout_constraintStart_toStartOf="@+id/textView28"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_outdoor_humidity"
@@ -123,7 +123,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_temperature"
         app:layout_constraintEnd_toEndOf="@+id/textView29"
         app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/textView27"
@@ -133,7 +133,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView28"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_outdoor_pm"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_outdoor_pm" />
 
     <TextView
         android:id="@+id/textView28"
@@ -142,7 +142,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView27"
         app:layout_constraintEnd_toStartOf="@+id/textView29"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView27"/>
+        app:layout_constraintStart_toEndOf="@+id/textView27" />
 
     <TextView
         android:id="@+id/textView29"
@@ -152,7 +152,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView28"/>
+        app:layout_constraintStart_toEndOf="@+id/textView28" />
 
     <TextView
         android:id="@+id/textView30"
@@ -160,7 +160,7 @@
         android:text="室内PM2.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_indoor_pm"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_indoor_pm" />
 
     <TextView
         android:id="@+id/tv_indoor_pm"
@@ -172,7 +172,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_home_location"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/textView32"
@@ -185,35 +185,35 @@
         app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="@+id/tv_indoor_pm"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.706"/>
+        app:layout_constraintVertical_bias="0.706" />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/tv_weather_today"
         style="@style/common_14_white_text"
+        android:gravity="center"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
         app:layout_constraintEnd_toEndOf="@+id/textView27"
         app:layout_constraintStart_toStartOf="@+id/textView27"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/tv_weather_tomorrow"
         style="@style/common_14_white_text"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="@+id/textView28"
         app:layout_constraintStart_toStartOf="@+id/textView28"
         app:layout_constraintTop_toBottomOf="@+id/textView28"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_weather_after_tomorrow"
-        android:gravity="center"
         style="@style/common_14_white_text"
+        android:gravity="center"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
         app:layout_constraintEnd_toEndOf="@+id/textView29"
         app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
 
 </android.support.constraint.ConstraintLayout>

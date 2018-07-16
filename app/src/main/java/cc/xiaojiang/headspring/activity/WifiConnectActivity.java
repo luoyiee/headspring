@@ -9,13 +9,9 @@ import cc.xiaojiang.headspring.Constant;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.utils.ToastUtils;
-import cc.xiaojiang.iotkit.bean.http.DeviceBindRes;
-import cc.xiaojiang.iotkit.http.IotKitCallBack;
-import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
-import cc.xiaojiang.iotkit.http.IotKitHttpCallback2;
 import cc.xiaojiang.iotkit.wifi.WifiSetupInfo;
-import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupHelper;
-import cc.xiaojiang.iotkit.wifi.add.IDeviceAddListener;
+import cc.xiaojiang.iotkit.wifi2.IotKitWifiSetupManager;
+import cc.xiaojiang.iotkit.wifi2.WifiSetupCallback;
 
 public class WifiConnectActivity extends BaseActivity {
 
@@ -28,10 +24,14 @@ public class WifiConnectActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String ssid = intent.getStringExtra(Constant.WIFI_SSID);
-        String password = intent.getStringExtra(Constant.WIFI_PASSWORD);
         WifiSetupInfo wifiSetupInfo = intent.getParcelableExtra(Constant.DEVICE_INFO);
-        startWifiConfig(ssid, password, wifiSetupInfo);
+        startWifiConfig(wifiSetupInfo);
+    }
+
+    @Override
+    protected void onDestroy() {
+        IotKitWifiSetupManager.getInstance().stopWifiSetup();
+        super.onDestroy();
     }
 
     @Override
@@ -39,42 +39,22 @@ public class WifiConnectActivity extends BaseActivity {
         return R.layout.activity_wifi_connect;
     }
 
-    private void startWifiConfig(String ssid, String password, WifiSetupInfo wifiSetupInfo) {
-        IotKitWifiSetupHelper.getInstance().startAdd(this, wifiSetupInfo, ssid, password, new
-                IDeviceAddListener() {
+    private void startWifiConfig(WifiSetupInfo wifiSetupInfo) {
+        IotKitWifiSetupManager.getInstance().startWifiSetup(this, wifiSetupInfo, 60 * 1000, new
+                WifiSetupCallback() {
                     @Override
-                    public void deviceConnected() {
-                        mTvWifiConnectStatus.setText("设备联网成功");
+                    public void connectSucceed() {
 
                     }
 
                     @Override
-                    public void deviceAddSucceed(String deviceId) {
-                        // TODO: 2018/7/14 绑定设备写入sdk
-                        IotKitDeviceManager.getInstance().deviceBind(wifiSetupInfo.getProductKey(),
-                                deviceId, new IotKitHttpCallback2<DeviceBindRes>() {
-                                    @Override
-                                    public void onSuccess(DeviceBindRes data) {
-                                        mTvWifiConnectBindStatus.setText("设备绑定成功");
-                                    }
-
-                                    @Override
-                                    public void onError(String code, String errorMsg) {
-
-                                    }
-                                });
+                    public void joinSucceed(String deviceId) {
 
                     }
 
                     @Override
-                    public void deviceAddFailed(String errorCode) {
-                        ToastUtils.show("添加失败");
+                    public void joinFailed(String errorMsg) {
 
-                    }
-
-                    @Override
-                    public void deviceAddTimeout() {
-                        ToastUtils.show("添加超时");
                     }
                 });
     }

@@ -22,7 +22,6 @@ import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.iotkit.DeviceDataModel;
-import cc.xiaojiang.headspring.model.bean.DeviceResponse;
 import cc.xiaojiang.headspring.utils.AP1Utils;
 import cc.xiaojiang.headspring.utils.ScreenShotUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
@@ -30,6 +29,7 @@ import cc.xiaojiang.headspring.view.AP1View2;
 import cc.xiaojiang.headspring.view.AP1View4;
 import cc.xiaojiang.headspring.view.CommonTextView;
 import cc.xiaojiang.headspring.widget.AP1TimingDialog;
+import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
@@ -63,7 +63,7 @@ public class DeviceControlActivity extends BaseActivity implements
     @BindView(R.id.tv_timing)
     CommonTextView mTvTiming;
 
-    private DeviceResponse.DataBean deviceData;
+    private Device mDevice;
     private IotKitReceivedCallback mIotKitReceivedCallback;
 
     private int mControlGear;
@@ -96,8 +96,8 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     private void initData() {
-        deviceData = getIntent().getParcelableExtra("device_data");
-        if (deviceData == null) {
+        mDevice = getIntent().getParcelableExtra("device_data");
+        if (mDevice == null) {
             ToastUtils.show("内部错误！");
             finish();
         }
@@ -107,7 +107,7 @@ public class DeviceControlActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
         IotKitConnectionManager.getInstance().addDataCallback(this);
-        IotKitConnectionManager.getInstance().queryStatus(deviceData.getProductKey(), deviceData
+        IotKitConnectionManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
                 .getDeviceId(), new IotKitActionCallback() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
@@ -242,7 +242,7 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     private void sendCmd(HashMap<String, String> hashMap) {
-        IotKitConnectionManager.getInstance().sendCmd(deviceData.getProductKey(), deviceData
+        IotKitConnectionManager.getInstance().sendCmd(mDevice.getProductKey(), mDevice
                 .getDeviceId(), hashMap, new IotKitActionCallback() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
@@ -257,8 +257,8 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     @Override
-    public void messageArrived(String deviceId, String data) {
-        if (!deviceId.equals(deviceData.getDeviceId())) {
+    public void messageArrived(String id, String deviceId, String data) {
+        if (!deviceId.equals(mDevice.getDeviceId())) {
             Logger.e("error device!");
             return;
         }
@@ -323,7 +323,7 @@ public class DeviceControlActivity extends BaseActivity implements
 
     @Override
     public boolean filter(String deviceId) {
-        return !deviceId.equals(deviceData.getDeviceId());
+        return !deviceId.equals(mDevice.getDeviceId());
     }
 
 

@@ -9,6 +9,10 @@ public class DbUtils {
     private static ASimpleCache aSimpleCache = ASimpleCache.get(MyApplication.getInstance(),
             CACHE_NAME);
 
+    public static void clear(){
+        aSimpleCache.clear();
+    }
+
     /**
      * key string
      */
@@ -16,6 +20,7 @@ public class DbUtils {
     private static final String XJ_USER_ID = "xj_user_id";
     private static final String ACCESS_TOKEN = "access_token";
     private static final String REFRESH_TOKEN = "refresh_token";
+    private static final String LOCATION_CITY = "location_city";
 
     /**
      * 用户ID
@@ -61,8 +66,15 @@ public class DbUtils {
         aSimpleCache.put(XJ_USER_ID, xjUserId);
     }
 
-    public static void clear(){
-        aSimpleCache.clear();
-    }
 
+    /**
+    *用户定位城市
+    */
+    public static void setLocationCity(String city) {
+        aSimpleCache.put(LOCATION_CITY, city);
+
+    }
+    public static String getLocationCity() {
+        return aSimpleCache.getAsString(LOCATION_CITY);
+    }
 }

@@ -9,15 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,12 +22,10 @@ import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.adapter.ProductAdapter;
 import cc.xiaojiang.headspring.base.BaseActivity;
-import cc.xiaojiang.headspring.model.bean.ProductResp;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.bean.http.Product;
-import cc.xiaojiang.iotkit.http.IotKitCallBack;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
-import cc.xiaojiang.iotkit.http.IotKitHttpCallback2;
+import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -74,7 +69,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
 
 
     private void getProducts() {
-        IotKitDeviceManager.getInstance().productList(new IotKitHttpCallback2<List<Product>>() {
+        IotKitDeviceManager.getInstance().productList(new IotKitHttpCallback<List<Product>>() {
             @Override
             public void onSuccess(List<Product> data) {
                 mProductAdapter.setNewData(data);

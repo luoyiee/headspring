@@ -2,7 +2,6 @@ package cc.xiaojiang.headspring.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -23,14 +21,11 @@ import butterknife.BindView;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.adapter.DeviceAdapter;
 import cc.xiaojiang.headspring.base.BaseActivity;
-import cc.xiaojiang.headspring.model.bean.DeviceResponse;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.bean.http.DeviceNickRes;
-import cc.xiaojiang.iotkit.bean.http.DeviceShareRes;
 import cc.xiaojiang.iotkit.bean.http.DeviceUnbindRes;
-import cc.xiaojiang.iotkit.http.IotKitCallBack;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
-import cc.xiaojiang.iotkit.http.IotKitHttpCallback2;
+import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
@@ -88,10 +83,11 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     }
 
     private void getDevices() {
-        IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback2<List<Device>>() {
+        IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
             @Override
             public void onSuccess(List<Device> data) {
                 mDeviceAdapter.setNewData(data);
+                queryDevices(data);
 
             }
 
@@ -107,10 +103,9 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     /**
      * 批量查询设备状态
      */
-    private void queryDevices(List<DeviceResponse.DataBean> data) {
+    private void queryDevices(List<Device> data) {
         for (int i = 0; i < data.size(); i++) {
-            DeviceResponse.DataBean dataBean = data.get(i);
-            queryDevice(dataBean);
+            queryDevice(data.get(i));
         }
     }
 
@@ -118,19 +113,19 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     /**
      * 查询单个设备状态
      */
-    public void queryDevice(DeviceResponse.DataBean dataBean) {
-        IotKitConnectionManager.getInstance().queryStatus(dataBean.getProductKey(),
-                dataBean.getDeviceId(), new IotKitActionCallback() {
+    public void queryDevice(Device device) {
+        IotKitConnectionManager.getInstance().queryStatus(device.getProductKey(),
+                device.getDeviceId(), new IotKitActionCallback() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
-                        Logger.d("查询设备成功，deviceId=" + dataBean.getDeviceId());
+                        Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
 
                     }
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable
                             exception) {
-                        Logger.d("查询设备失败，deviceId=" + dataBean.getDeviceId());
+                        Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
                     }
                 });
     }
@@ -138,10 +133,11 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        Device device= (Device) adapter.getItem(position);
+        Device device = (Device) adapter.getItem(position);
+        Intent intent;
         switch (view.getId()) {
             case R.id.ll_device_content:
-                Intent intent = new Intent(this, DeviceControlActivity.class);
+                intent = new Intent(this, DeviceControlActivity.class);
                 intent.putExtra("device_data", device);
                 startActivity(intent);
                 break;
@@ -149,11 +145,12 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 modifyDevice(device.getDeviceId(), "test");
                 break;
             case R.id.tv_device_swipe_menu_share:
-                shareDevice(device.getProductKey(), device.getDeviceId());
+                intent = new Intent(this, ShareQrCodeActivity.class);
+                intent.putExtra("device_data", device);
+                startActivity(intent);
                 break;
             case R.id.tv_device_swipe_menu_delete:
-//                deleteDevice(dataBean.getProductKey(), dataBean.getDeviceId());
-                shareDevice(device.getProductKey(), device.getDeviceId());
+                deleteDevice(device.getProductKey(), device.getDeviceId());
                 break;
 
         }
@@ -161,7 +158,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     private void modifyDevice(String deviceId, String test) {
         IotKitDeviceManager.getInstance().deviceNick(deviceId, test, new
-                IotKitHttpCallback2<DeviceNickRes>() {
+                IotKitHttpCallback<DeviceNickRes>() {
                     @Override
                     public void onSuccess(DeviceNickRes data) {
 
@@ -176,25 +173,10 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 });
     }
 
-    private void shareDevice(String productKey, String deviceId) {
-        IotKitDeviceManager.getInstance().sendDeviceShare(productKey, deviceId, new
-                IotKitHttpCallback2<DeviceShareRes>() {
-                    @Override
-                    public void onSuccess(DeviceShareRes data) {
-
-                    }
-
-                    @Override
-                    public void onError(String code, String errorMsg) {
-
-                    }
-
-                });
-    }
 
     private void deleteDevice(String productKey, String deviceId) {
         IotKitDeviceManager.getInstance().deviceUnbind(productKey, deviceId, new
-                IotKitHttpCallback2<DeviceUnbindRes>() {
+                IotKitHttpCallback<DeviceUnbindRes>() {
                     @Override
                     public void onSuccess(DeviceUnbindRes data) {
 
@@ -208,10 +190,14 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 });
     }
 
-    @Override
-    public void messageArrived(String deviceId, String data) {
-//        updateDeviceStatus();
 
+    @Override
+    public void messageArrived(String deviceId, String onlineStatus, String data) {
+        if (onlineStatus.contains("online")) {
+            mDeviceAdapter.updateOnlineStatus(deviceId, true);
+        } else {
+            mDeviceAdapter.updateOnlineStatus(deviceId, false);
+        }
     }
 
     @Override

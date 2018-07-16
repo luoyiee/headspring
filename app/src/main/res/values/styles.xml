@@ -82,6 +82,7 @@
     <style name="control_status_label" parent="common_14_white_text">
 
     </style>
+
     <style name="device_control_bottom_text_icon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

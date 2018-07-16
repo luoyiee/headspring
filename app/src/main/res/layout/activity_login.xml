@@ -24,7 +24,8 @@
             android:gravity="center"
             android:text="手机号登陆"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_phone_number"

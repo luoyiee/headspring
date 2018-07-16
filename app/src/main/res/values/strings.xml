@@ -105,4 +105,5 @@
     <string name="share_wecaht_comment">微信朋友圈</string>
     <string name="share_qq">手机QQ</string>
     <string name="share_qq_zone">QQ空间</string>
+    <string name="title_activity_share_qr_code">设备共享</string>
 </resources>
