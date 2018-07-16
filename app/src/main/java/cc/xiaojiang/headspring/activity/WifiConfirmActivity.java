@@ -10,6 +10,7 @@ import butterknife.OnClick;
 import cc.xiaojiang.headspring.Constant;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.utils.ActivityCollector;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.wifi.WifiSetupInfo;
 import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupHelper;
@@ -27,6 +28,7 @@ public class WifiConfirmActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCollector.addActivity(this);
         Intent intent = getIntent();
         if (intent == null) {
             ToastUtils.show("参数错误");
@@ -35,6 +37,12 @@ public class WifiConfirmActivity extends BaseActivity {
         }
         mProductKey = intent.getStringExtra("product_key");
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityCollector.removeActivity(this);
+        super.onDestroy();
     }
 
     @Override

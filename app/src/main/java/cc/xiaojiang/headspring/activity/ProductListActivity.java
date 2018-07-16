@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.adapter.ProductAdapter;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.utils.ActivityCollector;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.bean.http.Product;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
@@ -48,8 +49,15 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCollector.addActivity(this);
         initView();
         getProducts();
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityCollector.removeActivity(this);
+        super.onDestroy();
     }
 
     private void initView() {
@@ -138,6 +146,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
                         return;
                     }
                     Logger.d("解析成功，result=" + result);
+                    // TODO: 2018/7/16 区别分享和添加
                     // TODO: 2018/7/14 解析productKey
                     startToConfigInfoActivity(result);
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {

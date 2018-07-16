@@ -23,7 +23,7 @@
             android:id="@+id/iv_device_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:civ_border_color="@color/device_status_on"
+            app:civ_border_color="@color/device_status_offline"
             app:civ_border_width="1dp"
             tools:src="@drawable/test_24dp" />
 
@@ -70,10 +70,10 @@
             android:layout_height="match_parent"
             android:background="@color/swipe_menu_modify"
             android:gravity="center"
-            android:visibility="gone"
             android:padding="16dp"
             android:text="修改"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_device_swipe_menu_share"
@@ -82,9 +82,9 @@
             android:background="@color/swipe_menu_share"
             android:gravity="center"
             android:padding="16dp"
-            android:visibility="gone"
             android:text="共享"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_device_swipe_menu_delete"

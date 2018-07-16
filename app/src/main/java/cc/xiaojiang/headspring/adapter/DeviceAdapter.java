@@ -8,14 +8,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.model.bean.DeviceResponse;
 import cc.xiaojiang.headspring.utils.ImageLoader;
 import cc.xiaojiang.iotkit.bean.http.Device;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
-    private HashMap<String, Boolean> mOnlineStatusMap = new HashMap<>();
+    private Map<String, String> mOnlineStatusMap = new HashMap();
 
     public DeviceAdapter(int layoutResId, @Nullable List<Device> data) {
         super(layoutResId, data);
@@ -34,12 +37,19 @@ public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
         }
         String deviceName = TextUtils.isEmpty(item.getDeviceNickname()) ? item
                 .getProductName() : item.getDeviceNickname();
-        helper.setText(R.id.tv_device_name, deviceName)
-                .setText(R.id.tv_device_status, "已开启");
+        helper.setText(R.id.tv_device_name, deviceName);
         ImageLoader.loadImage(mContext, item.getProductIcon(), helper.getView(R.id.iv_device_icon));
-        // TODO: 2018/6/29 设备状态
-//        CircleImageView circleImageView = helper.getView(R.id.iv_device_icon);
-//        circleImageView.setBorderColor();
+        CircleImageView circleImageView = helper.getView(R.id.iv_device_icon);
+        String onlineStatus = mOnlineStatusMap.get(item.getDeviceId());
+        if (onlineStatus != null && onlineStatus.equals("online")) {
+            helper.setText(R.id.tv_device_status, "设备在线");
+            circleImageView.setBorderColor(mContext.getResources().getColor(R.color
+                    .device_status_online));
+        } else {
+            helper.setText(R.id.tv_device_status, "设备离线");
+            circleImageView.setBorderColor(mContext.getResources().getColor(R.color
+                    .device_status_offline));
+        }
         helper.addOnClickListener(R.id.ll_device_content)
                 .addOnClickListener(R.id.tv_device_swipe_menu_modify)
                 .addOnClickListener(R.id.tv_device_swipe_menu_share)
@@ -47,8 +57,8 @@ public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
 
     }
 
-    public void updateOnlineStatus(String deviceId, boolean isOnline) {
-        mOnlineStatusMap.put(deviceId, isOnline);
+    public void updateOnlineStatus(String deviceId, String onlineStatus) {
+        mOnlineStatusMap.put(deviceId, onlineStatus);
         notifyDataSetChanged();
     }
 }

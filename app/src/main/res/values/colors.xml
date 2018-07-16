@@ -36,9 +36,8 @@
     <color name="divider_line">#a1a1a1</color>
     <color name="device_control_bg">#45C686</color>
 
-    <color name="device_status_on">@color/primary_blue</color>
-    <color name="device_status_off">#E5E7E6</color>
-    <color name="device_status_offline">#FEF089</color>
+    <color name="device_status_online">@color/primary_blue</color>
+    <color name="device_status_offline">#E5E7E6</color>
 
     <color name="air_purifier_background_excellent">#23c787</color>
     <color name="air_purifier_background_good">#f7b042</color>

@@ -8,6 +8,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.utils.ActivityCollector;
 import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.bean.http.ProductInfo;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
@@ -23,6 +24,7 @@ public class ConfigInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCollector.addActivity(this);
         Intent intent = getIntent();
         if (intent == null) {
             ToastUtils.show("参数错误");
@@ -34,8 +36,15 @@ public class ConfigInfoActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        ActivityCollector.removeActivity(this);
+        super.onDestroy();
+    }
+
     private void getProductInfo(String productKey) {
-        IotKitDeviceManager.getInstance().productInfo(productKey, new IotKitHttpCallback<ProductInfo>() {
+        IotKitDeviceManager.getInstance().productInfo(productKey, new
+                IotKitHttpCallback<ProductInfo>() {
             @Override
             public void onSuccess(ProductInfo data) {
 

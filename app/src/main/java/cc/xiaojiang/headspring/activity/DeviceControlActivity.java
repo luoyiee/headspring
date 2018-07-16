@@ -1,13 +1,16 @@
 package cc.xiaojiang.headspring.activity;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -257,7 +260,7 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     @Override
-    public void messageArrived(String id, String deviceId, String data) {
+    public void messageArrived(String deviceId, String onlineStatus, String data) {
         if (!deviceId.equals(mDevice.getDeviceId())) {
             Logger.e("error device!");
             return;
@@ -300,11 +303,28 @@ public class DeviceControlActivity extends BaseActivity implements
         } else {
             mTvSwitch.setText("开机");
         }
+        if (mUseTime < 2000) {
+            showChangeFilter();
+        }
+    }
+
+    private void showChangeFilter() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("更换滤芯");
+        builder.setMessage("滤网使用时间到了，请您及时更换滤芯!");
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
     }
 
     private void setBackground(int PM205) {
         String rate = AP1Utils.getRate(this, PM205);
-        if (mSwitch ==1) {
+        if (mSwitch == 1) {
             if (rate.equals(getString(R.string.air_purifier_rate_excellent))) {
                 getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
                         .color.air_purifier_background_excellent));

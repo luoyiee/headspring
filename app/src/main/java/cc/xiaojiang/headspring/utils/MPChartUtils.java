@@ -48,7 +48,8 @@ public class MPChartUtils {
      * @param yMin         y 轴最小值
      * @param isShowLegend 是否显示图例
      */
-    public static void configChart(CombinedChart mChart, List<String> mLabels, float yMax, float yMin, boolean isShowLegend) {
+    public static void configChart(CombinedChart mChart, List<String> mLabels, float yMax, float
+            yMin, boolean isShowLegend) {
 
         mChart.setDrawGridBackground(false);
         mChart.setDrawBorders(false);
@@ -193,7 +194,8 @@ public class MPChartUtils {
      * @param lineColor
      * @return
      */
-    public static LineDataSet getLineData(List<Entry> entries, String label, @ColorInt int textColor, @ColorInt int lineColor, boolean isFill) {
+    public static LineDataSet getLineData(List<Entry> entries, String label, @ColorInt int
+            textColor, @ColorInt int lineColor, boolean isFill) {
         LineDataSet dataSet = new LineDataSet(entries, label);
         // 设置曲线的颜色
         dataSet.setColor(lineColor);
@@ -212,7 +214,6 @@ public class MPChartUtils {
         dataSet.setHighlightEnabled(true);// 隐藏点击时候的高亮线
         //设置高亮线为透明色
         dataSet.setHighLightColor(Color.TRANSPARENT);
-
         if (isFill) {
             //是否设置填充曲线到x轴之间的区域
             dataSet.setDrawFilled(true);

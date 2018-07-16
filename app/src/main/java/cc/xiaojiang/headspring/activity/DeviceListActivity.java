@@ -44,7 +44,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         super.onCreate(savedInstanceState);
         IotKitConnectionManager.getInstance().addDataCallback(this);
         initView();
-        getDevices();
     }
 
     private void initView() {
@@ -55,6 +54,13 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         rvDeviceList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration
                 .VERTICAL));
         rvDeviceList.setAdapter(mDeviceAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDevices();
+
     }
 
     @Override
@@ -161,6 +167,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 IotKitHttpCallback<DeviceNickRes>() {
                     @Override
                     public void onSuccess(DeviceNickRes data) {
+                        getDevices();
 
                     }
 
@@ -179,7 +186,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 IotKitHttpCallback<DeviceUnbindRes>() {
                     @Override
                     public void onSuccess(DeviceUnbindRes data) {
-
+                        getDevices();
                     }
 
                     @Override
@@ -193,10 +200,10 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     @Override
     public void messageArrived(String deviceId, String onlineStatus, String data) {
-        if (onlineStatus.contains("online")) {
-            mDeviceAdapter.updateOnlineStatus(deviceId, true);
+        if (onlineStatus.startsWith("online")) {
+            mDeviceAdapter.updateOnlineStatus(deviceId, "online");
         } else {
-            mDeviceAdapter.updateOnlineStatus(deviceId, false);
+            mDeviceAdapter.updateOnlineStatus(deviceId, "offline");
         }
     }
 

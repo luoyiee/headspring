@@ -75,14 +75,18 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
                 .subscribe(new ProgressObserver<LunarInfoModel>(this) {
                     @Override
                     public void onSuccess(LunarInfoModel lunarInfoModel) {
-                        mTvLunarTime.setText(getString(R.string.lunar_info_time,lunarInfoModel.getLunarYear(),
-                                lunarInfoModel.getLunarMonthName(),lunarInfoModel.getLunarDayName()));
-                        mTvLunarYear.setText(getString(R.string.lunar_info_year,lunarInfoModel.getGanzhiYear(),
+                        mTvLunarTime.setText(getString(R.string.lunar_info_time, lunarInfoModel
+                                        .getLunarYear(),
+                                lunarInfoModel.getLunarMonthName(), lunarInfoModel
+                                        .getLunarDayName()));
+                        mTvLunarYear.setText(getString(R.string.lunar_info_year, lunarInfoModel
+                                        .getGanzhiYear(),
                                 lunarInfoModel.getZodiac()));
-                        mTvLunarMonthDay.setText(getString(R.string.lunar_info_month_day,lunarInfoModel.getGanzhiMonth(),
+                        mTvLunarMonthDay.setText(getString(R.string.lunar_info_month_day,
+                                lunarInfoModel.getGanzhiMonth(),
                                 lunarInfoModel.getGanzhiDay()));
                         mTvSolarTerms.setText(lunarInfoModel.getSolarTerm());
-                        mTvCalendarDay.setText(getString(R.string.int2String,calendar.getDay()));
+                        mTvCalendarDay.setText(getString(R.string.int2String, calendar.getDay()));
                     }
                 });
     }
