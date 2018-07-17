@@ -7,12 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+
+import org.eclipse.jetty.servlet.listener.ELContextCleaner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ import cc.xiaojiang.headspring.adapter.ProductAdapter;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.utils.ActivityCollector;
 import cc.xiaojiang.headspring.utils.ToastUtils;
+import cc.xiaojiang.iotkit.bean.http.AcceptShareRes;
 import cc.xiaojiang.iotkit.bean.http.Product;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
@@ -34,6 +38,7 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class ProductListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemClickListener {
+    private static final String QR_CODE_HOST = "https://www.pgyer.com";
 
     @BindView(R.id.ll_product_list_scan)
     LinearLayout llProductListScan;
@@ -129,6 +134,8 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //https://www.pgyer.com/DtLZ,8293bf3e124b511293b3f8f20f3bf190
+        //77ad957e5a530472f4605a669ba26b98
         /**
          * 处理二维码扫描结果
          */
@@ -146,15 +153,38 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
                         return;
                     }
                     Logger.d("解析成功，result=" + result);
-                    // TODO: 2018/7/16 区别分享和添加
-                    // TODO: 2018/7/14 解析productKey
-                    startToConfigInfoActivity(result);
+                    if (result.startsWith(QR_CODE_HOST)) {
+                        //二维码添加设备
+                        String[] strings = TextUtils.split(result, ",");
+                        if (strings.length == 2) {
+                            startToConfigInfoActivity(strings[1]);
+                        } else {
+                            ToastUtils.show("错误的二维码！");
+                        }
+                    } else if (result.length() == 32) {
+                        //二维码分享设备
+                        IotKitDeviceManager.getInstance().acceptDeviceShare(result, new
+                                IotKitHttpCallback<AcceptShareRes>() {
+                                    @Override
+                                    public void onSuccess(AcceptShareRes data) {
+                                        ToastUtils.show("绑定成功");
+                                        finish();
+
+                                    }
+
+                                    @Override
+                                    public void onError(String code, String errorMsg) {
+                                        ToastUtils.show(errorMsg);
+                                    }
+                                });
+                    } else {
+                        ToastUtils.show("错误的二维码！");
+                    }
+
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     ToastUtils.show("解析失败 请重新尝试!");
                 }
             }
         }
-
     }
-
 }

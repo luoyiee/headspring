@@ -52,10 +52,8 @@ public class ConfigInfoActivity extends BaseActivity {
 
             @Override
             public void onError(String code, String errorMsg) {
-
+                ToastUtils.show(errorMsg);
             }
-
-
         });
     }
 

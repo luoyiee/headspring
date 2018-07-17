@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -15,10 +16,13 @@ import cc.xiaojiang.headspring.view.WaveProgressView;
 
 public class FilterTimeRemainActivity extends BaseActivity {
     private static final String INTENT_FILTER_TIME = "intent_filter_time";
+    public static final int FLITER_MAX_VALUE = 2000;
     @BindView(R.id.view_filter_time_remain)
     WaveProgressView mViewFilterTimeRemain;
     @BindView(R.id.tv_filter_use_time)
     TextView mTvFilterUseTime;
+    @BindView(R.id.tv_filter_reset)
+    TextView mTvFilterReset;
 
     public static void actionStart(Context context, int userTime) {
         Intent intent = new Intent(context, FilterTimeRemainActivity.class);
@@ -35,10 +39,14 @@ public class FilterTimeRemainActivity extends BaseActivity {
 
     private void initData() {
         int useTime = getIntent().getIntExtra(INTENT_FILTER_TIME, 0);
-//        int useTime = intent.getIntExtra("use_time", 0);
-        mViewFilterTimeRemain.setMaxValue(2000);
-        mViewFilterTimeRemain.setValue(2000-useTime);
+        mViewFilterTimeRemain.setMaxValue(FLITER_MAX_VALUE);
+        mViewFilterTimeRemain.setValue(FLITER_MAX_VALUE - useTime);
         mTvFilterUseTime.setText(getString(R.string.filter_use_time, useTime));
+        if (useTime >= FLITER_MAX_VALUE) {
+            mTvFilterReset.setVisibility(View.VISIBLE);
+        } else {
+            mTvFilterReset.setVisibility(View.INVISIBLE);
+        }
 
     }
 

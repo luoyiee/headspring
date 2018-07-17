@@ -303,7 +303,7 @@ public class DeviceControlActivity extends BaseActivity implements
         } else {
             mTvSwitch.setText("开机");
         }
-        if (mUseTime < 2000) {
+        if (mUseTime >= 2000) {
             showChangeFilter();
         }
     }

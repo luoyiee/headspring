@@ -38,15 +38,17 @@ public class ShareQrCodeActivity extends BaseActivity {
                 .getDeviceId(), new IotKitHttpCallback<DeviceShareRes>() {
             @Override
             public void onSuccess(DeviceShareRes data) {
-
+                int size = ScreenUtils.dip2px(ShareQrCodeActivity.this, 150);
+                Bitmap bitmap = CodeUtils.createImage(data.getQrcode(), size, size, BitmapFactory
+                        .decodeResource(getResources(), R.mipmap.ic_launcher));
+                mIvShareQrCode.setImageBitmap(bitmap);
+                mIvShareQrCode.setBackground(getResources().getDrawable(R.drawable
+                        .border_color_accent));
             }
 
             @Override
             public void onError(String code, String errorMsg) {
-                int size = ScreenUtils.dip2px(ShareQrCodeActivity.this, 150);
-                Bitmap bitmap = CodeUtils.createImage(errorMsg, size, size, BitmapFactory
-                        .decodeResource(getResources(), R.mipmap.ic_launcher));
-                mIvShareQrCode.setImageBitmap(bitmap);
+
             }
         });
     }
