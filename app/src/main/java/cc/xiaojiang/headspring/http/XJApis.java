@@ -1,5 +1,7 @@
 package cc.xiaojiang.headspring.http;
 
+import android.util.ArrayMap;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -11,10 +13,12 @@ import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.headspring.model.http.LoginBody;
 import cc.xiaojiang.headspring.model.http.LoginModel;
 import cc.xiaojiang.headspring.model.http.LunarInfoModel;
+import cc.xiaojiang.headspring.model.http.UserInfoModel;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -52,4 +56,13 @@ public interface XJApis {
     @GET(HttpUrl.LUNAR_INFO)
     Observable<BaseModel<LunarInfoModel>> lunarInfo(@Query("day") String day);
 
+    @GET(HttpUrl.USER_INFO)
+    Observable<BaseModel<UserInfoModel>> userInfo();
+
+    @FormUrlEncoded
+    @POST(HttpUrl.USER_MODIFY)
+    Observable<BaseModel<String>> userModify(@FieldMap ArrayMap<String ,Object> map);
+
+    @GET(HttpUrl.QINIU_TOKEN)
+    Observable<BaseModel<String>> qiniuToken();
 }

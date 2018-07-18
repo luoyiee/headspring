@@ -49,7 +49,7 @@ public class ViewUtils {
         View view = activity.getCurrentFocus();
         if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null) {
+            if (inputMethodManager != null ) {
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }

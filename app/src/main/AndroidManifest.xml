@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cc.xiaojiang.headspring">
 
+    <uses-permission android:name="android.permission-group.LOCATION"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- 允许程序打开网络套接字 -->

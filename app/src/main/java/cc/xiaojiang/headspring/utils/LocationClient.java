@@ -7,30 +7,19 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
-import org.greenrobot.eventbus.EventBus;
-
-import cc.xiaojiang.headspring.model.event.LocationEvent;
-
 /**
  * @author :jinjiafeng
  * date:  on 18-7-11
  * description:
  */
 public class LocationClient implements AMapLocationListener {
-    private static final LocationClient INSTANCE = new LocationClient();
     private AMapLocationClient mLocationClient;
+    private onLocationChangeListener mLocationChangeListener;
 
-    private LocationClient() {
-
-    }
-
-    public static LocationClient getInstance() {
-        return INSTANCE;
-    }
-
-    public void startLocation() {
+    public void startLocation(onLocationChangeListener locationChangeListener) {
         if (mLocationClient != null) {
             mLocationClient.startLocation();
+            mLocationChangeListener = locationChangeListener;
         }
     }
 
@@ -57,7 +46,9 @@ public class LocationClient implements AMapLocationListener {
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        EventBus.getDefault().post(new LocationEvent(aMapLocation));
+        if (mLocationChangeListener != null) {
+            mLocationChangeListener.onLocationChanged(aMapLocation);
+        }
     }
 
     public void onDestroy() {
@@ -67,7 +58,13 @@ public class LocationClient implements AMapLocationListener {
     }
 
     public void stopLocation() {
-        mLocationClient.startLocation();
+        if(mLocationClient!=null){
+            mLocationClient.startLocation();
+        }
+    }
+
+    public interface onLocationChangeListener {
+        void onLocationChanged(AMapLocation aMapLocation);
     }
 
 }
