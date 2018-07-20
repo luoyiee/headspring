@@ -19,8 +19,6 @@ public class WifiConnectActivity extends BaseActivity {
 
     @BindView(R.id.tv_wifi_connect_status)
     TextView mTvWifiConnectStatus;
-    @BindView(R.id.tv_wifi_connect_bind_status)
-    TextView mTvWifiConnectBindStatus;
     @BindView(R.id.tv_wifi_connect_count_dowm)
     TextView mTvWifiConnectCountDowm;
 
@@ -32,7 +30,7 @@ public class WifiConnectActivity extends BaseActivity {
         ActivityCollector.addActivity(this);
         Intent intent = getIntent();
         WifiSetupInfo wifiSetupInfo = intent.getParcelableExtra(Constant.DEVICE_INFO);
-        mCountDownTimer = new CountDownTimer(60 * 1000, 1000) {
+        mCountDownTimer = new CountDownTimer(100 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 mTvWifiConnectCountDowm.setText(millisUntilFinished / 1000 + "s");
@@ -62,8 +60,9 @@ public class WifiConnectActivity extends BaseActivity {
     }
 
     private void startWifiSetup(WifiSetupInfo wifiSetupInfo) {
+        wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_ESPRESSIF);
         mCountDownTimer.start();
-        IotKitWifiSetupManager.getInstance().startWifiSetup(this, wifiSetupInfo, 60 * 1000, new
+        IotKitWifiSetupManager.getInstance().startWifiSetup(this, wifiSetupInfo, 100 * 1000, new
                 WifiSetupCallback() {
                     @Override
                     public void connectSucceed() {

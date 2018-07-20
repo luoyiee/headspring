@@ -76,8 +76,8 @@ public class DeviceControlActivity extends BaseActivity implements
     private int mTimingShutdown;
     private int mUseTime;
     private int mPM205;
-    private int mTempture;
-    private int mHumidity;
+//    private int mTempture;
+//    private int mHumidity;
 
     private int mAirQuality;
 
@@ -173,7 +173,8 @@ public class DeviceControlActivity extends BaseActivity implements
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         contentView.findViewById(R.id.tv_popup_history_data).setOnClickListener(v -> {
-            startToActivity(HistoryDataActivity.class);
+            HistoryDataActivity.actionStart(this, mDevice);
+
             popupWindow.dismiss();
         });
         popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec
@@ -281,14 +282,14 @@ public class DeviceControlActivity extends BaseActivity implements
         mTimingShutdown = Integer.parseInt(paramsBean.getTimingShutdown().getValue());
         mUseTime = Integer.parseInt(paramsBean.getUseTime().getValue());
         mPM205 = Integer.parseInt(paramsBean.getPM205().getValue());
-        mTempture = Integer.parseInt(paramsBean.getTempture().getValue());
-        mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
+//        mTempture = Integer.parseInt(paramsBean.getTempture().getValue());
+//        mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
         setBackground(mPM205);
         //绘制界面
         mTvAirPurifierView1Timing.setText(mTimingShutdown + "h");
 //        mTvAirPurifierView1Strainer.setText(mUseTime + "h");
-        mTvAirPurifierView3Temp.setText(mTempture + "°C");
-        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
+//        mTvAirPurifierView3Temp.setText(mTempture + "°C");
+//        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
         mViewAirPurifierPm25.setValue(mPM205);
         mViewAirPurifierGear.setGear(mControlGear);
 

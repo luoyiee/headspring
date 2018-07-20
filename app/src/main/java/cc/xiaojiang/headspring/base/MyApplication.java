@@ -28,7 +28,7 @@ public class MyApplication extends Application {
 
 //       XjConfig.init(this).configure();
 //        MobSDK.init(this);
-        IotKit.init(this, new IotKitAccountImpl());
+        IotKit.init(this, new IotKitAccountImpl(), true);
 //        if(!BuildConfig.DEBUG){
         Beta.autoCheckUpgrade = false;
         Bugly.init(getApplicationContext(), "be4413cd77", false);
