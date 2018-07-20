@@ -43,7 +43,8 @@ public class WifiConnectActivity extends BaseActivity {
 
             }
         };
-        startWifiConfig(wifiSetupInfo);
+        wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_MXCHIP);
+        startWifiSetup(wifiSetupInfo);
 
     }
 
@@ -60,7 +61,7 @@ public class WifiConnectActivity extends BaseActivity {
         return R.layout.activity_wifi_connect;
     }
 
-    private void startWifiConfig(WifiSetupInfo wifiSetupInfo) {
+    private void startWifiSetup(WifiSetupInfo wifiSetupInfo) {
         mCountDownTimer.start();
         IotKitWifiSetupManager.getInstance().startWifiSetup(this, wifiSetupInfo, 60 * 1000, new
                 WifiSetupCallback() {
@@ -71,7 +72,7 @@ public class WifiConnectActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void joinSucceed(String deviceId) {
+                    public void joinSucceed() {
                         mTvWifiConnectStatus.setText("设备绑定成功");
                         ToastUtils.show("设备绑定成功");
                         ActivityCollector.finishAll();

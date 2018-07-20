@@ -17,7 +17,7 @@ public class TestDataUtils {
         final Random random = new Random();
         final ArrayList<Entry> entries = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            final Entry entry = new Entry(i, random.nextInt(100) + 50);
+            final Entry entry = new Entry(i, random.nextInt(100) + 200);
             entries.add(entry);
         }
         return entries;
@@ -30,4 +30,5 @@ public class TestDataUtils {
         }
         return labels;
     }
+
 }

@@ -31,6 +31,8 @@ import cc.xiaojiang.iotkit.bean.http.AcceptShareRes;
 import cc.xiaojiang.iotkit.bean.http.Product;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
+import cc.xiaojiang.iotkit.util.IotKitQrCodeUtils;
+import cc.xiaojiang.iotkit.util.ParseQrCodeCallback;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -38,7 +40,7 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class ProductListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemClickListener {
-    private static final String QR_CODE_HOST = "https://www.pgyer.com";
+
 
     @BindView(R.id.ll_product_list_scan)
     LinearLayout llProductListScan;
@@ -144,6 +146,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
             if (null != data) {
                 Bundle bundle = data.getExtras();
                 if (bundle == null) {
+                    ToastUtils.show("解析错误！");
                     return;
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
@@ -153,34 +156,36 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
                         return;
                     }
                     Logger.d("解析成功，result=" + result);
-                    if (result.startsWith(QR_CODE_HOST)) {
-                        //二维码添加设备
-                        String[] strings = TextUtils.split(result, ",");
-                        if (strings.length == 2) {
-                            startToConfigInfoActivity(strings[1]);
-                        } else {
-                            ToastUtils.show("错误的二维码！");
+                    IotKitQrCodeUtils.parseQrCode(result, new ParseQrCodeCallback() {
+                        @Override
+                        public void onDeviceAdd(String productKey) {
+                            startToConfigInfoActivity(productKey);
                         }
-                    } else if (result.length() == 32) {
-                        //二维码分享设备
-                        IotKitDeviceManager.getInstance().acceptDeviceShare(result, new
-                                IotKitHttpCallback<AcceptShareRes>() {
-                                    @Override
-                                    public void onSuccess(AcceptShareRes data) {
-                                        ToastUtils.show("绑定成功");
-                                        finish();
 
-                                    }
+                        @Override
+                        public void onDeviceShare(String shareString) {
+                            IotKitDeviceManager.getInstance().acceptDeviceShare(result, new
+                                    IotKitHttpCallback<AcceptShareRes>() {
+                                        @Override
+                                        public void onSuccess(AcceptShareRes data) {
+                                            ToastUtils.show("添加成功");
+                                            finish();
 
-                                    @Override
-                                    public void onError(String code, String errorMsg) {
-                                        ToastUtils.show(errorMsg);
-                                    }
-                                });
-                    } else {
-                        ToastUtils.show("错误的二维码！");
-                    }
+                                        }
 
+                                        @Override
+                                        public void onError(String code, String errorMsg) {
+                                            ToastUtils.show(errorMsg);
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onParseFailed() {
+                            ToastUtils.show("二维码解析错误");
+
+                        }
+                    });
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     ToastUtils.show("解析失败 请重新尝试!");
                 }

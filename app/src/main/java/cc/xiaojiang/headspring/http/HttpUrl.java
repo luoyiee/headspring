@@ -4,7 +4,7 @@ public class HttpUrl {
     public static final String HOST = "http://47.98.104.64:20001/liangbo/api/";
 
     //登陆
-    public static final String LOGIN = "user/login";
+    public static final String LOGIN = "account/login";
     //意见反馈
     public static final String FEEDBACK = "feedback/view";
     //获取主页空气质量接口
