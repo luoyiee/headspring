@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:focusableInTouchMode="true"
-              android:focusable="true"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-              tools:context="cc.xiaojiang.headspring.activity.PersonalInfoActivity"
-              tools:showIn="@layout/activity_personal_info">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="cc.xiaojiang.headspring.activity.PersonalInfoActivity"
+    tools:showIn="@layout/activity_personal_info">
 
     <RelativeLayout
         android:id="@+id/rl_avatar"
@@ -21,14 +21,14 @@
             android:id="@+id/civ_avatar"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            tools:background="@mipmap/ic_launcher"/>
+            tools:background="@mipmap/ic_launcher" />
 
         <TextView
             style="@style/personal_info_right_text"
-            android:text="@string/personal_info_change_name"/>
+            android:text="@string/personal_info_change_name" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_vertical_line"/>
+    <include layout="@layout/layout_vertical_line" />
 
     <RelativeLayout
         android:id="@+id/rl_nickname"
@@ -37,8 +37,8 @@
         android:padding="18dp">
 
         <TextView
-            style="@style/common_16_black_text"
-            android:text="@string/personal_info_nickname"/>
+            style="@style/common_14_black_text"
+            android:text="@string/personal_info_nickname" />
 
         <EditText
             android:id="@+id/et_nickname"
@@ -48,10 +48,10 @@
             android:hint="@string/personal_info_hint_nickname"
             android:inputType="text"
             android:maxLines="1"
-            tools:text="ddd"/>
+            tools:text="ddd" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_vertical_line"/>
+    <include layout="@layout/layout_vertical_line" />
 
     <RelativeLayout
         android:id="@+id/rl_sex"
@@ -60,16 +60,16 @@
         android:padding="18dp">
 
         <TextView
-            style="@style/common_16_black_text"
-            android:text="@string/personal_info_sex"/>
+            style="@style/common_14_black_text"
+            android:text="@string/personal_info_sex" />
 
         <TextView
             android:id="@+id/tv_sex"
             style="@style/personal_info_right_text"
-            tools:text="女"/>
+            tools:text="女" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_vertical_line"/>
+    <include layout="@layout/layout_vertical_line" />
 
     <RelativeLayout
         android:id="@+id/rl_birthday"
@@ -78,16 +78,16 @@
         android:padding="18dp">
 
         <TextView
-            style="@style/common_16_black_text"
-            android:text="@string/personal_info_birthday"/>
+            style="@style/common_14_black_text"
+            android:text="@string/personal_info_birthday" />
 
         <TextView
             android:id="@+id/tv_birthday"
             style="@style/personal_info_right_text"
-            tools:text="1999-10-5"/>
+            tools:text="1999-10-5" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_divider_block_horizontal"/>
+    <include layout="@layout/layout_divider_block_horizontal" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,8 +95,8 @@
         android:padding="18dp">
 
         <TextView
-            style="@style/common_16_black_text"
-            android:text="@string/personal_info_phone"/>
+            style="@style/common_14_black_text"
+            android:text="@string/personal_info_phone" />
 
         <TextView
             android:id="@+id/tv_phone_number"
@@ -105,13 +105,13 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:ignore="RelativeOverlap"
-            tools:text="12345678911"/>
+            tools:text="12345678911" />
 
     </RelativeLayout>
 
-    <include layout="@layout/layout_vertical_line"/>
+    <include layout="@layout/layout_vertical_line" />
 
     <RelativeLayout
         android:id="@+id/rl_area"
@@ -120,28 +120,30 @@
         android:padding="18dp">
 
         <TextView
-            style="@style/common_16_black_text"
-            android:text="@string/personal_info_area"/>
+            style="@style/common_14_black_text"
+            android:text="@string/personal_info_area" />
 
         <TextView
             android:id="@+id/tv_area"
             style="@style/personal_info_right_text"
-            tools:text="浙江宁波"/>
+            tools:text="浙江宁波" />
     </RelativeLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="52dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/btn_log_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="36dp"
+        android:layout_marginStart="36dp"
         android:background="@drawable/bg_button"
         android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/personal_info_log_out"
         android:textColor="@color/white"
-        android:textSize="14sp"/>
+        android:textSize="14sp" />
 </LinearLayout>
