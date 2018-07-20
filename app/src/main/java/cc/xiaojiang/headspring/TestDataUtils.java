@@ -13,21 +13,22 @@ import java.util.Random;
  */
 public class TestDataUtils {
 
-    public static List<Entry> getChartData(){
+    public static List<Entry> getChartData(int count) {
         final Random random = new Random();
         final ArrayList<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            final Entry entry = new Entry(i, random.nextInt(40) + 5);
+        for (int i = 0; i < count; i++) {
+            final Entry entry = new Entry(i, random.nextInt(100) + 200);
             entries.add(entry);
         }
         return entries;
     }
 
-    public static List<String> getChartLabel(){
+    public static List<String> getChartLabel(int count) {
         final ArrayList<String> labels = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < count; i++) {
             labels.add(i + 1 + "/7");
         }
         return labels;
     }
+
 }
