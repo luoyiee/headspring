@@ -61,7 +61,7 @@ public interface XJApis {
 
     @FormUrlEncoded
     @POST(HttpUrl.USER_MODIFY)
-    Observable<BaseModel<String>> userModify(@FieldMap ArrayMap<String ,Object> map);
+    Observable<BaseModel<Object>> userModify(@FieldMap ArrayMap<String ,Object> map);
 
     @GET(HttpUrl.QINIU_TOKEN)
     Observable<BaseModel<String>> qiniuToken();

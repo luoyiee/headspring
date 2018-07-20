@@ -115,31 +115,26 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                 });
     }
     private void initUserInfo(UserInfoModel userInfo) {
-//        mSex = userInfo.getSex();
-//        mHeight = userInfo.getHeight();
-//        mWeight = userInfo.getWeight();
-//        ImageLoader.loadImage(this, userInfo.getAvatar(), mCivAvatar);
-//        mTvNickname.setText(userInfo.getNickname());
-//        mTvPhoneNumber.setText(userInfo.getMobile());
-//        mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
-//
-//        if (TextUtils.isEmpty(userInfo.getBirthday()) || EMPTY_BIRTHDAY.equals(userInfo.getBirthday())) {
-//            mTvAge.setText("请选择");
-//            mDate = new Date();
-//        } else {
-//            mDate = DateUtils.parse(userInfo.getBirthday());
-//            int age = getAge(mDate);
-//            mTvAge.setText(String.format(getString(R.string.int2String), age));
-//        }
-//
-//        mTvHeight.setText(String.format(getString(R.string.int2String), mHeight));
-//        mTvWeight.setText(String.format(getString(R.string.int2String), mWeight));
+        mSex = userInfo.getGender();
+        ImageLoader.loadImage(this, userInfo.getImgUrl(), mCivAvatar);
+        mEtNickname.setText(userInfo.getNickname());
+        mTvPhoneNumber.setText(getString(R.string.int2String,userInfo.getTelphone()));
+        mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
+        mTvArea.setText(userInfo.getArea());
+        if ((userInfo.getBirthday() == 0)) {
+            mTvBirthday.setText("请选择");
+            mDate = new Date();
+        } else {
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale
+                    .getDefault());
+            final String format = sdf.format(new Date(userInfo.getBirthday()));
+            mTvBirthday.setText(format);
+        }
     }
     @Override
     protected int getLayoutId() {
         return R.layout.activity_personal_info;
     }
-
 
     private void initJsonData() {
         /*
@@ -237,11 +232,10 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
      */
     private void requestEditInfo() {
         RetrofitHelper.getService().userModify(mUpdateMap)
-                .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<String>(this) {
+                .subscribe(new ProgressObserver<Object>(this) {
                     @Override
-                    public void onSuccess(String token) {
+                    public void onSuccess(Object token) {
                         ToastUtils.show(R.string.personal_update_success);
                         finish();
                     }

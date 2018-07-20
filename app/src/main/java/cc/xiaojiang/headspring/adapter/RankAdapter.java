@@ -24,8 +24,9 @@ public class RankAdapter extends BaseQuickAdapter<AirRankModel, BaseViewHolder> 
         }else{
             helper.setBackgroundColor(R.id.ll_rank, Color.TRANSPARENT) ;
         }
+        String[] path = item.getPath().split(",");
         helper.setText(R.id.tv_rank_rank, item.getRank()+"")
-                .setText(R.id.tv_rank_province, item.getProvince())
+                .setText(R.id.tv_rank_province, path[path.length-2])
                 .setText(R.id.tv_rank_city, item.getCity())
                 .setText(R.id.tv_rank_aqi, item.getAqi()+"");
     }

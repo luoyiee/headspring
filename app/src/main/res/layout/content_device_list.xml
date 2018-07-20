@@ -10,6 +10,7 @@
     tools:showIn="@layout/activity_device_list">
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_refresh_device"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -103,7 +103,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
+        getMenuInflater().inflate(R.menu.menu_share_dark, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

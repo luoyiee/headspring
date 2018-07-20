@@ -61,10 +61,10 @@
     <style name="homeTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="icon_direction">top</item>
-        <item name="icon_width">20dp</item>
-        <item name="icon_height">20dp</item>
+        <item name="icon_width">18dp</item>
+        <item name="icon_height">18dp</item>
         <item name="android:padding">8dp</item>
         <item name="border_color_normal">@color/light_grey</item>
         <item name="border_width_normal">1dp</item>

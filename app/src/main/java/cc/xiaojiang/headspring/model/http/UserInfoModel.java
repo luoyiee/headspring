@@ -43,7 +43,7 @@ public class UserInfoModel {
     }
 
     public Long getBirthday() {
-        return birthday;
+        return birthday == null ? 0 : birthday;
     }
 
     public String getArea() {

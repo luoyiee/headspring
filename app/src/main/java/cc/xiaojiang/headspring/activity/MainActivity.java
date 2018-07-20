@@ -20,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
+import cc.xiaojiang.headspring.WeatherIcon;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
@@ -265,7 +266,7 @@ public class MainActivity extends BaseActivity {
         textView.setText(new SpanUtils()
                 .appendLine("" + qianWei + baiWei + "/" + shiWei + geWei)
                 .appendLine().setLineHeight(space)
-                .appendImage(R.drawable.ic_logo2)
+                .appendImage(WeatherIcon.ICONS[weatherBean.getCode()])
                 .appendLine()
                 .appendLine().setLineHeight(space)
                 .appendLine(weatherBean.getLowTemp() + "-" + weatherBean.getHighTemp() + "°C")
@@ -274,24 +275,24 @@ public class MainActivity extends BaseActivity {
 
     private void setAirView(HomeWeatherAirModel homeWeatherAirModel) {
         mTvOutdoorPm.setText(new SpanUtils()
-                .append(homeWeatherAirModel.getPm25() + "").setFontSize(30, true).append("ug/m")
-                .setFontSize(18, true).append
+                .append(homeWeatherAirModel.getPm25() + "").setFontSize(26, true).append("ug/m")
+                .setFontSize(14, true).append
                         ("3").setSuperscript().setFontSize(16, true)
                 .create());
 
         mTvOutdoorTemperature.setText(new SpanUtils()
-                .append(homeWeatherAirModel.getOutTemp() + "").setFontSize(30, true).append("°C")
-                .setFontSize(18, true)
+                .append(homeWeatherAirModel.getOutTemp() + "").setFontSize(26, true).append("°C")
+                .setFontSize(14, true)
                 .create());
 
         mTvOutdoorHumidity.setText(new SpanUtils()
-                .append(homeWeatherAirModel.getOutHumidity() + "").setFontSize(30, true).append
-                        ("%").setFontSize(18, true)
+                .append(homeWeatherAirModel.getOutHumidity() + "").setFontSize(26, true).append
+                        ("%").setFontSize(14, true)
                 .create());
 
         mTvIndoorPm.setText(new SpanUtils()
-                .append("0.25").setFontSize(50, true)
-                .append("ug/m").setFontSize(20, true).append("3").setSuperscript().setFontSize
+                .append("0.25").setFontSize(48, true)
+                .append("ug/m").setFontSize(18, true).append("3").setSuperscript().setFontSize
                         (16, true)
                 .create());
     }

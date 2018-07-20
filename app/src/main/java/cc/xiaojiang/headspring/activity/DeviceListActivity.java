@@ -2,6 +2,7 @@ package cc.xiaojiang.headspring.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,10 +32,12 @@ import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
 public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
-        .OnItemChildClickListener, IotKitReceivedCallback {
+        .OnItemChildClickListener, IotKitReceivedCallback, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.rv_device_list)
     RecyclerView rvDeviceList;
+    @BindView(R.id.srl_refresh_device)
+    SwipeRefreshLayout mSrlRefreshDevice;
     private DeviceAdapter mDeviceAdapter;
     private List<Device> mDevices;
 
@@ -54,13 +57,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         rvDeviceList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration
                 .VERTICAL));
         rvDeviceList.setAdapter(mDeviceAdapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getDevices();
-
+        mSrlRefreshDevice.setOnRefreshListener(this);
     }
 
     @Override
@@ -75,12 +72,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_add) {
             startToActivity(ProductListActivity.class);
@@ -88,22 +79,29 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDevices();
+
+    }
+
     private void getDevices() {
         IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
             @Override
             public void onSuccess(List<Device> data) {
+                hideRefreshing();
                 mDeviceAdapter.setNewData(data);
                 queryDevices(data);
             }
 
             @Override
             public void onError(String code, String errorMsg) {
-
+                hideRefreshing();
             }
 
         });
     }
-
 
     /**
      * 批量查询设备状态
@@ -113,7 +111,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
             queryDevice(data.get(i));
         }
     }
-
 
     /**
      * 查询单个设备状态
@@ -135,6 +132,17 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void hideRefreshing() {
+        if (mSrlRefreshDevice.isRefreshing()) {
+            mSrlRefreshDevice.setRefreshing(false);
+        }
+    }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -209,5 +217,10 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     public boolean filter(String deviceId) {
         return false;
+    }
+
+    @Override
+    public void onRefresh() {
+        getDevices();
     }
 }

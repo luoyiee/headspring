@@ -81,7 +81,8 @@
     <string name="menu_add">添加</string>
 
     <string name="product_scan">扫描二维码添加设备</string>
-
+    <string name="personal_male">男</string>
+    <string name="personal_female">女</string>
     <string name="lunar_year_month">%d年%d月</string>
 
     <string name="lunar_info_time">%d %s %s日</string>
@@ -108,4 +109,5 @@
     <string name="title_activity_share_qr_code">设备共享</string>
     <string name="personal_not_update">请修改后保存</string>
     <string name="personal_update_success">修改成功</string>
+    <string name="main_my_air">我的空气</string>
 </resources>
