@@ -25,6 +25,34 @@ public class DynamicModel {
     private int like;
     private String url;
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setComment(int comment) {
+        this.comment = comment;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getCover() {
         return cover == null ? "" : cover;
     }

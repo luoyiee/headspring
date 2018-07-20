@@ -44,4 +44,9 @@ public class HttpUrl {
      */
     public static final String QINIU_TOKEN = "token/getQiniu";
 
+    /**
+     * 量波动态点赞接口
+     */
+    public static final String DYNAMIC_LIKE = "dynamic/like";
+
 }

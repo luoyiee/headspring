@@ -65,4 +65,9 @@ public interface XJApis {
 
     @GET(HttpUrl.QINIU_TOKEN)
     Observable<BaseModel<String>> qiniuToken();
+
+    @FormUrlEncoded
+    @POST(HttpUrl.DYNAMIC_LIKE)
+    Observable<BaseModel<String>> dynamicLike(@Field("id")int id);
+
 }
