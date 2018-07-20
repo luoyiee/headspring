@@ -36,7 +36,6 @@ public class WifiConfirmActivity extends BaseActivity {
             return;
         }
         mProductKey = intent.getStringExtra("product_key");
-
     }
 
     @Override

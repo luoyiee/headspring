@@ -5,6 +5,9 @@ import android.content.Intent;
 
 import com.orhanobut.logger.Logger;
 
+import org.eclipse.jetty.servlet.listener.ELContextCleaner;
+
+import cc.xiaojiang.headspring.BuildConfig;
 import cc.xiaojiang.headspring.activity.LoginActivity;
 import cc.xiaojiang.headspring.base.MyApplication;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
@@ -19,9 +22,14 @@ import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
-    public static final String APP_Source = "zd0c383";
-    public static final String DEVELOP_KEY = "6cda7fee67ebbc8e545dd6e7da150c98";
-    public static final String DEVELOP_SECRET = "3465690c0ba5d4597632e121bc61764f";
+    public static final String TEST_APP_SOURCE = "zd0c383";
+    public static final String TEST_DEVELOP_KEY = "6cda7fee67ebbc8e545dd6e7da150c98";
+    public static final String TEST_DEVELOP_SECRET = "3465690c0ba5d4597632e121bc61764f";
+    public static final String APP_SOURCE = "i8d53";
+    public static final String DEVELOP_KEY = "2b23ae32e90589b554611f19b3de923d";
+    public static final String DEVELOP_SECRET = "20f3eceb81a7ecb559dd093bf0480c13";
+
+    public boolean isDebug = true;
 
 
     @Override
@@ -33,7 +41,11 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     @Override
     public String getAppSource() {
-        return APP_Source;
+        if (isDebug) {
+            return TEST_APP_SOURCE;
+        } else {
+            return APP_SOURCE;
+        }
     }
 
     @Override
@@ -70,12 +82,20 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     @Override
     public String getDevelopKey() {
-        return DEVELOP_KEY;
+        if (isDebug) {
+            return TEST_DEVELOP_KEY;
+        } else {
+            return DEVELOP_KEY;
+        }
     }
 
     @Override
     public String getDevelopSecret() {
-        return DEVELOP_SECRET;
+        if (isDebug) {
+            return TEST_DEVELOP_SECRET;
+        } else {
+            return DEVELOP_SECRET;
+        }
     }
 
     @Override

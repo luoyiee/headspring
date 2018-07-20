@@ -181,8 +181,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                     public void onError(String code, String errorMsg) {
 
                     }
-
-
                 });
     }
 

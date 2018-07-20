@@ -43,6 +43,10 @@ public class HttpUrl {
      * 获取七牛云token
      */
     public static final String QINIU_TOKEN = "token/getQiniu";
+    /**
+     * 获取pm2.5历史统计数据接口
+     */
+    public static final String PM25_HISTORY = "weather/history/pm25";
 
     /**
      * 量波动态点赞接口

@@ -34,6 +34,8 @@ public class LoginActivity extends BaseActivity {
     EditText mCetPhoneNumber;
     @BindView(R.id.et_verify_code)
     EditText mEtVerifyCode;
+
+    private IotKitAccountImpl mIotKitAccount=new IotKitAccountImpl();
     private CountDownTimer mCountDownTimer;
     private EventHandler mEventHandler = new EventHandler() {
         @Override
@@ -124,9 +126,9 @@ public class LoginActivity extends BaseActivity {
         LoginBody loginBody = new LoginBody();
         loginBody.setTelphone(Long.parseLong(phoneNumber));
         loginBody.setVerifyCode(Integer.parseInt(verifyCode));
-        loginBody.setSource(IotKitAccountImpl.APP_Source);
-        loginBody.setDeveloperKey(IotKitAccountImpl.DEVELOP_KEY);
-        loginBody.setDeveloperSecret(IotKitAccountImpl.DEVELOP_SECRET);
+        loginBody.setSource(mIotKitAccount.getAppSource());
+        loginBody.setDeveloperKey(mIotKitAccount.getDevelopKey());
+        loginBody.setDeveloperSecret(mIotKitAccount.getDevelopSecret());
         IotKitAccountManager.getInstance().login(this, loginBody, new IotKitAccountCallback() {
             @Override
             public void onSuccess() {

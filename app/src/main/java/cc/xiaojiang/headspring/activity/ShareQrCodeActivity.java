@@ -42,8 +42,6 @@ public class ShareQrCodeActivity extends BaseActivity {
                 Bitmap bitmap = CodeUtils.createImage(data.getQrcode(), size, size, BitmapFactory
                         .decodeResource(getResources(), R.mipmap.ic_launcher));
                 mIvShareQrCode.setImageBitmap(bitmap);
-                mIvShareQrCode.setBackground(getResources().getDrawable(R.drawable
-                        .border_color_accent));
             }
 
             @Override

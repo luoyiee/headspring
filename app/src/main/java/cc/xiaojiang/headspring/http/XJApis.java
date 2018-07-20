@@ -13,6 +13,7 @@ import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.headspring.model.http.LoginBody;
 import cc.xiaojiang.headspring.model.http.LoginModel;
 import cc.xiaojiang.headspring.model.http.LunarInfoModel;
+import cc.xiaojiang.headspring.model.http.Pm25HistoryModel;
 import cc.xiaojiang.headspring.model.http.UserInfoModel;
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -61,10 +62,16 @@ public interface XJApis {
 
     @FormUrlEncoded
     @POST(HttpUrl.USER_MODIFY)
-    Observable<BaseModel<Object>> userModify(@FieldMap ArrayMap<String ,Object> map);
+    Observable<BaseModel<Object>> userModify(@FieldMap ArrayMap<String, Object> map);
 
     @GET(HttpUrl.QINIU_TOKEN)
     Observable<BaseModel<String>> qiniuToken();
+
+    @GET(HttpUrl.PM25_HISTORY)
+    Observable<BaseModel<Pm25HistoryModel>> pm25History(@Query("deviceId") String deviceId,
+                                                        @Query("city") String city,
+                                                        @Query("type") String type,
+                                                        @Query("day") int day);
 
     @FormUrlEncoded
     @POST(HttpUrl.DYNAMIC_LIKE)

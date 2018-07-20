@@ -4,23 +4,19 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.support.annotation.ColorInt;
 
-import com.autonavi.amap.mapcore.interfaces.INavigateArrow;
 import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cc.xiaojiang.headspring.R;
-import cc.xiaojiang.headspring.TestDataUtils;
+import cc.xiaojiang.headspring.model.http.Pm25HistoryModel;
 
 /**
  * @author :jinjiafeng
@@ -54,10 +50,10 @@ public class MPChartUtils {
 
         mChart.setDrawGridBackground(false);
 //        mChart.setDrawBorders(false);
-        mChart.setBackgroundColor(Color.GRAY);
+        mChart.setBackgroundColor(Color.parseColor("#F7F7F7"));
         mChart.setScaleEnabled(false);
         mChart.setDragEnabled(true);
-//        mChart.setNoDataText("");
+        mChart.setNoDataText("没有数据");
 //        // 不显示描述数据
         mChart.getDescription().setEnabled(false);
         mChart.getAxisRight().setEnabled(false);
@@ -105,11 +101,11 @@ public class MPChartUtils {
         //设置x轴的最大值
 //        yAxis.setAxisMaximum(yMax);
         // 设置y轴的最大值
-//        yAxis.setAxisMinimum(yMin);
+        yAxis.setAxisMinimum(0);
         // 不显示y轴
         yAxis.setDrawAxisLine(false);
         // 设置y轴数据的位置
-        yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         // 不从y轴发出横向直线
         yAxis.setDrawGridLines(false);
         // 是否显示y轴坐标线
@@ -145,37 +141,17 @@ public class MPChartUtils {
 
     }
 
-    /**
-     * 初始化数据
-     *
-     * @param chart
-     */
-    public static void initData(LineChart chart, int count) {
-        // 2,获取数据Data，这里有2条曲线
-        LineDataSet targetDataSet = MPChartUtils.getLineData(TestDataUtils
-                        .getChartData(count),
-                "室外PM2.5", Color.BLACK, Color.parseColor("#6ca7f0"), false);
-        LineDataSet lineDataSet = MPChartUtils.getLineData(TestDataUtils
-                        .getChartData(count),
-                "室内PM2.5", Color.BLACK, Color.parseColor("#81d8d0"), false);
-        LineData lineData = new LineData(targetDataSet, lineDataSet);
-        chart.setData(lineData);
-        chart.invalidate();
-    }
 
     /**
      * 获取LineDataSet
      *
      * @param entries
      * @param label
-     * @param textColor
      * @param lineColor
      * @return
      */
-    public static LineDataSet getLineData(List<Entry> entries,
-                                          String label, @ColorInt int
-                                                  textColor, @ColorInt int lineColor, boolean
-                                                  isFill) {
+    public static LineDataSet getLineData(List<Entry> entries, String label, @ColorInt int
+            lineColor) {
         LineDataSet dataSet = new LineDataSet(entries, label);
         // 设置曲线的颜色
         dataSet.setColor(lineColor);
@@ -185,8 +161,8 @@ public class MPChartUtils {
         dataSet.setDrawValues(false);
 //        dataSet.setValueTextSize(16);
         // 是否绘制圆点
-        dataSet.setDrawCircles(false);
-        dataSet.setDrawCircleHole(false);
+        dataSet.setDrawCircles(true);
+        dataSet.setDrawCircleHole(true);
         dataSet.setCircleColorHole(lineColor);
         //设置高亮线
         dataSet.setHighlightEnabled(true);
@@ -196,10 +172,53 @@ public class MPChartUtils {
         //设置圆点的颜色
         dataSet.setCircleColor(Color.WHITE);
         // 设置圆点半径
-        dataSet.setCircleRadius(5f);
-        dataSet.setCircleHoleRadius(2f);
+        dataSet.setCircleRadius(3f);
+        dataSet.setCircleHoleRadius(1f);
         // 设置线的宽度
         dataSet.setLineWidth(1f);
         return dataSet;
+    }
+
+    public static LineData formatWeekDatas(Pm25HistoryModel pm25HistoryModel) {
+        List<Entry> outEntries = formatOutdoorData(pm25HistoryModel.getOutdoor());
+        List<Entry> inEntries = formatIndoorData(pm25HistoryModel.getIndoor());
+        LineDataSet inLineDataSet = getLineData(inEntries, "indoor", Color.parseColor("#81d8d0"));
+        LineDataSet outLineDataSet = getLineData(outEntries, "outdoor", Color.parseColor
+                ("#6ca7f0"));
+        return new LineData(inLineDataSet, outLineDataSet);
+    }
+
+    private static List<Entry> formatOutdoorData(List<Pm25HistoryModel.OutdoorBean> outdoorBeans) {
+        List<Entry> outEntries = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            int x = DateUtils.getWeek(i + 2);
+            int y = 0;
+            for (int j = 0; j < outdoorBeans.size(); j++) {
+                Pm25HistoryModel.OutdoorBean outdoorBean = outdoorBeans.get(j);
+                if (x == outdoorBean.getTime()) {
+                    y = outdoorBean.getOutPm25();
+                }
+            }
+            Entry outEntry = new Entry(i, y);
+            outEntries.add(outEntry);
+        }
+        return outEntries;
+    }
+
+    private static List<Entry> formatIndoorData(List<Pm25HistoryModel.IndoorBean> indoorBeans) {
+        List<Entry> inEntries = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            int x = DateUtils.getWeek(i + 2);
+            int y = 0;
+            for (int j = 0; j < indoorBeans.size(); j++) {
+                Pm25HistoryModel.IndoorBean indoorBean = indoorBeans.get(j);
+                if (x == indoorBean.getTime()) {
+                    y = indoorBean.getOutPm25();
+                }
+            }
+            Entry outEntry = new Entry(i, y);
+            inEntries.add(outEntry);
+        }
+        return inEntries;
     }
 }
