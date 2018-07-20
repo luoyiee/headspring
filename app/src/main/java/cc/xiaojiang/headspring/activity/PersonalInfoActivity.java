@@ -52,6 +52,7 @@ import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
+import cc.xiaojiang.headspring.http.model.BaseModel;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
 import cc.xiaojiang.headspring.model.bean.AreaJsonBean;
 import cc.xiaojiang.headspring.model.http.UserInfoModel;
@@ -68,7 +69,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.schedulers.Schedulers;
 
 public class PersonalInfoActivity extends BaseActivity implements TakePhoto.TakeResultListener,
-        InvokeListener ,TextWatcher{
+        InvokeListener, TextWatcher {
     private static final int SIZE_UPDATE_MAP = 6;
     private static final String FILE_NAME = "area.json";
     @BindView(R.id.civ_avatar)
@@ -96,6 +97,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private ArrayList<ArrayList<String>> options2Items;
     private OptionsPickerView pvCityOptions;
     private UploadManager mUploadManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,22 +105,23 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         Schedulers.io().scheduleDirect(this::initJsonData);
         mEtNickname.addTextChangedListener(this);
         RetrofitHelper.getService().userInfo()
-                .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<UserInfoModel>(this) {
+                .subscribe(new ProgressObserver<BaseModel<UserInfoModel>>(this) {
                     @Override
-                    public void onSuccess(UserInfoModel userInfoModel) {
-                        if(userInfoModel!=null){
-                            initUserInfo(userInfoModel);
+                    public void onSuccess(BaseModel<UserInfoModel> userInfoModel) {
+                        UserInfoModel data = userInfoModel.getData();
+                        if(data!=null){
+                            initUserInfo(data);
                         }
                     }
                 });
     }
+
     private void initUserInfo(UserInfoModel userInfo) {
         mSex = userInfo.getGender();
         ImageLoader.loadImage(this, userInfo.getImgUrl(), mCivAvatar);
         mEtNickname.setText(userInfo.getNickname());
-        mTvPhoneNumber.setText(getString(R.string.int2String,userInfo.getTelphone()));
+        mTvPhoneNumber.setText(getString(R.string.int2String, userInfo.getTelphone()));
         mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
         mTvArea.setText(userInfo.getArea());
         if ((userInfo.getBirthday() == 0)) {
@@ -131,9 +134,77 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
             mTvBirthday.setText(format);
         }
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_personal_info;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_save) {
+            if (mUpdateMap.size() == 0 && mSelectAvatarFile == null) {
+                ToastUtils.show(R.string.personal_not_update);
+                return false;
+            }
+            if (mSelectAvatarFile != null) {
+                requestQiniuToken();
+                return true;
+            }
+            requestEditInfo();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 用户上传头像请求
+     */
+    private void requestQiniuToken() {
+        mUploadManager = new UploadManager();
+        RetrofitHelper.getService().qiniuToken()
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<String>(this) {
+                    @Override
+                    public void onSuccess(String token) {
+                        uploadQiniu(token);
+                    }
+                });
+    }
+
+    /**
+     * 用户不上传时请求
+     */
+    private void requestEditInfo() {
+        RetrofitHelper.getService().userModify(mUpdateMap)
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<Object>(this) {
+                    @Override
+                    public void onSuccess(Object token) {
+                        ToastUtils.show(R.string.personal_update_success);
+                        finish();
+                    }
+                });
+    }
+
+    private void uploadQiniu(String token) {
+        mUploadManager.put(mSelectAvatarFile, null, token,
+                (key, info, res) -> {
+                    //res包含hash、key等信息，具体字段取决于上传策略的设置
+                    if (info.isOK()) {
+                        try {
+                            String key2 = res.getString("key");
+                            mUpdateMap.put(Constant.KEY_IMG_URL, Constant.QINIU_HOST + key2);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Logger.d("Upload qiniu Fail");
+                        //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                    }
+                    requestEditInfo();
+                    Logger.i(key + ",\r\n " + info + ",\r\n " + res);
+                }, null);
     }
 
     private void initJsonData() {
@@ -174,73 +245,6 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         return gson.fromJson(result, type);
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
-            if (mUpdateMap.size() == 0 && mSelectAvatarFile == null) {
-                ToastUtils.show(R.string.personal_not_update);
-                return false;
-            }
-            if (mSelectAvatarFile != null) {
-                requestQiniuToken();
-                return true;
-            }
-            requestEditInfo();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * 用户上传头像请求
-     */
-    private void requestQiniuToken() {
-        mUploadManager = new UploadManager();
-        RetrofitHelper.getService().qiniuToken()
-                .map(new HttpResultFunc<>())
-                .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<String>(this) {
-                    @Override
-                    public void onSuccess(String token) {
-                        uploadQiniu(token);
-                    }
-                });
-    }
-
-    private void uploadQiniu(String token) {
-        mUploadManager.put(mSelectAvatarFile, null, token,
-                (key, info, res) -> {
-                    //res包含hash、key等信息，具体字段取决于上传策略的设置
-                    if (info.isOK()) {
-                        try {
-                            String key2 = res.getString("key");
-                            mUpdateMap.put(Constant.KEY_IMG_URL, Constant.QINIU_HOST + key2);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Logger.d("Upload qiniu Fail");
-                        //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                    }
-                    requestEditInfo();
-                    Logger.i(key + ",\r\n " + info + ",\r\n " + res);
-                }, null);
-    }
-
-    /**
-     * 用户不上传时请求
-     */
-    private void requestEditInfo() {
-        RetrofitHelper.getService().userModify(mUpdateMap)
-                .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<Object>(this) {
-                    @Override
-                    public void onSuccess(Object token) {
-                        ToastUtils.show(R.string.personal_update_success);
-                        finish();
-                    }
-                });
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_save, menu);
@@ -357,8 +361,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                     -> {
                 province = options1Items.get(options1).getPickerViewText();
                 city = options2Items.get(options1).get(options2);
-                mTvArea.setText(String.format("%s%s",province,city));
-                mUpdateMap.put(Constant.KEY_AREA, province+city);
+                mTvArea.setText(String.format("%s%s", province, city));
+                mUpdateMap.put(Constant.KEY_AREA, province + city);
             })
                     .setTitleText("城市选择")
                     .setSubmitText("确定")//确定按钮文字

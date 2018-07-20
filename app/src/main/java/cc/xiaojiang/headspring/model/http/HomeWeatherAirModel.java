@@ -19,13 +19,13 @@ public class HomeWeatherAirModel {
      * "day":20180716}]
      */
 
-    private int outHumidity;
+    private int humidity;
     private int pm25;
-    private int outTemp;
+    private int temperature;
     private List<NextWeatherBean> nextWeather;
 
     public int getOutHumidity() {
-        return outHumidity;
+        return humidity;
     }
 
     public int getPm25() {
@@ -33,7 +33,7 @@ public class HomeWeatherAirModel {
     }
 
     public int getOutTemp() {
-        return outTemp;
+        return temperature;
     }
 
     public List<NextWeatherBean> getNextWeather() {

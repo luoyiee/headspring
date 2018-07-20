@@ -20,7 +20,6 @@ import cc.xiaojiang.headspring.utils.DbUtils;
 import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
     public static final String TEST_APP_SOURCE = "zd0c383";
@@ -51,19 +50,24 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     @Override
     public void login(Context context, Object params, IotKitAccountCallback callback) {
-        LoginBody loginBody = (LoginBody) params;
-        RetrofitHelper.getService().login(loginBody)
-                .map(new HttpResultFunc<>())
-                .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<LoginModel>(context) {
-                    @Override
-                    public void onSuccess(LoginModel loginModel) {
-                        DbUtils.setXJUserId(loginModel.getUserId());
-                        DbUtils.setAccessToken(loginModel.getAccessToken());
-                        DbUtils.setRefreshToken(loginModel.getRefreshToken());
-                        callback.onSuccess();
-                    }
-                });
+
+        if (params==null){
+            callback.onSuccess();
+        }else{
+            LoginBody loginBody = (LoginBody) params;
+            RetrofitHelper.getService().login(loginBody)
+                    .map(new HttpResultFunc<>())
+                    .compose(RxUtils.rxSchedulerHelper())
+                    .subscribe(new ProgressObserver<LoginModel>(context) {
+                        @Override
+                        public void onSuccess(LoginModel loginModel) {
+                            DbUtils.setXJUserId(loginModel.getUserId());
+                            DbUtils.setAccessToken(loginModel.getAccessToken());
+                            DbUtils.setRefreshToken(loginModel.getRefreshToken());
+                            callback.onSuccess();
+                        }
+                    });
+        }
     }
 
     @Override

@@ -7,7 +7,7 @@ public class HttpUrl {
     //意见反馈
     public static final String FEEDBACK = "feedback/view";
     //获取主页空气质量接口
-    public static final String WEATHER_AIR_HOUR = "weather/air/hour";
+    public static final String WEATHER_AIR_HOUR = "weather/homePage";
     //获取空气
     public static final String AIR = "weather/aqi/qry";
     /**
