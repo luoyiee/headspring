@@ -25,6 +25,6 @@ public class DynamicAdapter extends BaseQuickAdapter<DynamicModel, BaseViewHolde
         ImageLoader.loadImageNoMemory(mContext, item.getCover(), ivDynamicCover);
         helper.setText(R.id.tv_dynamic_title, item.getTitle())
                 .setText(R.id.tv_dynamic_like, item.getLike() + "")
-                .setText(R.id.tv_dynamic_comment, item.getComment());
+                .setText(R.id.tv_dynamic_comment, item.getComment()+"");
     }
 }

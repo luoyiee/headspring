@@ -51,6 +51,7 @@ public class ImageLoader {
         Glide.with(context)
                 .load(url)
                 .skipMemoryCache(true)
+                .centerCrop()
                 .into(imageView);
     }
 }

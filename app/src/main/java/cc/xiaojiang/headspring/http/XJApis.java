@@ -72,4 +72,9 @@ public interface XJApis {
                                                         @Query("city") String city,
                                                         @Query("type") String type,
                                                         @Query("day") int day);
+
+    @FormUrlEncoded
+    @POST(HttpUrl.DYNAMIC_LIKE)
+    Observable<BaseModel<String>> dynamicLike(@Field("id")int id);
+
 }

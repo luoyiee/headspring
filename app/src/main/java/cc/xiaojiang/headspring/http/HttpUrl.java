@@ -48,4 +48,9 @@ public class HttpUrl {
      */
     public static final String PM25_HISTORY = "weather/history/pm25";
 
+    /**
+     * 量波动态点赞接口
+     */
+    public static final String DYNAMIC_LIKE = "dynamic/like";
+
 }
