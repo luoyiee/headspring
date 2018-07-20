@@ -86,6 +86,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     }
 
     private void getDevices() {
+        mSrlRefreshDevice.setRefreshing(true);
         IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
             @Override
             public void onSuccess(List<Device> data) {

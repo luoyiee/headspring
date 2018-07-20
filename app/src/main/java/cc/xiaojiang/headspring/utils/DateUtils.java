@@ -5,24 +5,36 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
-    public static int getDay(int index) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    public static String getDay(int index, String pattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, index);
-        return Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+        return simpleDateFormat.format(calendar.getTime());
     }
 
-    public static int getMonth(int index) {
+    public static int getToday() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        return Integer.parseInt(simpleDateFormat.format(new Date()));
+    }
+
+    public static int getMonthDays() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
+
+    public static String getMonth(int index, String pattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, index);
-        return Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+        return simpleDateFormat.format(calendar.getTime());
     }
 
-    public static int getWeek(int index) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    public static String getWeek(int index, String pattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, index);
-        return Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+        return simpleDateFormat.format(calendar.getTime());
     }
 }

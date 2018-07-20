@@ -6,19 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.orhanobut.logger.Logger;
-
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import cc.xiaojiang.headspring.R;
@@ -26,7 +24,6 @@ import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
-import cc.xiaojiang.headspring.iotkit.DeviceDataModel;
 import cc.xiaojiang.headspring.model.http.Pm25HistoryModel;
 import cc.xiaojiang.headspring.utils.DateUtils;
 import cc.xiaojiang.headspring.utils.DbUtils;
@@ -36,16 +33,20 @@ import cc.xiaojiang.iotkit.bean.http.Device;
 
 public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTabSelectedListener,
         OnChartValueSelectedListener {
+    public static final String DAY = "day";
+    public static final String WEEK = "week";
+    public static final String MONTH = "month";
     @BindView(R.id.LineChart)
     LineChart mLineChart;
     @BindView(R.id.tl_history_data)
     TabLayout mTlHistoryData;
+    @BindView(R.id.tv_history_data_outdoor)
+    TextView mTvHistoryDataOutdoor;
+    @BindView(R.id.tv_history_data_indoor)
+    TextView mTvHistoryDataIndoor;
 
-
+    private int mPosition;
     private Device mDevice;
-    private static final String DAY = "day";
-    private static final String WEEK = "week";
-    private static final String MONTH = "month";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,16 +54,6 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         initData();
         initView();
         initChart();
-
-//        for (int i = 1; i <= 24; i++) {
-//            Logger.d(DateUtils.getDay(i));
-//        }
-//        for (int i = 1; i <= 7; i++) {
-//            Logger.d(DateUtils.getWeek(i+1));
-//        }
-//        for (int i = 1; i <= 30; i++) {
-//            Logger.d(DateUtils.getMonth(i));
-//        }
 
     }
 
@@ -80,8 +71,7 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
 
     private void initChart() {
         mLineChart.setOnChartValueSelectedListener(this);
-        MPChartUtils.configChart(mLineChart, 200, 0, false);
-
+        MPChartUtils.configChart(mLineChart);
     }
 
 
@@ -97,19 +87,17 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         return R.layout.activity_history_data;
     }
 
-
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        Logger.d(tab.getPosition());
-        int position = tab.getPosition();
-        if (position == 0) {
-//            getPm25History(DAY, DateUtils.getDay());
+        mPosition = tab.getPosition();
+        if (mPosition == 0) {
+            getPm25History(DAY, DateUtils.getToday());
         }
-        if (position == 1) {
-            getPm25History(WEEK, DateUtils.getWeek(2));
+        if (mPosition == 1) {
+            getPm25History(WEEK, Integer.parseInt(DateUtils.getWeek(1, "yyyyMMdd")));
         }
-        if (position == 2) {
-            getPm25History(MONTH, DateUtils.getMonth(2));
+        if (mPosition == 2) {
+            getPm25History(MONTH, Integer.parseInt(DateUtils.getMonth(2, "yyyyMMdd")));
         }
 
     }
@@ -121,17 +109,57 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
                 .subscribe(new ProgressObserver<Pm25HistoryModel>(this) {
                     @Override
                     public void onSuccess(Pm25HistoryModel pm25HistoryModel) {
-                        LineData ss = MPChartUtils
-                                .formatWeekDatas(pm25HistoryModel);
-                        mLineChart.setData(ss);
-                        mLineChart.invalidate();
-
-//                        List<Pm25HistoryModel.IndoorBean> indoorDatas =
-//                                pm25HistoryModel.getIndoor();
-//                        List<Pm25HistoryModel.IndoorBean> indoorDatas =
-//                                pm25HistoryModel.getIndoor();
+                        showData(pm25HistoryModel);
                     }
                 });
+    }
+
+    private void showData(Pm25HistoryModel pm25HistoryModel) {
+        IAxisValueFormatter formatter = null;
+        LineData lineData = null;
+        switch (mPosition) {
+            case 0:
+                lineData = MPChartUtils.formatData(pm25HistoryModel, DAY);
+                formatter = new IAxisValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis) {
+                        return DateUtils.getDay((int) value, "HH");
+                    }
+
+                };
+                break;
+            case 1:
+                lineData = MPChartUtils.formatData(pm25HistoryModel, WEEK);
+                formatter = new IAxisValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis) {
+                        return DateUtils.getWeek((int) value + 1, "MM/dd");
+                    }
+
+                };
+                break;
+            case 2:
+                lineData = MPChartUtils.formatData(pm25HistoryModel, MONTH);
+                formatter = new IAxisValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis) {
+                        return DateUtils.getMonth((int) value + 1, "MM/dd");
+                    }
+
+                };
+                break;
+        }
+        refreshData(lineData, formatter);
+    }
+
+    private void refreshData(LineData lineData, IAxisValueFormatter iAxisValueFormatter) {
+        if (lineData == null) {
+            return;
+        }
+        mLineChart.setData(lineData);
+        mLineChart.getXAxis().setValueFormatter(iAxisValueFormatter);
+        mLineChart.animateX(1000);
+        mLineChart.invalidate();
     }
 
     @Override
@@ -147,6 +175,15 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
+        if (mLineChart.getData().getDataSets().size() == 2) {
+            LineDataSet indoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(0);
+            LineDataSet outdoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(1);
+            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX()).getY()+"");
+            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY()+"");
+        } else {
+            Logger.e("error data!");
+        }
+
     }
 
     @Override

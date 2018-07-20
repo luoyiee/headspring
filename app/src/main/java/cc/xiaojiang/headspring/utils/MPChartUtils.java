@@ -6,16 +6,20 @@ import android.support.annotation.ColorInt;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cc.xiaojiang.headspring.R;
+import cc.xiaojiang.headspring.activity.HistoryDataActivity;
 import cc.xiaojiang.headspring.model.http.Pm25HistoryModel;
 
 /**
@@ -39,14 +43,8 @@ public class MPChartUtils {
 
     /**
      * 配置Chart 基础设置
-     *
-     * @param mChart       图表
-     * @param yMax         y 轴最大值
-     * @param yMin         y 轴最小值
-     * @param isShowLegend 是否显示图例
      */
-    public static void configChart(LineChart mChart, float yMax, float
-            yMin, boolean isShowLegend) {
+    public static void configChart(LineChart mChart) {
 
         mChart.setDrawGridBackground(false);
 //        mChart.setDrawBorders(false);
@@ -80,12 +78,8 @@ public class MPChartUtils {
 //        IAxisValueFormatter formatter = new IAxisValueFormatter() {
 //            @Override
 //            public String getFormattedValue(float value, AxisBase axis) {
-//                int index = (int) value;
-//                if (index < 0 || index >= labels.size()) {
-//                    return "";
-//                }
-//                return labels.get(index);
-//                // return labels.get(Math.min(Math.max((int) value, 0), labels.size() - 1));
+//                Logger.d("called");
+//                return "ss";
 //            }
 //
 //        };
@@ -137,7 +131,7 @@ public class MPChartUtils {
         // 在图表动画显示之前进行缩放
 //        mChart.getViewPortHandler().refresh(matrix, mChart, false);
         // x轴执行动画
-        mChart.animateX(1500);
+//        mChart.animateX(1500);
 
     }
 
@@ -156,7 +150,7 @@ public class MPChartUtils {
         // 设置曲线的颜色
         dataSet.setColor(lineColor);
         // 模式为贝塞尔曲线
-        dataSet.setMode(LineDataSet.Mode.LINEAR);
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         // 是否绘制数据值
         dataSet.setDrawValues(false);
 //        dataSet.setValueTextSize(16);
@@ -167,7 +161,7 @@ public class MPChartUtils {
         //设置高亮线
         dataSet.setHighlightEnabled(true);
         dataSet.setDrawHorizontalHighlightIndicator(false);
-        dataSet.setHighLightColor(Color.BLUE);
+        dataSet.setHighLightColor(Color.GRAY);
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         //设置圆点的颜色
         dataSet.setCircleColor(Color.WHITE);
@@ -179,46 +173,127 @@ public class MPChartUtils {
         return dataSet;
     }
 
-    public static LineData formatWeekDatas(Pm25HistoryModel pm25HistoryModel) {
-        List<Entry> outEntries = formatOutdoorData(pm25HistoryModel.getOutdoor());
-        List<Entry> inEntries = formatIndoorData(pm25HistoryModel.getIndoor());
-        LineDataSet inLineDataSet = getLineData(inEntries, "indoor", Color.parseColor("#81d8d0"));
+    public static LineData formatData(Pm25HistoryModel pm25HistoryModel, String type) {
+        if (HistoryDataActivity.DAY.equals(type)) {
+            return formatDayData(pm25HistoryModel);
+        } else if (HistoryDataActivity.WEEK.equals(type)) {
+            return formatWeekData(pm25HistoryModel);
+        } else if (HistoryDataActivity.MONTH.equals(type)) {
+            return formatMonthData(pm25HistoryModel);
+        } else {
+            return null;
+        }
+    }
+
+    private static LineData formatDayData(Pm25HistoryModel pm25HistoryModel) {
+        List<Entry> outEntries = new ArrayList<>();
+        List<Entry> inEntries = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            int x = Integer.parseInt(DateUtils.getDay(i, "yyyyMMddHH"));
+            Logger.i(String.valueOf(x));
+            int outdoorY = 0;
+            int indoorY = 0;
+            for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
+                Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
+                if (x == outdoorBean.getTime()) {
+                    outdoorY = outdoorBean.getOutPm25();
+                }
+            }
+            for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
+                Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
+                if (x == indoorBean.getTime()) {
+                    indoorY = indoorBean.getOutPm25();
+                }
+            }
+            Entry outEntry = new Entry(i, outdoorY);
+            Entry inEntry = new Entry(i, indoorY);
+            outEntries.add(outEntry);
+            inEntries.add(inEntry);
+        }
+        LineDataSet inLineDataSet = getLineData(inEntries, "indoor", Color.parseColor
+                ("#81d8d0"));
         LineDataSet outLineDataSet = getLineData(outEntries, "outdoor", Color.parseColor
                 ("#6ca7f0"));
         return new LineData(inLineDataSet, outLineDataSet);
     }
 
-    private static List<Entry> formatOutdoorData(List<Pm25HistoryModel.OutdoorBean> outdoorBeans) {
+    private static LineData formatMonthData(Pm25HistoryModel pm25HistoryModel) {
         List<Entry> outEntries = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            int x = DateUtils.getWeek(i + 2);
-            int y = 0;
-            for (int j = 0; j < outdoorBeans.size(); j++) {
-                Pm25HistoryModel.OutdoorBean outdoorBean = outdoorBeans.get(j);
+        List<Entry> inEntries = new ArrayList<>();
+        for (int i = 0; i < DateUtils.getMonthDays(); i++) {
+            int x = Integer.parseInt(DateUtils.getMonth(i + 1, "yyyyMMdd"));
+            int outdoorY = 0;
+            int indoorY = 0;
+            for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
+                Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    y = outdoorBean.getOutPm25();
+                    outdoorY = outdoorBean.getOutPm25();
                 }
             }
-            Entry outEntry = new Entry(i, y);
+            for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
+                Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
+                if (x == indoorBean.getTime()) {
+                    indoorY = indoorBean.getOutPm25();
+                }
+            }
+            Entry outEntry = new Entry(i, outdoorY);
+            Entry inEntry = new Entry(i, indoorY);
             outEntries.add(outEntry);
+            inEntries.add(inEntry);
         }
-        return outEntries;
+        LineDataSet inLineDataSet = getLineData(inEntries, "indoor", Color.parseColor
+                ("#81d8d0"));
+        LineDataSet outLineDataSet = getLineData(outEntries, "outdoor", Color.parseColor
+                ("#6ca7f0"));
+        return new LineData(inLineDataSet, outLineDataSet);
     }
 
-    private static List<Entry> formatIndoorData(List<Pm25HistoryModel.IndoorBean> indoorBeans) {
+    private static LineData formatWeekData(Pm25HistoryModel pm25HistoryModel) {
+        List<Entry> outEntries = new ArrayList<>();
         List<Entry> inEntries = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            int x = DateUtils.getWeek(i + 2);
-            int y = 0;
-            for (int j = 0; j < indoorBeans.size(); j++) {
-                Pm25HistoryModel.IndoorBean indoorBean = indoorBeans.get(j);
-                if (x == indoorBean.getTime()) {
-                    y = indoorBean.getOutPm25();
+        for (int i = 0; i < 7; i++) {
+            int x = Integer.parseInt(DateUtils.getWeek(i + 1, "yyyyMMdd"));
+            int outdoorY = 0;
+            int indoorY = 0;
+            for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
+                Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
+                if (x == outdoorBean.getTime()) {
+                    outdoorY = outdoorBean.getOutPm25();
                 }
             }
-            Entry outEntry = new Entry(i, y);
-            inEntries.add(outEntry);
+            for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
+                Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
+                if (x == indoorBean.getTime()) {
+                    indoorY = indoorBean.getOutPm25();
+                }
+            }
+            Entry outEntry = new Entry(i, outdoorY);
+            Entry inEntry = new Entry(i, indoorY);
+            outEntries.add(outEntry);
+            inEntries.add(inEntry);
         }
-        return inEntries;
+        LineDataSet inLineDataSet = getLineData(inEntries, "indoor", Color.parseColor
+                ("#81d8d0"));
+        LineDataSet outLineDataSet = getLineData(outEntries, "outdoor", Color.parseColor
+                ("#6ca7f0"));
+        return new LineData(inLineDataSet, outLineDataSet);
     }
+
+//    private static List<Entry> formatIndoorData(List<Pm25HistoryModel.IndoorBean> indoorBeans,
+//                                                String type) {
+//        List<Entry> inEntries = new ArrayList<>();
+//        for (int i = 0; i < 30; i++) {
+//            int x = DateUtils.getWeek(i + 2);
+//            int y = 0;
+//            for (int j = 0; j < indoorBeans.size(); j++) {
+//                Pm25HistoryModel.IndoorBean indoorBean = indoorBeans.get(j);
+//                if (x == indoorBean.getTime()) {
+//                    y = indoorBean.getOutPm25();
+//                }
+//            }
+//            Entry outEntry = new Entry(i, y);
+//            inEntries.add(outEntry);
+//        }
+//        return inEntries;
+//    }
 }
