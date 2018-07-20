@@ -94,7 +94,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
             public void onSuccess(List<Device> data) {
                 mDeviceAdapter.setNewData(data);
                 queryDevices(data);
-
             }
 
             @Override

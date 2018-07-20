@@ -13,11 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
 import com.orhanobut.logger.Logger;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -29,7 +25,6 @@ import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
 import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
-import cc.xiaojiang.headspring.model.event.LocationEvent;
 import cc.xiaojiang.headspring.utils.DbUtils;
 import cc.xiaojiang.headspring.utils.LocationClient;
 import cc.xiaojiang.headspring.utils.RxUtils;
@@ -81,11 +76,12 @@ public class MainActivity extends BaseActivity {
     private Point mDevicePoint;
     private Point mShopPoint;
     private Point mPersonalPoint;
+    private LocationClient mLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        mLocationClient = new LocationClient();
         MainActivityPermissionsDispatcher.locationWithPermissionCheck(this);
     }
 
@@ -97,14 +93,31 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LocationClient.getInstance().onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
     void location() {
-        LocationClient.getInstance().initClient(this);
-        LocationClient.getInstance().startLocation();
+        mLocationClient.initClient(this);
+        mLocationClient.startLocation(aMapLocation -> {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    Logger.d(aMapLocation.toString());
+                    //定位成功回调信息，设置相关消息
+                    String district = aMapLocation.getDistrict();//城区信息
+                    String street = aMapLocation.getStreet();//街道信息
+                    String city = aMapLocation.getCity();//街道信息
+                    DbUtils.setLocationCity(city);
+                    mTvHomeLocation.setText(district + street);
+                    requestWeatherAirData(aMapLocation.getCity());
+                } else {
+                    //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -116,16 +129,10 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        //开始定位
-//        LocationClient.getInstance().startLocation();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
-        LocationClient.getInstance().stopLocation();
+        mLocationClient.stopLocation();
+        mLocationClient.onDestroy();
     }
 
     @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal, R
@@ -212,29 +219,6 @@ public class MainActivity extends BaseActivity {
 
     private Point getPoint(View view) {
         return new Point(view.getX(), view.getY());
-    }
-
-    @Subscribe
-    public void onLocationEvent(LocationEvent locationEvent) {
-        AMapLocation aMapLocation = locationEvent.getMapLocation();
-        if (aMapLocation != null) {
-            if (aMapLocation.getErrorCode() == 0) {
-                Logger.d(aMapLocation.toString());
-                //定位成功回调信息，设置相关消息
-                String district = aMapLocation.getDistrict();//城区信息
-                String street = aMapLocation.getStreet();//街道信息
-                String city = aMapLocation.getCity();//街道信息
-                DbUtils.setLocationCity(city);
-                mTvHomeLocation.setText(district + street);
-                requestWeatherAirData(aMapLocation.getCity());
-            } else {
-                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                Log.e("AmapError", "location Error, ErrCode:"
-                        + aMapLocation.getErrorCode() + ", errInfo:"
-                        + aMapLocation.getErrorInfo());
-                Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     private void requestWeatherAirData(String city) {

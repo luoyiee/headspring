@@ -106,4 +106,6 @@
     <string name="share_qq">手机QQ</string>
     <string name="share_qq_zone">QQ空间</string>
     <string name="title_activity_share_qr_code">设备共享</string>
+    <string name="personal_not_update">请修改后保存</string>
+    <string name="personal_update_success">修改成功</string>
 </resources>

@@ -7,10 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
@@ -29,6 +32,9 @@ import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.PermissionManager.TPermissionType;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
+import com.qiniu.android.storage.UploadManager;
+
+import org.json.JSONException;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -44,12 +50,17 @@ import butterknife.OnClick;
 import cc.xiaojiang.headspring.Constant;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.http.HttpResultFunc;
+import cc.xiaojiang.headspring.http.RetrofitHelper;
+import cc.xiaojiang.headspring.http.progress.ProgressObserver;
 import cc.xiaojiang.headspring.model.bean.AreaJsonBean;
-import cc.xiaojiang.headspring.utils.AccountUtils;
+import cc.xiaojiang.headspring.model.http.UserInfoModel;
 import cc.xiaojiang.headspring.utils.GetJsonDataUtil;
 import cc.xiaojiang.headspring.utils.ImageLoader;
+import cc.xiaojiang.headspring.utils.RxUtils;
 import cc.xiaojiang.headspring.utils.TakePhotoUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
+import cc.xiaojiang.headspring.utils.ViewUtils;
 import cc.xiaojiang.headspring.widget.OptionPickerHelper;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
@@ -57,13 +68,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.schedulers.Schedulers;
 
 public class PersonalInfoActivity extends BaseActivity implements TakePhoto.TakeResultListener,
-        InvokeListener {
+        InvokeListener ,TextWatcher{
     private static final int SIZE_UPDATE_MAP = 6;
     private static final String FILE_NAME = "area.json";
     @BindView(R.id.civ_avatar)
     CircleImageView mCivAvatar;
-    @BindView(R.id.tv_nickname)
-    TextView mTvNickname;
+    @BindView(R.id.et_nickname)
+    EditText mEtNickname;
     @BindView(R.id.tv_phone_number)
     TextView mTvPhoneNumber;
     @BindView(R.id.tv_sex)
@@ -84,14 +95,46 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private ArrayList<AreaJsonBean> options1Items;
     private ArrayList<ArrayList<String>> options2Items;
     private OptionsPickerView pvCityOptions;
-
+    private UploadManager mUploadManager;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUpdateMap = new ArrayMap<>(SIZE_UPDATE_MAP);
         Schedulers.io().scheduleDirect(this::initJsonData);
+        mEtNickname.addTextChangedListener(this);
+        RetrofitHelper.getService().userInfo()
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<UserInfoModel>(this) {
+                    @Override
+                    public void onSuccess(UserInfoModel userInfoModel) {
+                        if(userInfoModel!=null){
+                            initUserInfo(userInfoModel);
+                        }
+                    }
+                });
     }
-
+    private void initUserInfo(UserInfoModel userInfo) {
+//        mSex = userInfo.getSex();
+//        mHeight = userInfo.getHeight();
+//        mWeight = userInfo.getWeight();
+//        ImageLoader.loadImage(this, userInfo.getAvatar(), mCivAvatar);
+//        mTvNickname.setText(userInfo.getNickname());
+//        mTvPhoneNumber.setText(userInfo.getMobile());
+//        mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
+//
+//        if (TextUtils.isEmpty(userInfo.getBirthday()) || EMPTY_BIRTHDAY.equals(userInfo.getBirthday())) {
+//            mTvAge.setText("请选择");
+//            mDate = new Date();
+//        } else {
+//            mDate = DateUtils.parse(userInfo.getBirthday());
+//            int age = getAge(mDate);
+//            mTvAge.setText(String.format(getString(R.string.int2String), age));
+//        }
+//
+//        mTvHeight.setText(String.format(getString(R.string.int2String), mHeight));
+//        mTvWeight.setText(String.format(getString(R.string.int2String), mWeight));
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.activity_personal_info;
@@ -140,26 +183,83 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
-            //保存操作
+            if (mUpdateMap.size() == 0 && mSelectAvatarFile == null) {
+                ToastUtils.show(R.string.personal_not_update);
+                return false;
+            }
+            if (mSelectAvatarFile != null) {
+                requestQiniuToken();
+                return true;
+            }
+            requestEditInfo();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * 用户上传头像请求
+     */
+    private void requestQiniuToken() {
+        mUploadManager = new UploadManager();
+        RetrofitHelper.getService().qiniuToken()
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<String>(this) {
+                    @Override
+                    public void onSuccess(String token) {
+                        uploadQiniu(token);
+                    }
+                });
+    }
+
+    private void uploadQiniu(String token) {
+        mUploadManager.put(mSelectAvatarFile, null, token,
+                (key, info, res) -> {
+                    //res包含hash、key等信息，具体字段取决于上传策略的设置
+                    if (info.isOK()) {
+                        try {
+                            String key2 = res.getString("key");
+                            mUpdateMap.put(Constant.KEY_IMG_URL, Constant.QINIU_HOST + key2);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Logger.d("Upload qiniu Fail");
+                        //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                    }
+                    requestEditInfo();
+                    Logger.i(key + ",\r\n " + info + ",\r\n " + res);
+                }, null);
+    }
+
+    /**
+     * 用户不上传时请求
+     */
+    private void requestEditInfo() {
+        RetrofitHelper.getService().userModify(mUpdateMap)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<String>(this) {
+                    @Override
+                    public void onSuccess(String token) {
+                        ToastUtils.show(R.string.personal_update_success);
+                        finish();
+                    }
+                });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_save, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    @OnClick({R.id.rl_avatar, R.id.rl_nickname, R.id.rl_sex, R.id.rl_birthday, R.id.btn_log_out,
+    @OnClick({R.id.rl_avatar, R.id.rl_sex, R.id.rl_birthday, R.id.btn_log_out,
             R.id.rl_area})
     public void onViewClicked(View view) {
+        ViewUtils.hideSoftKeyboard(this);
         switch (view.getId()) {
             case R.id.rl_avatar:
                 showTakePhotoDialog();
-                break;
-            case R.id.rl_nickname:
-
                 break;
             case R.id.rl_sex:
                 showSexPicker();
@@ -223,7 +323,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                     -> {
                 String sexTx = optionsSex.get(options1);
                 mTvSex.setText(sexTx);
-                mUpdateMap.put(Constant.KEY_SEX, options1 == 0 ? "M" : "F");
+                mUpdateMap.put(Constant.KEY_GENDER, options1 == 0 ? "M" : "F");
             });
         }
         mSexPicker.show();
@@ -243,7 +343,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String dateStr = sdf.format(date);
                 mTvBirthday.setText(dateStr);
-                mUpdateMap.put(Constant.KEY_BIRTHDAY, dateStr);
+                mUpdateMap.put(Constant.KEY_BIRTHDAY, date.getTime());
             })
                     .setTitleText("选择出生年月")
                     .setCancelColor(ContextCompat.getColor(this, R.color.personal_picker_cancel))
@@ -263,8 +363,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                     -> {
                 province = options1Items.get(options1).getPickerViewText();
                 city = options2Items.get(options1).get(options2);
-                mTvArea.setText(city);
-                mUpdateMap.put(Constant.KEY_PROVINCE, province);
+                mTvArea.setText(String.format("%s%s",province,city));
+                mUpdateMap.put(Constant.KEY_AREA, province+city);
             })
                     .setTitleText("城市选择")
                     .setSubmitText("确定")//确定按钮文字
@@ -343,5 +443,20 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
             this.mInvokeParam = invokeParam;
         }
         return type;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        mUpdateMap.put(Constant.KEY_NICKNAME, s.toString());
     }
 }
