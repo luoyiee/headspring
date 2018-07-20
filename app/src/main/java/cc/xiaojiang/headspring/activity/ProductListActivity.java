@@ -7,15 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
-
-import org.eclipse.jetty.servlet.listener.ELContextCleaner;
 
 import java.util.ArrayList;
 import java.util.List;

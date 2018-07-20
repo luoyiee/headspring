@@ -83,7 +83,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     protected void onResume() {
         super.onResume();
         getDevices();
-
     }
 
     private void getDevices() {

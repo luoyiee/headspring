@@ -7,24 +7,33 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.WeatherIcon;
+import cc.xiaojiang.headspring.adapter.HomeIndoorPmHolder;
 import cc.xiaojiang.headspring.base.BaseActivity;
 import cc.xiaojiang.headspring.http.HttpResultFunc;
 import cc.xiaojiang.headspring.http.RetrofitHelper;
 import cc.xiaojiang.headspring.http.progress.ProgressObserver;
+import cc.xiaojiang.headspring.iotkit.DeviceDataModel;
 import cc.xiaojiang.headspring.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.headspring.utils.DbUtils;
 import cc.xiaojiang.headspring.utils.LocationClient;
@@ -36,11 +45,21 @@ import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.headspring.view.CommonTextView;
 import cc.xiaojiang.headspring.view.Point;
 import cc.xiaojiang.headspring.view.PointEvaluator;
+import cc.xiaojiang.iotkit.bean.http.Device;
+import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
+import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IotKitReceivedCallback {
+    private static final String UNIT_PM25 = "ug/m";
+    private static final String UNIT_TEMPERATURE = "°C";
+    private static final String UNIT_HUMIDITY = "%";
+    private static final String DEFAULT_DATA = "-/-";
     @BindView(R.id.ctv_chain)
     CommonTextView mBtnChain;
     @BindView(R.id.ctv_map)
@@ -57,8 +76,6 @@ public class MainActivity extends BaseActivity {
     TextView mTvOutdoorTemperature;
     @BindView(R.id.tv_outdoor_humidity)
     TextView mTvOutdoorHumidity;
-    @BindView(R.id.tv_indoor_pm)
-    TextView mTvIndoorPm;
     @BindView(R.id.iv_home_control)
     ImageView mIvHomeControl;
     @BindView(R.id.tv_home_location)
@@ -69,7 +86,8 @@ public class MainActivity extends BaseActivity {
     TextView mTvWeatherTomorrow;
     @BindView(R.id.tv_weather_after_tomorrow)
     TextView mTvWeatherAfterTomorrow;
-
+    @BindView(R.id.convenientBanner)
+    ConvenientBanner<String> mConvenientBanner;
     private boolean mAnimatorTag = true;
 
     private Point mChainPoint;
@@ -78,12 +96,52 @@ public class MainActivity extends BaseActivity {
     private Point mShopPoint;
     private Point mPersonalPoint;
     private LocationClient mLocationClient;
+    private ArrayList<String> mIndoorPmList = new ArrayList<>();
+    private CBViewHolderCreator mHolderCreator;
+    private ArrayMap<String, String> mIndoorMap = new ArrayMap<>();
+    private int mDeviceSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLocationClient = new LocationClient();
         MainActivityPermissionsDispatcher.locationWithPermissionCheck(this);
+        initView();
+        getDevices();
+    }
+
+    private void initView() {
+        setAirView(mTvOutdoorPm, DEFAULT_DATA, UNIT_PM25);
+        setAirView(mTvOutdoorTemperature, DEFAULT_DATA + "", UNIT_TEMPERATURE);
+        setAirView(mTvOutdoorHumidity, DEFAULT_DATA + "", UNIT_HUMIDITY);
+        mIndoorPmList.add(DEFAULT_DATA);
+        setIndoorPmBannerView();
+    }
+
+    private void setAirView(TextView textView, String date, String unit) {
+        SpanUtils spanUtils = new SpanUtils()
+                .append(date).setFontSize(26, true).append(unit)
+                .setFontSize(14, true);
+        if (UNIT_PM25.equals(unit)) {
+            spanUtils.append("3").setSuperscript().setFontSize(16, true);
+        }
+        textView.setText(spanUtils.create());
+    }
+
+    private void setIndoorPmBannerView() {
+        mHolderCreator = new CBViewHolderCreator() {
+            @Override
+            public HomeIndoorPmHolder createHolder(View itemView) {
+                return new HomeIndoorPmHolder(itemView);
+            }
+
+            @Override
+            public int getLayoutId() {
+                return R.layout.item_home_indoor_pm;
+            }
+        };
+        mConvenientBanner.setPages(mHolderCreator, mIndoorPmList);
+
     }
 
     @Override
@@ -92,8 +150,70 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        IotKitConnectionManager.getInstance().removeDataCallback(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLocationClient.stopLocation();
+        mLocationClient.onDestroy();
+    }
+
+    private void getDevices() {
+        if (IotKitConnectionManager.getInstance().getMqttAndroidClient() == null) {
+            return;
+        }
+        IotKitConnectionManager.getInstance().addDataCallback(this);
+        IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
+            @Override
+            public void onSuccess(List<Device> data) {
+                //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
+                mDeviceSize = data.size();
+                queryDevices(data);
+            }
+
+            @Override
+            public void onError(String code, String errorMsg) {
+
+            }
+        });
+    }
+
+    /**
+     * 批量查询设备状态
+     */
+    private void queryDevices(List<Device> data) {
+        for (int i = 0; i < data.size(); i++) {
+            queryDevice(data.get(i));
+        }
+    }
+
+    /**
+     * 查询单个设备状态
+     */
+    public void queryDevice(Device device) {
+        IotKitConnectionManager.getInstance().queryStatus(device.getProductKey(),
+                device.getDeviceId(), new IotKitActionCallback() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
+
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable
+                            exception) {
+                        Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
+                    }
+                });
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -121,19 +241,69 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void requestWeatherAirData(String city) {
+        RetrofitHelper.getService().queryCityWeatherAir(city)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<HomeWeatherAirModel>(this) {
+                    @Override
+                    public void onSuccess(HomeWeatherAirModel homeWeatherAirModel) {
+                        setView(homeWeatherAirModel);
+                    }
+                });
+    }
+
+    private void setView(HomeWeatherAirModel homeWeatherAirModel) {
+        setAirView(homeWeatherAirModel);
+        setWeather(homeWeatherAirModel.getNextWeather());
+
+    }
+
+    private void setAirView(HomeWeatherAirModel homeWeatherAirModel) {
+        setAirView(mTvOutdoorPm, homeWeatherAirModel.getPm25() + "", UNIT_PM25);
+        setAirView(mTvOutdoorTemperature, homeWeatherAirModel.getOutTemp() + "", UNIT_TEMPERATURE);
+        setAirView(mTvOutdoorHumidity, homeWeatherAirModel.getOutHumidity() + "", UNIT_HUMIDITY);
+    }
+
+    private void setWeather(List<HomeWeatherAirModel.NextWeatherBean> nextWeatherBeans) {
+        int size = nextWeatherBeans.size();
+        if (size == 3) {
+            HomeWeatherAirModel.NextWeatherBean todayBean = nextWeatherBeans.get(0);
+            HomeWeatherAirModel.NextWeatherBean tomorrowBean = nextWeatherBeans.get(1);
+            HomeWeatherAirModel.NextWeatherBean AfterTomorrowBean = nextWeatherBeans.get(2);
+            setWeatherView(mTvWeatherToday, todayBean);
+            setWeatherView(mTvWeatherTomorrow, tomorrowBean);
+            setWeatherView(mTvWeatherAfterTomorrow, AfterTomorrowBean);
+        } else {
+            Logger.e("error weather length:" + size);
+        }
+    }
+
+    private void setWeatherView(TextView textView, HomeWeatherAirModel.NextWeatherBean
+            weatherBean) {
+        int space = ScreenUtils.dip2px(this, 2);
+        int day = weatherBean.getDay();
+        //方法1、
+        int qianWei = day % 10000 / 1000;
+        int baiWei = day % 1000 / 100;
+        int shiWei = day % 100 / 10;
+        int geWei = day % 10;
+        textView.setText(new SpanUtils()
+                .appendLine("" + qianWei + baiWei + "/" + shiWei + geWei)
+                .appendLine().setLineHeight(space)
+                .appendImage(WeatherIcon.ICONS[weatherBean.getCode()])
+                .appendLine()
+                .appendLine().setLineHeight(space)
+                .appendLine(weatherBean.getLowTemp() + "-" + weatherBean.getHighTemp() + "°C")
+                .create());
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
                 grantResults);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mLocationClient.stopLocation();
-        mLocationClient.onDestroy();
     }
 
     @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal, R
@@ -222,78 +392,33 @@ public class MainActivity extends BaseActivity {
         return new Point(view.getX(), view.getY());
     }
 
-    private void requestWeatherAirData(String city) {
-        RetrofitHelper.getService().queryCityWeatherAir(city)
-                .map(new HttpResultFunc<>())
-                .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<HomeWeatherAirModel>(this) {
-                    @Override
-                    public void onSuccess(HomeWeatherAirModel homeWeatherAirModel) {
-                        setView(homeWeatherAirModel);
-                    }
-                });
-    }
-
-    private void setView(HomeWeatherAirModel homeWeatherAirModel) {
-        setAirView(homeWeatherAirModel);
-        setWeather(homeWeatherAirModel.getNextWeather());
-
-    }
-
-    private void setWeather(List<HomeWeatherAirModel.NextWeatherBean> nextWeatherBeans) {
-        int size = nextWeatherBeans.size();
-        if (size == 3) {
-            HomeWeatherAirModel.NextWeatherBean todayBean = nextWeatherBeans.get(0);
-            HomeWeatherAirModel.NextWeatherBean tomorrowBean = nextWeatherBeans.get(1);
-            HomeWeatherAirModel.NextWeatherBean AfterTomorrowBean = nextWeatherBeans.get(2);
-            setWeatherView(mTvWeatherToday, todayBean);
-            setWeatherView(mTvWeatherTomorrow, tomorrowBean);
-            setWeatherView(mTvWeatherAfterTomorrow, AfterTomorrowBean);
-        } else {
-            Logger.e("error weather length:" + size);
+    @Override
+    public void messageArrived(String deviceId, String onlineStatus, String data) {
+        DeviceDataModel model = new Gson().fromJson(data, DeviceDataModel.class);
+        DeviceDataModel.ParamsBean paramsBean = model.getParams();
+        if (paramsBean == null) {
+            Logger.e("error getParams!");
+            return;
+        }
+        String pm205 = paramsBean.getPM205().getValue();
+        mIndoorMap.put(deviceId, pm205);
+        if (mIndoorMap.size() == mDeviceSize) {
+            mIndoorPmList.clear();
+            // 遍历 ArrayMap
+            for (int i = 0; i < mIndoorMap.size(); i++) {
+                String val = mIndoorMap.valueAt(i);
+                mIndoorPmList.add(val);
+            }
+            if (mDeviceSize > 1) {
+                mConvenientBanner.setPageIndicator(new int[]{R.drawable.dot_default_indicator,
+                        R.drawable.dot_select_indicator});
+            }
+            mConvenientBanner.setPages(mHolderCreator, mIndoorPmList);
         }
     }
 
-    private void setWeatherView(TextView textView, HomeWeatherAirModel.NextWeatherBean
-            weatherBean) {
-        int space = ScreenUtils.dip2px(this, 2);
-        int day = weatherBean.getDay();
-        //方法1、
-        int qianWei = day % 10000 / 1000;
-        int baiWei = day % 1000 / 100;
-        int shiWei = day % 100 / 10;
-        int geWei = day % 10;
-        textView.setText(new SpanUtils()
-                .appendLine("" + qianWei + baiWei + "/" + shiWei + geWei)
-                .appendLine().setLineHeight(space)
-                .appendImage(WeatherIcon.ICONS[weatherBean.getCode()])
-                .appendLine()
-                .appendLine().setLineHeight(space)
-                .appendLine(weatherBean.getLowTemp() + "-" + weatherBean.getHighTemp() + "°C")
-                .create());
-    }
-
-    private void setAirView(HomeWeatherAirModel homeWeatherAirModel) {
-        mTvOutdoorPm.setText(new SpanUtils()
-                .append(homeWeatherAirModel.getPm25() + "").setFontSize(26, true).append("ug/m")
-                .setFontSize(14, true).append
-                        ("3").setSuperscript().setFontSize(16, true)
-                .create());
-
-        mTvOutdoorTemperature.setText(new SpanUtils()
-                .append(homeWeatherAirModel.getOutTemp() + "").setFontSize(26, true).append("°C")
-                .setFontSize(14, true)
-                .create());
-
-        mTvOutdoorHumidity.setText(new SpanUtils()
-                .append(homeWeatherAirModel.getOutHumidity() + "").setFontSize(26, true).append
-                        ("%").setFontSize(14, true)
-                .create());
-
-        mTvIndoorPm.setText(new SpanUtils()
-                .append("0.25").setFontSize(48, true)
-                .append("ug/m").setFontSize(18, true).append("3").setSuperscript().setFontSize
-                        (16, true)
-                .create());
+    @Override
+    public boolean filter(String deviceId) {
+        return false;
     }
 }
