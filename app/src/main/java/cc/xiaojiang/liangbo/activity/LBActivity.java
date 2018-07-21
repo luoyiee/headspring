@@ -15,10 +15,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.hubert.guide.NewbieGuide;
 import com.app.hubert.guide.core.Builder;
+import com.app.hubert.guide.core.Controller;
 import com.app.hubert.guide.model.GuidePage;
+import com.app.hubert.guide.model.HighLight;
+import com.app.hubert.guide.model.HighlightOptions;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
@@ -93,6 +97,7 @@ public class LBActivity extends BaseActivity implements
     private int mShutdownRemainingTime;
     private int mUseTime;
     private int mPM205;
+    private Controller mGuidePage;
 
     private AP1TimingDialog mAP1TimingDialog;
 
@@ -102,6 +107,27 @@ public class LBActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         initData();
         initView();
+        initGuidePage();
+
+    }
+
+    private void initGuidePage() {
+        HighlightOptions options = new HighlightOptions.Builder()
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mTvLbSwitch.callOnClick();
+                    }
+                })
+                .build();
+        GuidePage page = GuidePage.newInstance().addHighLightWithOptions(mTvLbSwitch, options);
+        mGuidePage = NewbieGuide.with(this)
+                .setLabel("guide1")
+                .alwaysShow(true)
+                .addGuidePage(page
+                        .setEverywhereCancelable(false)
+                        .addHighLight(mTvLbSwitch)
+                        .setLayoutRes(R.layout.view_guide)).build();
     }
 
     @Override
@@ -346,16 +372,13 @@ public class LBActivity extends BaseActivity implements
             mTvLbSwitch.setText("关机");
             mTvLbSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_on));
-//            Builder ss = NewbieGuide.with(this)
-//                    .setLabel("guide1")
-//                    .addGuidePage(GuidePage.newInstance()
-//                            .addHighLight(mTvLbSwitch)
-//                            .setLayoutRes(R.layout.view_guide_simple)).build();
-////                    .show();
+            mGuidePage.show();
+
         } else {
             mTvLbSwitch.setText("开机");
             mTvLbSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_off));
+            mGuidePage.remove();
         }
     }
 

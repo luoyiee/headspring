@@ -13,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.app.hubert.guide.NewbieGuide;
+import com.app.hubert.guide.core.Controller;
+import com.app.hubert.guide.model.GuidePage;
+import com.app.hubert.guide.model.HighlightOptions;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
@@ -79,7 +83,7 @@ public class KZZActivity extends BaseActivity implements
     private int mPM205;
     private int mTemperature;
     private int mHumidity;
-
+    private Controller mGuidePage;
     private AP1TimingDialog mAP1TimingDialog;
 
 
@@ -88,6 +92,26 @@ public class KZZActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         initData();
         initView();
+        initGuidePage();
+    }
+
+    private void initGuidePage() {
+        HighlightOptions options = new HighlightOptions.Builder()
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mTvSwitch.callOnClick();
+                    }
+                })
+                .build();
+        GuidePage page = GuidePage.newInstance().addHighLightWithOptions(mTvSwitch, options);
+        mGuidePage = NewbieGuide.with(this)
+                .setLabel("guide1")
+                .alwaysShow(true)
+                .addGuidePage(page
+                        .setEverywhereCancelable(false)
+                        .addHighLight(mTvSwitch)
+                        .setLayoutRes(R.layout.view_guide)).build();
     }
 
     @Override
@@ -343,10 +367,12 @@ public class KZZActivity extends BaseActivity implements
             mTvSwitch.setText("关机");
             mTvSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_on));
+            mGuidePage.show();
         } else {
             mTvSwitch.setText("开机");
             mTvSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_off));
+            mGuidePage.remove();
         }
     }
 
