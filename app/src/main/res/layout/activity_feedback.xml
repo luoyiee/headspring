@@ -22,7 +22,6 @@
         android:ems="10"
         android:gravity="start"
         android:hint="@string/feedback_hint"
-        android:inputType="text"
         android:padding="8dp"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"

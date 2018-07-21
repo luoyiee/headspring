@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_share"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/ctv_chain"
         style="@style/homeTextStyle"
         android:layout_marginTop="8dp"
@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_home_control"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/ctv_map"
         style="@style/homeTextStyle"
         android:layout_marginStart="24dp"
@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="@+id/ctv_chain"
         app:layout_constraintTop_toBottomOf="@+id/ctv_chain"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/ctv_device"
         style="@style/homeTextStyle"
         android:layout_marginBottom="16dp"
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="@+id/iv_home_control"
         app:layout_constraintStart_toStartOf="@+id/iv_home_control"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/ctv_shop"
         style="@style/homeTextStyle"
         android:layout_marginEnd="24dp"
@@ -77,7 +77,7 @@
         app:layout_constraintEnd_toEndOf="@+id/ctv_personal"
         app:layout_constraintTop_toBottomOf="@+id/ctv_personal"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/ctv_personal"
         style="@style/homeTextStyle"
         android:layout_marginTop="8dp"

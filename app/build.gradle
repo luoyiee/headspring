@@ -13,10 +13,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-//        ndk {
-//            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-//            abiFilters "armeabi"/*, "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a","x86_64"*/
-//        }
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi"/*, "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a","x86_64"*/
+        }
     }
 
     signingConfigs {
@@ -84,7 +84,8 @@ dependencies {
         exclude module: "support-v13"
     }
     implementation 'com.bigkoo:ConvenientBanner:2.1.4'//地址变ConvenientBanner 大写了，额。。。
-
+    //引导
+    implementation 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
     implementation 'com.qiniu:qiniu-android-sdk:7.3.10'
     implementation 'org.greenrobot:eventbus:3.1.1'
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"

@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/tv_share_wechat"
         style="@style/shareTextStyle"
         android:layout_marginTop="16dp"
@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/tv_share_wechat_comment"
         style="@style/shareTextStyle"
         android:text="@string/share_wecaht_comment"
@@ -36,7 +36,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_share_wechat"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/tv_share_qq"
         style="@style/shareTextStyle"
         android:text="@string/share_qq"
@@ -46,7 +46,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_share_wechat_comment"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/tv_share_qq_zone"
         style="@style/shareTextStyle"
         android:text="@string/share_qq_zone"

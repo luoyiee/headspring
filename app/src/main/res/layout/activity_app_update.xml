@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cc.xiaojiang.headspring.activity.AppUpdateActivity">
+    tools:context="cc.xiaojiang.liangbo.activity.AppUpdateActivity">
 
    <include layout="@layout/layout_appbar"/>
 

@@ -9,19 +9,19 @@
               tools:context=".activity.InstructionActivity"
               tools:showIn="@layout/activity_instruction">
 
-    <cc.xiaojiang.headspring.view.ItemView
+    <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_one_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemKey="空智子使用说明书"/>
 
-    <cc.xiaojiang.headspring.view.ItemView
+    <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_two_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemKey="LB净化器使用说明书"/>
 
-    <cc.xiaojiang.headspring.view.ItemView
+    <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_three_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

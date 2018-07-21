@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <cc.xiaojiang.headspring.view.CommonTextView
+    <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/textView22"
         android:layout_marginTop="52dp"
         android:lineSpacingExtra="2dp"

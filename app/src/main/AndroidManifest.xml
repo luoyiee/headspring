@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cc.xiaojiang.headspring">
+    package="cc.xiaojiang.liangbo">
 
     <uses-permission android:name="android.permission-group.LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />

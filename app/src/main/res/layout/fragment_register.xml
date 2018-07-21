@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"/>
 
-        <cc.xiaojiang.headspring.view.CommonTextView
+        <cc.xiaojiang.liangbo.view.CommonTextView
             android:text="获取验证码"
             android:layout_alignParentEnd="true"
             android:textSize="14sp"

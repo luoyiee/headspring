@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/device_control_bg"
-    tools:context="cc.xiaojiang.headspring.activity.FilterTimeRemainActivity">
+    tools:context="cc.xiaojiang.liangbo.activity.FilterTimeRemainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

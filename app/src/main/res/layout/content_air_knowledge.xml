@@ -8,7 +8,7 @@
     android:padding="16dp"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.headspring.activity.AirKnowledgeActivity"
+    tools:context="cc.xiaojiang.liangbo.activity.AirKnowledgeActivity"
     tools:showIn="@layout/activity_air_knowledge">
 
     <LinearLayout
