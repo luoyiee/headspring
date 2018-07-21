@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -24,7 +23,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.base.BaseActivity;
-import cc.xiaojiang.headspring.iotkit.DeviceDataModel;
+import cc.xiaojiang.headspring.iotkit.KzzDataModel;
 import cc.xiaojiang.headspring.utils.AP1Utils;
 import cc.xiaojiang.headspring.utils.ScreenShotUtils;
 import cc.xiaojiang.headspring.utils.ToastUtils;
@@ -37,13 +36,14 @@ import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
-public class DeviceControlActivity extends BaseActivity implements
-        AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback {
+public class KZZActivity extends BaseActivity implements
+        AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback, AP1TimingDialog
+        .OnTimeSelectedListener {
     @BindView(R.id.iv_pop_window)
     ImageView mIvPopWindow;
     @BindView(R.id.ic_air_purifier_wifi_off)
     CommonTextView mIcAirPurifierWifiOff;
-    @BindView(R.id.tv_air_purifier_view1_timing)
+    @BindView(R.id.tv_lb_view1_timing)
     TextView mTvAirPurifierView1Timing;
     @BindView(R.id.tv_air_purifier_view3_temp)
     TextView mTvAirPurifierView3Temp;
@@ -59,7 +59,7 @@ public class DeviceControlActivity extends BaseActivity implements
     TextView mTextView17;
     @BindView(R.id.textView14)
     TextView mTextView14;
-    @BindView(R.id.tv_auto)
+    @BindView(R.id.tv_lb_auto)
     CommonTextView mTvAuto;
     @BindView(R.id.tv_switch)
     CommonTextView mTvSwitch;
@@ -67,7 +67,6 @@ public class DeviceControlActivity extends BaseActivity implements
     CommonTextView mTvTiming;
 
     private Device mDevice;
-    private IotKitReceivedCallback mIotKitReceivedCallback;
 
     private int mControlGear;
     private int mSwitch;
@@ -76,10 +75,11 @@ public class DeviceControlActivity extends BaseActivity implements
     private int mTimingShutdown;
     private int mUseTime;
     private int mPM205;
-//    private int mTempture;
-//    private int mHumidity;
+    private int mTemperature;
+    private int mHumidity;
 
-    private int mAirQuality;
+    private AP1TimingDialog mAP1TimingDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +89,40 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     @Override
+    public void onStart(int gear) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IotKitConnectionManager.getInstance().addDataCallback(this);
+        IotKitConnectionManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
+                .getDeviceId(), null);
+    }
+
+    @Override
+    protected void onPause() {
+        IotKitConnectionManager.getInstance().removeDataCallback(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onStop(int gear) {
+        sendGear(gear);
+    }
+
+    @Override
     protected int getLayoutId() {
-        return R.layout.activity_device_control;
+        return R.layout.activity_kzz;
     }
 
     private void initView() {
         getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         mViewAirPurifierGear.setOnSeekBarChangeListener(this);
+        mAP1TimingDialog = new AP1TimingDialog();
+        mAP1TimingDialog.setOnTimeSelectedListener(this);
+
     }
 
     private void initData() {
@@ -106,66 +133,40 @@ public class DeviceControlActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IotKitConnectionManager.getInstance().addDataCallback(this);
-        IotKitConnectionManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
-                .getDeviceId(), new IotKitActionCallback() {
-            @Override
-            public void onSuccess(IMqttToken asyncActionToken) {
-
-            }
-
-            @Override
-            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
-            }
-        });
-    }
-
-    @Override
-    protected void onPause() {
-        IotKitConnectionManager.getInstance().removeDataCallback(this);
-        super.onPause();
-    }
-
-    @OnClick({R.id.iv_pop_window, R.id.tv_auto, R.id.tv_switch, R.id.tv_timing, R.id
+    @OnClick({R.id.iv_pop_window, R.id.tv_lb_auto, R.id.tv_switch, R.id.tv_timing, R.id
             .iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_pop_window:
                 showPupWindow();
                 break;
-            case R.id.tv_auto:
-                sendMode(mControlMode);
+            case R.id.tv_lb_auto:
+                mControlMode = mControlMode == 0 ? 1 : 0;
+                HashMap<String, String> hashMap1 = new HashMap<>();
+                hashMap1.put("ControlMode", String.valueOf(mControlMode));
+                sendCmd(hashMap1);
                 break;
             case R.id.tv_switch:
-                sendSwitch(mSwitch);
+                HashMap<String, String> hashMap2 = new HashMap<>();
+                hashMap2.put("Switch", String.valueOf(mSwitch == 0 ? 1 : 0));
+                sendCmd(hashMap2);
                 break;
             case R.id.tv_timing:
-                doTiming();
+                mAP1TimingDialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.iv_air_purifier_view4_minus:
-                gearMinus();
+                if (mControlGear > 0 && mControlGear <= 5) {
+                    sendGear(mControlGear - 1);
+                }
                 break;
             case R.id.iv_air_purifier_view4_plus:
-                gearPlus();
+                if (mControlGear >= 0 && mControlGear < 5) {
+                    sendGear(mControlGear + 1);
+                }
                 break;
         }
     }
 
-    private void sendSwitch(int aSwitch) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("Switch", String.valueOf(aSwitch == 0 ? 1 : 0));
-        sendCmd(hashMap);
-    }
-
-    private void sendMode(int controlMode) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("ControlMode", String.valueOf(controlMode == 0 ? 1 : 0));
-        sendCmd(hashMap);
-    }
 
     private void showPupWindow() {
         final View contentView = getLayoutInflater().inflate(R.layout.device_pop_window, null);
@@ -193,50 +194,10 @@ public class DeviceControlActivity extends BaseActivity implements
                 + 40, 20);
     }
 
-    private void gearPlus() {
-        if (mControlGear >= 0 && mControlGear < 5) {
-            sendGear(mControlGear + 1);
-        }
-    }
-
-    private void doTiming() {
-        AP1TimingDialog dialog = new AP1TimingDialog();
-        dialog.setOnTimeSelectedListener(new AP1TimingDialog.OnTimeSelectedListener() {
-            @Override
-            public void onTimeSelected(int hour) {
-                if (hour == 4) {
-                    hour = 3;
-                }
-                if (hour == 8) {
-                    hour = 4;
-                }
-                HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("TimingShutdown", hour + "");
-                sendCmd(hashMap);
-            }
-        });
-        dialog.show(getSupportFragmentManager(), "");
-    }
-
-    private void gearMinus() {
-        if (mControlGear > 0 && mControlGear <= 5) {
-            sendGear(mControlGear - 1);
-        }
-    }
-
-    @Override
-    public void onStart(int gear) {
-
-    }
 
     @Override
     public void onChange(int gear) {
 
-    }
-
-    @Override
-    public void onStop(int gear) {
-        sendGear(gear);
     }
 
     private void sendGear(int gear) {
@@ -246,8 +207,7 @@ public class DeviceControlActivity extends BaseActivity implements
     }
 
     private void sendCmd(HashMap<String, String> hashMap) {
-        IotKitConnectionManager.getInstance().sendCmd(mDevice.getProductKey(), mDevice
-                .getDeviceId(), hashMap, new IotKitActionCallback() {
+        IotKitConnectionManager.getInstance().sendCmd(mDevice, hashMap, new IotKitActionCallback() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
 
@@ -255,7 +215,7 @@ public class DeviceControlActivity extends BaseActivity implements
 
             @Override
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                ToastUtils.show("发送失败，请重试");
+
             }
         });
     }
@@ -266,65 +226,114 @@ public class DeviceControlActivity extends BaseActivity implements
             Logger.e("error device!");
             return;
         }
-        DeviceDataModel model = new Gson().fromJson(data, DeviceDataModel.class);
-        DeviceDataModel.ParamsBean paramsBean = model.getParams();
+        KzzDataModel model = new Gson().fromJson(data, KzzDataModel.class);
+        KzzDataModel.ParamsBean paramsBean = model.getParams();
         if (paramsBean == null) {
             Logger.e("error getParams!");
             return;
         }
-        setView(paramsBean);
+        showData(paramsBean);
     }
 
-    private void setView(DeviceDataModel.ParamsBean paramsBean) {
-        mSwitch = Integer.parseInt(paramsBean.getSwitch().getValue());
-        mControlMode = Integer.parseInt(paramsBean.getControlMode().getValue());
-        mControlGear = Integer.parseInt(paramsBean.getControlGear().getValue());
-        mTimingShutdown = Integer.parseInt(paramsBean.getTimingShutdown().getValue());
-        mUseTime = Integer.parseInt(paramsBean.getUseTime().getValue());
-        mPM205 = Integer.parseInt(paramsBean.getPM205().getValue());
-//        mTempture = Integer.parseInt(paramsBean.getTempture().getValue());
-//        mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
-        setBackground(mPM205);
-        //绘制界面
-        mTvAirPurifierView1Timing.setText(mTimingShutdown + "h");
-//        mTvAirPurifierView1Strainer.setText(mUseTime + "h");
-//        mTvAirPurifierView3Temp.setText(mTempture + "°C");
-//        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
+    @Override
+    public boolean filter(String deviceId) {
+        return !deviceId.equals(mDevice.getDeviceId());
+    }
+
+
+    private void showData(KzzDataModel.ParamsBean paramsBean) {
+        if (paramsBean.getSwitch() != null) {
+            mSwitch = Integer.parseInt(paramsBean.getSwitch().getValue());
+        }
+        if (paramsBean.getControlMode() != null) {
+            mControlMode = Integer.parseInt(paramsBean.getControlMode().getValue());
+        }
+        if (paramsBean.getControlGear() != null) {
+            mControlGear = Integer.parseInt(paramsBean.getControlGear().getValue());
+        }
+        if (paramsBean.getShutdownRemainingTime() != null) {
+            mTimingShutdown = Integer.parseInt(paramsBean.getShutdownRemainingTime().getValue());
+        }
+        if (paramsBean.getUseTime() != null) {
+            mUseTime = Integer.parseInt(paramsBean.getUseTime().getValue());
+        }
+        if (paramsBean.getPM205() != null) {
+            mPM205 = Integer.parseInt(paramsBean.getPM205().getValue());
+        }
+        if (paramsBean.getTempture() != null) {
+            mTemperature = Integer.parseInt(paramsBean.getTempture().getValue());
+        }
+        if (paramsBean.getHumidity() != null) {
+            mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
+        }
+        refreshAll();
+    }
+
+    private void refreshAll() {
+        refreshBackground();
+        refreshSwitch();
+        refreshMode();
+        refreshGear();
+        refreshShutDown();
+        refreshFilter();
+        refreshPm25();
+        refreshTemperature();
+        refreshHumidity();
+    }
+
+    private void refreshHumidity() {
+        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
+    }
+
+    private void refreshTemperature() {
+        mTvAirPurifierView3Temp.setText(mTemperature + "°C");
+    }
+
+    private void refreshPm25() {
         mViewAirPurifierPm25.setValue(mPM205);
-        mViewAirPurifierGear.setGear(mControlGear);
+    }
 
-        if (mControlMode == 0) {
-            mTvAuto.setText("自动");
-        } else {
-            mTvAuto.setText("手动");
-        }
-
-        if (mSwitch == 0) {
-            mTvSwitch.setText("关机");
-        } else {
-            mTvSwitch.setText("开机");
-        }
+    private void refreshFilter() {
         if (mUseTime >= 2000) {
             showChangeFilter();
         }
     }
 
-    private void showChangeFilter() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("更换滤芯");
-        builder.setMessage("滤网使用时间到了，请您及时更换滤芯!");
-        builder.setNegativeButton("取消", null);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
+    private void refreshShutDown() {
+        mTvAirPurifierView1Timing.setText(getFormatTime(mTimingShutdown));
     }
 
-    private void setBackground(int PM205) {
-        String rate = AP1Utils.getRate(this, PM205);
+    public String getFormatTime(int timingShutdown) {
+        String hour = String.format("%02d", timingShutdown / 60);
+        String minute = String.format("%02d", timingShutdown % 60);
+        return hour + ":" + minute;
+    }
+
+
+    private void refreshGear() {
+        mViewAirPurifierGear.setGear(mControlGear);
+    }
+
+    private void refreshMode() {
+        if (mControlMode == 0) {
+            mTvAuto.setText("自动");
+        } else {
+            mTvAuto.setText("手动");
+        }
+    }
+
+
+    private void refreshSwitch() {
+        if (mSwitch == 0) {
+            mTvSwitch.setText("关机");
+        } else {
+            mTvSwitch.setText("开机");
+        }
+        // TODO: 2018/7/21 设置按钮
+    }
+
+    private void refreshBackground() {
+        String rate = AP1Utils.getRate(this, mPM205);
         if (mSwitch == 1) {
             if (rate.equals(getString(R.string.air_purifier_rate_excellent))) {
                 getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
@@ -342,10 +351,25 @@ public class DeviceControlActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public boolean filter(String deviceId) {
-        return !deviceId.equals(mDevice.getDeviceId());
+    private void showChangeFilter() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("更换滤芯");
+        builder.setMessage("滤网使用时间到了，请您及时更换滤芯!");
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
     }
 
 
+    @Override
+    public void onTimeSelected(int hour) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("TimingShutdown", hour + "");
+        sendCmd(hashMap);
+    }
 }

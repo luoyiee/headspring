@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout3"
@@ -20,35 +19,40 @@
         android:src="@drawable/wifi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/edTxt_wifi_confirm_ssid"
-        android:layout_width="328dp"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/tv_wifi_confirm_ssid"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="32dp"
-        android:hint="当前wifi"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:text="没有检测到wifi连接"
+        app:layout_constraintBottom_toTopOf="@+id/edTxt_wifi_confirm_password"
+        app:layout_constraintEnd_toStartOf="@+id/tv_wifi_confirm_change_wifi"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/edTxt_wifi_confirm_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="asdf062516"
+        android:hint="请输入当前wifi密码"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTxt_wifi_confirm_ssid"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_wifi_confirm_ssid" />
 
 
     <Button
         android:id="@+id/btn_wifi_conform_next"
         android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/bg_button"
@@ -56,6 +60,22 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_wifi_confirm_change_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:text="更换wifi"
+        app:layout_constraintBottom_toTopOf="@+id/edTxt_wifi_confirm_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_wifi_confirm_ssid"
+        app:layout_constraintTop_toTopOf="@+id/tv_wifi_confirm_ssid"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

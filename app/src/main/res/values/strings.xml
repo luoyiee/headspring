@@ -19,7 +19,8 @@
     <string name="month">月</string>
 
 
-    <string name="title_activity_control">空智子</string>
+    <string name="title_activity_kzz">空智子</string>
+    <string name="title_activity_lb">LB</string>
     <string name="title_activity_scan_code">扫描二维码</string>
     <string name="title_activity_dynamic">量波动态</string>
     <string name="title_activity_lunar">农历节气</string>

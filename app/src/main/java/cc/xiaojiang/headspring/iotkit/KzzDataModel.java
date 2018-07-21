@@ -1,19 +1,17 @@
 package cc.xiaojiang.headspring.iotkit;
 
-public class DeviceDataModel {
+public class KzzDataModel {
 
 
     /**
      * msg_type : push
-     * order_id :
-     * params : {"onlineState":{"value":"online:1529982659"},"Switch":{"value":"1"},
-     * "ControlMode":{"value":"1"},"ControlGear":{"value":"0"},"TimingShutdown":{"value":"0"},
-     * "UseTime":{"value":"16"},"PM205":{"value":"0"},"Tempture":{"value":"27"},
-     * "Humidity":{"value":"58"}}
+     * params : {"onlineStatus":{"value":"online:1532157395"},"Switch":{"value":"1"},
+     * "ControlMode":{"value":"1"},"ControlGear":{"value":"3"},"TimingShutdown":{"value":"0"},
+     * "UseTime":{"value":"62"},"PM205":{"value":"3"},"Tempture":{"value":"26"},
+     * "Humidity":{"value":"54"},"ShutdownRemainingTime":{"value":"0"}}
      */
 
     private String msg_type;
-    private String order_id;
     private ParamsBean params;
 
     public String getMsg_type() {
@@ -22,14 +20,6 @@ public class DeviceDataModel {
 
     public void setMsg_type(String msg_type) {
         this.msg_type = msg_type;
-    }
-
-    public String getOrder_id() {
-        return order_id;
-    }
-
-    public void setOrder_id(String order_id) {
-        this.order_id = order_id;
     }
 
     public ParamsBean getParams() {
@@ -42,33 +32,33 @@ public class DeviceDataModel {
 
     public static class ParamsBean {
         /**
-         * onlineState : {"value":"online:1529982659"}
+         * onlineStatus : {"value":"online:1532157395"}
          * Switch : {"value":"1"}
          * ControlMode : {"value":"1"}
-         * ControlGear : {"value":"0"}
-         * TimingShutdown : {"value":"0"}
-         * UseTime : {"value":"16"}
-         * PM205 : {"value":"0"}
-         * Tempture : {"value":"27"}
-         * Humidity : {"value":"58"}
+         * ControlGear : {"value":"3"}
+         * UseTime : {"value":"62"}
+         * PM205 : {"value":"3"}
+         * Tempture : {"value":"26"}
+         * Humidity : {"value":"54"}
+         * ShutdownRemainingTime : {"value":"0"}
          */
 
-        private OnlineStateBean onlineState;
+        private OnlineStatusBean onlineStatus;
         private SwitchBean Switch;
         private ControlModeBean ControlMode;
         private ControlGearBean ControlGear;
-        private TimingShutdownBean TimingShutdown;
         private UseTimeBean UseTime;
         private PM205Bean PM205;
         private TemptureBean Tempture;
         private HumidityBean Humidity;
+        private ShutdownRemainingTimeBean ShutdownRemainingTime;
 
-        public OnlineStateBean getOnlineState() {
-            return onlineState;
+        public OnlineStatusBean getOnlineStatus() {
+            return onlineStatus;
         }
 
-        public void setOnlineState(OnlineStateBean onlineState) {
-            this.onlineState = onlineState;
+        public void setOnlineStatus(OnlineStatusBean onlineStatus) {
+            this.onlineStatus = onlineStatus;
         }
 
         public SwitchBean getSwitch() {
@@ -95,13 +85,7 @@ public class DeviceDataModel {
             this.ControlGear = ControlGear;
         }
 
-        public TimingShutdownBean getTimingShutdown() {
-            return TimingShutdown;
-        }
 
-        public void setTimingShutdown(TimingShutdownBean TimingShutdown) {
-            this.TimingShutdown = TimingShutdown;
-        }
 
         public UseTimeBean getUseTime() {
             return UseTime;
@@ -135,9 +119,17 @@ public class DeviceDataModel {
             this.Humidity = Humidity;
         }
 
-        public static class OnlineStateBean {
+        public ShutdownRemainingTimeBean getShutdownRemainingTime() {
+            return ShutdownRemainingTime;
+        }
+
+        public void setShutdownRemainingTime(ShutdownRemainingTimeBean ShutdownRemainingTime) {
+            this.ShutdownRemainingTime = ShutdownRemainingTime;
+        }
+
+        public static class OnlineStatusBean {
             /**
-             * value : online:1529982659
+             * value : online:1532157395
              */
 
             private String value;
@@ -185,7 +177,7 @@ public class DeviceDataModel {
 
         public static class ControlGearBean {
             /**
-             * value : 0
+             * value : 3
              */
 
             private String value;
@@ -199,25 +191,10 @@ public class DeviceDataModel {
             }
         }
 
-        public static class TimingShutdownBean {
-            /**
-             * value : 0
-             */
-
-            private String value;
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
 
         public static class UseTimeBean {
             /**
-             * value : 16
+             * value : 62
              */
 
             private String value;
@@ -233,7 +210,7 @@ public class DeviceDataModel {
 
         public static class PM205Bean {
             /**
-             * value : 0
+             * value : 3
              */
 
             private String value;
@@ -249,7 +226,7 @@ public class DeviceDataModel {
 
         public static class TemptureBean {
             /**
-             * value : 27
+             * value : 26
              */
 
             private String value;
@@ -265,7 +242,23 @@ public class DeviceDataModel {
 
         public static class HumidityBean {
             /**
-             * value : 58
+             * value : 54
+             */
+
+            private String value;
+
+            public String getValue() {
+                return value;
+            }
+
+            public void setValue(String value) {
+                this.value = value;
+            }
+        }
+
+        public static class ShutdownRemainingTimeBean {
+            /**
+             * value : 0
              */
 
             private String value;

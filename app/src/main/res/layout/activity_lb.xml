@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/air_purifier_background_excellent"
+    tools:context="cc.xiaojiang.headspring.activity.KZZActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_pop_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/device_more" />
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/frameLayout4"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_device_status"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintWidth_percent="0.65">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_lb_view1_filter"
+        style="@style/common_14_white_text"
+        android:layout_marginStart="8dp"
+        android:text="90%"
+        app:layout_constraintBottom_toBottomOf="@+id/textView14"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:background="@color/status_label"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout4"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout4"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout4" />
+
+
+    <TextView
+        android:id="@+id/textView14"
+        style="@style/control_status_label"
+        android:layout_marginStart="24dp"
+        android:text="滤网"
+        android:textColor="@color/status_label"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintStart_toEndOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/view4" />
+
+    <cc.xiaojiang.headspring.view.AP1View2
+        android:id="@+id/view_air_purifier_pm25"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.42"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.26" />
+
+    <cc.xiaojiang.headspring.view.AP1View43
+        android:id="@+id/view_lb_gear"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_lb_view4_plus"
+        app:layout_constraintStart_toEndOf="@+id/iv_lb_view4_minus" />
+
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/tv_lb_auto"
+        style="@style/device_control_bottom_text_icon"
+        android:layout_marginBottom="32dp"
+        android:text="自动"
+        app:icon_src_normal="@drawable/ic_air_purifier_mode_auto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_lb_switch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/tv_lb_switch"
+        style="@style/device_control_bottom_text_icon"
+        android:text="开启"
+        app:icon_src_normal="@drawable/ic_air_purifier_switch_on"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lb_auto"
+        app:layout_constraintEnd_toStartOf="@+id/tv_lb_timing"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_lb_auto" />
+
+    <cc.xiaojiang.headspring.view.CommonTextView
+        android:id="@+id/tv_lb_timing"
+        style="@style/device_control_bottom_text_icon"
+        android:text="定时"
+        app:icon_src_normal="@drawable/ic_air_purifier_timing_off"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lb_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_lb_switch" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.84" />
+
+    <ImageView
+        android:id="@+id/iv_lb_view4_minus"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_lb_gear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_lb_gear"
+        app:srcCompat="@drawable/ic_air_purifier_minus_off" />
+
+    <ImageView
+        android:id="@+id/iv_lb_view4_plus"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_lb_gear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_lb_gear"
+        app:srcCompat="@drawable/ic_air_purifier_plus_off" />
+
+    <TextView
+        android:id="@id/tv_lb_shut_down"
+        style="@style/common_14_white_text"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
+        app:layout_constraintEnd_toStartOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout4"
+        tools:text="08:00" />
+
+    <TextView
+        android:id="@+id/textView36"
+        style="@style/control_status_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="定时"
+        android:textColor="@color/status_label"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_lb_shut_down"
+        app:layout_constraintEnd_toStartOf="@+id/tv_lb_shut_down"
+        app:layout_constraintTop_toTopOf="@+id/tv_lb_shut_down" />
+
+</android.support.constraint.ConstraintLayout>

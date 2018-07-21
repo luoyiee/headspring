@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/air_purifier_background_excellent"
-    tools:context="cc.xiaojiang.headspring.activity.DeviceControlActivity">
+    tools:context="cc.xiaojiang.headspring.activity.KZZActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/iv_pop_window"
@@ -31,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/device_more"/>
+            android:src="@drawable/device_more" />
     </android.support.v7.widget.Toolbar>
 
     <cc.xiaojiang.headspring.view.CommonTextView
@@ -47,7 +46,7 @@
         app:icon_width="18dp"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
         app:layout_constraintStart_toStartOf="@+id/frameLayout4"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout4"/>
+        app:layout_constraintTop_toTopOf="@+id/frameLayout4" />
 
     <FrameLayout
         android:id="@+id/frameLayout4"
@@ -63,12 +62,12 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_air_purifier_view1_timing"
+        android:id="@+id/tv_lb_view1_timing"
         style="@style/common_14_white_text"
         android:layout_marginStart="8dp"
         android:text="8h"
         app:layout_constraintBaseline_toBaselineOf="@+id/ic_air_purifier_wifi_off"
-        app:layout_constraintStart_toEndOf="@+id/textView14"/>
+        app:layout_constraintStart_toEndOf="@+id/textView14" />
 
     <View
         android:id="@+id/view4"
@@ -78,15 +77,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
         app:layout_constraintEnd_toEndOf="@+id/frameLayout4"
         app:layout_constraintStart_toStartOf="@+id/frameLayout4"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout4"/>
+        app:layout_constraintTop_toTopOf="@+id/frameLayout4" />
 
     <TextView
         android:id="@+id/tv_air_purifier_view3_temp"
         style="@style/common_14_white_text"
         android:layout_marginStart="4dp"
-        tools:text="25°C"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
-        app:layout_constraintStart_toEndOf="@+id/textView16"/>
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        tools:text="25°C" />
 
     <TextView
         android:id="@+id/tv_air_purifier_view3_humidity"
@@ -96,7 +95,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_air_purifier_view3_temp"
         app:layout_constraintTop_toTopOf="@+id/tv_air_purifier_view3_temp"
-        tools:text="68%"/>
+        tools:text="68%" />
 
     <TextView
         android:id="@+id/textView16"
@@ -109,7 +108,7 @@
         app:layout_constraintHorizontal_bias="0.28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_air_purifier_pm25"
-        app:layout_constraintVertical_bias="0.038"/>
+        app:layout_constraintVertical_bias="0.038" />
 
     <TextView
         android:id="@+id/textView17"
@@ -120,7 +119,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView14"
@@ -130,7 +129,7 @@
         android:textColor="@color/status_label"
         app:layout_constraintBottom_toBottomOf="@+id/view4"
         app:layout_constraintStart_toEndOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/view4"/>
+        app:layout_constraintTop_toTopOf="@+id/view4" />
 
     <cc.xiaojiang.headspring.view.AP1View2
         android:id="@+id/view_air_purifier_pm25"
@@ -142,7 +141,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.26"/>
+        app:layout_constraintVertical_bias="0.26" />
 
     <cc.xiaojiang.headspring.view.AP1View4
         android:id="@+id/view_air_purifier_gear"
@@ -153,11 +152,11 @@
         android:layout_marginStart="2dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/iv_air_purifier_view4_plus"
-        app:layout_constraintStart_toEndOf="@+id/iv_air_purifier_view4_minus"/>
+        app:layout_constraintStart_toEndOf="@+id/iv_air_purifier_view4_minus" />
 
 
     <cc.xiaojiang.headspring.view.CommonTextView
-        android:id="@+id/tv_auto"
+        android:id="@+id/tv_lb_auto"
         style="@style/device_control_bottom_text_icon"
         android:layout_marginBottom="32dp"
         android:text="自动"
@@ -165,17 +164,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_switch"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/tv_switch"
         style="@style/device_control_bottom_text_icon"
         android:text="开启"
         app:icon_src_normal="@drawable/ic_air_purifier_switch_on"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_auto"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lb_auto"
         app:layout_constraintEnd_toStartOf="@+id/tv_timing"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_auto"/>
+        app:layout_constraintStart_toEndOf="@+id/tv_lb_auto" />
 
     <cc.xiaojiang.headspring.view.CommonTextView
         android:id="@+id/tv_timing"
@@ -185,33 +184,33 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_switch"/>
+        app:layout_constraintStart_toEndOf="@+id/tv_switch" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.84"/>
+        app:layout_constraintGuide_percent="0.84" />
 
     <ImageView
         android:id="@+id/iv_air_purifier_view4_minus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/view_air_purifier_gear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view_air_purifier_gear"
-        app:srcCompat="@drawable/ic_air_purifier_minus_off"/>
+        app:srcCompat="@drawable/ic_air_purifier_minus_off" />
 
     <ImageView
         android:id="@+id/iv_air_purifier_view4_plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/view_air_purifier_gear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view_air_purifier_gear"
-        app:srcCompat="@drawable/ic_air_purifier_plus_off"/>
+        app:srcCompat="@drawable/ic_air_purifier_plus_off" />
 
 </android.support.constraint.ConstraintLayout>

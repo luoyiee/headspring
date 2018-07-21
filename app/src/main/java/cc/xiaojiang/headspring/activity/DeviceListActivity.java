@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
@@ -22,6 +23,7 @@ import butterknife.BindView;
 import cc.xiaojiang.headspring.R;
 import cc.xiaojiang.headspring.adapter.DeviceAdapter;
 import cc.xiaojiang.headspring.base.BaseActivity;
+import cc.xiaojiang.headspring.utils.ToastUtils;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.bean.http.DeviceNickRes;
 import cc.xiaojiang.iotkit.bean.http.DeviceUnbindRes;
@@ -147,12 +149,21 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         Device device = (Device) adapter.getItem(position);
-        Intent intent;
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_device_content:
-                intent = new Intent(this, DeviceControlActivity.class);
+                if ("jbb600".equals(device.getProductKey())) {
+                    intent = new Intent(this, LBActivity.class);
+                } else if ("bff503".equals(device.getProductKey())) {
+                    intent = new Intent(this, KZZActivity.class);
+                }
+                if (intent == null) {
+                    ToastUtils.show("非法设备！");
+                    return;
+                }
                 intent.putExtra("device_data", device);
                 startActivity(intent);
+
                 break;
             case R.id.tv_device_swipe_menu_modify:
                 modifyDevice(device.getDeviceId(), "test");

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cc.xiaojiang.headspring">
 
-    <uses-permission android:name="android.permission-group.LOCATION"/>
+    <uses-permission android:name="android.permission-group.LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- 允许程序打开网络套接字 -->
@@ -85,8 +85,12 @@
             android:label="@string/title_activity_top_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.DeviceControlActivity"
-            android:label="@string/title_activity_control"
+            android:name=".activity.KZZActivity"
+            android:label="@string/title_activity_kzz"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.LBActivity"
+            android:label="@string/title_activity_lb"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.HistoryDataActivity"
