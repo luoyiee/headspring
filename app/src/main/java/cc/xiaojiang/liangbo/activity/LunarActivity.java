@@ -1,6 +1,8 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.view.View;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
@@ -42,6 +44,7 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
         mYear = mCalendarView.getCurYear();
         mTvTitle.setOnClickListener(v -> {
             mCalendarView.showYearSelectLayout(mYear);
+            // TODO: 2018/7/22 年视图文字重叠
             mTvTitle.setText(String.valueOf(mYear));
         });
         mCalendarView.setOnDateSelectedListener(this);
@@ -72,6 +75,7 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
         RetrofitHelper.getService().lunarInfo(calendar.toString())
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<LunarInfoModel>(this) {
                     @Override
                     public void onSuccess(LunarInfoModel lunarInfoModel) {

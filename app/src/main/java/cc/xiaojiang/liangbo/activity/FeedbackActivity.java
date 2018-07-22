@@ -37,10 +37,11 @@ public class FeedbackActivity extends BaseActivity {
             ToastUtils.show("意见不能为空");
             return;
         }
-        // TODO: 2018/7/21 长度限制，不要返回null
+        // TODO: 2018/7/21 内容长度限制，不要返回null
         RetrofitHelper.getService().feedback(text)
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<Object>(this) {
                     @Override
                     public void onSuccess(Object o) {

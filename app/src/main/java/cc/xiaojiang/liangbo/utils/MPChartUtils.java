@@ -190,7 +190,6 @@ public class MPChartUtils {
         List<Entry> inEntries = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             int x = Integer.parseInt(DateUtils.getDay(i, "yyyyMMddHH"));
-            Logger.i(String.valueOf(x));
             int outdoorY = 0;
             int indoorY = 0;
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
@@ -252,7 +251,7 @@ public class MPChartUtils {
         List<Entry> outEntries = new ArrayList<>();
         List<Entry> inEntries = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            int x = Integer.parseInt(DateUtils.getWeek(i + 1, "yyyyMMdd"));
+            int x = Integer.parseInt(DateUtils.getWeek(i+2, "yyyyMMdd"));
             int outdoorY = 0;
             int indoorY = 0;
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
@@ -277,6 +276,33 @@ public class MPChartUtils {
         LineDataSet outLineDataSet = getLineData(outEntries, "outdoor", Color.parseColor
                 ("#6ca7f0"));
         return new LineData(inLineDataSet, outLineDataSet);
+    }
+
+    public static IAxisValueFormatter getFormat(String type) {
+        IAxisValueFormatter formatter;
+        if (HistoryDataActivity.DAY.equals(type)) {
+            formatter = new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return DateUtils.getDay((int) value, "HH");
+                }
+            };
+        } else if (HistoryDataActivity.WEEK.equals(type)) {
+            formatter = new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return DateUtils.getWeek((int) value + 2, "MM/dd");
+                }
+            };
+        } else {
+            formatter = new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return DateUtils.getMonth((int) value + 1, "MM/dd");
+                }
+            };
+        }
+        return formatter;
     }
 
 //    private static List<Entry> formatIndoorData(List<Pm25HistoryModel.IndoorBean> indoorBeans,

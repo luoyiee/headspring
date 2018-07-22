@@ -161,9 +161,12 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                     ToastUtils.show("非法设备！");
                     return;
                 }
-                intent.putExtra("device_data", device);
-                startActivity(intent);
-
+                if (mDeviceAdapter.getOnlineStatus(device.getDeviceId())) {
+                    intent.putExtra("device_data", device);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.show("设备离线");
+                }
                 break;
             case R.id.tv_device_swipe_menu_modify:
                 modifyDevice(device.getDeviceId(), "test");
@@ -217,9 +220,9 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     public void messageArrived(String deviceId, String onlineStatus, String data) {
         if (onlineStatus.startsWith("online")) {
-            mDeviceAdapter.updateOnlineStatus(deviceId, "online");
+            mDeviceAdapter.setOnlineStatus(deviceId, "online");
         } else {
-            mDeviceAdapter.updateOnlineStatus(deviceId, "offline");
+            mDeviceAdapter.setOnlineStatus(deviceId, "offline");
         }
     }
 

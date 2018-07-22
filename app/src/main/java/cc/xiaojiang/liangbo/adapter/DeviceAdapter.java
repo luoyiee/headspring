@@ -57,8 +57,14 @@ public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
 
     }
 
-    public void updateOnlineStatus(String deviceId, String onlineStatus) {
+    public void setOnlineStatus(String deviceId, String onlineStatus) {
         mOnlineStatusMap.put(deviceId, onlineStatus);
         notifyDataSetChanged();
+    }
+
+    public boolean getOnlineStatus(String deviceId) {
+        String onlineStatus = mOnlineStatusMap.get(deviceId);
+        return onlineStatus != null && onlineStatus.equals("online");
+
     }
 }

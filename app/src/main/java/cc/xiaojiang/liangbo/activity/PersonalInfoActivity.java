@@ -106,6 +106,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         mEtNickname.addTextChangedListener(this);
         RetrofitHelper.getService().userInfo()
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<BaseModel<UserInfoModel>>(this) {
                     @Override
                     public void onSuccess(BaseModel<UserInfoModel> userInfoModel) {
@@ -164,6 +165,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         RetrofitHelper.getService().qiniuToken()
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<String>(this) {
                     @Override
                     public void onSuccess(String token) {
@@ -178,6 +180,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private void requestEditInfo() {
         RetrofitHelper.getService().userModify(mUpdateMap)
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<Object>(this) {
                     @Override
                     public void onSuccess(Object token) {

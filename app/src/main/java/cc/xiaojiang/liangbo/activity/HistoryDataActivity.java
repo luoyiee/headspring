@@ -94,10 +94,10 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
             getPm25History(DAY, DateUtils.getToday());
         }
         if (mPosition == 1) {
-            getPm25History(WEEK, Integer.parseInt(DateUtils.getWeek(1, "yyyyMMdd")));
+            getPm25History(WEEK, Integer.parseInt(DateUtils.getFirstDayWeek()));
         }
         if (mPosition == 2) {
-            getPm25History(MONTH, Integer.parseInt(DateUtils.getMonth(2, "yyyyMMdd")));
+            getPm25History(MONTH, Integer.parseInt(DateUtils.getCurrentMonth()));
         }
 
     }
@@ -107,6 +107,7 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
                 type, date)
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<Pm25HistoryModel>(this) {
                     @Override
                     public void onSuccess(Pm25HistoryModel pm25HistoryModel) {
@@ -121,33 +122,16 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         switch (mPosition) {
             case 0:
                 lineData = MPChartUtils.formatData(pm25HistoryModel, DAY);
-                formatter = new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        return DateUtils.getDay((int) value, "HH");
-                    }
+                formatter = MPChartUtils.getFormat(DAY);
 
-                };
                 break;
             case 1:
                 lineData = MPChartUtils.formatData(pm25HistoryModel, WEEK);
-                formatter = new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        return DateUtils.getWeek((int) value + 1, "MM/dd");
-                    }
-
-                };
+                formatter = MPChartUtils.getFormat(WEEK);
                 break;
-            case 2:
+            default:
                 lineData = MPChartUtils.formatData(pm25HistoryModel, MONTH);
-                formatter = new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        return DateUtils.getMonth((int) value + 1, "MM/dd");
-                    }
-
-                };
+                formatter = MPChartUtils.getFormat(MONTH);
                 break;
         }
         refreshData(lineData, formatter);
@@ -179,8 +163,10 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         if (mLineChart.getData().getDataSets().size() == 2) {
             LineDataSet indoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(0);
             LineDataSet outdoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(1);
-            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX()).getY()+"");
-            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY()+"");
+            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX()).getY()
+                    + "");
+            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
+                    "");
         } else {
             Logger.e("error data!");
         }

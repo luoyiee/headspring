@@ -21,19 +21,17 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/textView22"
-        android:layout_marginTop="52dp"
-        android:lineSpacingExtra="2dp"
+        android:id="@+id/tv_config_info"
         style="@style/common_14_black_text"
-        app:corner_radius="4dp"
+        android:layout_marginTop="48dp"
+        android:lineSpacingExtra="2dp"
         android:padding="16dp"
-        app:border_width_normal="1dp"
         app:border_color_normal="@color/app_background_grey"
-        android:text="@string/wifi_config_explain"
+        app:border_width_normal="1dp"
+        app:corner_radius="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
 
     <Button

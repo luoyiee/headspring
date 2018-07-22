@@ -84,6 +84,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     }
 
+    // TODO: 2018/7/22 点击空白区域，mInfoWindow消失
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -180,7 +182,11 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         mTvInfoWindowPm10.setText(String.valueOf(aqiModel.getPm10()));
         mTvInfoWindowSo2.setText(String.valueOf(aqiModel.getSo2()));
         mTvInfoWindowCo.setText(String.valueOf(aqiModel.getCo()));
-        mTvInfoWindowLocation.setText(aqiModel.getCity() + aqiModel.getStation());
+        String title = aqiModel.getCity();
+        if (aqiModel.getStation() != null) {
+            title = title + aqiModel.getStation();
+        }
+        mTvInfoWindowLocation.setText(title);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
@@ -251,6 +257,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
                 BigDecimal.valueOf(northeast.latitude))
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<List<AqiModel>>(this) {
                     @Override
                     public void onSuccess(List<AqiModel> aqiModels) {

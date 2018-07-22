@@ -101,7 +101,8 @@
 
     <string name="update_version_name">当前版本V%s</string>
     <string name="scan_code_permission_tip">需要同意相机权限才能正常使用</string>
-    <string name="wifi_config_explain">配置说明:\n 1.请将空智子连接电源; \n 2.长按空智子面板WIFI图标配置按键3秒以上;\n 3.液晶屏有WIFI图标闪烁时点击下一步。</string>
+    <string name="wifi_config_explain_kzz">配置说明:\n 1.请将空智子连接电源; \n 2.长按空智子面板WIFI图标配置按键3秒以上;\n 3.液晶屏有WIFI图标闪烁时点击下一步。</string>
+    <string name="wifi_config_explain_lb">配置说明:\n 1.请将净化器连接电源; \n 2.使用小工具怼净化器侧面WiFi图标旁边小孔配置按键3秒以上;\n 3.听到净化器发出“叮当”声音时点击下一步。</string>
     <string name="share_to">分享到</string>
     <string name="share_wechat_friend">微信好友</string>
     <string name="share_wecaht_comment">微信朋友圈</string>
@@ -111,4 +112,5 @@
     <string name="personal_not_update">请修改后保存</string>
     <string name="personal_update_success">修改成功</string>
     <string name="main_my_air">我的空气</string>
+    <string name="wifi_config_connect_wifi">当前Wi-Fi：%s</string>
 </resources>

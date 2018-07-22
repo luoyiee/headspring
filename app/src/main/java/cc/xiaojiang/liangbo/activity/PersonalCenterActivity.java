@@ -1,15 +1,29 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.http.RetrofitHelper;
+import cc.xiaojiang.liangbo.http.model.BaseModel;
+import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
+import cc.xiaojiang.liangbo.model.http.UserInfoModel;
+import cc.xiaojiang.liangbo.utils.ImageLoader;
+import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonalCenterActivity extends BaseActivity {
 
@@ -30,11 +44,46 @@ public class PersonalCenterActivity extends BaseActivity {
     LinearLayout mLlPersonalFeedback;
     @BindView(R.id.ll_personal_update)
     LinearLayout mLlPersonalUpdate;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar)
+    AppBarLayout mAppbar;
+    @BindView(R.id.iv_personal_center_avatar)
+    CircleImageView mIvPersonalCenterAvatar;
+    @BindView(R.id.tv_personal_center_nick)
+    TextView mTvPersonalCenterNick;
+    @BindView(R.id.tv_personal_center_phone)
+    TextView mTvPersonalCenterPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUser();
+    }
+
+    private void getUser() {
+        RetrofitHelper.getService().userInfo()
+                .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
+                .subscribe(new ProgressObserver<BaseModel<UserInfoModel>>(this) {
+                    @Override
+                    public void onSuccess(BaseModel<UserInfoModel> userInfoModel) {
+                        UserInfoModel data = userInfoModel.getData();
+                        if (data != null) {
+                            mTvPersonalCenterNick.setText(data.getNickname());
+                            mTvPersonalCenterPhone.setText(String.valueOf(data.getTelphone()));
+                            ImageLoader.loadImage(PersonalCenterActivity.this,data.getImgUrl(),mIvPersonalCenterAvatar);
+                        }
+                    }
+                });
     }
 
     @Override

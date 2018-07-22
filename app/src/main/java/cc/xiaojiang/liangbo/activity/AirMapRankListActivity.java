@@ -91,6 +91,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
         RetrofitHelper.getService().airRankList(city, TYPES[tabPosition])
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<List<AirRankModel>>(this) {
                     @Override
                     public void onSuccess(List<AirRankModel> airRankModels) {

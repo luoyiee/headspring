@@ -110,6 +110,13 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
         getDevices();
     }
 
+    @Override
+    protected void onDestroy() {
+        mLocationClient.stopLocation();
+        mLocationClient.onDestroy();
+        super.onDestroy();
+    }
+
     private void initView() {
         setAirView(mTvOutdoorPm, DEFAULT_DATA, UNIT_PM25);
         setAirView(mTvOutdoorTemperature, DEFAULT_DATA + "", UNIT_TEMPERATURE);
@@ -163,8 +170,7 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
     @Override
     protected void onStop() {
         super.onStop();
-        mLocationClient.stopLocation();
-        mLocationClient.onDestroy();
+
     }
 
     private void getDevices() {
@@ -245,6 +251,7 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
         RetrofitHelper.getService().queryCityWeatherAir(city)
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<HomeWeatherAirModel>(this) {
                     @Override
                     public void onSuccess(HomeWeatherAirModel homeWeatherAirModel) {

@@ -3,12 +3,16 @@ package cc.xiaojiang.liangbo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.formatter.IFillFormatter;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.wifi2.IotKitWifiSetupManager;
 import cc.xiaojiang.liangbo.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
@@ -41,7 +45,9 @@ public class WifiConfirmActivity extends BaseActivity {
             return;
         }
         mProductKey = intent.getStringExtra("product_key");
+
     }
+
 
     @Override
     protected void onDestroy() {
@@ -57,8 +63,8 @@ public class WifiConfirmActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String ssid = IotKitWifiSetupHelper.getInstance().getSSID(this);
-        mTvWifiConfirmSsid.setText(ssid);
+        String ssid = IotKitWifiSetupManager.getInstance().getSsid(this);
+        mTvWifiConfirmSsid.setText(getString(R.string.wifi_config_connect_wifi, ssid));
 
     }
 
@@ -68,6 +74,14 @@ public class WifiConfirmActivity extends BaseActivity {
             case R.id.btn_wifi_conform_next:
                 String password = mEdTxtWifiConfirmPassword.getText().toString();
                 String ssid = mTvWifiConfirmSsid.getText().toString();
+                if (TextUtils.isEmpty(ssid)) {
+                    ToastUtils.show("未检测到已连接的WiFi");
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    ToastUtils.show("密码不能为空");
+                    return;
+                }
                 WifiSetupInfo wifiSetupInfo = new WifiSetupInfo();
                 wifiSetupInfo.setProductKey(mProductKey);
                 wifiSetupInfo.setPassword(password);

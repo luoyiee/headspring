@@ -45,6 +45,7 @@
             style="@style/personal_info_right_text"
             android:background="@null"
             android:gravity="end"
+            android:maxLength="10"
             android:hint="@string/personal_info_hint_nickname"
             android:inputType="text"
             android:maxLines="1"

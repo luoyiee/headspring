@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="cc.xiaojiang.liangbo.activity.PersonalCenterActivity"
-            tools:showIn="@layout/activity_personal_center">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="cc.xiaojiang.liangbo.activity.PersonalCenterActivity"
+    tools:showIn="@layout/activity_personal_center">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,9 +23,10 @@
             android:paddingRight="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_personal_center_avatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/ic_logo"/>
+                tools:src="@drawable/ic_logo" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -35,32 +36,33 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_personal_center_nick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ami"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    tools:text="Ami" />
 
                 <TextView
+                    android:id="@+id/tv_personal_center_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ID:123456"/>
+                    tools:text="ID:123456" />
 
             </LinearLayout>
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_block"/>
+        <include layout="@layout/layout_divider_block" />
 
         <RelativeLayout
             android:id="@+id/ll_personal_dynamic"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_block_height"
-            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
@@ -69,7 +71,7 @@
                 android:id="@+id/iv_icon_dynamic"
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_dynamic"/>
+                android:src="@drawable/ic_personal_dynamic" />
 
             <TextView
                 android:id="@+id/tv_dynamic_key"
@@ -77,23 +79,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toEndOf="@id/iv_icon_dynamic"
-                android:text="量波动态"/>
+                android:text="量波动态" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="18dp"
                 android:layout_toEndOf="@id/tv_dynamic_key"
-                android:src="@drawable/ic_personal_new"/>
+                android:src="@drawable/ic_personal_new" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
 
         </RelativeLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
         <LinearLayout
             android:id="@+id/ll_personal_share"
@@ -106,23 +108,23 @@
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_share"/>
+                android:src="@drawable/ic_personal_share" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:text="共享服务"/>
+                android:text="共享服务" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
 
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
         <LinearLayout
             android:id="@+id/ll_personal_air_knowledge"
@@ -135,23 +137,23 @@
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_air_knowledge"/>
+                android:src="@drawable/ic_personal_air_knowledge" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:text="空气知识"/>
+                android:text="空气知识" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
 
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
         <LinearLayout
             android:id="@+id/ll_personal_lunar"
@@ -164,23 +166,23 @@
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_lunar"/>
+                android:src="@drawable/ic_personal_lunar" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:text="农历节气"/>
+                android:text="农历节气" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
 
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
         <LinearLayout
             android:id="@+id/ll_personal_instructions"
@@ -193,23 +195,23 @@
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_instructions"/>
+                android:src="@drawable/ic_personal_instructions" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:text="说明书"/>
+                android:text="说明书" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
 
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
         <LinearLayout
             android:id="@+id/ll_personal_feedback"
@@ -222,23 +224,23 @@
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_feedback"/>
+                android:src="@drawable/ic_personal_feedback" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:text="意见反馈"/>
+                android:text="意见反馈" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
 
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
         <LinearLayout
             android:id="@+id/ll_personal_update"
@@ -251,22 +253,22 @@
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_update"/>
+                android:src="@drawable/ic_personal_update" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:text="软件更新"/>
+                android:text="软件更新" />
 
             <ImageView
                 android:layout_width="@dimen/personal_center_icon"
                 android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_item_next"/>
+                android:src="@drawable/ic_item_next" />
         </LinearLayout>
 
-        <include layout="@layout/layout_divider_line"/>
+        <include layout="@layout/layout_divider_line" />
 
     </LinearLayout>
 

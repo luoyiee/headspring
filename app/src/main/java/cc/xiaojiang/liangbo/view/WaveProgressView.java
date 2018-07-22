@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.Locale;
 
 import cc.xiaojiang.liangbo.BuildConfig;
@@ -149,8 +151,10 @@ public class WaveProgressView extends View {
         mOffSet = ScreenUtils.dip2px(context, 10);
 
         antiAlias = typedArray.getBoolean(R.styleable.WaveProgressView_antiAlias, true);
-        mDarkWaveAnimTime = typedArray.getInt(R.styleable.WaveProgressView_darkWaveAnimTime, mDarkWaveAnimTime);
-        mLightWaveAnimTime = typedArray.getInt(R.styleable.WaveProgressView_lightWaveAnimTime, mLightWaveAnimTime);
+        mDarkWaveAnimTime = typedArray.getInt(R.styleable.WaveProgressView_darkWaveAnimTime,
+                mDarkWaveAnimTime);
+        mLightWaveAnimTime = typedArray.getInt(R.styleable.WaveProgressView_lightWaveAnimTime,
+                mLightWaveAnimTime);
         mMaxValue = typedArray.getFloat(R.styleable.WaveProgressView_maxValue, mMaxValue);
         mValue = typedArray.getFloat(R.styleable.WaveProgressView_value, mValue);
         mValueSize = typedArray.getDimension(R.styleable.WaveProgressView_valueSize, mValueSize);
@@ -160,14 +164,18 @@ public class WaveProgressView extends View {
         mHintColor = typedArray.getColor(R.styleable.WaveProgressView_hintColor, Color.BLACK);
         mHintSize = typedArray.getDimension(R.styleable.WaveProgressView_hintSize, mHintSize);
 
-        mCircleWidth = typedArray.getDimension(R.styleable.WaveProgressView_circleWidth, mCircleWidth);
+        mCircleWidth = typedArray.getDimension(R.styleable.WaveProgressView_circleWidth,
+                mCircleWidth);
         mCircleColor = typedArray.getColor(R.styleable.WaveProgressView_circleColor, Color.GREEN);
-        mBgCircleColor = typedArray.getColor(R.styleable.WaveProgressView_bgCircleColor, Color.WHITE);
+        mBgCircleColor = typedArray.getColor(R.styleable.WaveProgressView_bgCircleColor, Color
+                .WHITE);
 
         mWaveHeight = typedArray.getDimension(R.styleable.WaveProgressView_waveHeight, mWaveHeight);
         mWaveNum = typedArray.getInt(R.styleable.WaveProgressView_waveNum, 1);
-        mDarkWaveColor = typedArray.getColor(R.styleable.WaveProgressView_darkWaveColor, DEFAULT_BEHIND_WAVE_COLOR);
-        mLightWaveColor = typedArray.getColor(R.styleable.WaveProgressView_lightWaveColor, DEFAULT_FRONT_WAVE_COLOR);
+        mDarkWaveColor = typedArray.getColor(R.styleable.WaveProgressView_darkWaveColor,
+                DEFAULT_BEHIND_WAVE_COLOR);
+        mLightWaveColor = typedArray.getColor(R.styleable.WaveProgressView_lightWaveColor,
+                DEFAULT_FRONT_WAVE_COLOR);
 
         isR2L = typedArray.getInt(R.styleable.WaveProgressView_lightWaveDirect, R2L) == R2L;
         lockWave = typedArray.getBoolean(R.styleable.WaveProgressView_lockWave, false);
@@ -197,7 +205,7 @@ public class WaveProgressView extends View {
 
         mTextUnitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextUnitPaint.setColor(Color.WHITE);
-        mTextUnitPaint.setTextSize(mValueSize/2);
+        mTextUnitPaint.setTextSize(mValueSize / 2);
 
         mWavePaint = new Paint();
         mWavePaint.setAntiAlias(antiAlias);
@@ -218,9 +226,12 @@ public class WaveProgressView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.d(TAG, "onSizeChanged: w = " + w + "; h = " + h + "; oldw = " + oldw + "; oldh = " + oldh);
-        int minSize = Math.min(getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - 2 * (int) mCircleWidth,
-                getMeasuredHeight() - getPaddingTop() - getPaddingBottom() - 2 * (int) mCircleWidth);
+        Log.d(TAG, "onSizeChanged: w = " + w + "; h = " + h + "; oldw = " + oldw + "; oldh = " +
+                oldh);
+        int minSize = Math.min(getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - 2 *
+                        (int) mCircleWidth,
+                getMeasuredHeight() - getPaddingTop() - getPaddingBottom() - 2 * (int)
+                        mCircleWidth);
         mRadius = minSize / 2;
         mCenterPoint.x = getMeasuredWidth() / 2;
         mCenterPoint.y = getMeasuredHeight() / 2;
@@ -229,7 +240,8 @@ public class WaveProgressView extends View {
         mRectF.top = mCenterPoint.y - mRadius - mCircleWidth / 2;
         mRectF.right = mCenterPoint.x + mRadius + mCircleWidth / 2;
         mRectF.bottom = mCenterPoint.y + mRadius + mCircleWidth / 2;
-        Log.d(TAG, "onSizeChanged: 控件大小 = " + "(" + getMeasuredWidth() + ", " + getMeasuredHeight() + ")"
+        Log.d(TAG, "onSizeChanged: 控件大小 = " + "(" + getMeasuredWidth() + ", " + getMeasuredHeight
+                () + ")"
                 + ";圆心坐标 = " + mCenterPoint.toString()
                 + ";圆半径 = " + mRadius
                 + ";圆的外接矩形 = " + mRectF.toString());
@@ -243,7 +255,7 @@ public class WaveProgressView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //绘制背景
-        canvas.drawCircle(getWidth()/2, getHeight()/2, mRadius, mBackPaint);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mRadius, mBackPaint);
         drawCircle(canvas);
         drawLightWave(canvas);
         drawDarkWave(canvas);
@@ -261,7 +273,7 @@ public class WaveProgressView extends View {
 //        int currentAngle = (int) (360 * mPercent);
         //画背景圆环
         mCirclePaint.setColor(mBgCircleColor);
-        canvas.drawArc(mRectF, 0, 360 , false, mCirclePaint);
+        canvas.drawArc(mRectF, 0, 360, false, mCirclePaint);
 //        //画圆环
 //        mCirclePaint.setColor(mCircleColor);
 //        canvas.drawArc(mRectF, 0, currentAngle, false, mCirclePaint);
@@ -295,18 +307,20 @@ public class WaveProgressView extends View {
             Log.d(TAG, "mPercent = " + mPercent + "; mPrePercent = " + mPrePercent);
         }
         if (mPrePercent == 0.0f || Math.abs(mPercent - mPrePercent) >= 0.01f) {
-            mPercentValue = String.format(Locale.getDefault(),"%.0f", mPercent * 100);
+            mPercentValue = String.format(Locale.getDefault(), "%.0f", mPercent * 100);
             mPrePercent = mPercent;
         }
-        canvas.drawText(mPercentValue, mCenterPoint.x-mOffSet, y-mOffSet, mPercentPaint);
+        Logger.e("mPrePercent:" + mPercentValue);
+        canvas.drawText(mPercentValue, mCenterPoint.x - mOffSet, y - mOffSet, mPercentPaint);
 
         mPercentPaint.getTextBounds(mPercentValue, 0, mPercentValue.length(), mValueBounds);
         mValueTextWidth = mValueBounds.right - mValueBounds.left;
 
-        canvas.drawText(unit, mCenterPoint.x+mValueTextWidth / 2, y-mOffSet, mTextUnitPaint);
+        canvas.drawText(unit, mCenterPoint.x + mValueTextWidth / 2, y - mOffSet, mTextUnitPaint);
 
         if (mHint != null) {
-            float hy = mCenterPoint.y +ScreenUtils.dip2px(getContext(),24)- (mHintPaint.descent() + mHintPaint.ascent()) / 2;
+            float hy = mCenterPoint.y + ScreenUtils.dip2px(getContext(), 24) - (mHintPaint
+                    .descent() + mHintPaint.ascent()) / 2;
             canvas.drawText(mHint.toString(), mCenterPoint.x, hy, mHintPaint);
         }
     }
@@ -382,13 +396,16 @@ public class WaveProgressView extends View {
     private Point[] getPoint(boolean isR2L, float waveWidth) {
         Point[] points = new Point[mAllPointCount];
         //第1个点特殊处理，即数组的中点
-        points[mHalfPointCount] = new Point((int) (mCenterPoint.x + (isR2L ? mRadius : -mRadius)), mCenterPoint.y);
+        points[mHalfPointCount] = new Point((int) (mCenterPoint.x + (isR2L ? mRadius : -mRadius))
+                , mCenterPoint.y);
         //屏幕内的贝塞尔曲线点
         for (int i = mHalfPointCount + 1; i < mAllPointCount; i += 4) {
             float width = points[mHalfPointCount].x + waveWidth * (i / 4 - mWaveNum);
-            points[i] = new Point((int) (waveWidth / 4 + width), (int) (mCenterPoint.y - mWaveHeight));
+            points[i] = new Point((int) (waveWidth / 4 + width), (int) (mCenterPoint.y -
+                    mWaveHeight));
             points[i + 1] = new Point((int) (waveWidth / 2 + width), mCenterPoint.y);
-            points[i + 2] = new Point((int) (waveWidth * 3 / 4 + width), (int) (mCenterPoint.y + mWaveHeight));
+            points[i + 2] = new Point((int) (waveWidth * 3 / 4 + width), (int) (mCenterPoint.y +
+                    mWaveHeight));
             points[i + 3] = new Point((int) (waveWidth + width), mCenterPoint.y);
         }
         //屏幕外的贝塞尔曲线点
@@ -547,7 +564,7 @@ public class WaveProgressView extends View {
      * @param <T>
      * @return
      */
-    public  <T> T[] reverse(T[] arrays) {
+    public <T> T[] reverse(T[] arrays) {
         if (arrays == null) {
             return null;
         }
