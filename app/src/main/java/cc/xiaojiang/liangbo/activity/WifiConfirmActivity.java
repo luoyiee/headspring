@@ -33,6 +33,7 @@ public class WifiConfirmActivity extends BaseActivity {
     @BindView(R.id.tv_wifi_confirm_change_wifi)
     TextView mTvWifiConfirmChangeWifi;
     private String mProductKey;
+    private String mSsid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,8 @@ public class WifiConfirmActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String ssid = IotKitWifiSetupManager.getInstance().getSsid(this);
-        mTvWifiConfirmSsid.setText(getString(R.string.wifi_config_connect_wifi, ssid));
+        mSsid = IotKitWifiSetupManager.getInstance().getSsid(this);
+        mTvWifiConfirmSsid.setText(getString(R.string.wifi_config_connect_wifi, mSsid));
 
     }
 
@@ -73,8 +74,7 @@ public class WifiConfirmActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_wifi_conform_next:
                 String password = mEdTxtWifiConfirmPassword.getText().toString();
-                String ssid = mTvWifiConfirmSsid.getText().toString();
-                if (TextUtils.isEmpty(ssid)) {
+                if (TextUtils.isEmpty(mSsid)) {
                     ToastUtils.show("未检测到已连接的WiFi");
                     return;
                 }
@@ -85,7 +85,7 @@ public class WifiConfirmActivity extends BaseActivity {
                 WifiSetupInfo wifiSetupInfo = new WifiSetupInfo();
                 wifiSetupInfo.setProductKey(mProductKey);
                 wifiSetupInfo.setPassword(password);
-                wifiSetupInfo.setSsid(ssid);
+                wifiSetupInfo.setSsid(mSsid);
                 wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_ESPRESSIF);
                 Intent intent = new Intent(this, WifiConnectActivity.class);
                 intent.putExtra(Constant.DEVICE_INFO, wifiSetupInfo);

@@ -79,7 +79,7 @@ public class ConfigInfoActivity extends BaseActivity {
 
     @OnClick(R.id.btn_config_info_next)
     public void onViewClicked() {
-        if (NetworkUtils.isWifiConnected(this)) {
+        if (!NetworkUtils.isWifiConnected(this)) {
             ToastUtils.show("请连接wifi");
             return;
         }

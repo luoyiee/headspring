@@ -1,14 +1,18 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -42,6 +46,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     SwipeRefreshLayout mSrlRefreshDevice;
     private DeviceAdapter mDeviceAdapter;
     private List<Device> mDevices;
+    private AlertDialog mAlertDialog;
 
 
     @Override
@@ -70,6 +75,9 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     protected void onDestroy() {
         IotKitConnectionManager.getInstance().removeDataCallback(this);
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
+        }
         super.onDestroy();
     }
 
@@ -169,7 +177,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 }
                 break;
             case R.id.tv_device_swipe_menu_modify:
-                modifyDevice(device.getDeviceId(), "test");
+                showModifyDialog(device.getDeviceId());
                 break;
             case R.id.tv_device_swipe_menu_share:
                 intent = new Intent(this, ShareQrCodeActivity.class);
@@ -179,8 +187,28 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
             case R.id.tv_device_swipe_menu_delete:
                 deleteDevice(device.getProductKey(), device.getDeviceId());
                 break;
-
         }
+    }
+
+    private void showModifyDialog(String deviceId) {
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_input, null);
+        EditText editText = view.findViewById(R.id.edTxt_dialog_input_nick);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        mAlertDialog = builder.setTitle("修改设备昵称")
+                .setView(view)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String nick = editText.getText().toString();
+                        if (TextUtils.isEmpty(nick)) {
+                            ToastUtils.show("设备昵称不能为空！");
+                            return;
+                        }
+                        modifyDevice(deviceId, nick);
+                    }
+                }).create();
+        mAlertDialog.show();
     }
 
     private void modifyDevice(String deviceId, String test) {

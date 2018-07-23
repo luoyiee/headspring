@@ -33,6 +33,7 @@ import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
+import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
 import cc.xiaojiang.liangbo.iotkit.KzzDataModel;
 import cc.xiaojiang.liangbo.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
@@ -401,9 +402,9 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
 
     @Override
     public void messageArrived(String deviceId, String onlineStatus, String data) {
-        KzzDataModel model = new Gson().fromJson(data, KzzDataModel.class);
-        KzzDataModel.ParamsBean paramsBean = model.getParams();
-        if (paramsBean == null) {
+        BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
+        BaseDataModel.ParamsBean paramsBean = model.getParams();
+        if (paramsBean == null || paramsBean.getPM205() == null) {
             Logger.e("error getParams!");
             return;
         }
