@@ -96,7 +96,7 @@ public class BrowserActivity extends BaseActivity {
         BrowserActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
                 grantResults);
     }
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE})
     void createSonic(String url) {
         if (!SonicEngine.isGetInstanceAllowed()) {
             SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig.Builder().build());

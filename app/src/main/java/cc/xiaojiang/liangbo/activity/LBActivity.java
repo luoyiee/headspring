@@ -8,20 +8,16 @@ import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.hubert.guide.NewbieGuide;
-import com.app.hubert.guide.core.Builder;
 import com.app.hubert.guide.core.Controller;
 import com.app.hubert.guide.model.GuidePage;
-import com.app.hubert.guide.model.HighLight;
 import com.app.hubert.guide.model.HighlightOptions;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -32,6 +28,10 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.bean.http.Device;
+import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
@@ -44,10 +44,6 @@ import cc.xiaojiang.liangbo.view.AP1View4;
 import cc.xiaojiang.liangbo.view.AP1View43;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import cc.xiaojiang.liangbo.widget.AP1TimingDialog;
-import cc.xiaojiang.iotkit.bean.http.Device;
-import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
-import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
 public class LBActivity extends BaseActivity implements
         AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback, AP1TimingDialog

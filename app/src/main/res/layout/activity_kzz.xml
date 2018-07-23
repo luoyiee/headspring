@@ -171,6 +171,7 @@
         android:id="@+id/tv_switch"
         style="@style/device_control_bottom_text_icon"
         android:text="开启"
+        android:padding="12dp"
         app:icon_src_normal="@drawable/ic_air_purifier_switch_on"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_lb_mode"
         app:layout_constraintEnd_toStartOf="@+id/tv_timing"
