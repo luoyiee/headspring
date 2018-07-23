@@ -40,8 +40,6 @@ public class FilterTimeRemainActivity extends BaseActivity {
     private void initData() {
         int useTime = getIntent().getIntExtra(INTENT_FILTER_TIME, 0);
         mViewFilterTimeRemain.setMaxValue(FLITER_MAX_VALUE);
-        // TODO: 2018/7/22 百分比显示bug
-        // TODO: 2018/7/22 无限刷新界面
         mViewFilterTimeRemain.setValue(FLITER_MAX_VALUE - useTime);
         mTvFilterUseTime.setText(getString(R.string.filter_use_time, useTime));
         if (useTime >= FLITER_MAX_VALUE) {
@@ -49,7 +47,6 @@ public class FilterTimeRemainActivity extends BaseActivity {
         } else {
             mTvFilterReset.setVisibility(View.INVISIBLE);
         }
-
     }
 
     @Override

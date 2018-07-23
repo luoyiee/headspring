@@ -49,7 +49,7 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickListener, AMap
-        .InfoWindowAdapter, AMap.OnCameraChangeListener {
+        .InfoWindowAdapter, AMap.OnCameraChangeListener,AMap.OnMapClickListener {
 
     @BindView(R.id.mv_map)
     MapView mMapView;
@@ -57,7 +57,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     String mStrAirExcellent;
     private AMap aMap;
     private View mInfoWindow;
-
+    private Marker mCurrentMarker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         }
         //监听地图移动和缩放
         aMap.setOnCameraChangeListener(this);
+        aMap.setOnMapClickListener(this);
         AirMapActivityPermissionsDispatcher.showMyLocationWithPermissionCheck(this);
     }
 
@@ -83,9 +84,6 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         super.onDestroy();
 
     }
-
-    // TODO: 2018/7/22 点击空白区域，mInfoWindow消失
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -144,6 +142,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        mCurrentMarker=marker;
         if (marker.isInfoWindowShown()) {
             marker.hideInfoWindow();
         } else {
@@ -307,5 +306,12 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
             resourceId = R.drawable.ic_aqi_6;
         }
         return resourceId;
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if(mCurrentMarker.isInfoWindowShown()) {
+            mCurrentMarker.hideInfoWindow();
+        }
     }
 }

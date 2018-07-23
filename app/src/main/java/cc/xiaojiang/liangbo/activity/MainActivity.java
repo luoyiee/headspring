@@ -26,6 +26,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.bean.http.Device;
+import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
+import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
 import cc.xiaojiang.liangbo.adapter.HomeIndoorPmHolder;
@@ -46,12 +52,6 @@ import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import cc.xiaojiang.liangbo.view.Point;
 import cc.xiaojiang.liangbo.view.PointEvaluator;
-import cc.xiaojiang.iotkit.bean.http.Device;
-import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
-import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
-import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -105,7 +105,6 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLocationClient = new LocationClient();
         MainActivityPermissionsDispatcher.locationWithPermissionCheck(this);
         initView();
         getDevices();
@@ -149,7 +148,6 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
             }
         };
         mConvenientBanner.setPages(mHolderCreator, mIndoorPmList);
-
     }
 
     @Override
@@ -160,6 +158,7 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
     @Override
     protected void onResume() {
         super.onResume();
+        IotKitConnectionManager.getInstance().addDataCallback(this);
     }
 
     @Override
@@ -168,21 +167,13 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
         IotKitConnectionManager.getInstance().removeDataCallback(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
     private void getDevices() {
         if (IotKitConnectionManager.getInstance().getMqttAndroidClient() == null) {
             return;
         }
-        IotKitConnectionManager.getInstance().addDataCallback(this);
         IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
             @Override
             public void onSuccess(List<Device> data) {
-                //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
                 mDeviceSize = data.size();
                 queryDevices(data);
             }
@@ -212,7 +203,6 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
-
                     }
 
                     @Override
@@ -223,8 +213,10 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
                 });
     }
 
-    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+            .ACCESS_COARSE_LOCATION})
     void location() {
+        mLocationClient = new LocationClient();
         mLocationClient.initClient(this);
         mLocationClient.startLocation(aMapLocation -> {
             if (aMapLocation != null) {
@@ -402,14 +394,19 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
 
     @Override
     public void messageArrived(String deviceId, String onlineStatus, String data) {
-        BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
-        BaseDataModel.ParamsBean paramsBean = model.getParams();
-        if (paramsBean == null || paramsBean.getPM205() == null) {
-            Logger.e("error getParams!");
-            return;
+        if (onlineStatus.startsWith("online")) {
+            BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
+            BaseDataModel.ParamsBean paramsBean = model.getParams();
+            if (paramsBean == null || paramsBean.getPM205() == null) {
+                Logger.e("error getParams!");
+                return;
+            }
+            String pm205 = paramsBean.getPM205().getValue();
+            mIndoorMap.put(deviceId, pm205);
+        } else {
+            mIndoorMap.put(deviceId, DEFAULT_DATA);
         }
-        String pm205 = paramsBean.getPM205().getValue();
-        mIndoorMap.put(deviceId, pm205);
+
         if (mIndoorMap.size() == mDeviceSize) {
             mIndoorPmList.clear();
             // 遍历 ArrayMap

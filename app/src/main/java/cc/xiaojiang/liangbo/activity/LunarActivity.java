@@ -1,7 +1,7 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,6 +34,8 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
     TextView mTvLunarYear;
     @BindView(R.id.tv_lunar_month_day)
     TextView mTvLunarMonthDay;
+    @BindView(R.id.group)
+    Group mGroup;
     private int mYear;
 
     @Override
@@ -44,8 +46,8 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
         mYear = mCalendarView.getCurYear();
         mTvTitle.setOnClickListener(v -> {
             mCalendarView.showYearSelectLayout(mYear);
-            // TODO: 2018/7/22 年视图文字重叠
             mTvTitle.setText(String.valueOf(mYear));
+            mGroup.setVisibility(View.GONE);
         });
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnYearChangeListener(this);
@@ -69,6 +71,7 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
         mTvTitle.setText(getString(R.string.lunar_year_month, calendar.getYear(), calendar
                 .getMonth()));
         mYear = calendar.getYear();
+        mGroup.setVisibility(View.VISIBLE);
     }
 
     private void requestLunarInfo(Calendar calendar) {
