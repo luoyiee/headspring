@@ -80,6 +80,7 @@
     <string name="login_get_verification_code_success">验证码获取成功</string>
     <string name="title_activity_splash">量波·未来</string>
     <string name="menu_add">添加</string>
+    <string name="menu_more">更多</string>
 
     <string name="product_scan">扫描二维码添加设备</string>
     <string name="personal_male">男</string>
