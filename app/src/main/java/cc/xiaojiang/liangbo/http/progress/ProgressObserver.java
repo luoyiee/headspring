@@ -51,6 +51,9 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
+        if (e.getMessage() == null) {
+            ToastUtils.show("未知错误！");
+        }
         ToastUtils.show(e.getMessage());
         com.orhanobut.logger.Logger.e(e.getMessage());
         if (ApiException.class.isInstance(e)) {

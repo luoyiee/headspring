@@ -96,7 +96,7 @@
     <string name="title_activity_air_map">地图</string>
     <string name="feedback_hint">请描述你的问题和意见</string>
     <string name="feedback_submit">提交</string>
-    <string name="history_filter_user_time">滤芯使用时间</string>
+    <string name="history_filter_user_time">滤芯服务</string>
     <string name="device_share_data">分享数据</string>
 
     <string name="update_version_name">当前版本V%s</string>
