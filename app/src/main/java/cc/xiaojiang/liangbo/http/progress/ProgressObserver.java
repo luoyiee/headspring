@@ -68,12 +68,12 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
     @Override
     public void onComplete() {
         dismissProgressDialog();
-//        com.orhanobut.logger.Logger.d("onComplete");
+        com.orhanobut.logger.Logger.d("onComplete");
     }
 
     @Override
     public void onCancelProgress() {
-//        com.orhanobut.logger.Logger.d("onCancelProgress");
+        com.orhanobut.logger.Logger.d("onCancelProgress");
         mDisposable.dispose();
     }
 

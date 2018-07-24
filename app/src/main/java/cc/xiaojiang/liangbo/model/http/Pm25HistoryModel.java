@@ -26,12 +26,12 @@ public class Pm25HistoryModel {
 
     public static class OutdoorBean {
         /**
-         * time : 2018072000
-         * outPm25 : 37
+         * time : 20180716
+         * pm25 : 31
          */
 
         private int time;
-        private int outPm25;
+        private int pm25;
 
         public int getTime() {
             return time;
@@ -41,23 +41,23 @@ public class Pm25HistoryModel {
             this.time = time;
         }
 
-        public int getOutPm25() {
-            return outPm25;
+        public int getPm25() {
+            return pm25;
         }
 
-        public void setOutPm25(int outPm25) {
-            this.outPm25 = outPm25;
+        public void setPm25(int pm25) {
+            this.pm25 = pm25;
         }
     }
 
     public static class IndoorBean {
         /**
-         * time : 2018072000
-         * outPm25 : 37
+         * time : 20180716
+         * pm25 : 31
          */
 
         private int time;
-        private int outPm25;
+        private int pm25;
 
         public int getTime() {
             return time;
@@ -67,12 +67,12 @@ public class Pm25HistoryModel {
             this.time = time;
         }
 
-        public int getOutPm25() {
-            return outPm25;
+        public int getPm25() {
+            return pm25;
         }
 
-        public void setOutPm25(int outPm25) {
-            this.outPm25 = outPm25;
+        public void setPm25(int pm25) {
+            this.pm25 = pm25;
         }
     }
 }

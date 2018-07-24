@@ -67,7 +67,6 @@ public class WifiConnectActivity extends BaseActivity {
                     @Override
                     public void connectSucceed() {
                         mTvWifiConnectStatus.setText("设备联网成功");
-
                     }
 
                     @Override

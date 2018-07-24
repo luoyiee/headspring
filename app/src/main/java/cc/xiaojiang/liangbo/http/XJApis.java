@@ -71,7 +71,7 @@ public interface XJApis {
     Observable<BaseModel<Pm25HistoryModel>> pm25History(@Query("deviceId") String deviceId,
                                                         @Query("city") String city,
                                                         @Query("type") String type,
-                                                        @Query("day") int day);
+                                                        @Query("time") int time);
 
     @FormUrlEncoded
     @POST(HttpUrl.DYNAMIC_LIKE)

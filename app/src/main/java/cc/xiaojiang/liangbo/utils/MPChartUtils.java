@@ -195,13 +195,13 @@ public class MPChartUtils {
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
                 Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    outdoorY = outdoorBean.getOutPm25();
+                    outdoorY = outdoorBean.getPm25();
                 }
             }
             for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
                 Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
                 if (x == indoorBean.getTime()) {
-                    indoorY = indoorBean.getOutPm25();
+                    indoorY = indoorBean.getPm25();
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);
@@ -226,13 +226,13 @@ public class MPChartUtils {
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
                 Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    outdoorY = outdoorBean.getOutPm25();
+                    outdoorY = outdoorBean.getPm25();
                 }
             }
             for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
                 Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
                 if (x == indoorBean.getTime()) {
-                    indoorY = indoorBean.getOutPm25();
+                    indoorY = indoorBean.getPm25();
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);
@@ -257,13 +257,13 @@ public class MPChartUtils {
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
                 Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    outdoorY = outdoorBean.getOutPm25();
+                    outdoorY = outdoorBean.getPm25();
                 }
             }
             for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
                 Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
                 if (x == indoorBean.getTime()) {
-                    indoorY = indoorBean.getOutPm25();
+                    indoorY = indoorBean.getPm25();
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);

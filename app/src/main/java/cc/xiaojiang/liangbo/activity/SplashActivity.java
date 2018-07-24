@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.orhanobut.logger.Logger;
+
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.AccountUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
@@ -25,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onFailed(String msg) {
                     ToastUtils.show("连接失败");
+                    Logger.e("连接失败");
                     startActivity(MainActivity.class);
                 }
             });
@@ -32,7 +35,8 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(LoginActivity.class);
         }
     }
-    private void startActivity(Class<? extends BaseActivity> clazz){
+
+    private void startActivity(Class<? extends BaseActivity> clazz) {
         startActivity(new Intent(this, clazz));
         finish();
     }
