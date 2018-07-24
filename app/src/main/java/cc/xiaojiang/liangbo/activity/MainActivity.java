@@ -52,6 +52,7 @@ import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import cc.xiaojiang.liangbo.view.Point;
 import cc.xiaojiang.liangbo.view.PointEvaluator;
+import io.reactivex.functions.Consumer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 

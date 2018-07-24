@@ -20,6 +20,7 @@ import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
+import io.reactivex.functions.Consumer;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
     public static final String TEST_APP_SOURCE = "zd0c383";
@@ -58,9 +59,9 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
             RetrofitHelper.getService().login(loginBody)
                     .map(new HttpResultFunc<>())
                     .compose(RxUtils.rxSchedulerHelper())
-                    .subscribe(new ProgressObserver<LoginModel>(context) {
+                    .subscribe(new Consumer<LoginModel>() {
                         @Override
-                        public void onSuccess(LoginModel loginModel) {
+                        public void accept(LoginModel loginModel) throws Exception {
                             DbUtils.setXJUserId(loginModel.getUserId());
                             DbUtils.setAccessToken(loginModel.getAccessToken());
                             DbUtils.setRefreshToken(loginModel.getRefreshToken());

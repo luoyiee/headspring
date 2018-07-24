@@ -222,7 +222,7 @@ public class KZZActivity extends BaseActivity implements
         if (item.getItemId() == R.id.menu_more) {
             showPupWindow();
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void showPupWindow() {

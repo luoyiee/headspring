@@ -26,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailed(String msg) {
+                    // TODO: 2018/7/24 占用
                     ToastUtils.show("连接失败");
                     Logger.e("连接失败");
                     startActivity(MainActivity.class);

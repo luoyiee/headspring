@@ -195,13 +195,13 @@ public class MPChartUtils {
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
                 Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    outdoorY = outdoorBean.getPm25();
+                    outdoorY = (int) outdoorBean.getPm25();
                 }
             }
             for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
                 Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
                 if (x == indoorBean.getTime()) {
-                    indoorY = indoorBean.getPm25();
+                    indoorY = (int) indoorBean.getPm25();
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);
@@ -226,13 +226,13 @@ public class MPChartUtils {
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
                 Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    outdoorY = outdoorBean.getPm25();
+                    outdoorY = (int) outdoorBean.getPm25();
                 }
             }
             for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
                 Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
                 if (x == indoorBean.getTime()) {
-                    indoorY = indoorBean.getPm25();
+                    indoorY = (int) indoorBean.getPm25();
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);
@@ -251,19 +251,19 @@ public class MPChartUtils {
         List<Entry> outEntries = new ArrayList<>();
         List<Entry> inEntries = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            int x = Integer.parseInt(DateUtils.getWeek(i+2, "yyyyMMdd"));
+            int x = Integer.parseInt(DateUtils.getWeek(i + 2, "yyyyMMdd"));
             int outdoorY = 0;
             int indoorY = 0;
             for (int j = 0; j < pm25HistoryModel.getOutdoor().size(); j++) {
                 Pm25HistoryModel.OutdoorBean outdoorBean = pm25HistoryModel.getOutdoor().get(j);
                 if (x == outdoorBean.getTime()) {
-                    outdoorY = outdoorBean.getPm25();
+                    outdoorY = (int) outdoorBean.getPm25();
                 }
             }
             for (int j = 0; j < pm25HistoryModel.getIndoor().size(); j++) {
                 Pm25HistoryModel.IndoorBean indoorBean = pm25HistoryModel.getIndoor().get(j);
                 if (x == indoorBean.getTime()) {
-                    indoorY = indoorBean.getPm25();
+                    indoorY = (int) indoorBean.getPm25();
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);
@@ -305,21 +305,4 @@ public class MPChartUtils {
         return formatter;
     }
 
-//    private static List<Entry> formatIndoorData(List<Pm25HistoryModel.IndoorBean> indoorBeans,
-//                                                String type) {
-//        List<Entry> inEntries = new ArrayList<>();
-//        for (int i = 0; i < 30; i++) {
-//            int x = DateUtils.getWeek(i + 2);
-//            int y = 0;
-//            for (int j = 0; j < indoorBeans.size(); j++) {
-//                Pm25HistoryModel.IndoorBean indoorBean = indoorBeans.get(j);
-//                if (x == indoorBean.getTime()) {
-//                    y = indoorBean.getOutPm25();
-//                }
-//            }
-//            Entry outEntry = new Entry(i, y);
-//            inEntries.add(outEntry);
-//        }
-//        return inEntries;
-//    }
 }

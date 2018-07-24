@@ -31,7 +31,7 @@ public class Pm25HistoryModel {
          */
 
         private int time;
-        private int pm25;
+        private float pm25;
 
         public int getTime() {
             return time;
@@ -41,11 +41,11 @@ public class Pm25HistoryModel {
             this.time = time;
         }
 
-        public int getPm25() {
+        public float getPm25() {
             return pm25;
         }
 
-        public void setPm25(int pm25) {
+        public void setPm25(float pm25) {
             this.pm25 = pm25;
         }
     }
@@ -57,7 +57,7 @@ public class Pm25HistoryModel {
          */
 
         private int time;
-        private int pm25;
+        private float pm25;
 
         public int getTime() {
             return time;
@@ -67,11 +67,11 @@ public class Pm25HistoryModel {
             this.time = time;
         }
 
-        public int getPm25() {
+        public float getPm25() {
             return pm25;
         }
 
-        public void setPm25(int pm25) {
+        public void setPm25(float pm25) {
             this.pm25 = pm25;
         }
     }
