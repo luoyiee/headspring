@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -26,27 +30,26 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.bean.http.Device;
+import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
 import cc.xiaojiang.liangbo.iotkit.KzzDataModel;
 import cc.xiaojiang.liangbo.utils.AP1Utils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
+import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.AP1View2;
 import cc.xiaojiang.liangbo.view.AP1View4;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import cc.xiaojiang.liangbo.widget.AP1TimingDialog;
-import cc.xiaojiang.iotkit.bean.http.Device;
-import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
-import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
 public class KZZActivity extends BaseActivity implements
         AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback, AP1TimingDialog
         .OnTimeSelectedListener {
-    @BindView(R.id.iv_pop_window)
-    ImageView mIvPopWindow;
     @BindView(R.id.ic_air_purifier_wifi_off)
     CommonTextView mIcAirPurifierWifiOff;
     @BindView(R.id.tv_lb_view1_timing)
@@ -71,6 +74,20 @@ public class KZZActivity extends BaseActivity implements
     CommonTextView mTvSwitch;
     @BindView(R.id.tv_timing)
     CommonTextView mTvTiming;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.frameLayout4)
+    FrameLayout mFrameLayout4;
+    @BindView(R.id.view4)
+    View mView4;
+    @BindView(R.id.guideline2)
+    Guideline mGuideline2;
+    @BindView(R.id.iv_air_purifier_view4_minus)
+    ImageView mIvAirPurifierView4Minus;
+    @BindView(R.id.iv_air_purifier_view4_plus)
+    ImageView mIvAirPurifierView4Plus;
 
     private Device mDevice;
 
@@ -161,13 +178,11 @@ public class KZZActivity extends BaseActivity implements
         setTitle(IotKitUtils.getDeviceName(mDevice));
     }
 
-    @OnClick({R.id.iv_pop_window, R.id.tv_lb_mode, R.id.tv_switch, R.id.tv_timing, R.id
+    @OnClick({R.id.tv_lb_mode, R.id.tv_switch, R.id.tv_timing, R.id
             .iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_pop_window:
-                showPupWindow();
-                break;
+
             case R.id.tv_lb_mode:
                 mControlMode = mControlMode == 0 ? 1 : 0;
                 HashMap<String, String> hashMap1 = new HashMap<>();
@@ -196,6 +211,20 @@ public class KZZActivity extends BaseActivity implements
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_more, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_more) {
+            showPupWindow();
+        }
+        return true;
+    }
+
     private void showPupWindow() {
         final View contentView = getLayoutInflater().inflate(R.layout.device_pop_window, null);
         final PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams
@@ -218,8 +247,8 @@ public class KZZActivity extends BaseActivity implements
             popupWindow.dismiss();
         });
 
-        popupWindow.showAsDropDown(mIvPopWindow, -popupWindow.getContentView().getMeasuredWidth()
-                + 40, 20);
+        popupWindow.showAsDropDown(mToolbar, ScreenUtils.getScreenWidth(this) - popupWindow
+                .getContentView().getMeasuredWidth(), 0);
     }
 
 

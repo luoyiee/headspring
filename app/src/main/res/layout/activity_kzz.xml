@@ -23,13 +23,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/iv_pop_window"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/device_more" />
+
     </android.support.v7.widget.Toolbar>
 
     <cc.xiaojiang.liangbo.view.CommonTextView

@@ -22,14 +22,6 @@
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/iv_pop_window"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/device_more" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

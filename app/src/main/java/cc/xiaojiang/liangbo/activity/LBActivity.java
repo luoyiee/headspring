@@ -8,6 +8,8 @@ import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -38,6 +40,7 @@ import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
 import cc.xiaojiang.liangbo.iotkit.LbDataModel;
 import cc.xiaojiang.liangbo.utils.AP1Utils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
+import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.AP1View2;
 import cc.xiaojiang.liangbo.view.AP1View4;
@@ -52,8 +55,6 @@ public class LBActivity extends BaseActivity implements
 
     @BindView(R.id.tv_title)
     TextView mTvTitle;
-    @BindView(R.id.iv_pop_window)
-    ImageView mIvPopWindow;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.frameLayout4)
@@ -173,13 +174,11 @@ public class LBActivity extends BaseActivity implements
         setTitle(IotKitUtils.getDeviceName(mDevice));
     }
 
-    @OnClick({R.id.iv_pop_window, R.id.tv_lb_mode, R.id.tv_lb_switch, R.id.tv_lb_timing, R.id
+    @OnClick({ R.id.tv_lb_mode, R.id.tv_lb_switch, R.id.tv_lb_timing, R.id
             .iv_lb_view4_minus, R.id.iv_lb_view4_plus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_pop_window:
-                showPupWindow();
-                break;
+
             case R.id.tv_lb_mode:
                 mControlMode = mControlMode == 0 ? 1 : 0;
                 HashMap<String, String> hashMap1 = new HashMap<>();
@@ -207,6 +206,19 @@ public class LBActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_more, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_more) {
+            showPupWindow();
+        }
+        return true;
+    }
 
     private void showPupWindow() {
         final View contentView = getLayoutInflater().inflate(R.layout.device_pop_window, null);
@@ -230,8 +242,8 @@ public class LBActivity extends BaseActivity implements
             popupWindow.dismiss();
         });
 
-        popupWindow.showAsDropDown(mIvPopWindow, -popupWindow.getContentView().getMeasuredWidth()
-                + 40, 20);
+        popupWindow.showAsDropDown(mToolbar, ScreenUtils.getScreenWidth(this) - popupWindow
+                .getContentView().getMeasuredWidth(), 0);
     }
 
 
