@@ -24,14 +24,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-//        BaseLibrary.init(this);
-
-//       XjConfig.init(this).configure();
-//        MobSDK.init(this);
         IotKit.init(this, new IotKitAccountImpl(), true);
 //        if(!BuildConfig.DEBUG){
-        Beta.autoCheckUpgrade = false;
         Bugly.init(getApplicationContext(), "be4413cd77", false);
+//        Beta.autoCheckUpgrade = true;
 //        }
         ZXingLibrary.initDisplayOpinion(this);
     }

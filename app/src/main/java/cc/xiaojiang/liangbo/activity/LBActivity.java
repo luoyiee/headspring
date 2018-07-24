@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
@@ -57,13 +57,13 @@ public class LBActivity extends BaseActivity implements
     TextView mTvTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.frameLayout4)
+    @BindView(R.id.ll_kzz_device_status)
     FrameLayout mFrameLayout4;
     @BindView(R.id.tv_lb_view1_filter)
     TextView mTvLbView1Filter;
-    @BindView(R.id.view4)
+    @BindView(R.id.view_status_divider)
     View mView4;
-    @BindView(R.id.textView14)
+    @BindView(R.id.tv_view1_timing_label)
     TextView mTextView14;
     @BindView(R.id.view_air_purifier_pm25)
     AP1View2 mViewAirPurifierPm25;
@@ -135,14 +135,14 @@ public class LBActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        IotKitConnectionManager.getInstance().addDataCallback(this);
-        IotKitConnectionManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
+        IotKitMqttManager.getInstance().addDataCallback(this);
+        IotKitMqttManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
                 .getDeviceId(), null);
     }
 
     @Override
     protected void onPause() {
-        IotKitConnectionManager.getInstance().removeDataCallback(this);
+        IotKitMqttManager.getInstance().removeDataCallback(this);
         super.onPause();
     }
 
@@ -174,7 +174,7 @@ public class LBActivity extends BaseActivity implements
         setTitle(IotKitUtils.getDeviceName(mDevice));
     }
 
-    @OnClick({ R.id.tv_lb_mode, R.id.tv_lb_switch, R.id.tv_lb_timing, R.id
+    @OnClick({R.id.tv_lb_mode, R.id.tv_lb_switch, R.id.tv_lb_timing, R.id
             .iv_lb_view4_minus, R.id.iv_lb_view4_plus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -259,7 +259,7 @@ public class LBActivity extends BaseActivity implements
     }
 
     private void sendCmd(HashMap<String, String> hashMap) {
-        IotKitConnectionManager.getInstance().sendCmd(mDevice, hashMap, new IotKitActionCallback() {
+        IotKitMqttManager.getInstance().sendCmd(mDevice, hashMap, new IotKitActionCallback() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
 

@@ -51,7 +51,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
             app:layout_constraintStart_toStartOf="@+id/frameLayout"
             app:layout_constraintTop_toTopOf="@+id/frameLayout"
-            app:srcCompat="@drawable/ic_logo2"/>
+            app:srcCompat="@drawable/ic_logo"/>
 
         <TextView
             android:id="@+id/textView18"

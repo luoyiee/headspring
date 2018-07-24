@@ -2,22 +2,13 @@ package cc.xiaojiang.liangbo.iotkit;
 
 public class BaseDataModel {
 
+
     /**
-     * msg_type : push
-     * params : {"onlineStatus":{"value":"online:1532333492"},"Switch":{"value":"1"},
-     * "PM205":{"value":"0"}}
+     * params : {"onlineStatus":{"value":"online:1532395586"},"Switch":{"value":"1"},
+     * "PM205":{"value":"15"}}
      */
 
-    private String msg_type;
     private ParamsBean params;
-
-    public String getMsg_type() {
-        return msg_type;
-    }
-
-    public void setMsg_type(String msg_type) {
-        this.msg_type = msg_type;
-    }
 
     public ParamsBean getParams() {
         return params;
@@ -29,9 +20,9 @@ public class BaseDataModel {
 
     public static class ParamsBean {
         /**
-         * onlineStatus : {"value":"online:1532333492"}
+         * onlineStatus : {"value":"online:1532395586"}
          * Switch : {"value":"1"}
-         * PM205 : {"value":"0"}
+         * PM205 : {"value":"15"}
          */
 
         private OnlineStatusBean onlineStatus;
@@ -64,7 +55,7 @@ public class BaseDataModel {
 
         public static class OnlineStatusBean {
             /**
-             * value : online:1532333492
+             * value : online:1532395586
              */
 
             private String value;
@@ -96,7 +87,7 @@ public class BaseDataModel {
 
         public static class PM205Bean {
             /**
-             * value : 0
+             * value : 15
              */
 
             private String value;

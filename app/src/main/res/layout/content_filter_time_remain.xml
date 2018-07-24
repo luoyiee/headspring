@@ -9,28 +9,44 @@
     tools:showIn="@layout/activity_filtere_time_remain">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
 
-        <cc.xiaojiang.liangbo.view.WaveProgressView
-            android:id="@+id/view_filter_time_remain"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            app:circleWidth="1dp"
-            app:hint="滤芯剩余"
-            app:hintColor="@color/white"
-            app:hintSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="0.38"
-            app:valueColor="@color/white"
-            app:valueSize="52sp"
-            app:waveHeight="20dp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_filter_2"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_filter_1">
+
+                <cc.xiaojiang.liangbo.view.WaveProgressView
+                    android:id="@+id/view_filter_time_remain"
+                    android:layout_width="220dp"
+                    android:layout_height="220dp"
+                    android:layout_margin="36dp"
+                    app:circleWidth="1dp"
+                    app:hint="滤芯剩余"
+                    app:hintColor="@color/white"
+                    app:hintSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/toolbar"
+                    app:layout_constraintVertical_bias="0.38"
+                    app:valueColor="@color/white"
+                    app:valueSize="52sp"
+                    app:waveHeight="20dp" />
+            </FrameLayout>
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_filter_use_time"
@@ -42,6 +58,7 @@
 
     </LinearLayout>
 
+
     <TextView
         android:id="@+id/tv_filter_reset"
         android:layout_width="wrap_content"
@@ -51,8 +68,7 @@
         android:drawablePadding="4dp"
         android:drawableTop="@drawable/filter_reset"
         android:text="滤芯复位"
-        android:textColor="@color/white"
-        android:visibility="invisible" />
+        android:textColor="@color/white" />
 
 
 </FrameLayout>

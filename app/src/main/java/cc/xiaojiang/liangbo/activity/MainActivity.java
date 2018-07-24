@@ -19,6 +19,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 
 import java.util.ArrayList;
@@ -30,17 +31,17 @@ import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
 import cc.xiaojiang.liangbo.adapter.HomeIndoorPmHolder;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
-import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
-import cc.xiaojiang.liangbo.iotkit.KzzDataModel;
+import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.LocationClient;
@@ -52,7 +53,6 @@ import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import cc.xiaojiang.liangbo.view.Point;
 import cc.xiaojiang.liangbo.view.PointEvaluator;
-import io.reactivex.functions.Consumer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -102,19 +102,50 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
     private CBViewHolderCreator mHolderCreator;
     private ArrayMap<String, String> mIndoorMap = new ArrayMap<>();
     private int mDeviceSize;
+    private boolean firstLoad = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        IotKitMqttManager.getInstance().startDataService(new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                Logger.e("mqtt connect success");
+                getDevices();
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Logger.e("mqtt connect error, " + exception.getMessage());
+
+            }
+        });
         MainActivityPermissionsDispatcher.locationWithPermissionCheck(this);
         initView();
-        getDevices();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!firstLoad) {
+            getDevices();
+        }
+        firstLoad = false;
+        IotKitMqttManager.getInstance().addDataCallback(MainActivity.this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        IotKitMqttManager.getInstance().removeDataCallback(this);
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         mLocationClient.stopLocation();
         mLocationClient.onDestroy();
+        IotKitMqttManager.getInstance().stopDataService();
         super.onDestroy();
     }
 
@@ -156,20 +187,8 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
         return R.layout.activity_main;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IotKitConnectionManager.getInstance().addDataCallback(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        IotKitConnectionManager.getInstance().removeDataCallback(this);
-    }
-
     private void getDevices() {
-        if (IotKitConnectionManager.getInstance().getMqttAndroidClient() == null) {
+        if (IotKitMqttManager.getInstance().getMqttAndroidClient() == null) {
             return;
         }
         IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
@@ -184,34 +203,6 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
 
             }
         });
-    }
-
-    /**
-     * 批量查询设备状态
-     */
-    private void queryDevices(List<Device> data) {
-        for (int i = 0; i < data.size(); i++) {
-            queryDevice(data.get(i));
-        }
-    }
-
-    /**
-     * 查询单个设备状态
-     */
-    public void queryDevice(Device device) {
-        IotKitConnectionManager.getInstance().queryStatus(device.getProductKey(),
-                device.getDeviceId(), new IotKitActionCallback() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable
-                            exception) {
-                        Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
-                    }
-                });
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
@@ -335,6 +326,35 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
         }
     }
 
+    /**
+     * 批量查询设备状态
+     */
+    private void queryDevices(List<Device> data) {
+        for (int i = 0; i < data.size(); i++) {
+            queryDevice(data.get(i));
+        }
+    }
+
+    /**
+     * 查询单个设备状态
+     */
+    public void queryDevice(Device device) {
+        IotKitMqttManager.getInstance().queryStatus(device.getProductKey(),
+                device.getDeviceId(), new IotKitActionCallback() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
+
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable
+                            exception) {
+                        Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
+                    }
+                });
+    }
+
     private void startAnimator() {
         AnimatorSet animSet = new AnimatorSet();
         animSet.setDuration(200);
@@ -378,7 +398,6 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Logger.d("onWindowFocusChanged");
         if (hasFocus) {
             //获取控件原先的位置
             mChainPoint = getPoint(mBtnChain);
@@ -394,20 +413,21 @@ public class MainActivity extends BaseActivity implements IotKitReceivedCallback
     }
 
     @Override
-    public void messageArrived(String deviceId, String onlineStatus, String data) {
+    public void messageArrived(String deviceId, String productKey, String data) {
+        BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
+        BaseDataModel.ParamsBean paramsBean = model.getParams();
+        if (paramsBean == null || paramsBean.getPM205() == null || paramsBean.getOnlineStatus
+                () == null) {
+            Logger.e("error getParams!");
+            return;
+        }
+        String pm205 = paramsBean.getPM205().getValue();
+        String onlineStatus = paramsBean.getOnlineStatus().getValue();
         if (onlineStatus.startsWith("online")) {
-            BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
-            BaseDataModel.ParamsBean paramsBean = model.getParams();
-            if (paramsBean == null || paramsBean.getPM205() == null) {
-                Logger.e("error getParams!");
-                return;
-            }
-            String pm205 = paramsBean.getPM205().getValue();
             mIndoorMap.put(deviceId, pm205);
         } else {
             mIndoorMap.put(deviceId, DEFAULT_DATA);
         }
-
         if (mIndoorMap.size() == mDeviceSize) {
             mIndoorPmList.clear();
             // 遍历 ArrayMap

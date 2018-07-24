@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
         android:id="@+id/include4"
-        layout="@layout/layout_appbar"/>
+        layout="@layout/layout_appbar" />
 
     <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/tv_app_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:icon_src_normal="@drawable/ic_logo2"
         app:icon_direction="top"
         app:icon_height="72dp"
+        app:icon_src_normal="@drawable/ic_logo"
         app:icon_width="72dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include4"/>
+        app:layout_constraintTop_toBottomOf="@+id/include4" />
 
     <View
         android:id="@+id/view"
@@ -28,7 +27,7 @@
         android:layout_height="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45"/>
+        app:layout_constraintVertical_bias="0.45" />
 
     <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_update"
@@ -38,7 +37,7 @@
         app:itemValue="立即升级"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"/>
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <View
         android:id="@+id/view6"
@@ -47,18 +46,18 @@
         android:layout_height="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_update"/>
+        app:layout_constraintTop_toBottomOf="@+id/item_update" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         android:layout_marginBottom="8dp"
         android:text="江苏量波智能科技有限公司"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

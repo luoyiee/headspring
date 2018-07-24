@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 6
-        versionName "1.0.0-beta9"
+        versionCode 7
+        versionName "1.0.0-beta10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -48,12 +48,19 @@ android {
         javaMaxHeapSize "4g"
     }
 
+    //自动生成apk包名
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
+        }
+    }
 }
 repositories {
     flatDir {
         dirs 'libs'
     }
 }
+
 
 
 dependencies {

@@ -13,9 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -24,9 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.adapter.DeviceAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.bean.http.DeviceNickRes;
@@ -34,7 +36,6 @@ import cc.xiaojiang.iotkit.bean.http.DeviceUnbindRes;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 
 public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
@@ -52,7 +53,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IotKitConnectionManager.getInstance().addDataCallback(this);
+        IotKitMqttManager.getInstance().addDataCallback(this);
         initView();
     }
 
@@ -74,7 +75,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     @Override
     protected void onDestroy() {
-        IotKitConnectionManager.getInstance().removeDataCallback(this);
+        IotKitMqttManager.getInstance().removeDataCallback(this);
         if (mAlertDialog != null && mAlertDialog.isShowing()) {
             mAlertDialog.dismiss();
         }
@@ -126,7 +127,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
      * 查询单个设备状态
      */
     public void queryDevice(Device device) {
-        IotKitConnectionManager.getInstance().queryStatus(device.getProductKey(),
+        IotKitMqttManager.getInstance().queryStatus(device.getProductKey(),
                 device.getDeviceId(), new IotKitActionCallback() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
@@ -160,13 +161,11 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_device_content:
-                if ("jbb600".equals(device.getProductKey())) {
-                    intent = new Intent(this, LBActivity.class);
-                } else if ("bff503".equals(device.getProductKey())) {
+                if ("jbb600".equals(device.getProductKey()) || "bff503".equals(device
+                        .getProductKey())) {
                     intent = new Intent(this, KZZActivity.class);
-                }
-                if (intent == null) {
-                    ToastUtils.show("非法设备！");
+                } else {
+                    ToastUtils.show("暂不支持该设备！");
                     return;
                 }
                 if (mDeviceAdapter.getOnlineStatus(device.getDeviceId())) {
@@ -246,7 +245,14 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
 
     @Override
-    public void messageArrived(String deviceId, String onlineStatus, String data) {
+    public void messageArrived(String deviceId, String productKey, String data) {
+        BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
+        BaseDataModel.ParamsBean paramsBean = model.getParams();
+        if (paramsBean == null || paramsBean.getOnlineStatus() == null) {
+            Logger.e("error getParams!");
+            return;
+        }
+        String onlineStatus = paramsBean.getOnlineStatus().getValue();
         if (onlineStatus.startsWith("online")) {
             mDeviceAdapter.setOnlineStatus(deviceId, "online");
         } else {

@@ -22,6 +22,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HEAD;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -75,6 +76,6 @@ public interface XJApis {
 
     @FormUrlEncoded
     @POST(HttpUrl.DYNAMIC_LIKE)
-    Observable<BaseModel<String>> dynamicLike(@Field("id")int id);
+    Observable<BaseModel<String>> dynamicLike(@Field("id") int id);
 
 }

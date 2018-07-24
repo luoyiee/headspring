@@ -23,6 +23,7 @@ public class FilterTimeRemainActivity extends BaseActivity {
     TextView mTvFilterUseTime;
     @BindView(R.id.tv_filter_reset)
     TextView mTvFilterReset;
+    private int mUseTime;
 
     public static void actionStart(Context context, int userTime) {
         Intent intent = new Intent(context, FilterTimeRemainActivity.class);
@@ -38,15 +39,11 @@ public class FilterTimeRemainActivity extends BaseActivity {
     }
 
     private void initData() {
-        int useTime = getIntent().getIntExtra(INTENT_FILTER_TIME, 0);
+        mUseTime = getIntent().getIntExtra(INTENT_FILTER_TIME, 0);
         mViewFilterTimeRemain.setMaxValue(FLITER_MAX_VALUE);
-        mViewFilterTimeRemain.setValue(FLITER_MAX_VALUE - useTime);
-        mTvFilterUseTime.setText(getString(R.string.filter_use_time, useTime));
-        if (useTime >= FLITER_MAX_VALUE) {
-            mTvFilterReset.setVisibility(View.VISIBLE);
-        } else {
-            mTvFilterReset.setVisibility(View.INVISIBLE);
-        }
+        mViewFilterTimeRemain.setValue(FLITER_MAX_VALUE - mUseTime);
+        mTvFilterUseTime.setText(getString(R.string.filter_use_time, mUseTime));
+
     }
 
     @Override
@@ -57,6 +54,11 @@ public class FilterTimeRemainActivity extends BaseActivity {
 
     @OnClick(R.id.tv_filter_reset)
     public void onViewClicked() {
-        ToastUtils.show("重置滤芯");
+        if (mUseTime >= FLITER_MAX_VALUE) {
+            ToastUtils.show("重置滤芯成功");
+        } else {
+            ToastUtils.show("不需要重置滤芯");
+        }
+
     }
 }

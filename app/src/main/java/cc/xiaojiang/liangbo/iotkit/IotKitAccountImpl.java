@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.iotkit;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
@@ -20,6 +21,8 @@ import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
@@ -32,6 +35,11 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     public boolean isDebug = true;
 
+
+    @Override
+    public Context getApplicationContext() {
+        return MyApplication.getInstance();
+    }
 
     @Override
     public boolean isLogin() {
@@ -51,24 +59,43 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     @Override
     public void login(Context context, Object params, IotKitAccountCallback callback) {
-
-        if (params==null){
+        if (isLogin()) {
             callback.onSuccess();
-        }else{
-            LoginBody loginBody = (LoginBody) params;
-            RetrofitHelper.getService().login(loginBody)
-                    .map(new HttpResultFunc<>())
-                    .compose(RxUtils.rxSchedulerHelper())
-                    .subscribe(new Consumer<LoginModel>() {
-                        @Override
-                        public void accept(LoginModel loginModel) throws Exception {
-                            DbUtils.setXJUserId(loginModel.getUserId());
-                            DbUtils.setAccessToken(loginModel.getAccessToken());
-                            DbUtils.setRefreshToken(loginModel.getRefreshToken());
-                            callback.onSuccess();
-                        }
-                    });
+            return;
         }
+        if (params == null) {
+            Logger.e("error login params");
+            callback.onFailed("need login");
+            return;
+        }
+        LoginBody loginBody = (LoginBody) params;
+        RetrofitHelper.getService().login(loginBody)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new Observer<LoginModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LoginModel loginModel) {
+                        DbUtils.setXJUserId(loginModel.getUserId());
+                        DbUtils.setAccessToken(loginModel.getAccessToken());
+                        DbUtils.setRefreshToken(loginModel.getRefreshToken());
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

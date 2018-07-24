@@ -25,7 +25,7 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/frameLayout4"
+        android:id="@+id/ll_kzz_device_status"
         android:layout_width="0dp"
         android:layout_height="36dp"
         android:layout_marginTop="16dp"
@@ -42,30 +42,30 @@
         style="@style/common_14_white_text"
         android:layout_marginStart="8dp"
         android:text="90%"
-        app:layout_constraintBottom_toBottomOf="@+id/textView14"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="@+id/textView14" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_view1_timing_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_view1_timing_label"
+        app:layout_constraintTop_toTopOf="@+id/tv_view1_timing_label" />
 
     <View
-        android:id="@+id/view4"
+        android:id="@+id/view_status_divider"
         android:layout_width="1dp"
         android:layout_height="20dp"
         android:background="@color/status_label"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayout4"
-        app:layout_constraintStart_toStartOf="@+id/frameLayout4"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout4" />
+        app:layout_constraintBottom_toBottomOf="@+id/ll_kzz_device_status"
+        app:layout_constraintEnd_toEndOf="@+id/ll_kzz_device_status"
+        app:layout_constraintStart_toStartOf="@+id/ll_kzz_device_status"
+        app:layout_constraintTop_toTopOf="@+id/ll_kzz_device_status" />
 
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/tv_view1_timing_label"
         style="@style/control_status_label"
         android:layout_marginStart="24dp"
-        android:text="滤网"
+        android:text="滤芯"
         android:textColor="@color/status_label"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintStart_toEndOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/view4" />
+        app:layout_constraintBottom_toBottomOf="@+id/view_status_divider"
+        app:layout_constraintStart_toEndOf="@+id/view_status_divider"
+        app:layout_constraintTop_toTopOf="@+id/view_status_divider" />
 
     <cc.xiaojiang.liangbo.view.AP1View2
         android:id="@+id/view_air_purifier_pm25"
@@ -162,9 +162,9 @@
         android:id="@id/tv_lb_shut_down"
         style="@style/common_14_white_text"
         android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
-        app:layout_constraintEnd_toStartOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout4"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_kzz_device_status"
+        app:layout_constraintEnd_toStartOf="@+id/view_status_divider"
+        app:layout_constraintTop_toTopOf="@+id/ll_kzz_device_status"
         tools:text="08:00" />
 
     <TextView

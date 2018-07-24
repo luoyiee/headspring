@@ -17,24 +17,22 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AccountUtils.isLogin()) {
-            IotKitAccountManager.getInstance().login(this, null, new IotKitAccountCallback() {
-                @Override
-                public void onSuccess() {
-                    startActivity(MainActivity.class);
-                }
+//        if (AccountUtils.isLogin()) {
+//            startActivity(MainActivity.class);
+//        } else {
+//            startActivity(MainActivity.class);
+//        }
+        IotKitAccountManager.getInstance().login(this, null, new IotKitAccountCallback() {
+            @Override
+            public void onSuccess() {
+                startActivity(MainActivity.class);
+            }
 
-                @Override
-                public void onFailed(String msg) {
-                    // TODO: 2018/7/24 占用
-                    ToastUtils.show("连接失败");
-                    Logger.e("连接失败");
-                    startActivity(MainActivity.class);
-                }
-            });
-        } else {
-            startActivity(LoginActivity.class);
-        }
+            @Override
+            public void onFailed(String msg) {
+                startActivity(LoginActivity.class);
+            }
+        });
     }
 
     private void startActivity(Class<? extends BaseActivity> clazz) {

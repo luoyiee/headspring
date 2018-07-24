@@ -77,7 +77,7 @@ public class AP1View4 extends View {
         invalidate();
     }
 
-   public interface OnSeekBarChangeListener {
+    public interface OnSeekBarChangeListener {
         void onStart(int gear);
 
         void onChange(int gear);
@@ -156,7 +156,8 @@ public class AP1View4 extends View {
         mForePaint.setColor(mForegroundColor);
         mForePaint.setStrokeWidth(mForegroundSizePx);
         canvas.drawLine(0, 0, mInterval / 2 + mGear * mInterval, 0, mForePaint);
-        mThumbBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_air_purifier_gear_thumb);
+        mThumbBitmap = BitmapFactory.decodeResource(getResources(), R.drawable
+                .ic_air_purifier_gear_thumb);
         mThumbRectf = new RectF(mInterval / 2 + mGear * mInterval - mThumbSizePx / 2,
                 -mThumbSizePx / 2,
                 mInterval / 2 + mGear * mInterval + mThumbSizePx / 2, mThumbSizePx / 2);
@@ -175,6 +176,11 @@ public class AP1View4 extends View {
             this.mGear = mGear;
             invalidate();
         }
+    }
+
+    public void setGearCount(int gearCount) {
+        mGearCount = gearCount;
+        invalidate();
     }
 
     @Override

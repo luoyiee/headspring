@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.iotkit;
 
+
 public class KzzDataModel {
 
 

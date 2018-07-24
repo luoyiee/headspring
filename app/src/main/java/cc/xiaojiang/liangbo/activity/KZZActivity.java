@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.constraint.Group;
 import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -32,12 +32,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
-import cc.xiaojiang.iotkit.mqtt.IotKitConnectionManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
 import cc.xiaojiang.liangbo.iotkit.KzzDataModel;
+import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.utils.AP1Utils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
@@ -50,9 +51,7 @@ import cc.xiaojiang.liangbo.widget.AP1TimingDialog;
 public class KZZActivity extends BaseActivity implements
         AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback, AP1TimingDialog
         .OnTimeSelectedListener {
-    @BindView(R.id.ic_air_purifier_wifi_off)
-    CommonTextView mIcAirPurifierWifiOff;
-    @BindView(R.id.tv_lb_view1_timing)
+    @BindView(R.id.tv_view1_timing)
     TextView mTvAirPurifierView1Timing;
     @BindView(R.id.tv_air_purifier_view3_temp)
     TextView mTvAirPurifierView3Temp;
@@ -66,8 +65,6 @@ public class KZZActivity extends BaseActivity implements
     TextView mTextView16;
     @BindView(R.id.textView17)
     TextView mTextView17;
-    @BindView(R.id.textView14)
-    TextView mTextView14;
     @BindView(R.id.tv_lb_mode)
     CommonTextView mTvAuto;
     @BindView(R.id.tv_switch)
@@ -78,16 +75,26 @@ public class KZZActivity extends BaseActivity implements
     TextView mTvTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.frameLayout4)
-    FrameLayout mFrameLayout4;
-    @BindView(R.id.view4)
-    View mView4;
     @BindView(R.id.guideline2)
     Guideline mGuideline2;
     @BindView(R.id.iv_air_purifier_view4_minus)
     ImageView mIvAirPurifierView4Minus;
     @BindView(R.id.iv_air_purifier_view4_plus)
     ImageView mIvAirPurifierView4Plus;
+    @BindView(R.id.group2)
+    Group mGroup2;
+    @BindView(R.id.ic_air_purifier_wifi)
+    ImageView mIcAirPurifierWifi;
+    @BindView(R.id.textView33)
+    TextView mTextView33;
+    @BindView(R.id.guideline6)
+    Guideline mGuideline6;
+    @BindView(R.id.tv_status_filter)
+    TextView mTvStatusFilter;
+    @BindView(R.id.tv_view1_timing_label)
+    TextView mTvView1TimingLabel;
+    @BindView(R.id.view_status_divider)
+    View mViewStatusDivider;
 
     private Device mDevice;
 
@@ -112,6 +119,30 @@ public class KZZActivity extends BaseActivity implements
         initGuidePage();
     }
 
+    @Override
+    public void onStart(int gear) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IotKitMqttManager.getInstance().addDataCallback(this);
+        IotKitMqttManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
+                .getDeviceId(), null);
+    }
+
+    @Override
+    protected void onPause() {
+        IotKitMqttManager.getInstance().removeDataCallback(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onStop(int gear) {
+        sendGear(gear);
+    }
+
     private void initGuidePage() {
         HighlightOptions options = new HighlightOptions.Builder()
                 .setOnClickListener(new View.OnClickListener() {
@@ -129,30 +160,6 @@ public class KZZActivity extends BaseActivity implements
                         .setEverywhereCancelable(false)
                         .addHighLight(mTvSwitch)
                         .setLayoutRes(R.layout.view_guide)).build();
-    }
-
-    @Override
-    public void onStart(int gear) {
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IotKitConnectionManager.getInstance().addDataCallback(this);
-        IotKitConnectionManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
-                .getDeviceId(), null);
-    }
-
-    @Override
-    protected void onPause() {
-        IotKitConnectionManager.getInstance().removeDataCallback(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onStop(int gear) {
-        sendGear(gear);
     }
 
     @Override
@@ -176,6 +183,17 @@ public class KZZActivity extends BaseActivity implements
             finish();
         }
         setTitle(IotKitUtils.getDeviceName(mDevice));
+        if (ProductKey.KZZ.equals(mDevice.getProductKey())) {
+            mTvView1TimingLabel.setVisibility(View.VISIBLE);
+            mTvAirPurifierView1Timing.setVisibility(View.VISIBLE);
+            mViewStatusDivider.setVisibility(View.VISIBLE);
+            mGroup2.setVisibility(View.VISIBLE);
+            mViewAirPurifierGear.setGearCount(6);
+        } else if (ProductKey.LB.equals(mDevice.getProductKey())) {
+            mViewAirPurifierGear.setGearCount(4);
+        } else {
+            ToastUtils.show("暂不支持该设备！");
+        }
     }
 
     @OnClick({R.id.tv_lb_mode, R.id.tv_switch, R.id.tv_timing, R.id
@@ -264,7 +282,7 @@ public class KZZActivity extends BaseActivity implements
     }
 
     private void sendCmd(HashMap<String, String> hashMap) {
-        IotKitConnectionManager.getInstance().sendCmd(mDevice, hashMap, new IotKitActionCallback() {
+        IotKitMqttManager.getInstance().sendCmd(mDevice, hashMap, new IotKitActionCallback() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
 
@@ -278,7 +296,7 @@ public class KZZActivity extends BaseActivity implements
     }
 
     @Override
-    public void messageArrived(String deviceId, String onlineStatus, String data) {
+    public void messageArrived(String deviceId, String productKey, String data) {
         if (!deviceId.equals(mDevice.getDeviceId())) {
             Logger.e("error device!");
             return;
@@ -301,42 +319,41 @@ public class KZZActivity extends BaseActivity implements
     private void showData(KzzDataModel.ParamsBean paramsBean) {
         if (paramsBean.getSwitch() != null) {
             mSwitch = Integer.parseInt(paramsBean.getSwitch().getValue());
+            refreshSwitch();
         }
         if (paramsBean.getControlMode() != null) {
             mControlMode = Integer.parseInt(paramsBean.getControlMode().getValue());
+            refreshMode();
         }
         if (paramsBean.getControlGear() != null) {
             mControlGear = Integer.parseInt(paramsBean.getControlGear().getValue());
+            refreshGear();
         }
         if (paramsBean.getShutdownRemainingTime() != null) {
             mShutdownRemainingTime = Integer.parseInt(paramsBean.getShutdownRemainingTime()
                     .getValue());
+            refreshShutDown();
         }
         if (paramsBean.getUseTime() != null) {
             mUseTime = Integer.parseInt(paramsBean.getUseTime().getValue());
+            refreshFilter();
+
         }
         if (paramsBean.getPM205() != null) {
             mPM205 = Integer.parseInt(paramsBean.getPM205().getValue());
+            refreshBackground();
+            refreshPm25();
         }
         if (paramsBean.getTempture() != null) {
             mTemperature = Integer.parseInt(paramsBean.getTempture().getValue());
+            refreshTemperature();
+
         }
         if (paramsBean.getHumidity() != null) {
             mHumidity = Integer.parseInt(paramsBean.getHumidity().getValue());
-        }
-        refreshAll();
-    }
+            refreshHumidity();
 
-    private void refreshAll() {
-        refreshBackground();
-        refreshSwitch();
-        refreshMode();
-        refreshGear();
-        refreshShutDown();
-        refreshFilter();
-        refreshPm25();
-        refreshTemperature();
-        refreshHumidity();
+        }
     }
 
     private void refreshHumidity() {
@@ -352,6 +369,8 @@ public class KZZActivity extends BaseActivity implements
     }
 
     private void refreshFilter() {
+        int percent = (int) (100f * (2000 - mUseTime) / 2000);
+        mTvStatusFilter.setText(String.format("%02d", percent) + "%");
         if (mUseTime >= 2000) {
             showChangeFilter();
         }
