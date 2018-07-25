@@ -9,7 +9,7 @@ import butterknife.OnClick;
 import cc.xiaojiang.iotkit.bean.http.ProductInfo;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
-import cc.xiaojiang.iotkit.wifi2.IotKitWifiSetupManager;
+import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;

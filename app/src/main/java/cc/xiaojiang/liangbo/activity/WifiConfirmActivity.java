@@ -8,12 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.formatter.IFillFormatter;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.iotkit.wifi2.IotKitWifiSetupManager;
-import cc.xiaojiang.iotkit.wifi2.WifiSetupInfo;
+import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
+import cc.xiaojiang.iotkit.wifi.WifiSetupInfo;
 import cc.xiaojiang.liangbo.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;

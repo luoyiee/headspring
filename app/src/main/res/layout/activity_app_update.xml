@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context="cc.xiaojiang.liangbo.activity.AppUpdateActivity">
 
-   <include layout="@layout/layout_appbar"/>
-
     <include layout="@layout/content_app_update" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -21,7 +21,6 @@ import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
-import cc.xiaojiang.iotkit.wifi2.IotKitWifiSetupManager;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 

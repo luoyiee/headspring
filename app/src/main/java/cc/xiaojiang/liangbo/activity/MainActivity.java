@@ -33,6 +33,7 @@ import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
+import cc.xiaojiang.iotkit.util.ByteUtils;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
 import cc.xiaojiang.liangbo.adapter.HomeIndoorPmHolder;

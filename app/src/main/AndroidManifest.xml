@@ -90,11 +90,7 @@
         android:name=".activity.KZZActivity"
         android:label="@string/title_activity_kzz"
         android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-        android:name=".activity.LBActivity"
-        android:label="@string/title_activity_lb"
-        android:theme="@style/AppTheme.NoActionBar" />
-    <activity
+        <activity
         android:name=".activity.HistoryDataActivity"
         android:label="@string/title_activity_history_data"
         android:theme="@style/AppTheme.NoActionBar" />

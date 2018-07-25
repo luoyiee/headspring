@@ -110,6 +110,8 @@ public class KZZActivity extends BaseActivity implements
     private Controller mGuidePage;
     private AP1TimingDialog mAP1TimingDialog;
 
+    private boolean isShowGuidePage = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -415,12 +417,18 @@ public class KZZActivity extends BaseActivity implements
             mTvSwitch.setText("关机");
             mTvSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_on));
-            mGuidePage.show();
+            if (!isShowGuidePage) {
+                mGuidePage.show();
+                isShowGuidePage = true;
+            }
         } else {
             mTvSwitch.setText("开机");
             mTvSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_off));
-            mGuidePage.remove();
+            if (isShowGuidePage) {
+                mGuidePage.remove();
+                isShowGuidePage = false;
+            }
         }
     }
 

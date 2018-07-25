@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             tools:context=".activity.LunarActivity"
-                                             tools:showIn="@layout/activity_lunar">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LunarActivity"
+    tools:showIn="@layout/activity_lunar">
 
     <com.haibin.calendarview.CalendarView
         android:id="@+id/calendarView"
@@ -44,7 +44,7 @@
         style="@style/horizontalBlockView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView"/>
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
     <TextView
         android:id="@+id/tv_calendar_day"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_lunar_time"
         app:layout_constraintVertical_bias="0.0"
-        tools:text="15"/>
+        tools:text="15" />
 
     <TextView
         android:id="@+id/tv_solar_terms"
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_calendar_day"
         app:layout_constraintTop_toTopOf="@+id/tv_lunar_month_day"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_lunar_time"
@@ -78,7 +78,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_lunar_year"
@@ -86,7 +86,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_lunar_month_day"
         app:layout_constraintStart_toStartOf="@+id/tv_lunar_time"
         app:layout_constraintTop_toBottomOf="@+id/tv_lunar_time"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_lunar_month_day"
@@ -95,12 +95,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_lunar_year"
         app:layout_constraintTop_toBottomOf="@+id/tv_lunar_year"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <android.support.constraint.Group
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="tv_solar_terms,tv_lunar_year,tv_lunar_month_day,
-tv_calendar_day,tv_lunar_time"/>
+tv_calendar_day,tv_lunar_time" />
 </android.support.constraint.ConstraintLayout>
