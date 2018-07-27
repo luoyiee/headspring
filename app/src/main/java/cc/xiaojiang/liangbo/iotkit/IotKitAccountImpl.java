@@ -1,29 +1,21 @@
 package cc.xiaojiang.liangbo.iotkit;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 
 import com.orhanobut.logger.Logger;
 
-import org.eclipse.jetty.servlet.listener.ELContextCleaner;
-
-import cc.xiaojiang.liangbo.BuildConfig;
-import cc.xiaojiang.liangbo.activity.LoginActivity;
+import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
+import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
 import cc.xiaojiang.liangbo.base.MyApplication;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
-import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.utils.AccountUtils;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
-import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
-import cc.xiaojiang.iotkit.account.IotKitAccountConfig;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 public class IotKitAccountImpl implements IotKitAccountConfig {
     public static final String TEST_APP_SOURCE = "zd0c383";
@@ -59,10 +51,6 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
 
     @Override
     public void login(Context context, Object params, IotKitAccountCallback callback) {
-        if (isLogin()) {
-            callback.onSuccess();
-            return;
-        }
         if (params == null) {
             Logger.e("error login params");
             callback.onFailed("need login");
@@ -83,6 +71,7 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
                         DbUtils.setXJUserId(loginModel.getUserId());
                         DbUtils.setAccessToken(loginModel.getAccessToken());
                         DbUtils.setRefreshToken(loginModel.getRefreshToken());
+                        DbUtils.setAccountPhoneNumber(loginBody.getTelphone()+"");
                         callback.onSuccess();
                     }
 
@@ -101,10 +90,9 @@ public class IotKitAccountImpl implements IotKitAccountConfig {
     @Override
     public void logout(IotKitAccountCallback iotKitAccountCallback) {
         DbUtils.clear();
-        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        MyApplication.getInstance().getApplicationContext().startActivity(intent);
-        Logger.d("重新登陆");
+//        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        MyApplication.getInstance().getApplicationContext().startActivity(intent);
         iotKitAccountCallback.onSuccess();
     }
 

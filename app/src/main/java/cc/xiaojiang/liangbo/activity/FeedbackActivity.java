@@ -11,6 +11,8 @@ import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
+import cc.xiaojiang.liangbo.model.http.FeedbackBody;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 
@@ -37,8 +39,12 @@ public class FeedbackActivity extends BaseActivity {
             ToastUtils.show("意见不能为空");
             return;
         }
-        // TODO: 2018/7/21 内容长度限制，不要返回null
-        RetrofitHelper.getService().feedback(text)
+        FeedbackBody feedbackBody = new FeedbackBody(text,null);
+        String accountPhoneNumber = DbUtils.getAccountPhoneNumber();
+        if(!TextUtils.isEmpty(accountPhoneNumber)){
+            feedbackBody.setTelphone(Long.parseLong(accountPhoneNumber));
+        }
+        RetrofitHelper.getService().feedback(feedbackBody)
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())

@@ -11,16 +11,24 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.liangbo.R;
-import cc.xiaojiang.liangbo.base.BaseActivity;
-import cc.xiaojiang.liangbo.iotkit.IotKitAccountImpl;
-import cc.xiaojiang.liangbo.model.MobThrowable;
-import cc.xiaojiang.liangbo.model.http.LoginBody;
-import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
+import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
+import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.http.LoginCarrier;
+import cc.xiaojiang.liangbo.http.LoginInterceptor;
+import cc.xiaojiang.liangbo.iotkit.IotKitAccountImpl;
+import cc.xiaojiang.liangbo.model.MobThrowable;
+import cc.xiaojiang.liangbo.model.event.LoginEvent;
+import cc.xiaojiang.liangbo.model.http.LoginBody;
+import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -125,21 +133,35 @@ public class LoginActivity extends BaseActivity {
         LoginBody loginBody = new LoginBody();
         loginBody.setTelphone(Long.parseLong(phoneNumber));
         loginBody.setVerifyCode(Integer.parseInt(verifyCode));
-        loginBody.setSource(mIotKitAccount.getAppSource());
-        loginBody.setDeveloperKey(mIotKitAccount.getDevelopKey());
-        loginBody.setDeveloperSecret(mIotKitAccount.getDevelopSecret());
         IotKitAccountManager.getInstance().login(this, loginBody, new IotKitAccountCallback() {
             @Override
             public void onSuccess() {
-                Logger.d("login success");
-                startToActivity(MainActivity.class);
-                finish();
+                LoginCarrier invoker = getIntent().getParcelableExtra(LoginInterceptor.INVOKER);
+                if (invoker != null) {
+                    invoker.invoke(LoginActivity.this);
+                }
+                //开启mqtt
+                IotKitMqttManager.getInstance().startDataService(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
+                        ToastUtils.show("登录成功");
+                        finish();
+                        Logger.e("mqtt connect success");
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        Logger.e("mqtt connect error, " + exception.getMessage());
+
+                    }
+                });
+
             }
 
             @Override
             public void onFailed(String msg) {
                 Logger.e("login failed");
-
             }
         });
     }

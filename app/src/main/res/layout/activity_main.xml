@@ -1,213 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_main">
-
-    <TextView
-        android:id="@+id/textView21"
-        style="@style/common_16_white_text"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text="主页"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/fl_bg_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/home_bg_bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </FrameLayout>
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_home_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/home_share" />
+        android:id="@+id/iv_device_air"
+        app:elevation="2dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/index_air_icon"/>
 
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/ctv_chain"
-        style="@style/homeTextStyle"
-        android:layout_marginTop="8dp"
-        android:text="区块链"
-        app:icon_src_normal="@drawable/home_block_chain"
-        app:layout_constraintEnd_toStartOf="@+id/iv_home_control"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_home_control" />
+        <cc.xiaojiang.liangbo.view.MainMenuLayout
+            android:id="@+id/view_main_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp">
 
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/ctv_map"
-        style="@style/homeTextStyle"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="  地图  "
-        app:icon_src_normal="@drawable/home_map"
-        app:layout_constraintStart_toStartOf="@+id/ctv_chain"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_chain" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_menu_horizontal"
+                android:gravity="center"
+                android:paddingEnd="24dp"
+                android:orientation="horizontal">
 
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/ctv_device"
-        style="@style/homeTextStyle"
-        android:layout_marginBottom="16dp"
-        android:text="  设备  "
-        app:icon_src_normal="@drawable/home_equipment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/iv_home_control"
-        app:layout_constraintStart_toStartOf="@+id/iv_home_control" />
+                <cc.xiaojiang.liangbo.view.CommonTextView
+                    android:id="@+id/ctv_map"
+                    style="@style/homeTextStyle"
+                    android:text="地图"
+                    android:paddingStart="36dp"
+                    android:paddingEnd="24dp"
+                    app:icon_src_normal="@drawable/home_map"/>
 
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/ctv_shop"
-        style="@style/homeTextStyle"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:text="  商城  "
-        app:icon_src_normal="@drawable/home_mall"
-        app:layout_constraintEnd_toEndOf="@+id/ctv_personal"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_personal" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"/>
 
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/ctv_personal"
-        style="@style/homeTextStyle"
-        android:layout_marginTop="8dp"
-        android:text="  个人  "
-        app:icon_src_normal="@drawable/home_personal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_home_control"
-        app:layout_constraintTop_toTopOf="@+id/iv_home_control" />
+                <cc.xiaojiang.liangbo.view.CommonTextView
+                    android:id="@+id/ctv_shop"
+                    style="@style/homeTextStyle"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="32dp"
+                    android:text="商城"
+                    app:icon_src_normal="@drawable/home_mall"/>
 
-    <ImageView
-        android:id="@+id/iv_home_control"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginBottom="28dp"
-        app:layout_constraintBottom_toTopOf="@+id/ctv_device"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/home_logo" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_home_location"
-        style="@style/common_14_white_text"
-        android:layout_marginTop="24dp"
-        android:drawablePadding="2dp"
-        android:drawableStart="@drawable/home_position"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
-        tools:text="鄞州区" />
+            <LinearLayout
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_menu_vertical"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
 
-    <TextView
-        android:id="@+id/tv_outdoor_pm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/textView27"
-        app:layout_constraintStart_toStartOf="@+id/textView27"
-        app:layout_constraintTop_toBottomOf="@+id/textView30"
-        tools:text="TextView" />
+                <cc.xiaojiang.liangbo.view.CommonTextView
+                    android:id="@+id/ctv_chain"
+                    style="@style/homeTextStyle"
+                    android:paddingTop="32dp"
+                    android:paddingBottom= "24dp"
+                    android:text="区块链"
+                    app:icon_src_normal="@drawable/home_block_chain"/>
 
-    <TextView
-        android:id="@+id/tv_outdoor_temperature"
-        style="@style/common_14_white_text"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_pm"
-        app:layout_constraintEnd_toEndOf="@+id/textView28"
-        app:layout_constraintStart_toStartOf="@+id/textView28"
-        tools:text="TextView" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"/>
 
-    <TextView
-        android:id="@+id/tv_outdoor_humidity"
-        style="@style/common_14_white_text"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_temperature"
-        app:layout_constraintEnd_toEndOf="@+id/textView29"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView" />
+                <cc.xiaojiang.liangbo.view.CommonTextView
+                    android:id="@+id/ctv_device"
+                    style="@style/homeTextStyle"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp"
+                    android:text="设备"
+                    app:icon_src_normal="@drawable/home_equipment"/>
 
-    <TextView
-        android:id="@+id/textView27"
-        style="@style/common_16_white_text"
-        android:layout_marginStart="16dp"
-        android:text="室外PM2.5"
-        app:layout_constraintEnd_toStartOf="@+id/textView28"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_outdoor_pm" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"/>
 
-    <TextView
-        android:id="@+id/textView28"
-        style="@style/common_16_white_text"
-        android:text="室外温度"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView27"
-        app:layout_constraintEnd_toStartOf="@+id/textView29"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView27" />
+                <cc.xiaojiang.liangbo.view.CommonTextView
+                    android:id="@+id/ctv_personal"
+                    style="@style/homeTextStyle"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp"
+                    android:text="个人"
+                    app:icon_src_normal="@drawable/home_personal"/>
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView29"
-        style="@style/common_16_white_text"
-        android:layout_marginEnd="16dp"
-        android:text="室外湿度"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView28" />
+            <ImageView
+                android:id="@+id/iv_main_menu"
+                app:elevation="2dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/index_liangbo_icon"/>
 
-    <TextView
-        android:id="@+id/textView30"
-        style="@style/common_14_white_text"
-        android:text="@string/main_my_air"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/convenientBanner" />
+    </cc.xiaojiang.liangbo.view.MainMenuLayout>
 
-    <com.bigkoo.convenientbanner.ConvenientBanner
-        android:id="@+id/convenientBanner"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:canLoop="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_location" />
-
-    <TextView
-        android:id="@+id/tv_weather_today"
-        style="@style/common_14_white_text"
-        android:gravity="center"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
-        app:layout_constraintEnd_toEndOf="@+id/textView27"
-        app:layout_constraintStart_toStartOf="@+id/textView27"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/tv_weather_tomorrow"
-        style="@style/common_14_white_text"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="@+id/textView28"
-        app:layout_constraintStart_toStartOf="@+id/textView28"
-        app:layout_constraintTop_toBottomOf="@+id/textView28"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/tv_weather_after_tomorrow"
-        style="@style/common_14_white_text"
-        android:gravity="center"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
-        app:layout_constraintEnd_toEndOf="@+id/textView29"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView" />
-
-
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

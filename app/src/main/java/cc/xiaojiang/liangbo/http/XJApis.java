@@ -1,7 +1,5 @@
 package cc.xiaojiang.liangbo.http;
 
-import android.util.ArrayMap;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -9,20 +7,20 @@ import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.model.http.AirRankModel;
 import cc.xiaojiang.liangbo.model.http.AqiModel;
 import cc.xiaojiang.liangbo.model.http.DynamicModel;
+import cc.xiaojiang.liangbo.model.http.FeedbackBody;
 import cc.xiaojiang.liangbo.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.model.http.LunarInfoModel;
 import cc.xiaojiang.liangbo.model.http.Pm25HistoryModel;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
+import cc.xiaojiang.liangbo.model.http.UserModifyBody;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.HEAD;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -31,9 +29,8 @@ public interface XJApis {
     @POST(HttpUrl.LOGIN)
     Observable<BaseModel<LoginModel>> login(@Body LoginBody loginBody);
 
-    @FormUrlEncoded
     @POST(HttpUrl.FEEDBACK)
-    Observable<BaseModel<Object>> feedback(@Field("view") String content);
+    Observable<BaseModel<Object>> feedback(@Body FeedbackBody feedbackBody);
 
     @POST(HttpUrl.REFRESH)
     Call<BaseModel<LoginModel>> refreshToken();
@@ -61,9 +58,8 @@ public interface XJApis {
     @GET(HttpUrl.USER_INFO)
     Observable<BaseModel<UserInfoModel>> userInfo();
 
-    @FormUrlEncoded
     @POST(HttpUrl.USER_MODIFY)
-    Observable<BaseModel<Object>> userModify(@FieldMap ArrayMap<String, Object> map);
+    Observable<BaseModel<Object>> userModify(@Body UserModifyBody userModifyBody);
 
     @GET(HttpUrl.QINIU_TOKEN)
     Observable<BaseModel<String>> qiniuToken();

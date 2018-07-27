@@ -4,21 +4,22 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.http.LoginInterceptor;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
+import cc.xiaojiang.liangbo.model.event.LoginEvent;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
 import cc.xiaojiang.liangbo.utils.ImageLoader;
 import cc.xiaojiang.liangbo.utils.RxUtils;
@@ -60,13 +61,18 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
+        if(LoginInterceptor.getLogin()){
+            getUser();
+        }else{
+            setLogoutView();
+        }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getUser();
+    private void setLogoutView() {
+        mIvPersonalCenterAvatar.setImageResource(R.drawable.not_logged_avatar);
+        mTvPersonalCenterNick.setText("未登录");
+        mTvPersonalCenterPhone.setVisibility(View.INVISIBLE);
     }
 
     private void getUser() {
@@ -87,17 +93,23 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.activity_personal_center;
     }
 
     @OnClick({R.id.ll_personal_info, R.id.ll_personal_dynamic, R.id.ll_personal_share, R.id
-            .ll_personal_air_knowledge, R.id.ll_personal_lunar, R.id.ll_personal_instructions, R
-            .id.ll_personal_feedback, R.id.ll_personal_update})
+            .ll_personal_air_knowledge, R.id.ll_personal_lunar, R.id.ll_personal_instructions,
+            R.id.ll_personal_feedback, R.id.ll_personal_update})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_personal_info:
-                startToActivity(PersonalInfoActivity.class);
+                LoginInterceptor.interceptor(this,PersonalInfoActivity.class.getSimpleName(),null);
                 break;
             case R.id.ll_personal_dynamic:
                 startToActivity(DynamicListActivity.class);
@@ -120,6 +132,15 @@ public class PersonalCenterActivity extends BaseActivity {
             case R.id.ll_personal_update:
                 startToActivity(AppUpdateActivity.class);
                 break;
+        }
+    }
+
+    @Subscribe()
+    public void onLogoutEvent(LoginEvent loginEvent){
+        if(loginEvent.getCode() == LoginEvent.CODE_LOGOUT){
+            setLogoutView();
+        }else{
+            getUser();
         }
     }
 }

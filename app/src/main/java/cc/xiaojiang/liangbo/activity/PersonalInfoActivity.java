@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.ArrayMap;
 import android.view.Menu;
@@ -34,6 +35,7 @@ import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 import com.qiniu.android.storage.UploadManager;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 
 import java.io.File;
@@ -47,6 +49,8 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
+import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cc.xiaojiang.liangbo.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
@@ -55,7 +59,9 @@ import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.model.bean.AreaJsonBean;
+import cc.xiaojiang.liangbo.model.event.LoginEvent;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
+import cc.xiaojiang.liangbo.model.http.UserModifyBody;
 import cc.xiaojiang.liangbo.utils.GetJsonDataUtil;
 import cc.xiaojiang.liangbo.utils.ImageLoader;
 import cc.xiaojiang.liangbo.utils.RxUtils;
@@ -63,8 +69,6 @@ import cc.xiaojiang.liangbo.utils.TakePhotoUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.utils.ViewUtils;
 import cc.xiaojiang.liangbo.widget.OptionPickerHelper;
-import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
-import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.schedulers.Schedulers;
 
@@ -97,6 +101,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private ArrayList<ArrayList<String>> options2Items;
     private OptionsPickerView pvCityOptions;
     private UploadManager mUploadManager;
+    private String mNickname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,7 +116,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                     @Override
                     public void onSuccess(BaseModel<UserInfoModel> userInfoModel) {
                         UserInfoModel data = userInfoModel.getData();
-                        if(data!=null){
+                        if (data != null) {
                             initUserInfo(data);
                         }
                     }
@@ -121,7 +126,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private void initUserInfo(UserInfoModel userInfo) {
         mSex = userInfo.getGender();
         ImageLoader.loadImage(this, userInfo.getImgUrl(), mCivAvatar);
-        mEtNickname.setText(userInfo.getNickname());
+        mNickname = userInfo.getNickname();
+        mEtNickname.setText(mNickname);
         mTvPhoneNumber.setText(getString(R.string.int2String, userInfo.getTelphone()));
         mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
         mTvArea.setText(userInfo.getArea());
@@ -178,13 +184,17 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
      * 用户不上传时请求
      */
     private void requestEditInfo() {
-        RetrofitHelper.getService().userModify(mUpdateMap)
+        Gson gson = new Gson();
+        UserModifyBody userModifyBody = gson.fromJson(gson.toJson(mUpdateMap), UserModifyBody
+                .class);
+        RetrofitHelper.getService().userModify(userModifyBody)
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<Object>(this) {
                     @Override
                     public void onSuccess(Object token) {
                         ToastUtils.show(R.string.personal_update_success);
+                        EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
                         finish();
                     }
                 });
@@ -275,7 +285,9 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                 IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
                     @Override
                     public void onSuccess() {
-                        ToastUtils.show("请重新登录");
+                        ToastUtils.show("退出成功");
+                        EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGOUT));
+                        finish();
                     }
 
                     @Override
@@ -458,6 +470,9 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
 
     @Override
     public void afterTextChanged(Editable s) {
-        mUpdateMap.put(Constant.KEY_NICKNAME, s.toString());
+        String value = s.toString();
+        if (!TextUtils.isEmpty(mNickname) && !mNickname.equals(value)) {
+            mUpdateMap.put(Constant.KEY_NICKNAME, value);
+        }
     }
 }

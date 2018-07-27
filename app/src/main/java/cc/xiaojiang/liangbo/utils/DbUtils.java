@@ -20,6 +20,7 @@ public class DbUtils {
     private static final String XJ_USER_ID = "xj_user_id";
     private static final String ACCESS_TOKEN = "access_token";
     private static final String REFRESH_TOKEN = "refresh_token";
+    private static final String ACCOUNT_PHONE = "account_phone";
     private static final String LOCATION_CITY = "location_city";
 
     /**
@@ -55,6 +56,20 @@ public class DbUtils {
         aSimpleCache.put(REFRESH_TOKEN, refreshToken);
     }
 
+    /**
+     * 保存用户手机号
+     * @param phoneNumber 手机号
+     */
+    public static void setAccountPhoneNumber(String phoneNumber) {
+        aSimpleCache.put(ACCOUNT_PHONE, phoneNumber);
+    }
+
+    /**
+     * 获取用户手机号
+     */
+    public static String getAccountPhoneNumber() {
+       return aSimpleCache.getAsString(ACCOUNT_PHONE);
+    }
     /**
      * 获取小匠云用户id
      */
