@@ -24,19 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
-import cc.xiaojiang.liangbo.R;
-import cc.xiaojiang.liangbo.adapter.DeviceAdapter;
-import cc.xiaojiang.liangbo.base.BaseActivity;
-import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
-import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.bean.http.DeviceNickRes;
 import cc.xiaojiang.iotkit.bean.http.DeviceUnbindRes;
 import cc.xiaojiang.iotkit.http.IotKitDeviceManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
+import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
+import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.adapter.DeviceAdapter;
+import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
+import cc.xiaojiang.liangbo.utils.ToastUtils;
 
 public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemChildClickListener, IotKitReceivedCallback, SwipeRefreshLayout.OnRefreshListener {
@@ -53,6 +53,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //开启mqtt
         IotKitMqttManager.getInstance().addDataCallback(this);
         initView();
     }
@@ -98,6 +99,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     private void getDevices() {
         mSrlRefreshDevice.setRefreshing(true);
+
         IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
             @Override
             public void onSuccess(List<Device> data) {
@@ -118,6 +120,9 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
      * 批量查询设备状态
      */
     private void queryDevices(List<Device> data) {
+        if (!IotKitMqttManager.getInstance().isConnected()) {
+            return;
+        }
         for (int i = 0; i < data.size(); i++) {
             queryDevice(data.get(i));
         }

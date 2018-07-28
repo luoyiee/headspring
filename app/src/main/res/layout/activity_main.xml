@@ -4,6 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/layout_appbar"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_main"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <ImageView
         android:id="@+id/iv_device_air"
         app:elevation="2dp"
@@ -24,14 +40,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:background="@drawable/bg_menu_horizontal"
-                android:gravity="center"
                 android:paddingEnd="24dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <cc.xiaojiang.liangbo.view.CommonTextView
                     android:id="@+id/ctv_map"
                     style="@style/homeTextStyle"
                     android:text="地图"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:paddingStart="36dp"
                     android:paddingEnd="24dp"
                     app:icon_src_normal="@drawable/home_map"/>
@@ -45,8 +64,11 @@
                     android:id="@+id/ctv_shop"
                     style="@style/homeTextStyle"
                     android:paddingStart="24dp"
+                    android:layout_height="wrap_content"
                     android:paddingEnd="32dp"
                     android:text="商城"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     app:icon_src_normal="@drawable/home_mall"/>
 
             </LinearLayout>
@@ -63,6 +85,7 @@
                     android:id="@+id/ctv_chain"
                     style="@style/homeTextStyle"
                     android:paddingTop="32dp"
+                    android:layout_width="match_parent"
                     android:paddingBottom= "24dp"
                     android:text="区块链"
                     app:icon_src_normal="@drawable/home_block_chain"/>
@@ -75,6 +98,7 @@
                 <cc.xiaojiang.liangbo.view.CommonTextView
                     android:id="@+id/ctv_device"
                     style="@style/homeTextStyle"
+                    android:layout_width="match_parent"
                     android:paddingTop="24dp"
                     android:paddingBottom="24dp"
                     android:text="设备"
@@ -88,6 +112,7 @@
                 <cc.xiaojiang.liangbo.view.CommonTextView
                     android:id="@+id/ctv_personal"
                     style="@style/homeTextStyle"
+                    android:layout_width="match_parent"
                     android:paddingTop="24dp"
                     android:paddingBottom="24dp"
                     android:text="个人"

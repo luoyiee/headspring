@@ -47,6 +47,6 @@ public class LoginInterceptor {
 
     //使用方法  LoginInterceptor.interceptor(getActivity(), ".device.MainEditActivity",null);
     public static void interceptor(Context ctx, String target, Bundle bundle) {
-        interceptor(ctx, ctx.getPackageName()+".activity." + target, bundle, null);
+        interceptor(ctx, target, bundle, null);
     }
 }

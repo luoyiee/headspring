@@ -29,7 +29,7 @@ public class HomeIndoorPmHolder extends Holder<String> {
     @Override
     public void updateUI(String data) {
         mTextView.setText(new SpanUtils()
-                .append(data).setFontSize(48, true)
+                .append(data).setFontSize(52, true)
                 .append("ug/m").setFontSize(18, true).append("3").setSuperscript().setFontSize
                         (16, true)
                 .create());

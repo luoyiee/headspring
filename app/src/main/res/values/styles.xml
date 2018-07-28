@@ -61,9 +61,9 @@
     <style name="homeTextStyle" parent="common_14_white_text">
         <item name="android:textSize">10sp</item>
         <item name="icon_direction">top</item>
+        <item name="android:gravity">center</item>
         <item name="icon_width">18dp</item>
         <item name="icon_height">18dp</item>
-        <item name="corner_radius">100dp</item>
     </style>
 
     <style name="shareTextStyle" parent="common_14_black_text">

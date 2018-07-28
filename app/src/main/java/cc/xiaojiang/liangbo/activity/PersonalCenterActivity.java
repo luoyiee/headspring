@@ -109,7 +109,7 @@ public class PersonalCenterActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_personal_info:
-                LoginInterceptor.interceptor(this,PersonalInfoActivity.class.getSimpleName(),null);
+                LoginInterceptor.interceptor(this,PersonalInfoActivity.class.getName(),null);
                 break;
             case R.id.ll_personal_dynamic:
                 startToActivity(DynamicListActivity.class);

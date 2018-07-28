@@ -152,6 +152,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        //todo 处理mqtt启动失败后的情况
                         Logger.e("mqtt connect error, " + exception.getMessage());
 
                     }
