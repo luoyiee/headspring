@@ -1,6 +1,8 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -8,9 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -22,11 +28,14 @@ import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.model.http.AirRankModel;
-import cc.xiaojiang.liangbo.utils.DbUtils;
+import cc.xiaojiang.liangbo.utils.LocationClient;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class AirMapRankListActivity extends BaseActivity implements TabLayout
         .OnTabSelectedListener {
     private static final String TYPE_DAY = "day";
@@ -45,14 +54,18 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private String[] rankTitles = {"日排行", "周排行", "月排行"};
+    private LocationClient mLocationClient;
     private RankAdapter mRankAdapter;
     private SparseArray<List<AirRankModel>> mBufferRankArray = new SparseArray<>(TYPES.length);
+    private String mCity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initTabLayout();
         initView();
+        mLocationClient = new LocationClient();
+        AirMapRankListActivityPermissionsDispatcher.locationWithPermissionCheck(this);
     }
 
     @Override
@@ -79,16 +92,36 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
         mRankAdapter = new RankAdapter(R.layout.item_rank, null);
         mRvRankCity.setLayoutManager(new LinearLayoutManager(this));
         mRvRankCity.setAdapter(mRankAdapter);
-        getRankList(0);
     }
 
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+            .ACCESS_COARSE_LOCATION})
+    void location() {
+        mLocationClient.initClient(this);
+        mLocationClient.startLocation(aMapLocation -> {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    Logger.d(aMapLocation.toString());
+                    //定位成功回调信息，设置相关消息
+                    //街道信息
+                    mCity = aMapLocation.getCity();
+                    getRankList(0);
+                } else {
+                    //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
     private void getRankList(int tabPosition) {
-        String city = DbUtils.getLocationCity();
-        if (TextUtils.isEmpty(city)) {
-            ToastUtils.show("请同意我们的定位权限");
+        if (TextUtils.isEmpty(mCity)) {
+            ToastUtils.show("获取位置信息失败");
             return;
         }
-        RetrofitHelper.getService().airRankList(city, TYPES[tabPosition])
+        RetrofitHelper.getService().airRankList(mCity, TYPES[tabPosition])
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())
@@ -101,11 +134,25 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
                 });
     }
 
+    @Override
+    protected void onDestroy() {
+        mLocationClient.stopLocation();
+        mLocationClient.onDestroy();
+        super.onDestroy();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_share_dark, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        AirMapRankListActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
+                grantResults);
     }
 
     @Override

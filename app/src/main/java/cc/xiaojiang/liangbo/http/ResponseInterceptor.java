@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.http;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -17,11 +18,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
+import cc.xiaojiang.liangbo.activity.LoginActivity;
+import cc.xiaojiang.liangbo.base.MyApplication;
 import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.SignUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -43,7 +51,7 @@ public class ResponseInterceptor implements Interceptor {
 
         String url = request.url().toString();
         if (url.contains(HttpUrl.USER_INFO) || url.contains(HttpUrl.USER_MODIFY) ||
-                url.contains(HttpUrl.QINIU_TOKEN)) {
+                url.contains(HttpUrl.QINIU_TOKEN) || url.contains(HttpUrl.PM25_HISTORY)) {
             String accessToken = DbUtils.getAccessToken();
             request = request.newBuilder()
                     .header(ACCESS_TOKEN, accessToken)
@@ -52,6 +60,7 @@ public class ResponseInterceptor implements Interceptor {
             request = request.newBuilder()
                     .header(REFRESH_TOKEN, DbUtils.getRefreshToken())
                     .build();
+            return chain.proceed(request);
         } else {
             request = addHeaderSign(request);
         }
@@ -76,10 +85,20 @@ public class ResponseInterceptor implements Interceptor {
                     //重新发起请求，此时是新的token
                     return chain.proceed(newRequest);
                 } else {
-                    IotKitAccountManager.getInstance().logout(null);
+                    IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
+                        @Override
+                        public void onCompleted(boolean isSucceed, String msg) {
+                            logout();
+                        }
+                    });
                 }
             } else {
-                IotKitAccountManager.getInstance().logout(null);
+                IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
+                    @Override
+                    public void onCompleted(boolean isSucceed, String msg) {
+                        logout();
+                    }
+                });
             }
         }
         return response;
@@ -137,5 +156,22 @@ public class ResponseInterceptor implements Interceptor {
                 .header(SIGN, sign)
                 .build();
         return request;
+    }
+
+    @NonNull
+    private Disposable logout() {
+        return Observable.just("").
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        DbUtils.clear();
+                        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity
+                                .class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent
+                                .FLAG_ACTIVITY_NEW_TASK);
+                        MyApplication.getInstance().getApplicationContext().startActivity(intent);
+                    }
+                });
     }
 }

@@ -130,8 +130,7 @@ public class KZZActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
         IotKitMqttManager.getInstance().addDataCallback(this);
-        IotKitMqttManager.getInstance().queryStatus(mDevice.getProductKey(), mDevice
-                .getDeviceId(), null);
+        IotKitMqttManager.getInstance().queryStatus(mDevice, null);
     }
 
     @Override

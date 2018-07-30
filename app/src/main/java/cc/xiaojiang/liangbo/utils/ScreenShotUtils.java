@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,23 +33,32 @@ public class ScreenShotUtils {
      * @return Bitmap
      */
     public static Bitmap screenShot(Activity activity) {
+       return screenShot(activity,  ScreenUtils.dip2px(activity, 180));
+    }
+
+    /**
+     * 获取当前屏幕截图，不包含状态栏（Status Bar）。
+     *
+     * @param activity activity
+     * @return Bitmap
+     */
+    public static Bitmap screenShot(Activity activity,int height) {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();
         int statusBarHeight = getStatusBarHeight(activity);
 
-
-        int width = ScreenUtils.getScreenWidth(activity);
-        int height = ScreenUtils.getScreenHeight(activity);
+        int screenWidth = ScreenUtils.getScreenWidth(activity);
+        int screenHeight = ScreenUtils.getScreenHeight(activity);
         int toolBarHeight = getToolBarHeight(activity);
         Bitmap ret = Bitmap.createBitmap(bmp, 0, statusBarHeight + toolBarHeight * 7/ 10,
-                width,
-                height - statusBarHeight - toolBarHeight * 7/ 10 - ScreenUtils.dip2px(activity,
-                        180));
+                screenWidth,
+                screenHeight - statusBarHeight - toolBarHeight * 7/ 10 - height);
         view.destroyDrawingCache();
         return ret;
     }
+
 
     public static int getStatusBarHeight(Context context) {
         int height = 0;
@@ -72,27 +80,20 @@ public class ScreenShotUtils {
     }
 
 
-    //把布局变成Bitmap
-    public static Bitmap getViewBitmap(View view) {
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();  //启用DrawingCache并创建位图
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
-        view.setDrawingCacheEnabled(false);
-        return bitmap;//禁用DrawingCahce否则会影响性能
+//    //把布局变成Bitmap
+//    public static Bitmap getViewBitmap(View view) {
+//        view.setDrawingCacheEnabled(true);
+//        view.buildDrawingCache();  //启用DrawingCache并创建位图
+//        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
+//        view.setDrawingCacheEnabled(false);
+//        return bitmap;//禁用DrawingCahce否则会影响性能
+//    }
+//
+    public static Bitmap getViewBitmap(View view){
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        canvas.setBitmap(null);
+        return bitmap;
     }
-
-    public static  Bitmap loadBitmapFromView(View v) {
-        int w = v.getWidth();
-        int h = v.getHeight();
-        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmp);
-
-        c.drawColor(Color.WHITE);
-        /** 如果不设置canvas画布为白色，则生成透明 */
-
-        v.layout(0, 0, w, h);
-        v.draw(c);
-        return bmp;
-    }
-
 }

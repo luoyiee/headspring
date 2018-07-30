@@ -19,11 +19,20 @@ public class DynamicModel {
 
     private String id;
     private String cover;
+    private String content;
     private String title;
     private String author;
     private int comment;
     private int like;
     private String url;
+
+    public String getContent() {
+        return content == null ? "" : content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public void setId(String id) {
         this.id = id;

@@ -306,8 +306,8 @@ public class WaveProgressView extends View {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "mPercent = " + mPercent + "; mPrePercent = " + mPrePercent);
         }
-        if (mPrePercent == 0.0f || Math.abs(mPercent - mPrePercent) >= 0.01f) {
-            mPercentValue = String.format(Locale.getDefault(), "%d", (int)(mPercent * 100));
+        if (mPrePercent == 0.0f || Math.abs(mPercent - mPrePercent) >= 0.001f) {
+            mPercentValue = String.format(Locale.getDefault(), "%02d", (int)(mPercent * 100f));
             mPrePercent = mPercent;
         }
         Logger.e("mPrePercent:" + mPercentValue);

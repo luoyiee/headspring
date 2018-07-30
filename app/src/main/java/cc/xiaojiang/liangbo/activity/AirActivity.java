@@ -1,6 +1,7 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.Manifest;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
@@ -45,9 +46,9 @@ import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
 import cc.xiaojiang.liangbo.model.event.LoginEvent;
+import cc.xiaojiang.liangbo.model.event.ShareBitmapEvent;
 import cc.xiaojiang.liangbo.model.http.HomeWeatherAirModel;
 import cc.xiaojiang.liangbo.utils.AccountUtils;
-import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.LocationClient;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
@@ -63,7 +64,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     private static final String UNIT_PM25 = "ug/m";
     private static final String UNIT_TEMPERATURE = "°C";
     private static final String UNIT_HUMIDITY = "%";
-    private static final String DEFAULT_DATA = "-/-";
+    public static final String DEFAULT_DATA = "-/-";
     @BindView(R.id.tv_outdoor_pm)
     TextView mTvOutdoorPm;
     @BindView(R.id.tv_outdoor_temperature)
@@ -86,7 +87,6 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     Group mGroupHaveDevice;
     @BindView(R.id.group_no_device)
     Group mGroupNoDevice;
-
     private LocationClient mLocationClient;
     private ArrayList<String> mIndoorPmList = new ArrayList<>();
     private CBViewHolderCreator mHolderCreator;
@@ -104,6 +104,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
             setAddDeviceViewVisibility(true);
         }
         EventBus.getDefault().register(this);
+        mLocationClient = new LocationClient();
         AirActivityPermissionsDispatcher.locationWithPermissionCheck(this);
         initView();
     }
@@ -122,7 +123,9 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_share) {
-            ScreenShotUtils.share(this);
+            Bitmap bitmap = ScreenShotUtils.screenShot(this,0);
+            EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
+            startToActivity(ShareAirActivity.class);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -152,6 +155,13 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
                 if (mDeviceSize == 0) {
                     setAddDeviceViewVisibility(true);
                     return;
+                }
+                if (mDeviceSize > 1) {
+                    mConvenientBanner.setPageIndicator(new int[]{R.drawable.dot_default_indicator,
+                            R.drawable.dot_select_indicator});
+                }
+                for (Device datum : data) {
+                    mIndoorMap.put(datum.getDeviceId(), "");
                 }
                 mCtvSelectDeviceName.setText(getDeviceName(data.get(0)));
                 setAddDeviceViewVisibility(false);
@@ -223,8 +233,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
      * 查询单个设备状态
      */
     public void queryDevice(Device device) {
-        IotKitMqttManager.getInstance().queryStatus(device.getProductKey(),
-                device.getDeviceId(), new IotKitActionCallback() {
+        IotKitMqttManager.getInstance().queryStatus(device, new IotKitActionCallback() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
@@ -258,7 +267,6 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
             .ACCESS_COARSE_LOCATION})
     void location() {
-        mLocationClient = new LocationClient();
         mLocationClient.initClient(this);
         mLocationClient.startLocation(aMapLocation -> {
             if (aMapLocation != null) {
@@ -268,7 +276,6 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
                     String district = aMapLocation.getDistrict();//城区信息
                     String street = aMapLocation.getStreet();//街道信息
                     String city = aMapLocation.getCity();//街道信息
-                    DbUtils.setLocationCity(city);
                     mTvHomeLocation.setText(district + street);
                     requestWeatherAirData(aMapLocation.getCity());
                 } else {
@@ -361,7 +368,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     }
 
     @Override
-    public void messageArrived(String deviceId, String productKey, String data) {
+    public synchronized void messageArrived(String deviceId, String productKey, String data) {
         BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
         BaseDataModel.ParamsBean paramsBean = model.getParams();
         if (paramsBean == null || paramsBean.getPM205() == null || paramsBean.getOnlineStatus
@@ -376,15 +383,18 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         } else {
             mIndoorMap.put(deviceId, DEFAULT_DATA);
         }
-        if (mIndoorMap.size() == mDeviceSize) {
+        if (mIndoorMap.size() == mDeviceSize && mDeviceSize>0) {
             mIndoorPmList.clear();
             // 遍历 ArrayMap
             mIndoorPmList.addAll(mIndoorMap.values());
-            if (mDeviceSize > 1) {
+            int currentItem = mConvenientBanner.getCurrentItem();
+            mConvenientBanner.notifyDataSetChanged();
+            mConvenientBanner.setCurrentItem(currentItem, false);
+            mConvenientBanner.setFirstItemPos(currentItem);
+            if(mIndoorMap.size()>1){
                 mConvenientBanner.setPageIndicator(new int[]{R.drawable.dot_default_indicator,
                         R.drawable.dot_select_indicator});
             }
-            mConvenientBanner.setPages(mHolderCreator, mIndoorPmList);
         }
     }
 
@@ -405,7 +415,9 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     @Override
     public void onPageSelected(int index) {
         final Device device = mDeviceList.get(index);
-        mCtvSelectDeviceName.setText(getDeviceName(device));
+        if(mCtvSelectDeviceName!=null){
+            mCtvSelectDeviceName.setText(getDeviceName(device));
+        }
     }
 
     private String getDeviceName(Device device){

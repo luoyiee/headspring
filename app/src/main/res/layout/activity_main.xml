@@ -23,8 +23,8 @@
     <ImageView
         android:id="@+id/iv_device_air"
         app:elevation="2dp"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
         android:src="@drawable/index_air_icon"/>
@@ -122,8 +122,8 @@
             <ImageView
                 android:id="@+id/iv_main_menu"
                 app:elevation="2dp"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_margin="16dp"
                 android:src="@drawable/index_liangbo_icon"/>
 

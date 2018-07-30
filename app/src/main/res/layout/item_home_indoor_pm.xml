@@ -21,7 +21,7 @@
         tools:text="TextView"/>
 
     <TextView
-        android:id="@+id/textView32"
+        android:id="@+id/tv_air_quality"
         style="@style/common_14_white_text"
         android:background="@drawable/home_btn_excellent"
         android:gravity="center"

@@ -5,7 +5,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,11 +27,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonalCenterActivity extends BaseActivity {
 
-
     @BindView(R.id.ll_personal_info)
     LinearLayout mLlPersonalInfo;
-    @BindView(R.id.ll_personal_dynamic)
-    RelativeLayout mLlPersonalDynamic;
     @BindView(R.id.ll_personal_share)
     LinearLayout mLlPersonalShare;
     @BindView(R.id.ll_personal_air_knowledge)
@@ -70,7 +66,7 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     private void setLogoutView() {
-        mIvPersonalCenterAvatar.setImageResource(R.drawable.not_logged_avatar);
+        ImageLoader.loadImage(this,R.drawable.not_logged_avatar,mIvPersonalCenterAvatar);
         mTvPersonalCenterNick.setText("未登录");
         mTvPersonalCenterPhone.setVisibility(View.INVISIBLE);
     }
@@ -84,6 +80,7 @@ public class PersonalCenterActivity extends BaseActivity {
                     public void onSuccess(BaseModel<UserInfoModel> userInfoModel) {
                         UserInfoModel data = userInfoModel.getData();
                         if (data != null) {
+                            mTvPersonalCenterPhone.setVisibility(View.VISIBLE);
                             mTvPersonalCenterNick.setText(data.getNickname());
                             mTvPersonalCenterPhone.setText(String.valueOf(data.getTelphone()));
                             ImageLoader.loadImage(PersonalCenterActivity.this,data.getImgUrl(),mIvPersonalCenterAvatar);
@@ -103,16 +100,13 @@ public class PersonalCenterActivity extends BaseActivity {
         return R.layout.activity_personal_center;
     }
 
-    @OnClick({R.id.ll_personal_info, R.id.ll_personal_dynamic, R.id.ll_personal_share, R.id
+    @OnClick({R.id.ll_personal_info, R.id.ll_personal_share, R.id
             .ll_personal_air_knowledge, R.id.ll_personal_lunar, R.id.ll_personal_instructions,
             R.id.ll_personal_feedback, R.id.ll_personal_update})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_personal_info:
                 LoginInterceptor.interceptor(this,PersonalInfoActivity.class.getName(),null);
-                break;
-            case R.id.ll_personal_dynamic:
-                startToActivity(DynamicListActivity.class);
                 break;
             case R.id.ll_personal_share:
                 ToastUtils.show("共享服务");
@@ -135,7 +129,7 @@ public class PersonalCenterActivity extends BaseActivity {
         }
     }
 
-    @Subscribe()
+    @Subscribe
     public void onLogoutEvent(LoginEvent loginEvent){
         if(loginEvent.getCode() == LoginEvent.CODE_LOGOUT){
             setLogoutView();

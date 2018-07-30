@@ -62,6 +62,7 @@ import cc.xiaojiang.liangbo.model.bean.AreaJsonBean;
 import cc.xiaojiang.liangbo.model.event.LoginEvent;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
 import cc.xiaojiang.liangbo.model.http.UserModifyBody;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.GetJsonDataUtil;
 import cc.xiaojiang.liangbo.utils.ImageLoader;
 import cc.xiaojiang.liangbo.utils.RxUtils;
@@ -284,15 +285,11 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
             case R.id.btn_log_out:
                 IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
                     @Override
-                    public void onSuccess() {
+                    public void onCompleted(boolean isSucceed, String msg) {
+                        DbUtils.clear();
                         ToastUtils.show("退出成功");
                         EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGOUT));
                         finish();
-                    }
-
-                    @Override
-                    public void onFailed(String msg) {
-
                     }
                 });
                 break;

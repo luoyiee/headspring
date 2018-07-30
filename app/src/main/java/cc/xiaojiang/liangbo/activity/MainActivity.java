@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +20,8 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
+import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.adapter.DynamicAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
@@ -50,6 +53,7 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        mTvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         initRecycleView();
     }
 
@@ -167,5 +171,16 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                 }
             }
         }, 2000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
+            @Override
+            public void onCompleted(boolean isSucceed, String msg) {
+
+            }
+        });
     }
 }

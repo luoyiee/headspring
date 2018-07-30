@@ -30,7 +30,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     protected final String TAG = this.getClass().getSimpleName();
     private Unbinder unBinder;
-    private TextView mTvTitle;
+    protected TextView mTvTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

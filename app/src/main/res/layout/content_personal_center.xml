@@ -59,44 +59,6 @@
 
         <include layout="@layout/layout_divider_block" />
 
-        <RelativeLayout
-            android:id="@+id/ll_personal_dynamic"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_block_height"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <ImageView
-                android:id="@+id/iv_icon_dynamic"
-                android:layout_width="@dimen/personal_center_icon"
-                android:layout_height="@dimen/personal_center_icon"
-                android:src="@drawable/ic_personal_dynamic" />
-
-            <TextView
-                android:id="@+id/tv_dynamic_key"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toEndOf="@id/iv_icon_dynamic"
-                android:text="量波动态" />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="18dp"
-                android:layout_toEndOf="@id/tv_dynamic_key"
-                android:src="@drawable/ic_personal_new" />
-
-            <ImageView
-                android:layout_width="@dimen/personal_center_icon"
-                android:layout_height="@dimen/personal_center_icon"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_item_next" />
-
-        </RelativeLayout>
-
-        <include layout="@layout/layout_divider_line" />
-
         <LinearLayout
             android:id="@+id/ll_personal_share"
             android:layout_width="match_parent"

@@ -155,6 +155,10 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".activity.AirActivity">
         </activity>
+        <activity android:name=".activity.ShareHistoryDataActivity">
+        </activity>
+        <activity android:name=".activity.ShareAirActivity">
+        </activity>
     </application>
 
 </manifest>

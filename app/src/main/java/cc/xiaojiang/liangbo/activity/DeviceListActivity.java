@@ -49,7 +49,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     private List<Device> mDevices;
     private AlertDialog mAlertDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,8 +131,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
      * 查询单个设备状态
      */
     public void queryDevice(Device device) {
-        IotKitMqttManager.getInstance().queryStatus(device.getProductKey(),
-                device.getDeviceId(), new IotKitActionCallback() {
+        IotKitMqttManager.getInstance().queryStatus(device, new IotKitActionCallback() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
