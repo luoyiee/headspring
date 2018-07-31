@@ -201,6 +201,8 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
             return;
         }
         mLineChart.setData(lineData);
+        //todo 默认选中哪一个值
+//        mLineChart.highlightValue(5,0,true);
         mLineChart.getXAxis().setValueFormatter(iAxisValueFormatter);
         mLineChart.animateX(1000);
         mLineChart.invalidate();

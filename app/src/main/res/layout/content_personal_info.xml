@@ -21,7 +21,7 @@
             android:id="@+id/civ_avatar"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            tools:background="@mipmap/ic_launcher" />
+            android:src="@drawable/not_login_avatar" />
 
         <TextView
             style="@style/personal_info_right_text"

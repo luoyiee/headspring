@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+                                             android:background="@color/colorAccent"
     tools:context="cc.xiaojiang.liangbo.activity.KZZActivity">
 
     <android.support.v7.widget.Toolbar
@@ -43,27 +44,31 @@
         app:layout_constraintWidth_percent="0.65">
 
         <TextView
+            android:id="@+id/tv_air_purifier_wifi"
             style="@style/control_status_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="无线"
+            android:visibility="gone"
             android:textColor="@color/status_label" />
 
         <ImageView
             android:id="@+id/ic_air_purifier_wifi"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:visibility="gone"
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_air_purifier_wifi_off" />
 
 
         <View
-            android:id="@+id/view5"
+            android:id="@+id/view_air_purifier_wifi"
             android:layout_width="1dp"
             android:layout_height="20dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
+            android:visibility="gone"
             android:layout_marginTop="8dp"
             android:background="@color/status_label" />
 
@@ -74,8 +79,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/air_purifier_view1_timing"
-            android:textColor="@color/status_label"
-            android:visibility="gone" />
+            android:textColor="@color/status_label"/>
 
         <TextView
             android:id="@+id/tv_view1_timing"
@@ -83,16 +87,14 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="00:00"
-            android:visibility="gone" />
+            android:text="00:00"/>
 
         <View
             android:id="@+id/view_status_divider"
             android:layout_width="1dp"
             android:layout_height="20dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/status_label"
-            android:visibility="gone" />
+            android:background="@color/status_label"/>
 
         <TextView
             android:id="@+id/textView33"

@@ -4,17 +4,10 @@ import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
-import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountConfig2;
 import cc.xiaojiang.liangbo.base.MyApplication;
-import cc.xiaojiang.liangbo.http.HttpResultFunc;
-import cc.xiaojiang.liangbo.http.RetrofitHelper;
-import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
-import cc.xiaojiang.liangbo.model.http.LoginBody;
-import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.utils.AccountUtils;
 import cc.xiaojiang.liangbo.utils.DbUtils;
-import cc.xiaojiang.liangbo.utils.RxUtils;
 
 public class IotKitAccountImpl implements IotKitAccountConfig2 {
     public static final String TEST_APP_SOURCE = "zd0c383";
@@ -44,28 +37,6 @@ public class IotKitAccountImpl implements IotKitAccountConfig2 {
         } else {
             return APP_SOURCE;
         }
-    }
-
-    public void login(Context context,Object params, IotKitAccountCallback callback) {
-        if (params == null) {
-            Logger.e("error login params");
-            callback.onCompleted(false, "need login");
-            return;
-        }
-        LoginBody loginBody = (LoginBody) params;
-        RetrofitHelper.getService().login(loginBody)
-                .map(new HttpResultFunc<>())
-                .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<LoginModel>(context) {
-                    @Override
-                    public void onSuccess(LoginModel loginModel) {
-                        DbUtils.setXJUserId(loginModel.getUserId());
-                        DbUtils.setAccessToken(loginModel.getAccessToken());
-                        DbUtils.setRefreshToken(loginModel.getRefreshToken());
-                        DbUtils.setAccountPhoneNumber(loginBody.getTelphone() + "");
-                        callback.onCompleted(true, "success");
-                    }
-                });
     }
 
     @Override

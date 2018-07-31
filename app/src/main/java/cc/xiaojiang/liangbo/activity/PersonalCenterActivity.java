@@ -1,8 +1,10 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,24 +68,29 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     private void setLogoutView() {
-        ImageLoader.loadImage(this,R.drawable.not_logged_avatar,mIvPersonalCenterAvatar);
+        ImageLoader.loadImage(this,R.drawable.not_login_avatar,mIvPersonalCenterAvatar);
         mTvPersonalCenterNick.setText("未登录");
         mTvPersonalCenterPhone.setVisibility(View.INVISIBLE);
     }
 
+    @SuppressLint("CheckResult")
     private void getUser() {
         RetrofitHelper.getService().userInfo()
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())
                 .subscribe(new ProgressObserver<BaseModel<UserInfoModel>>(this) {
                     @Override
-                    public void onSuccess(BaseModel<UserInfoModel> userInfoModel) {
-                        UserInfoModel data = userInfoModel.getData();
+                    public void onSuccess(BaseModel<UserInfoModel> userInfoModelBaseModel) {
+                        UserInfoModel data = userInfoModelBaseModel.getData();
                         if (data != null) {
                             mTvPersonalCenterPhone.setVisibility(View.VISIBLE);
                             mTvPersonalCenterNick.setText(data.getNickname());
                             mTvPersonalCenterPhone.setText(String.valueOf(data.getTelphone()));
-                            ImageLoader.loadImage(PersonalCenterActivity.this,data.getImgUrl(),mIvPersonalCenterAvatar);
+                            if(TextUtils.isEmpty(data.getImgUrl())){
+                                ImageLoader.loadImage(PersonalCenterActivity.this,R.drawable.not_login_avatar,mIvPersonalCenterAvatar);
+                            }else{
+                                ImageLoader.loadImage(PersonalCenterActivity.this,data.getImgUrl(),mIvPersonalCenterAvatar);
+                            }
                         }
                     }
                 });

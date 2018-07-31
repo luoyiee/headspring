@@ -3,23 +3,27 @@ package cc.xiaojiang.liangbo.utils;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.activity.HistoryDataActivity;
+import cc.xiaojiang.liangbo.base.MyApplication;
 import cc.xiaojiang.liangbo.model.http.Pm25HistoryModel;
 
 /**
@@ -91,13 +95,14 @@ public class MPChartUtils {
         xAxis.setGranularity(1f);
 
         YAxis yAxis = mChart.getAxisLeft();
-        yAxis.setEnabled(false);
+        yAxis.setEnabled(true);
         //设置x轴的最大值
 //        yAxis.setAxisMaximum(yMax);
         // 设置y轴的最大值
         yAxis.setAxisMinimum(0);
         // 不显示y轴
         yAxis.setDrawAxisLine(false);
+        yAxis.setDrawLabels(false);
         // 设置y轴数据的位置
         yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         // 不从y轴发出横向直线
@@ -108,6 +113,14 @@ public class MPChartUtils {
         yAxis.setTextColor(mChart.getResources().getColor(R.color.char_text_color));
         // 设置y轴文字的大小
         yAxis.setTextSize(12);
+
+        LimitLine excellentLine = createLimitLine(35f,"优",R.color.air_1);
+        LimitLine goodLine = createLimitLine(75f,"良",R.color.air_2);
+        LimitLine badLine = createLimitLine(110f,"差",R.color.air_4);
+
+        yAxis.addLimitLine(excellentLine);
+        yAxis.addLimitLine(goodLine);
+        yAxis.addLimitLine(badLine);
         // 设置y轴数据偏移量
         //yAxis.setXOffset(30);
         // yAxis.setYOffset(-3);
@@ -133,6 +146,17 @@ public class MPChartUtils {
         // x轴执行动画
 //        mChart.animateX(1500);
 
+    }
+
+    @NonNull
+    private static LimitLine createLimitLine(float value, String label, @ColorRes int colorId) {
+        LimitLine ll = new LimitLine(value, label);
+        ll.setLineWidth(1f);
+        ll.setLineColor(ContextCompat.getColor(MyApplication.getInstance(),colorId));
+        ll.enableDashedLine(10f, 10f, 0f);
+        ll.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll.setTextSize(10f);
+        return ll;
     }
 
 

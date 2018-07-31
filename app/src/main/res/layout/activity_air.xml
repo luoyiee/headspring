@@ -83,9 +83,9 @@
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="H,2:1"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         app:canLoop="false"
+        app:layout_constraintDimensionRatio="H,2:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +95,7 @@
         android:id="@+id/iv_add_device"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/air_address_add"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -149,9 +150,9 @@
 
     <android.support.constraint.Group
         android:id="@+id/group_have_device"
-        android:visibility="invisible"
         app:constraint_referenced_ids="convenientBanner,ctv_select_device_name"
         android:layout_width="wrap_content"
+        android:visibility="invisible"
         android:layout_height="wrap_content"/>
 
     <TextView

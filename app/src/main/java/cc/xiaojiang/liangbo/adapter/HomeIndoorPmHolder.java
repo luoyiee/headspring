@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class HomeIndoorPmHolder extends Holder<String> {
                 .append("ug/m").setFontSize(18, true).append("3").setSuperscript().setFontSize
                         (16, true)
                 .create());
-        if(AirActivity.DEFAULT_DATA.equals(data)){
+        if(TextUtils.isEmpty(data) || AirActivity.DEFAULT_DATA.equals(data)){
             mTvAirQuality.setVisibility(View.INVISIBLE);
         }else{
             mTvAirQuality.setVisibility(View.VISIBLE);

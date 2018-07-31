@@ -1,5 +1,7 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -19,12 +21,17 @@ import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.LoginCarrier;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
-import cc.xiaojiang.liangbo.iotkit.IotKitAccountImpl;
+import cc.xiaojiang.liangbo.http.RetrofitHelper;
+import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.model.MobThrowable;
 import cc.xiaojiang.liangbo.model.event.LoginEvent;
 import cc.xiaojiang.liangbo.model.http.LoginBody;
+import cc.xiaojiang.liangbo.model.http.LoginModel;
+import cc.xiaojiang.liangbo.utils.DbUtils;
+import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -39,7 +46,6 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.et_verify_code)
     EditText mEtVerifyCode;
 
-    private IotKitAccountImpl mIotKitAccount=new IotKitAccountImpl();
     private CountDownTimer mCountDownTimer;
     private EventHandler mEventHandler = new EventHandler() {
         @Override
@@ -67,7 +73,13 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SMSSDK.registerEventHandler(mEventHandler);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+            SMSSDK.registerEventHandler(mEventHandler);
         initCounterTimer();
     }
 
@@ -130,29 +142,33 @@ public class LoginActivity extends BaseActivity {
         LoginBody loginBody = new LoginBody();
         loginBody.setTelphone(Long.parseLong(phoneNumber));
         loginBody.setVerifyCode(Integer.parseInt(verifyCode));
-        IotKitAccountImpl iotKitAccount = new IotKitAccountImpl();
-        iotKitAccount.login(this,loginBody, new IotKitAccountCallback() {
-            @Override
-            public void onCompleted(boolean isSucceed, String msg) {
-                if(isSucceed){
-                    IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
-                        @Override
-                        public void onCompleted(boolean isSucceed, String msg) {
-                            LoginCarrier invoker = getIntent().getParcelableExtra(LoginInterceptor.INVOKER);
-                            if (invoker != null) {
-                                invoker.invoke(LoginActivity.this);
-                                EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
-                            }else{
-                                startToActivity(MainActivity.class);
-                            }
+        RetrofitHelper.getService().login(loginBody)
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new ProgressObserver<LoginModel>(this) {
+                    @Override
+                    public void onSuccess(LoginModel loginModel) {
+                        DbUtils.setXJUserId(loginModel.getUserId());
+                        DbUtils.setAccessToken(loginModel.getAccessToken());
+                        DbUtils.setRefreshToken(loginModel.getRefreshToken());
+                        DbUtils.setAccountPhoneNumber(loginBody.getTelphone() + "");
+                        IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
+                            @Override
+                            public void onCompleted(boolean isSucceed, String msg) {
+                                LoginCarrier invoker = getIntent().getParcelableExtra(LoginInterceptor.INVOKER);
+                                if (invoker != null) {
+                                    invoker.invoke(LoginActivity.this);
+                                    EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
+                                }else{
+                                    startToActivity(MainActivity.class);
+                                }
 
-                            ToastUtils.show("登录成功");
-                            finish();
-                        }
-                    });
-                }
-            }
-        });
+                                ToastUtils.show("登录成功");
+                                finish();
+                            }
+                        });
+                    }
+                });
     }
 
     @Override

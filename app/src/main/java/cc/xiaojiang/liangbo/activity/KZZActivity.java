@@ -81,6 +81,8 @@ public class KZZActivity extends BaseActivity implements
     ImageView mIvAirPurifierView4Minus;
     @BindView(R.id.iv_air_purifier_view4_plus)
     ImageView mIvAirPurifierView4Plus;
+    @BindView(R.id.tv_air_purifier_wifi)
+    TextView mTvAirPurifierWifi;
     @BindView(R.id.group2)
     Group mGroup2;
     @BindView(R.id.ic_air_purifier_wifi)
@@ -95,7 +97,8 @@ public class KZZActivity extends BaseActivity implements
     TextView mTvView1TimingLabel;
     @BindView(R.id.view_status_divider)
     View mViewStatusDivider;
-
+    @BindView(R.id.view_air_purifier_wifi)
+    View mViewAirPurifierWifi;
     private Device mDevice;
 
     private int mControlGear;
@@ -122,118 +125,8 @@ public class KZZActivity extends BaseActivity implements
     }
 
     @Override
-    public void onStart(int gear) {
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IotKitMqttManager.getInstance().addDataCallback(this);
-        IotKitMqttManager.getInstance().queryStatus(mDevice, null);
-    }
-
-    @Override
-    protected void onPause() {
-        IotKitMqttManager.getInstance().removeDataCallback(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onStop(int gear) {
-        sendGear(gear);
-    }
-
-    private void initGuidePage() {
-        HighlightOptions options = new HighlightOptions.Builder()
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mTvSwitch.callOnClick();
-                    }
-                })
-                .build();
-        GuidePage page = GuidePage.newInstance().addHighLightWithOptions(mTvSwitch, options);
-        mGuidePage = NewbieGuide.with(this)
-                .setLabel("guide1")
-                .alwaysShow(true)
-                .addGuidePage(page
-                        .setEverywhereCancelable(false)
-                        .addHighLight(mTvSwitch)
-                        .setLayoutRes(R.layout.view_guide)).build();
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.activity_kzz;
-    }
-
-    private void initView() {
-        getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
-                .color.air_purifier_background_off));
-        mViewAirPurifierGear.setOnSeekBarChangeListener(this);
-        mAP1TimingDialog = new AP1TimingDialog();
-        mAP1TimingDialog.setOnTimeSelectedListener(this);
-
-    }
-
-    private void initData() {
-        mDevice = getIntent().getParcelableExtra("device_data");
-        if (mDevice == null) {
-            ToastUtils.show("内部错误！");
-            finish();
-        }
-        setTitle(IotKitUtils.getDeviceName(mDevice));
-        if (ProductKey.KZZ.equals(mDevice.getProductKey())) {
-            mTvView1TimingLabel.setVisibility(View.VISIBLE);
-            mTvAirPurifierView1Timing.setVisibility(View.VISIBLE);
-            mViewStatusDivider.setVisibility(View.VISIBLE);
-            mGroup2.setVisibility(View.VISIBLE);
-            mViewAirPurifierGear.setGearCount(6);
-        } else if (ProductKey.LB.equals(mDevice.getProductKey())) {
-            mViewAirPurifierGear.setGearCount(4);
-        } else {
-            ToastUtils.show("暂不支持该设备！");
-        }
-    }
-
-    @OnClick({R.id.tv_lb_mode, R.id.tv_switch, R.id.tv_timing, R.id
-            .iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-
-            case R.id.tv_lb_mode:
-                mControlMode = mControlMode == 0 ? 1 : 0;
-                HashMap<String, String> hashMap1 = new HashMap<>();
-                hashMap1.put("ControlMode", String.valueOf(mControlMode));
-                sendCmd(hashMap1);
-                break;
-            case R.id.tv_switch:
-                HashMap<String, String> hashMap2 = new HashMap<>();
-                hashMap2.put("Switch", String.valueOf(mSwitch == 0 ? 1 : 0));
-                sendCmd(hashMap2);
-                break;
-            case R.id.tv_timing:
-                mAP1TimingDialog.show(getSupportFragmentManager(), "");
-                break;
-            case R.id.iv_air_purifier_view4_minus:
-                if (mControlGear > 0 && mControlGear <= 5) {
-                    sendGear(mControlGear - 1);
-                }
-                break;
-            case R.id.iv_air_purifier_view4_plus:
-                if (mControlGear >= 0 && mControlGear < 5) {
-                    sendGear(mControlGear + 1);
-                }
-                break;
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_more, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -270,10 +163,67 @@ public class KZZActivity extends BaseActivity implements
                 .getContentView().getMeasuredWidth(), 0);
     }
 
+    private void initData() {
+        mDevice = getIntent().getParcelableExtra("device_data");
+        if (mDevice == null) {
+            ToastUtils.show("内部错误！");
+            finish();
+        }
+        setTitle(IotKitUtils.getDeviceName(mDevice));
+        if (ProductKey.KZZ.equals(mDevice.getProductKey())) {
+            mIcAirPurifierWifi.setVisibility(View.VISIBLE);
+            mTvAirPurifierWifi.setVisibility(View.VISIBLE);
+            mViewAirPurifierWifi.setVisibility(View.VISIBLE);
+            mGroup2.setVisibility(View.VISIBLE);
+            mViewAirPurifierGear.setGearCount(6);
+        } else if (ProductKey.LB.equals(mDevice.getProductKey())) {
+            mViewAirPurifierGear.setGearCount(4);
+        } else {
+            ToastUtils.show("暂不支持该设备！");
+        }
+    }
+
+    private void initView() {
+        getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
+                .color.air_purifier_background_off));
+        mViewAirPurifierGear.setOnSeekBarChangeListener(this);
+        mAP1TimingDialog = new AP1TimingDialog();
+        mAP1TimingDialog.setOnTimeSelectedListener(this);
+
+    }
+
+    private void initGuidePage() {
+        HighlightOptions options = new HighlightOptions.Builder()
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mTvSwitch.callOnClick();
+                    }
+                })
+                .build();
+        GuidePage page = GuidePage.newInstance().addHighLightWithOptions(mTvSwitch, options);
+        mGuidePage = NewbieGuide.with(this)
+                .setLabel("guide1")
+                .alwaysShow(true)
+                .addGuidePage(page
+                        .setEverywhereCancelable(false)
+                        .addHighLight(mTvSwitch)
+                        .setLayoutRes(R.layout.view_guide)).build();
+    }
+
+    @Override
+    public void onStart(int gear) {
+
+    }
 
     @Override
     public void onChange(int gear) {
 
+    }
+
+    @Override
+    public void onStop(int gear) {
+        sendGear(gear);
     }
 
     private void sendGear(int gear) {
@@ -294,6 +244,57 @@ public class KZZActivity extends BaseActivity implements
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IotKitMqttManager.getInstance().addDataCallback(this);
+        IotKitMqttManager.getInstance().queryStatus(mDevice, null);
+    }
+
+    @Override
+    protected void onPause() {
+        IotKitMqttManager.getInstance().removeDataCallback(this);
+        super.onPause();
+    }
+
+    @OnClick({R.id.tv_lb_mode, R.id.tv_switch, R.id.tv_timing, R.id
+            .iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+
+            case R.id.tv_lb_mode:
+                mControlMode = mControlMode == 0 ? 1 : 0;
+                HashMap<String, String> hashMap1 = new HashMap<>();
+                hashMap1.put("ControlMode", String.valueOf(mControlMode));
+                sendCmd(hashMap1);
+                break;
+            case R.id.tv_switch:
+                HashMap<String, String> hashMap2 = new HashMap<>();
+                hashMap2.put("Switch", String.valueOf(mSwitch == 0 ? 1 : 0));
+                sendCmd(hashMap2);
+                break;
+            case R.id.tv_timing:
+                mAP1TimingDialog.show(getSupportFragmentManager(), "");
+                break;
+            case R.id.iv_air_purifier_view4_minus:
+                if (mControlGear > 0 && mControlGear <= 5) {
+                    sendGear(mControlGear - 1);
+                }
+                break;
+            case R.id.iv_air_purifier_view4_plus:
+                if (mControlGear >= 0 && mControlGear < 5) {
+                    sendGear(mControlGear + 1);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_more, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -357,60 +358,6 @@ public class KZZActivity extends BaseActivity implements
         }
     }
 
-    private void refreshHumidity() {
-        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
-    }
-
-    private void refreshTemperature() {
-        mTvAirPurifierView3Temp.setText(mTemperature + "°C");
-    }
-
-    private void refreshPm25() {
-        mViewAirPurifierPm25.setValue(mPM205);
-    }
-
-    private void refreshFilter() {
-        int percent = (int) (100f * (2000 - mUseTime) / 2000);
-        mTvStatusFilter.setText(String.format("%02d", percent) + "%");
-        if (mUseTime >= 2000) {
-            showChangeFilter();
-        }
-    }
-
-    private void refreshShutDown() {
-        mTvAirPurifierView1Timing.setText(getFormatTime(mShutdownRemainingTime));
-        if (mShutdownRemainingTime == 0) {
-            mTvTiming.setIconNormal(getResources().getDrawable(R.drawable
-                    .ic_air_purifier_timing_off));
-        } else {
-            mTvTiming.setIconNormal(getResources().getDrawable(R.drawable
-                    .ic_air_purifier_timing_on));
-        }
-    }
-
-    public String getFormatTime(int timingShutdown) {
-        String hour = String.format("%02d", timingShutdown / 60);
-        String minute = String.format("%02d", timingShutdown % 60);
-        return hour + ":" + minute;
-    }
-
-
-    private void refreshGear() {
-        mViewAirPurifierGear.setGear(mControlGear);
-    }
-
-    private void refreshMode() {
-        if (mControlMode == 0) {
-            mTvAuto.setText("自动");
-            mTvAuto.setIconNormal(getResources().getDrawable(R.drawable.ic_air_purifier_mode_auto));
-        } else {
-            mTvAuto.setText("手动");
-            mTvAuto.setIconNormal(getResources().getDrawable(R.drawable
-                    .ic_air_purifier_mode_manual));
-        }
-    }
-
-
     private void refreshSwitch() {
         if (mSwitch == 0) {
             mTvSwitch.setText("关机");
@@ -431,6 +378,40 @@ public class KZZActivity extends BaseActivity implements
         }
     }
 
+    private void refreshMode() {
+        if (mControlMode == 0) {
+            mTvAuto.setText("自动");
+            mTvAuto.setIconNormal(getResources().getDrawable(R.drawable.ic_air_purifier_mode_auto));
+        } else {
+            mTvAuto.setText("手动");
+            mTvAuto.setIconNormal(getResources().getDrawable(R.drawable
+                    .ic_air_purifier_mode_manual));
+        }
+    }
+
+    private void refreshGear() {
+        mViewAirPurifierGear.setGear(mControlGear);
+    }
+
+    private void refreshShutDown() {
+        mTvAirPurifierView1Timing.setText(getFormatTime(mShutdownRemainingTime));
+        if (mShutdownRemainingTime == 0) {
+            mTvTiming.setIconNormal(getResources().getDrawable(R.drawable
+                    .ic_air_purifier_timing_off));
+        } else {
+            mTvTiming.setIconNormal(getResources().getDrawable(R.drawable
+                    .ic_air_purifier_timing_on));
+        }
+    }
+
+    private void refreshFilter() {
+        int percent = (int) (100f * (2000 - mUseTime) / 2000);
+        mTvStatusFilter.setText(String.format("%02d", percent) + "%");
+        if (mUseTime >= 2000) {
+            showChangeFilter();
+        }
+    }
+
     private void refreshBackground() {
         String rate = AP1Utils.getRate(this, mPM205);
         if (mSwitch == 1) {
@@ -448,6 +429,24 @@ public class KZZActivity extends BaseActivity implements
             getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color
                     .air_purifier_background_off));
         }
+    }
+
+    private void refreshPm25() {
+        mViewAirPurifierPm25.setValue(mPM205);
+    }
+
+    private void refreshTemperature() {
+        mTvAirPurifierView3Temp.setText(mTemperature + "°C");
+    }
+
+    private void refreshHumidity() {
+        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
+    }
+
+    public String getFormatTime(int timingShutdown) {
+        String hour = String.format("%02d", timingShutdown / 60);
+        String minute = String.format("%02d", timingShutdown % 60);
+        return hour + ":" + minute;
     }
 
     private void showChangeFilter() {

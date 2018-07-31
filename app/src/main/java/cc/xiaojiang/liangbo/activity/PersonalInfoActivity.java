@@ -102,7 +102,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private ArrayList<ArrayList<String>> options2Items;
     private OptionsPickerView pvCityOptions;
     private UploadManager mUploadManager;
-    private String mNickname;
+    private String mNickname = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,11 +126,20 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
 
     private void initUserInfo(UserInfoModel userInfo) {
         mSex = userInfo.getGender();
-        ImageLoader.loadImage(this, userInfo.getImgUrl(), mCivAvatar);
+
+        if(TextUtils.isEmpty(userInfo.getImgUrl())){
+            ImageLoader.loadImage(this,R.drawable.not_login_avatar,mCivAvatar);
+        }else{
+            ImageLoader.loadImage(this,userInfo.getImgUrl(),mCivAvatar);
+        }
         mNickname = userInfo.getNickname();
         mEtNickname.setText(mNickname);
         mTvPhoneNumber.setText(getString(R.string.int2String, userInfo.getTelphone()));
-        mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
+        if("".equals(mSex)){
+            mTvSex.setText(mSex);
+        }else{
+            mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
+        }
         mTvArea.setText(userInfo.getArea());
         if ((userInfo.getBirthday() == 0)) {
             mTvBirthday.setText("请选择");
@@ -195,8 +204,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                     @Override
                     public void onSuccess(Object token) {
                         ToastUtils.show(R.string.personal_update_success);
-                        EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
                         finish();
+                        EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
                     }
                 });
     }
@@ -468,7 +477,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     @Override
     public void afterTextChanged(Editable s) {
         String value = s.toString();
-        if (!TextUtils.isEmpty(mNickname) && !mNickname.equals(value)) {
+        if (!value.equals(mNickname)) {
             mUpdateMap.put(Constant.KEY_NICKNAME, value);
         }
     }
