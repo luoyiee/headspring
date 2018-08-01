@@ -39,7 +39,7 @@
     <color name="device_status_online">@color/primary_blue</color>
     <color name="device_status_offline">#E5E7E6</color>
 
-    <color name="air_purifier_background_excellent">#23c787</color>
+    <color name="air_purifier_background_excellent">#83d8b8</color>
     <color name="air_purifier_background_good">#f7b042</color>
     <color name="air_purifier_background_poor">#ef664a</color>
     <color name="air_purifier_background_off">#7e7e7e</color>

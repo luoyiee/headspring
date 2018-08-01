@@ -166,8 +166,7 @@ public class ResponseInterceptor implements Interceptor {
                     @Override
                     public void accept(String s) throws Exception {
                         DbUtils.clear();
-                        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity
-                                .class);
+                        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent
                                 .FLAG_ACTIVITY_NEW_TASK);
                         MyApplication.getInstance().getApplicationContext().startActivity(intent);

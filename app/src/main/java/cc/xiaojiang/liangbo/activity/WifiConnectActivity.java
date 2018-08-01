@@ -6,14 +6,14 @@ import android.os.CountDownTimer;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
+import cc.xiaojiang.iotkit.wifi.WifiSetupCallback;
 import cc.xiaojiang.iotkit.wifi.WifiSetupInfo;
 import cc.xiaojiang.liangbo.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
-import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
-import cc.xiaojiang.iotkit.wifi.WifiSetupCallback;
 
 public class WifiConnectActivity extends BaseActivity {
 

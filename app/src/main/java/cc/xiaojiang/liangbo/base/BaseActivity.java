@@ -17,7 +17,6 @@ import java.util.Objects;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cc.xiaojiang.liangbo.R;
-import cc.xiaojiang.liangbo.utils.AppManager;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
 
 
@@ -39,7 +38,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ScreenUtils.setCustomDensity(this);
         setContentView(getLayoutId());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        AppManager.getInstance().addActivity(this);
+//        AppManager.getInstance().addActivity(this);
         //  ButterKnife注解注入
         unBinder = ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -64,7 +63,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             unBinder.unbind();
             unBinder = null;
         }
-        AppManager.getInstance().finishActivity(this);
+//        AppManager.getInstance().finishActivity(this);
     }
 
     @Override

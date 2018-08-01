@@ -5,13 +5,10 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
-import cc.xiaojiang.liangbo.BuildConfig;
-import cc.xiaojiang.liangbo.iotkit.IotKitAccountImpl;
 import cc.xiaojiang.iotkit.IotKit;
+import cc.xiaojiang.liangbo.iotkit.IotKitAccountImpl;
 
 public class MyApplication extends Application {
     private static Application instance;

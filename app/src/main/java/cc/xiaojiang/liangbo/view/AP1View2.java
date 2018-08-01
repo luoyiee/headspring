@@ -146,11 +146,11 @@ public class AP1View2 extends View {
         canvas.save();
         canvas.rotate(-90);
         mRectF = new RectF(-mAnnulusRadius, -mAnnulusRadius, mAnnulusRadius, mAnnulusRadius);
-        canvas.drawArc(mRectF, 0, mAngle, false, mForeAnnulusPaint);
+        canvas.drawArc(mRectF, 0, 360-mAngle, false, mForeAnnulusPaint);
         /**
          * draw circle indicator
          */
-        canvas.rotate(mAngle);
+        canvas.rotate(360-mAngle);
         canvas.drawPoint(mAnnulusRadius, 0, mIndicatorPaint);
         canvas.restore();
     }

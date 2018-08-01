@@ -25,7 +25,6 @@ public class AppUpdateActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTvAppVersion.setText(getString(R.string.update_version_name, BuildConfig.VERSION_NAME));
-
         String appVersionName = Beta.appVersionName;
         if (TextUtils.isEmpty(appVersionName)) {
             mItemUpdate.setItemValue(getString(R.string.update_version_name, BuildConfig
