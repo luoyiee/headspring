@@ -127,17 +127,17 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private void initUserInfo(UserInfoModel userInfo) {
         mSex = userInfo.getGender();
 
-        if(TextUtils.isEmpty(userInfo.getImgUrl())){
-            ImageLoader.loadImage(this,R.drawable.not_login_avatar,mCivAvatar);
-        }else{
-            ImageLoader.loadImage(this,userInfo.getImgUrl(),mCivAvatar);
+        if (TextUtils.isEmpty(userInfo.getImgUrl())) {
+            ImageLoader.loadImage(this, R.drawable.not_login_avatar, mCivAvatar);
+        } else {
+            ImageLoader.loadImage(this, userInfo.getImgUrl(), mCivAvatar);
         }
         mNickname = userInfo.getNickname();
         mEtNickname.setText(mNickname);
         mTvPhoneNumber.setText(getString(R.string.int2String, userInfo.getTelphone()));
-        if("".equals(mSex)){
+        if ("".equals(mSex)) {
             mTvSex.setText(mSex);
-        }else{
+        } else {
             mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
         }
         mTvArea.setText(userInfo.getArea());
