@@ -21,7 +21,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        IotKit.init(this, new IotKitAccountImpl(), true);
+        IotKit.init(this, new IotKitAccountImpl(), false);
 //        if(!BuildConfig.DEBUG){
         Bugly.init(getApplicationContext(), "be4413cd77", false);
 //        Beta.autoCheckUpgrade = true;

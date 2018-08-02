@@ -13,9 +13,9 @@ public class IotKitAccountImpl implements IotKitAccountConfig2 {
     public static final String TEST_APP_SOURCE = "zd0c383";
     public static final String TEST_DEVELOP_KEY = "6cda7fee67ebbc8e545dd6e7da150c98";
     public static final String TEST_DEVELOP_SECRET = "3465690c0ba5d4597632e121bc61764f";
-    public static final String APP_SOURCE = "i8d53";
-    public static final String DEVELOP_KEY = "2b23ae32e90589b554611f19b3de923d";
-    public static final String DEVELOP_SECRET = "20f3eceb81a7ecb559dd093bf0480c13";
+    public static final String APP_SOURCE = "s42254d5";
+    public static final String DEVELOP_KEY = "296ad5b67f91480e3ae9e64ff68626d5";
+    public static final String DEVELOP_SECRET = "8dba5889f5a231492dec5824413b224b";
 
     public boolean isDebug = true;
 

@@ -11,12 +11,11 @@
         android:id="@+id/frameLayout5"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#25B7AA"
+        android:background="@color/primary_blue"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </FrameLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -99,13 +98,13 @@
 
     <ImageView
         android:id="@+id/imageView13"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78"
+        app:layout_constraintVertical_bias="0.72"
         app:srcCompat="@drawable/login_logo"/>
 
 </android.support.constraint.ConstraintLayout>
