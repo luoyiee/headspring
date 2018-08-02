@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
 
     @NeedsPermission({Manifest.permission.CAMERA})
     void startToScanCodeActivity() {
-        Intent intent = new Intent(this, ScanCodeActivity.class);
+        Intent intent = new Intent(this, CaptureActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
