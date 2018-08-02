@@ -79,7 +79,7 @@ public class LoginActivity extends BaseActivity {
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-            SMSSDK.registerEventHandler(mEventHandler);
+        SMSSDK.registerEventHandler(mEventHandler);
         initCounterTimer();
     }
 
@@ -155,11 +155,13 @@ public class LoginActivity extends BaseActivity {
                         IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
                             @Override
                             public void onCompleted(boolean isSucceed, String msg) {
-                                LoginCarrier invoker = getIntent().getParcelableExtra(LoginInterceptor.INVOKER);
+                                LoginCarrier invoker = getIntent().getParcelableExtra
+                                        (LoginInterceptor.INVOKER);
                                 if (invoker != null) {
                                     invoker.invoke(LoginActivity.this);
-                                    EventBus.getDefault().post(new LoginEvent(LoginEvent.CODE_LOGIN));
-                                }else{
+                                    EventBus.getDefault().post(new LoginEvent(LoginEvent
+                                            .CODE_LOGIN));
+                                } else {
                                     startToActivity(MainActivity.class);
                                 }
 

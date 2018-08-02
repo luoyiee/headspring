@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         app:icon_direction="top"
         app:icon_height="72dp"
-        app:icon_src_normal="@drawable/ic_logo"
+        app:icon_src_normal="@mipmap/ic_launcher"
         app:icon_width="72dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"

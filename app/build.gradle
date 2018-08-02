@@ -91,12 +91,12 @@ dependencies {
     implementation('com.github.hotchemi:permissionsdispatcher:3.3.1') {
         exclude module: "support-v13"
     }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"
     implementation 'com.bigkoo:ConvenientBanner:2.1.4'//地址变ConvenientBanner 大写了，额。。。
     //引导
     implementation 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
     implementation 'com.qiniu:qiniu-android-sdk:7.3.10'
     implementation 'org.greenrobot:eventbus:3.1.1'
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
     implementation 'com.tencent.sonic:sdk:3.0.0'
     implementation 'com.haibin:calendarview:3.3.6'

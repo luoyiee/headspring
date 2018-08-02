@@ -30,7 +30,7 @@ public class AppUpdateActivity extends BaseActivity {
             mItemUpdate.setItemValue(getString(R.string.update_version_name, BuildConfig
                     .VERSION_NAME));
         } else {
-            mItemUpdate.setItemValue(getString(R.string.update_version_name, appVersionName));
+            mItemUpdate.setItemValue(appVersionName);
         }
     }
 
