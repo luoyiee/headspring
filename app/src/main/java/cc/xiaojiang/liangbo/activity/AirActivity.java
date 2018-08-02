@@ -206,7 +206,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_device:
-                LoginInterceptor.interceptor(this, DeviceListActivity.class.getName(), null);
+                LoginInterceptor.interceptor(this, ProductListActivity.class.getName(), null);
                 break;
             default:
                 break;

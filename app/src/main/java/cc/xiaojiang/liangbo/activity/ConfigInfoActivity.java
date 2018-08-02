@@ -12,6 +12,7 @@ import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;
 import cc.xiaojiang.liangbo.utils.NetworkUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
@@ -43,10 +44,12 @@ public class ConfigInfoActivity extends BaseActivity {
     }
 
     private void showInfo(String productKey) {
-        if ("jbb600".equals(productKey)) {
+        if (ProductKey.LB.equals(productKey)) {
             mTvConfigInfo.setText(getString(R.string.wifi_config_explain_lb));
-        } else {
+        } else if (ProductKey.KZZ.equals(productKey)) {
             mTvConfigInfo.setText(getString(R.string.wifi_config_explain_kzz));
+        } else {
+            mTvConfigInfo.setText("无效的设备");
         }
     }
 

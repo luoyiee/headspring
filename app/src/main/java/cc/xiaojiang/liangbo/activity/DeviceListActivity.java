@@ -36,6 +36,7 @@ import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.adapter.DeviceAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
+import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 
 public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
@@ -132,18 +133,18 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
      */
     public void queryDevice(Device device) {
         IotKitMqttManager.getInstance().queryStatus(device, new IotKitActionCallback() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
 
-                    }
+            }
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable
-                            exception) {
-                        Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
-                    }
-                });
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable
+                    exception) {
+                Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
+            }
+        });
     }
 
     @Override
@@ -153,7 +154,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     }
 
     private void hideRefreshing() {
-        if (mSrlRefreshDevice.isRefreshing()) {
+        if (mSrlRefreshDevice != null && mSrlRefreshDevice.isRefreshing()) {
             mSrlRefreshDevice.setRefreshing(false);
         }
     }
@@ -164,7 +165,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_device_content:
-                if ("jbb600".equals(device.getProductKey()) || "bff503".equals(device
+                if (ProductKey.KZZ.equals(device.getProductKey()) || ProductKey.LB.equals(device
                         .getProductKey())) {
                     intent = new Intent(this, KZZActivity.class);
                 } else {

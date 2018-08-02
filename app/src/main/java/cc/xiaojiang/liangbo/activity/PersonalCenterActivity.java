@@ -1,6 +1,7 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
@@ -60,15 +61,15 @@ public class PersonalCenterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if(LoginInterceptor.getLogin()){
+        if (LoginInterceptor.getLogin()) {
             getUser();
-        }else{
+        } else {
             setLogoutView();
         }
     }
 
     private void setLogoutView() {
-        ImageLoader.loadImage(this,R.drawable.not_login_avatar,mIvPersonalCenterAvatar);
+        ImageLoader.loadImage(this, R.drawable.not_login_avatar, mIvPersonalCenterAvatar);
         mTvPersonalCenterNick.setText("未登录");
         mTvPersonalCenterPhone.setVisibility(View.INVISIBLE);
     }
@@ -86,10 +87,12 @@ public class PersonalCenterActivity extends BaseActivity {
                             mTvPersonalCenterPhone.setVisibility(View.VISIBLE);
                             mTvPersonalCenterNick.setText(data.getNickname());
                             mTvPersonalCenterPhone.setText(String.valueOf(data.getTelphone()));
-                            if(TextUtils.isEmpty(data.getImgUrl())){
-                                ImageLoader.loadImage(PersonalCenterActivity.this,R.drawable.not_login_avatar,mIvPersonalCenterAvatar);
-                            }else{
-                                ImageLoader.loadImage(PersonalCenterActivity.this,data.getImgUrl(),mIvPersonalCenterAvatar);
+                            if (TextUtils.isEmpty(data.getImgUrl())) {
+                                ImageLoader.loadImage(PersonalCenterActivity.this, R.drawable
+                                        .not_login_avatar, mIvPersonalCenterAvatar);
+                            } else {
+                                ImageLoader.loadImage(PersonalCenterActivity.this, data.getImgUrl
+                                        (), mIvPersonalCenterAvatar);
                             }
                         }
                     }
@@ -113,10 +116,13 @@ public class PersonalCenterActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_personal_info:
-                LoginInterceptor.interceptor(this,PersonalInfoActivity.class.getName(),null);
+                LoginInterceptor.interceptor(this, PersonalInfoActivity.class.getName(), null);
                 break;
             case R.id.ll_personal_share:
-                ToastUtils.show("共享服务");
+                Intent intent = new Intent(this, BrowserActivity.class);
+                intent.putExtra("dynamic_title", "量波管理后台");
+                intent.putExtra("dynamic_url", "http://t.liangbo.xjiangiot.com/#/login");
+                startActivity(intent);
                 break;
             case R.id.ll_personal_air_knowledge:
                 startToActivity(AirKnowledgeActivity.class);
@@ -137,10 +143,10 @@ public class PersonalCenterActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onLogoutEvent(LoginEvent loginEvent){
-        if(loginEvent.getCode() == LoginEvent.CODE_LOGOUT){
+    public void onLogoutEvent(LoginEvent loginEvent) {
+        if (loginEvent.getCode() == LoginEvent.CODE_LOGOUT) {
             setLogoutView();
-        }else{
+        } else {
             getUser();
         }
     }

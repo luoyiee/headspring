@@ -38,9 +38,11 @@ public class BrowserActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String url = getIntent().getStringExtra("dynamic_url");
+        String title = getIntent().getStringExtra("dynamic_title");
+        setTitle(title);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         // init sonic engine if necessary, or maybe u can do this when application created
-        BrowserActivityPermissionsDispatcher.createSonicWithPermissionCheck(this,url);
+        BrowserActivityPermissionsDispatcher.createSonicWithPermissionCheck(this, url);
         super.onCreate(savedInstanceState);
 
         mWebView.setWebViewClient(new WebViewClient() {
@@ -55,14 +57,16 @@ public class BrowserActivity extends BaseActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 if (sonicSession != null) {
-                    return (WebResourceResponse) sonicSession.getSessionClient().requestResource(url);
+                    return (WebResourceResponse) sonicSession.getSessionClient().requestResource
+                            (url);
                 }
                 return null;
             }
 
             @TargetApi(21)
             @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest
+                    request) {
                 return shouldInterceptRequest(view, request.getUrl().toString());
             }
         });
@@ -84,7 +88,7 @@ public class BrowserActivity extends BaseActivity {
         if (mSonicSessionClient != null) {
             mSonicSessionClient.bindWebView(mWebView);
             mSonicSessionClient.clientReady();
-        }else{
+        } else {
             mWebView.loadUrl(url);
         }
     }
@@ -96,10 +100,13 @@ public class BrowserActivity extends BaseActivity {
         BrowserActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
                 grantResults);
     }
-    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE})
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission
+            .READ_EXTERNAL_STORAGE})
     void createSonic(String url) {
         if (!SonicEngine.isGetInstanceAllowed()) {
-            SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig.Builder().build());
+            SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig
+                    .Builder().build());
         }
 
         mSonicSessionClient = null;
