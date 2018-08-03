@@ -18,7 +18,7 @@ public class ImageLoader {
      * 使用glide加载图片
      */
     public static void loadImage(Context context, String url, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 //                .applyDefaultRequestOptions(new RequestOptions().centerCrop())
                 .load(url)
                 .into(imageView);
@@ -29,26 +29,26 @@ public class ImageLoader {
      * 使用glide加载图片
      */
     public static void loadImageCenterCrop(Context context, File file, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(file)
                 .centerCrop()
                 .into(imageView);
     }
 
     public static void loadImage(Context context, int resId, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(resId)
                 .into(imageView);
     }
 
     public static void loadImage(Context context, File file, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(file)
                 .into(imageView);
     }
 
     public static void loadImageNoMemory(Context context, String url, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(url)
                 .skipMemoryCache(true)
                 .centerCrop()

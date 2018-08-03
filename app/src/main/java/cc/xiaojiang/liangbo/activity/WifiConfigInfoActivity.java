@@ -3,6 +3,7 @@ package cc.xiaojiang.liangbo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -14,17 +15,19 @@ import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;
+import cc.xiaojiang.liangbo.utils.GlideApp;
 import cc.xiaojiang.liangbo.utils.NetworkUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 
-public class ConfigInfoActivity extends BaseActivity {
+public class WifiConfigInfoActivity extends BaseActivity {
 
     @BindView(R.id.btn_config_info_next)
     Button mBtnConfigInfoNext;
     @BindView(R.id.tv_config_info)
     CommonTextView mTvConfigInfo;
-
+    @BindView(R.id.iv_wifi_reset_guide)
+    ImageView mIvWifiResetGuide;
     private String mProductKey;
 
     @Override
@@ -43,7 +46,20 @@ public class ConfigInfoActivity extends BaseActivity {
 
     }
 
+    private void initVideo(String url) {
+        GlideApp.with(this).load(R.drawable.ic_wifi_setup_guide)
+                .skipMemoryCache(true)
+                .centerCrop().into(mIvWifiResetGuide);
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityCollector.removeActivity(this);
+        super.onDestroy();
+    }
+
     private void showInfo(String productKey) {
+        String url = "";
         if (ProductKey.LB.equals(productKey)) {
             mTvConfigInfo.setText(getString(R.string.wifi_config_explain_lb));
         } else if (ProductKey.KZZ.equals(productKey)) {
@@ -51,12 +67,7 @@ public class ConfigInfoActivity extends BaseActivity {
         } else {
             mTvConfigInfo.setText("无效的设备");
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        ActivityCollector.removeActivity(this);
-        super.onDestroy();
+        initVideo(url);
     }
 
     private void getProductInfo(String productKey) {

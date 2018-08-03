@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 11
-        versionName "1.0.0-beta14"
+        versionCode 12
+        versionName "1.0.0-beta15"
         //修改Android8.0图标显示bug
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -85,6 +85,8 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:3.2.7'
     //图片选择,裁剪
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.amap.api:3dmap:latest.integration'
     implementation 'com.amap.api:location:latest.integration'

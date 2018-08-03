@@ -127,7 +127,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     }
 
     public void startToConfigInfoActivity(String productKey) {
-        Intent intent = new Intent(this, ConfigInfoActivity.class);
+        Intent intent = new Intent(this, WifiConfigInfoActivity.class);
         intent.putExtra("product_key", productKey);
         startActivity(intent);
     }

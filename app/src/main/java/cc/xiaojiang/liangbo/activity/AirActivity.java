@@ -310,8 +310,8 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
 
     private void setAirView(HomeWeatherAirModel homeWeatherAirModel) {
         setAirView(mTvOutdoorPm, homeWeatherAirModel.getPm25() + "", UNIT_PM25);
-        setAirView(mTvOutdoorTemperature, homeWeatherAirModel.getOutTemp() + "", UNIT_TEMPERATURE);
-        setAirView(mTvOutdoorHumidity, homeWeatherAirModel.getOutHumidity() + "", UNIT_HUMIDITY);
+        setAirView(mTvOutdoorTemperature, homeWeatherAirModel.getTemperature() + "", UNIT_TEMPERATURE);
+        setAirView(mTvOutdoorHumidity, homeWeatherAirModel.getHumidity() + "", UNIT_HUMIDITY);
     }
 
     private void setWeather(List<HomeWeatherAirModel.NextWeatherBean> nextWeatherBeans) {
@@ -340,7 +340,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         textView.setText(new SpanUtils()
                 .appendLine("" + qianWei + baiWei + "/" + shiWei + geWei)
                 .appendLine().setLineHeight(space)
-                .appendImage(WeatherIcon.ICONS[weatherBean.getCode()])
+                .appendImage(WeatherIcon.ICONS[weatherBean.getCodeDay()])
                 .appendLine()
                 .appendLine().setLineHeight(space)
                 .appendLine(weatherBean.getLowTemp() + "-" + weatherBean.getHighTemp() + "°C")

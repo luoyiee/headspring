@@ -62,7 +62,7 @@
             android:label="@string/title_activity_device_choose"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.ConfigInfoActivity"
+            android:name=".activity.WifiConfigInfoActivity"
             android:label="@string/title_activity_config_info"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
