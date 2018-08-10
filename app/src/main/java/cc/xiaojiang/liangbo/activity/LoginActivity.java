@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,11 +31,14 @@ import cc.xiaojiang.liangbo.model.MobThrowable;
 import cc.xiaojiang.liangbo.model.event.LoginEvent;
 import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
+import cc.xiaojiang.liangbo.model.http.UserInfoModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 //todo:回复
 public class LoginActivity extends BaseActivity {
@@ -46,6 +50,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.et_verify_code)
     EditText mEtVerifyCode;
 
+    private ProgressDialog mProgressDialog;
     private CountDownTimer mCountDownTimer;
     private EventHandler mEventHandler = new EventHandler() {
         @Override
@@ -145,13 +150,61 @@ public class LoginActivity extends BaseActivity {
         RetrofitHelper.getService().login(loginBody)
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
-                .subscribe(new ProgressObserver<LoginModel>(this) {
+                .subscribe(new Observer<LoginModel>() {
                     @Override
-                    public void onSuccess(LoginModel loginModel) {
+                    public void onSubscribe(Disposable d) {
+                        showDialog();
+                    }
+
+                    @Override
+                    public void onNext(LoginModel loginModel) {
                         DbUtils.setXJUserId(loginModel.getUserId());
                         DbUtils.setAccessToken(loginModel.getAccessToken());
                         DbUtils.setRefreshToken(loginModel.getRefreshToken());
                         DbUtils.setAccountPhoneNumber(loginBody.getTelphone() + "");
+                        getUserInfo();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(e.getMessage());
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                });
+    }
+
+    private void showDialog() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("请稍等...");
+        mProgressDialog.setCancelable(false);
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+
+    }
+
+    private void getUserInfo() {
+        RetrofitHelper.getService().userInfo()
+                .map(new HttpResultFunc<>())
+                .compose(RxUtils.rxSchedulerHelper())
+                .subscribe(new Observer<UserInfoModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserInfoModel userInfoModel) {
+                        DbUtils.setUserId(String.valueOf(userInfoModel.getTelphone()));
                         IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
                             @Override
                             public void onCompleted(boolean isSucceed, String msg) {
@@ -164,11 +217,22 @@ public class LoginActivity extends BaseActivity {
                                 } else {
                                     startToActivity(MainActivity.class);
                                 }
-
+                                hideDialog();
                                 ToastUtils.show("登录成功");
                                 finish();
                             }
                         });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(e.getMessage());
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

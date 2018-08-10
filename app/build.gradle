@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 12
-        versionName "1.0.0-beta15"
+        versionCode 13
+        versionName "1.0.0-beta16"
         //修改Android8.0图标显示bug
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -95,6 +95,7 @@ dependencies {
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"
     implementation 'com.bigkoo:ConvenientBanner:2.1.4'//地址变ConvenientBanner 大写了，额。。。
+    implementation 'com.youth.banner:banner:1.4.10'  //最新版本
     //引导
     implementation 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
     implementation 'com.qiniu:qiniu-android-sdk:7.3.10'

@@ -18,7 +18,7 @@ import cn.sharesdk.framework.ShareSDK;
  */
 public class ShareUtils {
 
-    public void shareWebPager(String platformName,String title,String titleUrl,PlatformActionListener listener){
+    public static void shareWebPager(String platformName,String title,String titleUrl,PlatformActionListener listener){
         Platform platform = ShareSDK.getPlatform(platformName);
         Platform.ShareParams shareParams = new  Platform.ShareParams();
         shareParams.setTitle(title);

@@ -3,9 +3,13 @@ package cc.xiaojiang.liangbo.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -18,11 +22,20 @@ import com.tencent.sonic.sdk.SonicEngine;
 import com.tencent.sonic.sdk.SonicSession;
 import com.tencent.sonic.sdk.SonicSessionConfig;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import butterknife.BindView;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
+import cc.xiaojiang.liangbo.utils.ShareUtils;
+import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.vassonic.SonicRuntimeImpl;
 import cc.xiaojiang.liangbo.vassonic.SonicSessionClientImpl;
+import cc.xiaojiang.liangbo.widget.ShareSelectDialog;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -33,16 +46,43 @@ public class BrowserActivity extends BaseActivity {
     WebView mWebView;
     private SonicSession sonicSession;
     private SonicSessionClientImpl mSonicSessionClient;
+    private String mUrl;
+    private String mTitle;
+
+    private PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
+        @Override
+        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+            ToastUtils.show("Share Complete");
+        }
+
+        @Override
+        public void onError(Platform platform, int i, Throwable throwable) {
+            final String error = throwable.toString();
+            runOnUiThread(() -> ToastUtils.show("Share Failure" + error));
+        }
+
+        @Override
+        public void onCancel(Platform platform, int i) {
+
+        }
+    };
+
+    public static void actionStart(Context context, String url, String title) {
+        Intent intent = new Intent(context, BrowserActivity.class);
+        intent.putExtra("dynamic_url", url);
+        intent.putExtra("dynamic_title", title);
+        context.startActivity(intent);
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String url = getIntent().getStringExtra("dynamic_url");
-        String title = getIntent().getStringExtra("dynamic_title");
-        setTitle(title);
+        mUrl = getIntent().getStringExtra("dynamic_url");
+        mTitle = getIntent().getStringExtra("dynamic_title");
+        setTitle(mTitle);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         // init sonic engine if necessary, or maybe u can do this when application created
-        BrowserActivityPermissionsDispatcher.createSonicWithPermissionCheck(this, url);
+        BrowserActivityPermissionsDispatcher.createSonicWithPermissionCheck(this, mUrl);
         super.onCreate(savedInstanceState);
 
         mWebView.setWebViewClient(new WebViewClient() {
@@ -89,7 +129,7 @@ public class BrowserActivity extends BaseActivity {
             mSonicSessionClient.bindWebView(mWebView);
             mSonicSessionClient.clientReady();
         } else {
-            mWebView.loadUrl(url);
+            mWebView.loadUrl(mUrl);
         }
     }
 
@@ -141,4 +181,22 @@ public class BrowserActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_share, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share) {
+            new ShareSelectDialog()
+                    .setOnTimeSelectedListener(platformName -> {
+                        if (!platformName.contains("Q")) {
+//                            ShareUtils.shareWebPager(platformName, mTitle, mUrl,
+//                                    mPlatformActionListener);
+                            ShareUtils.shareWebPager(platformName, "titl", "https//www.baidu.com",
+                                    mPlatformActionListener);
+                        }
+                    })
+                    .show(getSupportFragmentManager(), "");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

@@ -235,12 +235,12 @@ public class KZZActivity extends BaseActivity implements
     private void sendCmd(HashMap<String, String> hashMap) {
         IotKitMqttManager.getInstance().sendCmd(mDevice, hashMap, new IotKitActionCallback() {
             @Override
-            public void onSuccess(IMqttToken asyncActionToken) {
+            public void onSuccess() {
 
             }
 
             @Override
-            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+            public void onFailure(String msg) {
 
             }
         });

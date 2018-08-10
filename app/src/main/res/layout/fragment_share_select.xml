@@ -41,6 +41,7 @@
         style="@style/shareTextStyle"
         android:text="@string/share_qq"
         app:icon_src_normal="@drawable/share_qq"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_share_wechat"
         app:layout_constraintEnd_toStartOf="@+id/tv_share_qq_zone"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,6 +50,7 @@
     <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/tv_share_qq_zone"
         style="@style/shareTextStyle"
+        android:visibility="gone"
         android:text="@string/share_qq_zone"
         app:icon_src_normal="@drawable/share_qq_zone"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_share_wechat"

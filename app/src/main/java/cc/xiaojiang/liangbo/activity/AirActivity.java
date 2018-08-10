@@ -123,7 +123,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_share) {
-            Bitmap bitmap = ScreenShotUtils.screenShot(this,0);
+            Bitmap bitmap = ScreenShotUtils.screenShot(this, 0);
             EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
             startToActivity(ShareAirActivity.class);
         }
@@ -234,18 +234,18 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
      */
     public void queryDevice(Device device) {
         IotKitMqttManager.getInstance().queryStatus(device, new IotKitActionCallback() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
+            @Override
+            public void onSuccess() {
+                Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
+            }
 
-                    }
+            @Override
+            public void onFailure(String msg) {
+                Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable
-                            exception) {
-                        Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
-                    }
-                });
+            }
+        });
+
     }
 
     @Override
@@ -310,7 +310,8 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
 
     private void setAirView(HomeWeatherAirModel homeWeatherAirModel) {
         setAirView(mTvOutdoorPm, homeWeatherAirModel.getPm25() + "", UNIT_PM25);
-        setAirView(mTvOutdoorTemperature, homeWeatherAirModel.getTemperature() + "", UNIT_TEMPERATURE);
+        setAirView(mTvOutdoorTemperature, homeWeatherAirModel.getTemperature() + "",
+                UNIT_TEMPERATURE);
         setAirView(mTvOutdoorHumidity, homeWeatherAirModel.getHumidity() + "", UNIT_HUMIDITY);
     }
 
@@ -383,7 +384,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         } else {
             mIndoorMap.put(deviceId, DEFAULT_DATA);
         }
-        if (mIndoorMap.size() == mDeviceSize && mDeviceSize>0) {
+        if (mIndoorMap.size() == mDeviceSize && mDeviceSize > 0) {
             mIndoorPmList.clear();
             // 遍历 ArrayMap
             mIndoorPmList.addAll(mIndoorMap.values());
@@ -391,7 +392,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
             mConvenientBanner.notifyDataSetChanged();
             mConvenientBanner.setCurrentItem(currentItem, false);
             mConvenientBanner.setFirstItemPos(currentItem);
-            if(mIndoorMap.size()>1){
+            if (mIndoorMap.size() > 1) {
                 mConvenientBanner.setPageIndicator(new int[]{R.drawable.dot_default_indicator,
                         R.drawable.dot_select_indicator});
             }
@@ -415,12 +416,12 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     @Override
     public void onPageSelected(int index) {
         final Device device = mDeviceList.get(index);
-        if(mCtvSelectDeviceName!=null){
+        if (mCtvSelectDeviceName != null) {
             mCtvSelectDeviceName.setText(getDeviceName(device));
         }
     }
 
-    private String getDeviceName(Device device){
+    private String getDeviceName(Device device) {
         final boolean tag = TextUtils.isEmpty(device.getDeviceNickname());
         return tag ? device.getProductName() : device.getDeviceNickname();
     }

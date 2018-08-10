@@ -272,6 +272,7 @@ public class MPChartUtils {
     }
 
     private static LineData formatWeekData(Pm25HistoryModel pm25HistoryModel) {
+        // TODO: 2018/8/7 bug修复
         List<Entry> outEntries = new ArrayList<>();
         List<Entry> inEntries = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

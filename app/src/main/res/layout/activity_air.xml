@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/air_1">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <TextView
             android:id="@+id/tv_home_location"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView27"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.64"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_outdoor_temperature"
@@ -40,7 +40,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_pm"
         app:layout_constraintEnd_toEndOf="@+id/textView28"
         app:layout_constraintStart_toStartOf="@+id/textView28"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_outdoor_humidity"
@@ -48,7 +48,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_temperature"
         app:layout_constraintEnd_toEndOf="@+id/textView29"
         app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/textView27"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView28"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_outdoor_pm"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_outdoor_pm" />
 
     <TextView
         android:id="@+id/textView28"
@@ -67,7 +67,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView27"
         app:layout_constraintEnd_toStartOf="@+id/textView29"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView27"/>
+        app:layout_constraintStart_toEndOf="@+id/textView27" />
 
     <TextView
         android:id="@+id/textView29"
@@ -77,7 +77,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView28"/>
+        app:layout_constraintStart_toEndOf="@+id/textView28" />
 
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/convenientBanner"
@@ -89,7 +89,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_select_device_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/ctv_select_device_name" />
 
     <ImageView
         android:id="@+id/iv_add_device"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ctv_select_device_name"
-        app:layout_constraintWidth_percent="0.4"/>
+        app:layout_constraintWidth_percent="0.4" />
 
     <TextView
         android:id="@+id/tv_weather_today"
@@ -110,7 +110,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
         app:layout_constraintEnd_toEndOf="@+id/textView27"
         app:layout_constraintStart_toStartOf="@+id/textView27"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_weather_tomorrow"
@@ -120,7 +120,7 @@
         app:layout_constraintEnd_toEndOf="@+id/textView28"
         app:layout_constraintStart_toStartOf="@+id/textView28"
         app:layout_constraintTop_toBottomOf="@+id/textView28"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_weather_after_tomorrow"
@@ -129,16 +129,16 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
         app:layout_constraintEnd_toEndOf="@+id/textView29"
         app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView"/>
+        tools:text="TextView" />
 
     <cc.xiaojiang.liangbo.view.CommonTextView
         android:id="@+id/ctv_select_device_name"
         style="@style/common_14_white_text"
         android:layout_width="108dp"
-        android:maxLength="6"
-        android:maxLines="1"
         android:layout_marginTop="16dp"
         android:gravity="center"
+        android:maxLength="6"
+        android:maxLines="1"
         android:padding="4dp"
         app:border_color_normal="@color/white"
         app:border_width_normal="0.5dp"
@@ -146,14 +146,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:text="测试测试测试"/>
+        tools:text="测试测试测试" />
 
     <android.support.constraint.Group
         android:id="@+id/group_have_device"
-        app:constraint_referenced_ids="convenientBanner,ctv_select_device_name"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:layout_height="wrap_content"/>
+        app:constraint_referenced_ids="convenientBanner,ctv_select_device_name" />
 
     <TextView
         android:id="@+id/textView14"
@@ -162,12 +162,12 @@
         android:text="请添加设备"
         app:layout_constraintEnd_toEndOf="@+id/iv_add_device"
         app:layout_constraintStart_toStartOf="@+id/iv_add_device"
-        app:layout_constraintTop_toBottomOf="@+id/iv_add_device"/>
+        app:layout_constraintTop_toBottomOf="@+id/iv_add_device" />
 
     <android.support.constraint.Group
         android:id="@+id/group_no_device"
-        app:constraint_referenced_ids="textView14,iv_add_device"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="textView14,iv_add_device" />
 
 </android.support.constraint.ConstraintLayout>

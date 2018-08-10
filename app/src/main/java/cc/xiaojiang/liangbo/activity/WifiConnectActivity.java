@@ -13,6 +13,7 @@ import cc.xiaojiang.liangbo.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 
 public class WifiConnectActivity extends BaseActivity {
@@ -67,6 +68,7 @@ public class WifiConnectActivity extends BaseActivity {
                     @Override
                     public void connectSucceed() {
                         mTvWifiConnectStatus.setText("设备联网成功");
+                        DbUtils.setWifiPwd(wifiSetupInfo.getSsid(), wifiSetupInfo.getPassword());
                     }
 
                     @Override

@@ -10,8 +10,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cc.xiaojiang.liangbo.R;
-import cn.sharesdk.tencent.qq.QQ;
-import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
@@ -60,12 +58,12 @@ public class ShareSelectDialog extends BottomSheetDialogFragment {
                 case R.id.tv_share_wechat_comment:
                     mOnShareSelectedListener.onShareSelected(WechatMoments.NAME);
                     break;
-                case R.id.tv_share_qq:
-                    mOnShareSelectedListener.onShareSelected(QQ.NAME);
-                    break;
-                case R.id.tv_share_qq_zone:
-                    mOnShareSelectedListener.onShareSelected(QZone.NAME);
-                    break;
+//                case R.id.tv_share_qq:
+//                    mOnShareSelectedListener.onShareSelected(QQ.NAME);
+//                    break;
+//                case R.id.tv_share_qq_zone:
+//                    mOnShareSelectedListener.onShareSelected(QZone.NAME);
+//                    break;
             }
         }
     }

@@ -46,8 +46,8 @@ public class WifiConfigInfoActivity extends BaseActivity {
 
     }
 
-    private void initVideo(String url) {
-        GlideApp.with(this).load(R.drawable.ic_wifi_setup_guide)
+    private void setGuide(int id) {
+        GlideApp.with(this).load(id)
                 .skipMemoryCache(true)
                 .centerCrop().into(mIvWifiResetGuide);
     }
@@ -59,15 +59,15 @@ public class WifiConfigInfoActivity extends BaseActivity {
     }
 
     private void showInfo(String productKey) {
-        String url = "";
         if (ProductKey.LB.equals(productKey)) {
             mTvConfigInfo.setText(getString(R.string.wifi_config_explain_lb));
+            setGuide(R.drawable.ic_wifi_setup_guide_lb);
         } else if (ProductKey.KZZ.equals(productKey)) {
             mTvConfigInfo.setText(getString(R.string.wifi_config_explain_kzz));
+            setGuide(R.drawable.ic_wifi_setup_guide_kzz);
         } else {
             mTvConfigInfo.setText("无效的设备");
         }
-        initVideo(url);
     }
 
     private void getProductInfo(String productKey) {

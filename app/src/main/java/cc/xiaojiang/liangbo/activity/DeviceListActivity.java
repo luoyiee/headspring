@@ -134,16 +134,17 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     public void queryDevice(Device device) {
         IotKitMqttManager.getInstance().queryStatus(device, new IotKitActionCallback() {
             @Override
-            public void onSuccess(IMqttToken asyncActionToken) {
+            public void onSuccess() {
                 Logger.d("查询设备成功，deviceId=" + device.getDeviceId());
 
             }
 
             @Override
-            public void onFailure(IMqttToken asyncActionToken, Throwable
-                    exception) {
+            public void onFailure(String msg) {
                 Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
             }
+
+
         });
     }
 

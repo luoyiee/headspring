@@ -49,6 +49,7 @@ public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
             helper.setText(R.id.tv_device_status, "设备离线");
             circleImageView.setBorderColor(mContext.getResources().getColor(R.color
                     .device_status_offline));
+
         }
         helper.addOnClickListener(R.id.ll_device_content)
                 .addOnClickListener(R.id.tv_device_swipe_menu_modify)

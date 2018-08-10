@@ -2,14 +2,19 @@ package cc.xiaojiang.liangbo.activity;
 
 import android.Manifest;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
@@ -39,6 +44,8 @@ import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.model.event.ShareBitmapEvent;
 import cc.xiaojiang.liangbo.model.http.AqiModel;
 import cc.xiaojiang.liangbo.utils.RxUtils;
+import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
+import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -49,15 +56,18 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickListener, AMap
-        .InfoWindowAdapter, AMap.OnCameraChangeListener,AMap.OnMapClickListener {
+        .InfoWindowAdapter, AMap.OnCameraChangeListener, AMap.OnMapClickListener {
 
     @BindView(R.id.mv_map)
     MapView mMapView;
     @BindString(R.string.air_knowledge_excellent)
     String mStrAirExcellent;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private AMap aMap;
     private View mInfoWindow;
     private Marker mCurrentMarker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,12 +94,27 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         super.onDestroy();
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_rank) {
+        if (item.getItemId() == R.id.menu_more) {
+            showPupWindow();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showPupWindow() {
+        final View contentView = getLayoutInflater().inflate(R.layout.layout_pop_window_air_map, null);
+        final PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams
+                .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        contentView.findViewById(R.id.tv_air_map_rank).setOnClickListener(v -> {
             startToActivity(AirMapRankListActivity.class);
-        } else if (itemId == R.id.action_share) {
+            popupWindow.dismiss();
+        });
+        popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec
+                .UNSPECIFIED);
+        contentView.findViewById(R.id.tv_air_map_share).setOnClickListener(v -> {
             aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
                 @Override
                 public void onMapScreenShot(Bitmap bitmap) {
@@ -106,13 +131,16 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
                 }
             });
-        }
-        return super.onOptionsItemSelected(item);
+            popupWindow.dismiss();
+
+        });
+        popupWindow.showAsDropDown(mToolbar, ScreenUtils.getScreenWidth(this) - popupWindow
+                .getContentView().getMeasuredWidth(), 0);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_map, menu);
+        getMenuInflater().inflate(R.menu.menu_more_dark, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -142,7 +170,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        mCurrentMarker=marker;
+        mCurrentMarker = marker;
         if (marker.isInfoWindowShown()) {
             marker.hideInfoWindow();
         } else {
@@ -310,7 +338,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     @Override
     public void onMapClick(LatLng latLng) {
-        if(mCurrentMarker.isInfoWindowShown()) {
+        if (mCurrentMarker.isInfoWindowShown()) {
             mCurrentMarker.hideInfoWindow();
         }
     }

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -16,6 +18,7 @@ import cc.xiaojiang.liangbo.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.NetworkUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 
@@ -29,8 +32,11 @@ public class WifiConfirmActivity extends BaseActivity {
     AppCompatEditText mEdTxtWifiConfirmPassword;
     @BindView(R.id.tv_wifi_confirm_change_wifi)
     TextView mTvWifiConfirmChangeWifi;
+    @BindView(R.id.iv_wifi_config_show_pwd)
+    ImageView mIvWifiConfigShowPwd;
     private String mProductKey;
     private String mSsid;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +69,16 @@ public class WifiConfirmActivity extends BaseActivity {
         super.onResume();
         mSsid = IotKitWifiSetupManager.getInstance().getSsid(this);
         mTvWifiConfirmSsid.setText(getString(R.string.wifi_config_connect_wifi, mSsid));
+        String pwd = DbUtils.getPwdBySsid(mSsid);
+        if (!TextUtils.isEmpty(pwd)) {
+            mEdTxtWifiConfirmPassword.setText(pwd);
+            mEdTxtWifiConfirmPassword.setSelection(pwd.length());
+        }
 
     }
 
-    @OnClick({R.id.btn_wifi_conform_next, R.id.tv_wifi_confirm_change_wifi})
+    @OnClick({R.id.btn_wifi_conform_next, R.id.tv_wifi_confirm_change_wifi, R.id
+            .iv_wifi_config_show_pwd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_wifi_conform_next:
@@ -91,7 +103,24 @@ public class WifiConfirmActivity extends BaseActivity {
             case R.id.tv_wifi_confirm_change_wifi:
                 NetworkUtils.changeWifi(this);
                 break;
+            case R.id.iv_wifi_config_show_pwd:
+                showHidePassword();
+                break;
         }
+    }
+
+    private void showHidePassword() {
+        isPasswordVisible = !isPasswordVisible;
+        mIvWifiConfigShowPwd.setSelected(isPasswordVisible);
+        if (isPasswordVisible) {
+            mEdTxtWifiConfirmPassword.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo
+                    .TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        } else {
+            mEdTxtWifiConfirmPassword.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo
+                    .TYPE_TEXT_VARIATION_PASSWORD);
+        }
+        mEdTxtWifiConfirmPassword.setSelection(mEdTxtWifiConfirmPassword.getText().toString()
+                .length());
     }
 
 

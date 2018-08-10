@@ -13,20 +13,25 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.app.hubert.guide.util.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
+import cc.xiaojiang.iotkit.bean.http.Article;
+import cc.xiaojiang.iotkit.community.IotKitCommunityManager;
+import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.liangbo.R;
-import cc.xiaojiang.liangbo.adapter.DynamicAdapter;
+import cc.xiaojiang.liangbo.adapter.ArticleAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
 import cc.xiaojiang.liangbo.model.http.DynamicModel;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.MainMenuLayout;
@@ -35,7 +40,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static cc.xiaojiang.liangbo.view.MainMenuLayout.ANIM_TIME;
 
 public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener{
+        SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.view_main_menu)
     MainMenuLayout viewMainMenu;
     @BindView(R.id.iv_device_air)
@@ -48,23 +53,55 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     private int mDy;
     private Runnable mMenuShowRunnable;
     private Handler mHandler = new Handler();
+    private ArticleAdapter mArticleAdapter;
+    private List<Article.ListsBean> mListsBeans;
+    private int mCurrentPage = 1;
+    private int mTotalPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        mTvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        mTvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         initRecycleView();
+        getArticleList();
+    }
+
+    private void getArticleList() {
+        IotKitCommunityManager.getInstance().getArticleList(DbUtils.getUserId(), mCurrentPage,
+                20, new IotKitHttpCallback<Article>() {
+                    @Override
+                    public void onSuccess(Article data) {
+                        hideRefresh();
+                        mCurrentPage++;
+                        mTotalPage = data.getLastPage();
+                        mListsBeans.addAll(data.getLists());
+                        mArticleAdapter.setNewData(mListsBeans);
+                    }
+
+                    @Override
+                    public void onError(String code, String errorMsg) {
+                        hideRefresh();
+                    }
+
+                });
+    }
+
+    private void hideRefresh() {
+        if (mSrlMain != null && mSrlMain.isRefreshing()) {
+            mSrlMain.setRefreshing(false);
+        }
     }
 
     private void initRecycleView() {
-        final ArrayList<DynamicModel> dynamicData = TestData.getDynamicData();
-        DynamicAdapter dynamicAdapter = new DynamicAdapter(R.layout.item_main_dynamic, dynamicData);
+        mListsBeans = new ArrayList<>();
+        mArticleAdapter = new ArticleAdapter(R.layout.item_main_dynamic, mListsBeans);
         mSrlMain.setOnRefreshListener(this);
         mRvMain.setLayoutManager(new LinearLayoutManager(this));
         mRvMain.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mRvMain.setAdapter(dynamicAdapter);
-        dynamicAdapter.setOnItemClickListener(this);
+        mRvMain.setAdapter(mArticleAdapter);
+        mArticleAdapter.setOnItemClickListener(this);
+        mArticleAdapter.setOnLoadMoreListener(this, mRvMain);
         mRvMain.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -120,7 +157,7 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                 -translationX);
         ObjectAnimator rightAnimator = ObjectAnimator.ofFloat(viewMainMenu, "translationX",
                 translationX);
-        animatorSet.playTogether(leftAnimator,rightAnimator);
+        animatorSet.playTogether(leftAnimator, rightAnimator);
         animatorSet.setDuration(ANIM_TIME);
         animatorSet.start();
     }
@@ -152,35 +189,37 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        DynamicModel dynamicModel = (DynamicModel) adapter.getItem(position);
-        if(dynamicModel!=null){
-            Intent intent = new Intent(this, BrowserActivity.class);
-            intent.putExtra("dynamic_title", "title");
-            intent.putExtra("dynamic_url", dynamicModel.getUrl());
-            startActivity(intent);
+        Article.ListsBean item = (Article.ListsBean) adapter.getItem(position);
+        if (item == null) {
+            return;
         }
+        BrowserActivity.actionStart(this, item.getInfo_link(), item.getTitle());
     }
 
     @Override
     public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(mSrlMain.isRefreshing()){
-                    mSrlMain.setRefreshing(false);
-                }
-            }
-        }, 2000);
+        mListsBeans.clear();
+        mCurrentPage = 1;
+        getArticleList();
     }
 
     @Override
     protected void onDestroy() {
+        IotKitAccountManager.getInstance().logout();
         super.onDestroy();
-        IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
-            @Override
-            public void onCompleted(boolean isSucceed, String msg) {
+    }
 
+    @Override
+    public void onLoadMoreRequested() {
+        mRvMain.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mCurrentPage <= mTotalPage) {
+                    getArticleList();
+                } else {
+                    mArticleAdapter.loadMoreEnd();
+                }
             }
-        });
+        }, 0);
     }
 }

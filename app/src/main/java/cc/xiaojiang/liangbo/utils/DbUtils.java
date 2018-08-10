@@ -9,7 +9,7 @@ public class DbUtils {
     private static ASimpleCache aSimpleCache = ASimpleCache.get(MyApplication.getInstance(),
             CACHE_NAME);
 
-    public static void clear(){
+    public static void clear() {
         aSimpleCache.clear();
     }
 
@@ -22,6 +22,15 @@ public class DbUtils {
     private static final String REFRESH_TOKEN = "refresh_token";
     private static final String ACCOUNT_PHONE = "account_phone";
     private static final String LOCATION_CITY = "location_city";
+
+
+    public static void setWifiPwd(String ssid, String pwd) {
+        aSimpleCache.put(ssid, pwd);
+    }
+
+    public static String getPwdBySsid(String ssid) {
+       return aSimpleCache.getAsString(ssid);
+    }
 
     /**
      * 用户ID
@@ -58,6 +67,7 @@ public class DbUtils {
 
     /**
      * 保存用户手机号
+     *
      * @param phoneNumber 手机号
      */
     public static void setAccountPhoneNumber(String phoneNumber) {
@@ -68,8 +78,9 @@ public class DbUtils {
      * 获取用户手机号
      */
     public static String getAccountPhoneNumber() {
-       return aSimpleCache.getAsString(ACCOUNT_PHONE);
+        return aSimpleCache.getAsString(ACCOUNT_PHONE);
     }
+
     /**
      * 获取小匠云用户id
      */
@@ -83,12 +94,13 @@ public class DbUtils {
 
 
     /**
-    *用户定位城市
-    */
+     * 用户定位城市
+     */
     public static void setLocationCity(String city) {
         aSimpleCache.put(LOCATION_CITY, city);
 
     }
+
     public static String getLocationCity() {
         return aSimpleCache.getAsString(LOCATION_CITY);
     }
