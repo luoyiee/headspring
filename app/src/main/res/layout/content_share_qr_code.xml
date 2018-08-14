@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="180dp"
         android:layout_marginTop="8dp"
-        android:text="扫描该二维码将设备共享给其它用户"
+        android:text="请打开量波·未来APP扫描该二维码"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

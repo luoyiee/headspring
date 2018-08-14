@@ -35,13 +35,13 @@ public class ShareActivity extends BaseActivity {
     private PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-            ToastUtils.show("Share Complete");
+            ToastUtils.show("分享成功");
         }
 
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
             final String error = throwable.toString();
-            runOnUiThread(() -> ToastUtils.show("Share Failure" + error));
+            runOnUiThread(() -> ToastUtils.show("分享失败：" + error));
         }
 
         @Override

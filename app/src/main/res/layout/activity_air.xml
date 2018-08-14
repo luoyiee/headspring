@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/air_1">
+    android:background="@color/air_1"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,153 +23,170 @@
             tools:text="我是标题" />
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/tv_outdoor_pm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView27"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toStartOf="@+id/textView27"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.64"
-        tools:text="TextView" />
 
-    <TextView
-        android:id="@+id/tv_outdoor_temperature"
-        style="@style/common_14_white_text"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_pm"
-        app:layout_constraintEnd_toEndOf="@+id/textView28"
-        app:layout_constraintStart_toStartOf="@+id/textView28"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/tv_outdoor_humidity"
-        style="@style/common_14_white_text"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_outdoor_temperature"
-        app:layout_constraintEnd_toEndOf="@+id/textView29"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/textView27"
-        style="@style/common_16_white_text"
-        android:layout_marginStart="16dp"
-        android:text="室外PM2.5"
-        app:layout_constraintEnd_toStartOf="@+id/textView28"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_outdoor_pm" />
-
-    <TextView
-        android:id="@+id/textView28"
-        style="@style/common_16_white_text"
-        android:text="室外温度"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView27"
-        app:layout_constraintEnd_toStartOf="@+id/textView29"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView27" />
-
-    <TextView
-        android:id="@+id/textView29"
-        style="@style/common_16_white_text"
-        android:layout_marginEnd="16dp"
-        android:text="室外湿度"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView28" />
-
-    <com.bigkoo.convenientbanner.ConvenientBanner
-        android:id="@+id/convenientBanner"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        app:canLoop="false"
-        app:layout_constraintDimensionRatio="H,2:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_select_device_name" />
+        android:layout_weight="1">
 
-    <ImageView
-        android:id="@+id/iv_add_device"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/air_address_add"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ctv_select_device_name"
-        app:layout_constraintWidth_percent="0.4" />
+        <FrameLayout
+            android:id="@+id/fl_selected_devices"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-    <TextView
-        android:id="@+id/tv_weather_today"
-        style="@style/common_14_white_text"
-        android:gravity="center"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
-        app:layout_constraintEnd_toEndOf="@+id/textView27"
-        app:layout_constraintStart_toStartOf="@+id/textView27"
-        tools:text="TextView" />
+            <cc.xiaojiang.liangbo.view.CommonTextView
+                android:id="@+id/ctv_select_device_name"
+                style="@style/common_14_white_text"
+                android:layout_width="108dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:maxLength="6"
+                android:maxLines="1"
+                android:padding="4dp"
+                app:border_color_normal="@color/white"
+                app:border_width_normal="0.5dp"
+                app:corner_radius="12dp"
+                tools:text="测试测试测试" />
 
-    <TextView
-        android:id="@+id/tv_weather_tomorrow"
-        style="@style/common_14_white_text"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="@+id/textView28"
-        app:layout_constraintStart_toStartOf="@+id/textView28"
-        app:layout_constraintTop_toBottomOf="@+id/textView28"
-        tools:text="TextView" />
+            <com.bigkoo.convenientbanner.ConvenientBanner
+                android:id="@+id/convenientBanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:canLoop="false" />
+        </FrameLayout>
 
-    <TextView
-        android:id="@+id/tv_weather_after_tomorrow"
-        style="@style/common_14_white_text"
-        android:gravity="center"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_weather_tomorrow"
-        app:layout_constraintEnd_toEndOf="@+id/textView29"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        tools:text="TextView" />
 
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/ctv_select_device_name"
-        style="@style/common_14_white_text"
-        android:layout_width="108dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:maxLength="6"
-        android:maxLines="1"
-        android:padding="4dp"
-        app:border_color_normal="@color/white"
-        app:border_width_normal="0.5dp"
-        app:corner_radius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:text="测试测试测试" />
+        <LinearLayout
+            android:id="@+id/ll_device_add"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-    <android.support.constraint.Group
-        android:id="@+id/group_have_device"
-        android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/iv_add_device"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/air_address_add" />
+
+            <TextView
+                android:id="@+id/textView14"
+                style="@style/common_16_white_text"
+                android:layout_marginTop="16dp"
+                android:text="请添加设备" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:constraint_referenced_ids="convenientBanner,ctv_select_device_name" />
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-    <TextView
-        android:id="@+id/textView14"
-        style="@style/common_16_white_text"
-        android:layout_marginTop="16dp"
-        android:text="请添加设备"
-        app:layout_constraintEnd_toEndOf="@+id/iv_add_device"
-        app:layout_constraintStart_toStartOf="@+id/iv_add_device"
-        app:layout_constraintTop_toBottomOf="@+id/iv_add_device" />
+        <TextView
+            android:id="@+id/tv_outdoor_pm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            tools:text="TextView" />
 
-    <android.support.constraint.Group
-        android:id="@+id/group_no_device"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_outdoor_temperature"
+            style="@style/common_14_white_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_outdoor_humidity"
+            style="@style/common_14_white_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="TextView" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="textView14,iv_add_device" />
+        android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView27"
+            style="@style/common_16_white_text"
+            android:layout_width="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="室外PM2.5" />
+
+        <TextView
+            android:id="@+id/textView28"
+            style="@style/common_16_white_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="室外温度" />
+
+        <TextView
+            android:id="@+id/textView29"
+            style="@style/common_16_white_text"
+            android:layout_width="0dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="室外湿度" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <TextView
+            android:id="@+id/tv_weather_today"
+            style="@style/common_14_white_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_weather_tomorrow"
+            style="@style/common_14_white_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_weather_after_tomorrow"
+            style="@style/common_14_white_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="TextView" />
+    </LinearLayout>
+
+</LinearLayout>

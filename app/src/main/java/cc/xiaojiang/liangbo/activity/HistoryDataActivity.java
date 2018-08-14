@@ -104,7 +104,8 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         if(item.getItemId() == R.id.action_share){
             Bitmap bitmap = ScreenShotUtils.getViewBitmap(mLineChart);
             EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
-            startToActivity(ShareHistoryDataActivity.class);
+
+            ShareHistoryDataActivity.actionStart(this,mDevice);
         }
         return super.onOptionsItemSelected(item);
     }

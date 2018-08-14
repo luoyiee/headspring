@@ -4,13 +4,14 @@ import android.Manifest;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.Group;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ import com.bigkoo.convenientbanner.listener.OnPageChangeListener;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -83,17 +83,18 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     CommonTextView mCtvSelectDeviceName;
     @BindView(R.id.convenientBanner)
     ConvenientBanner<String> mConvenientBanner;
-    @BindView(R.id.group_have_device)
-    Group mGroupHaveDevice;
-    @BindView(R.id.group_no_device)
-    Group mGroupNoDevice;
+    @BindView(R.id.fl_selected_devices)
+    FrameLayout mFlSelectedDevices;
+    @BindView(R.id.ll_device_add)
+    LinearLayout mLlDeviceAdd;
+
     private LocationClient mLocationClient;
     private ArrayList<String> mIndoorPmList = new ArrayList<>();
     private CBViewHolderCreator mHolderCreator;
     private LinkedHashMap<String, String> mIndoorMap = new LinkedHashMap<>();
     private int mDeviceSize;
     private boolean firstLoad = true;
-    private List<Device> mDeviceList;
+    private List<Device> mDeviceList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +140,8 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     }
 
     private void setAddDeviceViewVisibility(boolean showAddDeviceView) {
-        mGroupHaveDevice.setVisibility(showAddDeviceView ? View.INVISIBLE : View.VISIBLE);
-        mGroupNoDevice.setVisibility(showAddDeviceView ? View.VISIBLE : View.INVISIBLE);
+        mFlSelectedDevices.setVisibility(showAddDeviceView ? View.INVISIBLE : View.VISIBLE);
+        mLlDeviceAdd.setVisibility(showAddDeviceView ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void getDevices() {

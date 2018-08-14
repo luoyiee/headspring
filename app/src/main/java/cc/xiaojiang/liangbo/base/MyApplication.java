@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
@@ -27,6 +28,7 @@ public class MyApplication extends Application {
 //        Beta.autoCheckUpgrade = true;
 //        }
         ZXingLibrary.initDisplayOpinion(this);
+        MobSDK.init(this);
     }
 
     @Override

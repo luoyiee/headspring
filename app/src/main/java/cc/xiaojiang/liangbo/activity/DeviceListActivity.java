@@ -179,6 +179,10 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 } else {
                     ToastUtils.show("设备离线");
                 }
+//// TODO: 2018/8/13 test
+//                intent = new Intent(this, KZZActivity.class);
+//                intent.putExtra("device_data", device);
+//                startActivity(intent);
                 break;
             case R.id.tv_device_swipe_menu_modify:
                 showModifyDialog(device.getDeviceId());

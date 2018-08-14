@@ -17,6 +17,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.orhanobut.logger.Logger;
 import com.tencent.sonic.sdk.SonicConfig;
 import com.tencent.sonic.sdk.SonicEngine;
 import com.tencent.sonic.sdk.SonicSession;
@@ -48,17 +49,19 @@ public class BrowserActivity extends BaseActivity {
     private SonicSessionClientImpl mSonicSessionClient;
     private String mUrl;
     private String mTitle;
+    private String mText;
+    private boolean mShare;
 
     private PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-            ToastUtils.show("Share Complete");
+            ToastUtils.show("分享成功");
         }
 
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
             final String error = throwable.toString();
-            runOnUiThread(() -> ToastUtils.show("Share Failure" + error));
+            runOnUiThread(() -> ToastUtils.show("分享失败：" + error));
         }
 
         @Override
@@ -67,10 +70,13 @@ public class BrowserActivity extends BaseActivity {
         }
     };
 
-    public static void actionStart(Context context, String url, String title) {
+    public static void actionStart(Context context, String url, String title, String text,
+                                   boolean share) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("dynamic_url", url);
         intent.putExtra("dynamic_title", title);
+        intent.putExtra("dynamic_text", text);
+        intent.putExtra("share", share);
         context.startActivity(intent);
     }
 
@@ -79,6 +85,9 @@ public class BrowserActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mUrl = getIntent().getStringExtra("dynamic_url");
         mTitle = getIntent().getStringExtra("dynamic_title");
+        mText = getIntent().getStringExtra("dynamic_text");
+        mShare = getIntent().getBooleanExtra("share", false);
+        invalidateOptionsMenu();
         setTitle(mTitle);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         // init sonic engine if necessary, or maybe u can do this when application created
@@ -111,6 +120,14 @@ public class BrowserActivity extends BaseActivity {
             }
         });
 
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Logger.e("url:" + url);
+                // TODO: 2018/8/14 跳转浏览器
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
         WebSettings webSettings = mWebView.getSettings();
 
         // add java script interface
@@ -177,6 +194,17 @@ public class BrowserActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.getItem(0);
+        if (mShare) {
+            menuItem.setVisible(true);
+        } else {
+            menuItem.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_share, menu);
         return super.onCreateOptionsMenu(menu);
@@ -188,9 +216,7 @@ public class BrowserActivity extends BaseActivity {
             new ShareSelectDialog()
                     .setOnTimeSelectedListener(platformName -> {
                         if (!platformName.contains("Q")) {
-//                            ShareUtils.shareWebPager(platformName, mTitle, mUrl,
-//                                    mPlatformActionListener);
-                            ShareUtils.shareWebPager(platformName, "titl", "https//www.baidu.com",
+                            ShareUtils.shareWebPager(platformName, mTitle, mUrl, mText,
                                     mPlatformActionListener);
                         }
                     })

@@ -30,5 +30,7 @@ public class ArticleAdapter extends BaseQuickAdapter<Article.ListsBean, BaseView
                 .setText(R.id.tv_dynamic_comment, item.getRead_quantity() + "")
                 .setText(R.id.tv_dynamic_author, item.getAuthor())
                 .setText(R.id.tv_content, item.getAbstractX());
+
+        // TODO: 2018/8/13 支持视频
     }
 }
