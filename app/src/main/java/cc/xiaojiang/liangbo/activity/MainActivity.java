@@ -193,7 +193,8 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         if (item == null) {
             return;
         }
-        BrowserActivity.actionStart(this, item.getInfo_link(), item.getTitle(),item.getAbstractX(),true);
+        BrowserActivity.actionStart(this, item.getInfo_link(), item.getTitle(), item.getAbstractX
+                (), null, true);
     }
 
     @Override

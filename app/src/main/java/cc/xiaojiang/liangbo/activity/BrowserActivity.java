@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
@@ -51,6 +52,7 @@ public class BrowserActivity extends BaseActivity {
     private String mTitle;
     private String mText;
     private boolean mShare;
+    private String mLink;
 
     private PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
         @Override
@@ -70,12 +72,13 @@ public class BrowserActivity extends BaseActivity {
         }
     };
 
-    public static void actionStart(Context context, String url, String title, String text,
-                                   boolean share) {
+    public static void actionStart(Context context, String url, String title, String text, String
+            buyLink, boolean share) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("dynamic_url", url);
         intent.putExtra("dynamic_title", title);
         intent.putExtra("dynamic_text", text);
+        intent.putExtra("buy_link", buyLink);
         intent.putExtra("share", share);
         context.startActivity(intent);
     }
@@ -86,9 +89,10 @@ public class BrowserActivity extends BaseActivity {
         mUrl = getIntent().getStringExtra("dynamic_url");
         mTitle = getIntent().getStringExtra("dynamic_title");
         mText = getIntent().getStringExtra("dynamic_text");
+        mLink = getIntent().getStringExtra("buy_link");
         mShare = getIntent().getBooleanExtra("share", false);
         invalidateOptionsMenu();
-        setTitle(mTitle);
+        setTitle("");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         // init sonic engine if necessary, or maybe u can do this when application created
         BrowserActivityPermissionsDispatcher.createSonicWithPermissionCheck(this, mUrl);
@@ -124,8 +128,14 @@ public class BrowserActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Logger.e("url:" + url);
-                // TODO: 2018/8/14 跳转浏览器
-                return super.shouldOverrideUrlLoading(view, url);
+                if (url.equals(mLink)) {
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+
             }
         });
         WebSettings webSettings = mWebView.getSettings();
@@ -134,6 +144,7 @@ public class BrowserActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // init webView settings
         webSettings.setAllowContentAccess(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setDatabaseEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAppCacheEnabled(true);

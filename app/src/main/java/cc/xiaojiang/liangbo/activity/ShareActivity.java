@@ -79,12 +79,13 @@ public class ShareActivity extends BaseActivity {
                     .setOnTimeSelectedListener(platformName -> {
                         if (platformName.contains("Q")) {
                             try {
-                                ShareUtils.bitmapToFile(mBitmapFilePath,bitmap);
-                                ShareUtils.shareImagePath(platformName, mBitmapFilePath, mPlatformActionListener);
+                                ShareUtils.bitmapToFile(mBitmapFilePath, bitmap);
+                                ShareUtils.shareImagePath(platformName, mBitmapFilePath,
+                                        mPlatformActionListener);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }else{
+                        } else {
                             ShareUtils.shareImage(platformName, bitmap, mPlatformActionListener);
                         }
                     })

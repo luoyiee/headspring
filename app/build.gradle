@@ -8,9 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 13
-        versionName "1.0.0-beta16"
-        //修改Android8.0图标显示bug
+        versionCode 15
+        versionName "1.0.0-beta18"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

@@ -17,14 +17,7 @@ import cc.xiaojiang.liangbo.model.GoodsSection;
 import cc.xiaojiang.liangbo.utils.ImageLoader;
 
 public class GoodsAdapter extends BaseSectionQuickAdapter<GoodsSection, BaseViewHolder> {
-    /**
-     * Same as QuickAdapter#QuickAdapter(Context,int) but with
-     * some initialization data.
-     *
-     * @param layoutResId      The layout resource id of each item.
-     * @param sectionHeadResId The section head layout id for each item
-     * @param data             A new list is created out of this one to avoid mutable list
-     */
+
     public GoodsAdapter(int layoutResId, int sectionHeadResId, List data) {
         super(layoutResId, sectionHeadResId, data);
     }

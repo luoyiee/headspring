@@ -1,5 +1,7 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -160,15 +162,18 @@ public class ShopActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         }
         Goods goods = goodsSection.t;
         BrowserActivity.actionStart(this, goods.getInfo_link(), goods.getTitle(), goods.getTitle
-                (), false);
+                (), goods.getBuy_link(), false);
     }
 
     @Override
     public void OnBannerClick(int position) {
         if (mAdverts.size() > position) {
             Advert advert = mAdverts.get(position);
-            BrowserActivity.actionStart(this, advert.getLink_url(), advert.getTitle(), advert
-                    .getTitle(), false);
+//            BrowserActivity.actionStart(this, advert.getLink_url(), advert.getTitle(), advert
+//                    .getTitle(), advert.getLink_url(), false);
+            Uri uri = Uri.parse(advert.getLink_url());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
 
     }
