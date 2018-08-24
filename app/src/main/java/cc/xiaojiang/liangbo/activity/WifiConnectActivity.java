@@ -42,7 +42,6 @@ public class WifiConnectActivity extends BaseActivity {
 
             }
         };
-        wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_MXCHIP);
         startWifiSetup(wifiSetupInfo);
 
     }
@@ -61,7 +60,6 @@ public class WifiConnectActivity extends BaseActivity {
     }
 
     private void startWifiSetup(WifiSetupInfo wifiSetupInfo) {
-        wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_ESPRESSIF);
         mCountDownTimer.start();
         IotKitWifiSetupManager.getInstance().startWifiSetup(this, wifiSetupInfo, 100 * 1000, new
                 WifiSetupCallback() {

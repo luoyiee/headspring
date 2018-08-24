@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.iotkit.bean.http.Product;
+import cc.xiaojiang.iotkit.bean.http.ProductInfo;
 import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
 import cc.xiaojiang.iotkit.wifi.WifiSetupInfo;
 import cc.xiaojiang.liangbo.Constant;
@@ -34,7 +36,7 @@ public class WifiConfirmActivity extends BaseActivity {
     TextView mTvWifiConfirmChangeWifi;
     @BindView(R.id.iv_wifi_config_show_pwd)
     ImageView mIvWifiConfigShowPwd;
-    private String mProductKey;
+    private ProductInfo mProductInfo;
     private String mSsid;
     private boolean isPasswordVisible = false;
 
@@ -43,12 +45,11 @@ public class WifiConfirmActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ActivityCollector.addActivity(this);
         Intent intent = getIntent();
-        if (intent == null) {
+        mProductInfo = intent.getParcelableExtra("product_info");
+        if (mProductInfo == null) {
             ToastUtils.show("参数错误");
             finish();
-            return;
         }
-        mProductKey = intent.getStringExtra("product_key");
 
     }
 
@@ -92,10 +93,10 @@ public class WifiConfirmActivity extends BaseActivity {
                     return;
                 }
                 WifiSetupInfo wifiSetupInfo = new WifiSetupInfo();
-                wifiSetupInfo.setProductKey(mProductKey);
+                wifiSetupInfo.setProductKey(mProductInfo.getProductKey());
                 wifiSetupInfo.setPassword(password);
                 wifiSetupInfo.setSsid(mSsid);
-                wifiSetupInfo.setWifiVendor(WifiSetupInfo.VENDOR_ESPRESSIF);
+                wifiSetupInfo.setWifiVendor(mProductInfo.getModuleVendor());
                 Intent intent = new Intent(this, WifiConnectActivity.class);
                 intent.putExtra(Constant.DEVICE_INFO, wifiSetupInfo);
                 startActivity(intent);

@@ -29,6 +29,7 @@ public class WifiConfigInfoActivity extends BaseActivity {
     @BindView(R.id.iv_wifi_reset_guide)
     ImageView mIvWifiResetGuide;
     private String mProductKey;
+    private ProductInfo mProductInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class WifiConfigInfoActivity extends BaseActivity {
                 IotKitHttpCallback<ProductInfo>() {
                     @Override
                     public void onSuccess(ProductInfo data) {
-
+                        mProductInfo = data;
                     }
 
                     @Override
@@ -102,7 +103,7 @@ public class WifiConfigInfoActivity extends BaseActivity {
             return;
         }
         Intent intent = new Intent(this, WifiConfirmActivity.class);
-        intent.putExtra("product_key", mProductKey);
+        intent.putExtra("product_info", mProductInfo);
         startActivity(intent);
     }
 
