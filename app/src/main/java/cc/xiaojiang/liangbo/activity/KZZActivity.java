@@ -1,6 +1,7 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -25,8 +26,11 @@ import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,6 +43,7 @@ import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
 import cc.xiaojiang.liangbo.iotkit.KzzDataModel;
 import cc.xiaojiang.liangbo.iotkit.ProductKey;
+import cc.xiaojiang.liangbo.model.event.ShareBitmapEvent;
 import cc.xiaojiang.liangbo.utils.AP1Utils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
@@ -115,6 +120,13 @@ public class KZZActivity extends BaseActivity implements
 
     private boolean isShowGuidePage = false;
 
+    private Timer mTimer = new Timer();
+
+    private void openRealReporting(int isOpen) {
+        HashMap<String, String> hashMap1 = new HashMap<>();
+        hashMap1.put("RealReportingSwitch", String.valueOf(isOpen));
+        sendCmd(hashMap1);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +134,9 @@ public class KZZActivity extends BaseActivity implements
         initData();
         initView();
         initGuidePage();
+
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -136,6 +150,7 @@ public class KZZActivity extends BaseActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void showPupWindow() {
         final View contentView = getLayoutInflater().inflate(R.layout.device_pop_window, null);
@@ -155,7 +170,9 @@ public class KZZActivity extends BaseActivity implements
 
         });
         contentView.findViewById(R.id.tv_popup_share_data).setOnClickListener(v -> {
-            ScreenShotUtils.share(this);
+            Bitmap bitmap = ScreenShotUtils.screenShot(this, 0);
+            EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
+            startToActivity(ShareAirActivity.class);
             popupWindow.dismiss();
         });
 
@@ -194,12 +211,7 @@ public class KZZActivity extends BaseActivity implements
 
     private void initGuidePage() {
         HighlightOptions options = new HighlightOptions.Builder()
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mTvSwitch.callOnClick();
-                    }
-                })
+                .setOnClickListener(v -> mTvSwitch.callOnClick())
                 .build();
         GuidePage page = GuidePage.newInstance().addHighLightWithOptions(mTvSwitch, options);
         mGuidePage = NewbieGuide.with(this)
@@ -251,19 +263,33 @@ public class KZZActivity extends BaseActivity implements
         super.onResume();
         IotKitMqttManager.getInstance().addDataCallback(this);
         IotKitMqttManager.getInstance().queryStatus(mDevice, null);
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                openRealReporting(1);
+            }
+        }, 0, 60* 1000);
     }
 
     @Override
     protected void onPause() {
         IotKitMqttManager.getInstance().removeDataCallback(this);
+        mTimer.cancel();
+        openRealReporting(0);
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
     }
 
     @OnClick({R.id.tv_lb_mode, R.id.tv_switch, R.id.tv_timing, R.id
             .iv_air_purifier_view4_minus, R.id.iv_air_purifier_view4_plus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
             case R.id.tv_lb_mode:
                 mControlMode = mControlMode == 0 ? 1 : 0;
                 HashMap<String, String> hashMap1 = new HashMap<>();

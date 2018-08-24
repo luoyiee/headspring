@@ -165,6 +165,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         Device device = (Device) adapter.getItem(position);
         Intent intent = null;
         switch (view.getId()) {
+
             case R.id.ll_device_content:
                 if (ProductKey.KZZ.equals(device.getProductKey()) || ProductKey.LB.equals(device
                         .getProductKey())) {

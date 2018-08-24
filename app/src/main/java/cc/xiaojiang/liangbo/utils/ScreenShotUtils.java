@@ -21,7 +21,7 @@ import cc.xiaojiang.liangbo.model.event.ShareBitmapEvent;
  */
 public class ScreenShotUtils {
     public static void share(BaseActivity activity) {
-        Bitmap bitmap = ScreenShotUtils.screenShot(activity);
+        Bitmap bitmap = screenShot(activity);
         EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
         activity.startToActivity(ShareActivity.class);
     }
@@ -33,7 +33,7 @@ public class ScreenShotUtils {
      * @return Bitmap
      */
     public static Bitmap screenShot(Activity activity) {
-       return screenShot(activity,  ScreenUtils.dip2px(activity, 180));
+        return screenShot(activity, ScreenUtils.dip2px(activity, 180));
     }
 
     /**
@@ -42,7 +42,7 @@ public class ScreenShotUtils {
      * @param activity activity
      * @return Bitmap
      */
-    public static Bitmap screenShot(Activity activity,int height) {
+    public static Bitmap screenShot(Activity activity, int height) {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -52,9 +52,9 @@ public class ScreenShotUtils {
         int screenWidth = ScreenUtils.getScreenWidth(activity);
         int screenHeight = ScreenUtils.getScreenHeight(activity);
         int toolBarHeight = getToolBarHeight(activity);
-        Bitmap ret = Bitmap.createBitmap(bmp, 0, statusBarHeight + toolBarHeight * 7/ 10,
+        Bitmap ret = Bitmap.createBitmap(bmp, 0, statusBarHeight + toolBarHeight * 7 / 10,
                 screenWidth,
-                screenHeight - statusBarHeight - toolBarHeight * 7/ 10 - height);
+                screenHeight - statusBarHeight - toolBarHeight * 7 / 10 - height);
         view.destroyDrawingCache();
         return ret;
     }
@@ -80,17 +80,19 @@ public class ScreenShotUtils {
     }
 
 
-//    //把布局变成Bitmap
+    //    //把布局变成Bitmap
 //    public static Bitmap getViewBitmap(View view) {
 //        view.setDrawingCacheEnabled(true);
 //        view.buildDrawingCache();  //启用DrawingCache并创建位图
-//        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
+//        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+// 创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
 //        view.setDrawingCacheEnabled(false);
 //        return bitmap;//禁用DrawingCahce否则会影响性能
 //    }
 //
-    public static Bitmap getViewBitmap(View view){
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.RGB_565);
+    public static Bitmap getViewBitmap(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config
+                .RGB_565);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         canvas.setBitmap(null);
