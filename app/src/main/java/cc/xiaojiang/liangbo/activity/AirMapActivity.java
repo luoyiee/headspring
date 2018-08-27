@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -247,17 +248,25 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
             .ACCESS_COARSE_LOCATION})
-    void showLocationRationale(final PermissionRequest request) {
+    void locationRationale(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setPositiveButton("同意", (dialog, which) -> request.proceed())
+                .setNegativeButton("拒绝", (dialog, which) -> request.cancel())
+                .setCancelable(false)
+                .setMessage("请同意我们的定位权限申请")
+                .show();
     }
 
     @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
             .ACCESS_COARSE_LOCATION})
-    void onLocationDenied() {
+    void locationDenied() {
+        ToastUtils.show("请同意权限后再试");
     }
 
     @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
             .ACCESS_COARSE_LOCATION})
-    void onNeverAskLocationAgain() {
+    void locationNeverAskAgain() {
+        ToastUtils.show("请在APP权限设置页面打开定位权限后再试");
     }
 
     @Override

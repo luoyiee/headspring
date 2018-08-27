@@ -99,7 +99,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     private void getDevices() {
         mSrlRefreshDevice.setRefreshing(true);
-
         IotKitDeviceManager.getInstance().deviceList(new IotKitHttpCallback<List<Device>>() {
             @Override
             public void onSuccess(List<Device> data) {
@@ -212,6 +211,10 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                         String nick = editText.getText().toString();
                         if (TextUtils.isEmpty(nick)) {
                             ToastUtils.show("设备昵称不能为空！");
+                            return;
+                        }
+                        if (nick.length() > 6) {
+                            ToastUtils.show("输入设备昵称大于6位");
                             return;
                         }
                         modifyDevice(deviceId, nick);

@@ -212,14 +212,11 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
 
     @Override
     public void onLoadMoreRequested() {
-        mRvMain.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mCurrentPage <= mTotalPage) {
-                    getArticleList();
-                } else {
-                    mArticleAdapter.loadMoreEnd();
-                }
+        mRvMain.postDelayed(() -> {
+            if (mCurrentPage <= mTotalPage) {
+                getArticleList();
+            } else {
+                mArticleAdapter.loadMoreEnd();
             }
         }, 0);
     }

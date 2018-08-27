@@ -4,6 +4,7 @@ import android.Manifest;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,8 +55,13 @@ import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.SpanUtils;
+import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
@@ -355,6 +361,8 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         AirActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
                 grantResults);
+        AirActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
+                grantResults);
     }
 
     /**
@@ -425,5 +433,28 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     private String getDeviceName(Device device) {
         final boolean tag = TextUtils.isEmpty(device.getDeviceNickname());
         return tag ? device.getProductName() : device.getDeviceNickname();
+    }
+
+    @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+            .ACCESS_COARSE_LOCATION})
+    void locationRationale(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setPositiveButton("同意", (dialog, which) -> request.proceed())
+                .setNegativeButton("拒绝", (dialog, which) -> request.cancel())
+                .setCancelable(false)
+                .setMessage("请同意我们的定位权限申请")
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+            .ACCESS_COARSE_LOCATION})
+    void locationDenied() {
+        ToastUtils.show("请同意权限后再试");
+    }
+
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+            .ACCESS_COARSE_LOCATION})
+    void locationNeverAskAgain() {
+        ToastUtils.show("请在APP权限设置页面打开定位权限后再试");
     }
 }
