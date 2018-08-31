@@ -105,7 +105,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     }
 
     private void showPupWindow() {
-        final View contentView = getLayoutInflater().inflate(R.layout.layout_pop_window_air_map, null);
+        final View contentView = getLayoutInflater().inflate(R.layout.layout_pop_window_air_map,
+                null);
         final PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
@@ -279,11 +280,15 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         LatLngBounds latLngBounds = aMap.getProjection().getVisibleRegion().latLngBounds;
         float zoom = aMap.getCameraPosition().zoom;
         Logger.d("zoom:" + zoom);
-        if (zoom <= 9) {
-            getAqi(1, latLngBounds.northeast, latLngBounds.southwest);
+        int level;
+        if (zoom <= 7) {
+            level = 0;
+        } else if (zoom <= 9) {
+            level = 1;
         } else {
-            getAqi(2, latLngBounds.northeast, latLngBounds.southwest);
+            level = 2;
         }
+        getAqi(level, latLngBounds.northeast, latLngBounds.southwest);
     }
 
     private void getAqi(int level, LatLng northeast, LatLng southwest) {

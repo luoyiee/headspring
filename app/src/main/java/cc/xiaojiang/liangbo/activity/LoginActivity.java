@@ -189,7 +189,6 @@ public class LoginActivity extends BaseActivity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-
     }
 
     private void getUserInfo() {

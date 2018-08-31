@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 
 import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import cc.xiaojiang.iotkit.IotKit;
@@ -25,7 +26,7 @@ public class MyApplication extends Application {
         IotKit.init(this, new IotKitAccountImpl(), false);
 //        if(!BuildConfig.DEBUG){
         Bugly.init(getApplicationContext(), "be4413cd77", false);
-//        Beta.autoCheckUpgrade = true;
+        Beta.autoCheckUpgrade = true;
 //        }
         ZXingLibrary.initDisplayOpinion(this);
         MobSDK.init(this);

@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,6 +25,8 @@ public class InstructionActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.item_one_instrument:
+                Intent intent = new Intent(this, LbInstructionsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.item_two_instrument:
                 break;

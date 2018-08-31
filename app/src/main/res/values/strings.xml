@@ -114,4 +114,5 @@
     <string name="personal_update_success">修改成功</string>
     <string name="main_my_air">我的空气</string>
     <string name="wifi_config_connect_wifi">当前Wi-Fi：%s</string>
+    <string name="title_activity_lb_instructions">LB净化器使用说明书</string>
 </resources>

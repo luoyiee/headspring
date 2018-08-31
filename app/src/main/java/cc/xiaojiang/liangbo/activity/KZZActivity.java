@@ -53,6 +53,8 @@ import cc.xiaojiang.liangbo.view.AP1View4;
 import cc.xiaojiang.liangbo.view.CommonTextView;
 import cc.xiaojiang.liangbo.widget.AP1TimingDialog;
 
+import static cc.xiaojiang.liangbo.activity.FilterTimeRemainActivity.FLITER_MAX_VALUE;
+
 public class KZZActivity extends BaseActivity implements
         AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback, AP1TimingDialog
         .OnTimeSelectedListener {
@@ -119,6 +121,8 @@ public class KZZActivity extends BaseActivity implements
     private AP1TimingDialog mAP1TimingDialog;
 
     private boolean isShowGuidePage = false;
+    private boolean isShowFilter = false;
+
 
     private Timer mTimer = new Timer();
 
@@ -165,7 +169,7 @@ public class KZZActivity extends BaseActivity implements
         popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec
                 .UNSPECIFIED);
         contentView.findViewById(R.id.tv_popup_time_remain).setOnClickListener(v -> {
-            FilterTimeRemainActivity.actionStart(this, mUseTime);
+            FilterTimeRemainActivity.actionStart(this, mUseTime, mDevice);
             popupWindow.dismiss();
 
         });
@@ -269,7 +273,7 @@ public class KZZActivity extends BaseActivity implements
             public void run() {
                 openRealReporting(1);
             }
-        }, 0, 60* 1000);
+        }, 0, 60 * 1000);
     }
 
     @Override
@@ -431,9 +435,9 @@ public class KZZActivity extends BaseActivity implements
     }
 
     private void refreshFilter() {
-        int percent = (int) (100f * (2000 - mUseTime) / 2000);
+        int percent = (int) (100f * (FLITER_MAX_VALUE - mUseTime) / FLITER_MAX_VALUE);
         mTvStatusFilter.setText(String.format("%02d", percent) + "%");
-        if (mUseTime >= 2000) {
+        if (mUseTime >= FLITER_MAX_VALUE) {
             showChangeFilter();
         }
     }
@@ -476,6 +480,9 @@ public class KZZActivity extends BaseActivity implements
     }
 
     private void showChangeFilter() {
+        if (isShowFilter) {
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("更换滤芯");
         builder.setMessage("滤网使用时间到了，请您及时更换滤芯!");
@@ -483,7 +490,7 @@ public class KZZActivity extends BaseActivity implements
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                isShowFilter = true;
             }
         });
 

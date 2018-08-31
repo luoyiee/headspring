@@ -68,7 +68,8 @@
         android:drawablePadding="4dp"
         android:drawableTop="@drawable/filter_reset"
         android:text="滤芯复位"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:visibility="invisible" />
 
 
 </FrameLayout>
