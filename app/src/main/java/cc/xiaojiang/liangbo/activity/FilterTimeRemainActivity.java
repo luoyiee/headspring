@@ -76,15 +76,6 @@ public class FilterTimeRemainActivity extends BaseActivity implements View.OnLon
     }
 
 
-    @OnClick(R.id.tv_filter_reset)
-    public void onViewClicked() {
-        if (mUseTime >= FLITER_MAX_VALUE) {
-            resetFilter();
-        } else {
-            ToastUtils.show("不需要重置滤芯");
-        }
-
-    }
 
     private void resetFilter() {
         new AlertDialog.Builder(this)
