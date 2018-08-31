@@ -63,18 +63,13 @@ public class FilterTimeRemainActivity extends BaseActivity implements View.OnLon
     private void setView() {
         mViewFilterTimeRemain.setValue(FLITER_MAX_VALUE - mUseTime);
         mTvFilterUseTime.setText(getString(R.string.filter_use_time, mUseTime));
-        if (mUseTime >= FLITER_MAX_VALUE) {
-            mTvFilterReset.setVisibility(View.VISIBLE);
-        } else {
-            mTvFilterReset.setVisibility(View.INVISIBLE);
-        }
+
     }
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_filtere_time_remain;
     }
-
 
 
     private void resetFilter() {
@@ -120,6 +115,11 @@ public class FilterTimeRemainActivity extends BaseActivity implements View.OnLon
     @Override
     public boolean onLongClick(View v) {
         resetFilter();
+//        if (mUseTime >= FLITER_MAX_VALUE) {
+//            resetFilter();
+//        } else {
+//            ToastUtils.show("滤芯未满足重置条件");
+//        }
         return false;
     }
 }

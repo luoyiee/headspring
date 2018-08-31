@@ -486,14 +486,13 @@ public class KZZActivity extends BaseActivity implements
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("更换滤芯");
         builder.setMessage("滤网使用时间到了，请您及时更换滤芯!");
-        builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 isShowFilter = true;
             }
         });
-
+        builder.show();
     }
 
 

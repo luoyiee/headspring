@@ -69,7 +69,7 @@ public class WaveProgressView extends View {
     //最大值
     private float mMaxValue = 100;
     //当前值
-    private float mValue = 50;
+    private float mValue = 0;
     //当前进度
     private float mPercent;
 
@@ -306,10 +306,12 @@ public class WaveProgressView extends View {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "mPercent = " + mPercent + "; mPrePercent = " + mPrePercent);
         }
-        if (mPrePercent == 0.0f || Math.abs(mPercent - mPrePercent) >= 0.001f) {
-            mPercentValue = String.format(Locale.getDefault(), "%02d", (int)(mPercent * 100f));
-            mPrePercent = mPercent;
-        }
+//        if (mPrePercent == 0.0f || Math.abs(mPercent - mPrePercent) >= 0.001f) {
+//            mPercentValue = String.format(Locale.getDefault(), "%02d", (int) (mPercent * 100f));
+//            mPrePercent = mPercent;
+//        }
+        mPercentValue = String.format(Locale.getDefault(), "%02d", (int) (mPercent * 100f));
+        mPrePercent = mPercent;
         Logger.e("mPrePercent:" + mPercentValue);
         canvas.drawText(mPercentValue, mCenterPoint.x - mOffSet, y - mOffSet, mPercentPaint);
 
@@ -440,7 +442,7 @@ public class WaveProgressView extends View {
             value = mMaxValue;
         }
         float start = mPercent;
-        float end = value / mMaxValue;
+        float end = 1.0f * value / mMaxValue;
         Log.d(TAG, "setValue, value = " + value + ";start = " + start + "; end = " + end);
         startAnimator(start, end, mDarkWaveAnimTime);
     }
