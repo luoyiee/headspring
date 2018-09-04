@@ -8,8 +8,9 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 18
-        versionName "1.0.0-beta21"
+        versionCode 19
+
+        versionName "1.0.0-beta22"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -51,7 +52,7 @@ android {
     //自动生成apk包名
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
+            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + ".apk"
         }
     }
 }

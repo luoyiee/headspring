@@ -20,9 +20,9 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/feedback_bg_et"
         android:ems="10"
-        android:maxLength="250"
         android:gravity="start"
         android:hint="@string/feedback_hint"
+        android:maxLength="250"
         android:padding="12dp"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -56,10 +56,10 @@
 
     <TextView
         android:id="@+id/tv_call_after_sell"
-        android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="售后电话:17712488856"
+        android:padding="8dp"
+        android:text="售后电话:17712488856\n服务热线:400 662 7958"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/et_feedback_content"
         app:layout_constraintTop_toBottomOf="@+id/et_feedback_content" />

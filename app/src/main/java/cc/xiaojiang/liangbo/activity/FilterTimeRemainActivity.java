@@ -114,12 +114,11 @@ public class FilterTimeRemainActivity extends BaseActivity implements View.OnLon
 
     @Override
     public boolean onLongClick(View v) {
-        resetFilter();
-//        if (mUseTime >= FLITER_MAX_VALUE) {
-//            resetFilter();
-//        } else {
-//            ToastUtils.show("滤芯未满足重置条件");
-//        }
+        if (mUseTime >= FLITER_MAX_VALUE) {
+            resetFilter();
+        } else {
+            ToastUtils.show("滤芯未满足重置条件");
+        }
         return false;
     }
 }

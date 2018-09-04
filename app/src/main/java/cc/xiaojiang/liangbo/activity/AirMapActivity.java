@@ -48,6 +48,8 @@ import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -281,9 +283,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         float zoom = aMap.getCameraPosition().zoom;
         Logger.d("zoom:" + zoom);
         int level;
-        if (zoom <= 7) {
-            level = 0;
-        } else if (zoom <= 9) {
+        if (zoom <= 9) {
             level = 1;
         } else {
             level = 2;
@@ -299,11 +299,26 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
                 .map(new HttpResultFunc<>())
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())
-                .subscribe(new ProgressObserver<List<AqiModel>>(this) {
+                .subscribe(new Observer<List<AqiModel>>() {
                     @Override
-                    public void onSuccess(List<AqiModel> aqiModels) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<AqiModel> aqiModels) {
                         aMap.clear();
                         showMarkers(aqiModels);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

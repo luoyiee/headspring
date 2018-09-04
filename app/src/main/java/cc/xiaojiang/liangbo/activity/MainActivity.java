@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.app.hubert.guide.util.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -167,7 +168,7 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ctv_chain:
-                ToastUtils.show("区块链");
+                ToastUtils.show("仅向股东开放");
                 break;
             case R.id.ctv_map:
                 startToActivity(AirMapActivity.class);
@@ -176,7 +177,7 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                 LoginInterceptor.interceptor(this, DeviceListActivity.class.getName(), null);
                 break;
             case R.id.ctv_shop:
-                startToActivity(ShopActivity.class);
+                ToastUtils.show("商城正在建设中，暂不开放");
                 break;
             case R.id.ctv_personal:
                 startToActivity(PersonalCenterActivity.class);
