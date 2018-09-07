@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.LunarActivity"
     tools:showIn="@layout/activity_lunar">
 
@@ -41,66 +42,78 @@
 
     <View
         android:id="@+id/view3"
-        style="@style/horizontalBlockView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        style="@style/horizontalBlockView" />
 
-    <TextView
-        android:id="@+id/tv_calendar_day"
-        style="@style/commonText"
-        android:layout_marginEnd="24dp"
-        android:includeFontPadding="false"
-        android:textColor="@color/primary_blue"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_lunar_time"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="15" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tv_solar_terms"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_calendar_day"
+            style="@style/commonText"
+            android:layout_gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textColor="@color/primary_blue"
+            android:textSize="60sp"
+            tools:text="15" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_lunar_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingRight="8dp"
+                tools:text="星期五" />
+
+
+            <TextView
+                android:id="@+id/tv_lunar_lunar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingRight="8dp"
+                tools:text="五月初二" />
+
+            <TextView
+                android:id="@+id/tv_lunar_lunarYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                tools:text="戊戌年【狗年】" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <include layout="@layout/layout_divider_line_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_lunar_month_day"
-        app:layout_constraintEnd_toEndOf="@+id/tv_calendar_day"
-        app:layout_constraintTop_toTopOf="@+id/tv_lunar_month_day"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="TextView" />
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tv_lunar_time"
-        style="@style/common_14_black_text"
-        android:layout_marginBottom="12dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_lunar_year"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="TextView" />
+        <TextView
+            android:id="@+id/tv_lunar_suit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            tools:text="宜" />
 
-    <TextView
-        android:id="@+id/tv_lunar_year"
-        style="@style/common_14_black_text"
-        app:layout_constraintBottom_toTopOf="@+id/tv_lunar_month_day"
-        app:layout_constraintStart_toStartOf="@+id/tv_lunar_time"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lunar_time"
-        tools:text="TextView" />
+        <TextView
+            android:id="@+id/tv_lunar_avoid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="忌" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_lunar_month_day"
-        style="@style/common_14_black_text"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_lunar_year"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lunar_year"
-        tools:text="TextView" />
-
-    <android.support.constraint.Group
-        android:id="@+id/group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tv_solar_terms,tv_lunar_year,tv_lunar_month_day,
-tv_calendar_day,tv_lunar_time" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

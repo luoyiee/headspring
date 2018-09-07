@@ -62,6 +62,7 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
     private Device mDevice;
     private LocationClient mLocationClient;
     private String mCity;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +72,14 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         mLocationClient = new LocationClient();
         HistoryDataActivityPermissionsDispatcher.locationWithPermissionCheck(this);
     }
+
     @Override
     protected void onDestroy() {
         mLocationClient.stopLocation();
         mLocationClient.onDestroy();
         super.onDestroy();
     }
+
     private void initData() {
         Intent intent = getIntent();
         mDevice = intent.getParcelableExtra("device");
@@ -95,17 +98,17 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share,menu);
+        getMenuInflater().inflate(R.menu.menu_share, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_share){
+        if (item.getItemId() == R.id.action_share) {
             Bitmap bitmap = ScreenShotUtils.getViewBitmap(mLineChart);
             EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
 
-            ShareHistoryDataActivity.actionStart(this,mDevice);
+            ShareHistoryDataActivity.actionStart(this, mDevice);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -179,31 +182,38 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
     private void showData(Pm25HistoryModel pm25HistoryModel) {
         IAxisValueFormatter formatter = null;
         LineData lineData = null;
+        int index = 0;
         switch (mPosition) {
             case 0:
                 lineData = MPChartUtils.formatData(pm25HistoryModel, DAY);
                 formatter = MPChartUtils.getFormat(DAY);
-
+                index = DateUtils.getHourIndex();
+                Logger.d("day: " + DateUtils.getHourIndex());
                 break;
             case 1:
                 lineData = MPChartUtils.formatData(pm25HistoryModel, WEEK);
                 formatter = MPChartUtils.getFormat(WEEK);
+                index = DateUtils.getWeekIndex();
+                Logger.d("week: " + DateUtils.getWeekIndex());
                 break;
             default:
                 lineData = MPChartUtils.formatData(pm25HistoryModel, MONTH);
                 formatter = MPChartUtils.getFormat(MONTH);
+                index = DateUtils.getMonthIndex();
+                Logger.d("month: " + DateUtils.getMonthIndex());
                 break;
         }
-        refreshData(lineData, formatter);
+        refreshData(lineData, index, formatter);
     }
 
-    private void refreshData(LineData lineData, IAxisValueFormatter iAxisValueFormatter) {
+    private void refreshData(LineData lineData, int index, IAxisValueFormatter
+            iAxisValueFormatter) {
         if (lineData == null) {
             return;
         }
         mLineChart.setData(lineData);
         //todo 默认选中哪一个值
-//        mLineChart.highlightValue(5,0,true);
+        mLineChart.highlightValue(index, 0, true);
         mLineChart.getXAxis().setValueFormatter(iAxisValueFormatter);
         mLineChart.animateX(1000);
         mLineChart.invalidate();
@@ -226,9 +236,9 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
             LineDataSet indoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(0);
             LineDataSet outdoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(1);
             mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX()).getY()
-                    + "");
+                    + "μg/m³");
             mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
-                    "");
+                    "μg/m³");
         } else {
             Logger.e("error data!");
         }

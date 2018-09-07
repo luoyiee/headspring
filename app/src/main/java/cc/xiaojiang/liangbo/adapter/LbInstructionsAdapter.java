@@ -12,15 +12,15 @@ import cc.xiaojiang.iotkit.bean.http.Article;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.utils.ImageLoader;
 
-public class LbInstructionsAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class LbInstructionsAdapter extends BaseQuickAdapter<Integer, BaseViewHolder> {
 
 
-    public LbInstructionsAdapter(int layoutResId, @Nullable List<String> data) {
+    public LbInstructionsAdapter(int layoutResId, @Nullable List<Integer> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        helper.setImageResource(R.id.iv_lb_instructions, R.drawable.lb_instructions_1);
+    protected void convert(BaseViewHolder helper, Integer item) {
+        helper.setImageResource(R.id.iv_lb_instructions, item);
     }
 }

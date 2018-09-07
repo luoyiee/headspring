@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ShareUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
@@ -51,6 +53,7 @@ public class BrowserActivity extends BaseActivity {
     private String mUrl;
     private String mTitle;
     private String mText;
+    private String mShowTitle;
     private boolean mShare;
     private String mLink;
 
@@ -90,9 +93,11 @@ public class BrowserActivity extends BaseActivity {
         mTitle = getIntent().getStringExtra("dynamic_title");
         mText = getIntent().getStringExtra("dynamic_text");
         mLink = getIntent().getStringExtra("buy_link");
+        mShowTitle = getIntent().getStringExtra("show_title");
         mShare = getIntent().getBooleanExtra("share", false);
         invalidateOptionsMenu();
         setTitle("");
+        setTitle(mShowTitle);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         // init sonic engine if necessary, or maybe u can do this when application created
         BrowserActivityPermissionsDispatcher.createSonicWithPermissionCheck(this, mUrl);
@@ -157,8 +162,15 @@ public class BrowserActivity extends BaseActivity {
             mSonicSessionClient.bindWebView(mWebView);
             mSonicSessionClient.clientReady();
         } else {
+            mWebView.addJavascriptInterface(this, "app");
             mWebView.loadUrl(mUrl);
         }
+    }
+
+    @JavascriptInterface
+    public String getUuid() {
+//        return DbUtils.getXJUserId();
+        return "11";
     }
 
     @Override

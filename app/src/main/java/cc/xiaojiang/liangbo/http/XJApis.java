@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import cc.xiaojiang.liangbo.http.model.BaseModel;
+import cc.xiaojiang.liangbo.model.LunarBean;
 import cc.xiaojiang.liangbo.model.http.AirRankModel;
 import cc.xiaojiang.liangbo.model.http.AqiModel;
 import cc.xiaojiang.liangbo.model.http.DynamicModel;
@@ -73,5 +74,8 @@ public interface XJApis {
     @FormUrlEncoded
     @POST(HttpUrl.DYNAMIC_LIKE)
     Observable<BaseModel<String>> dynamicLike(@Field("id") int id);
+
+    @GET("appstore/calendar/day")
+    Observable<LunarBean> lunar(@Query("key") String key, @Query("date") String date);
 
 }

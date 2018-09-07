@@ -33,6 +33,7 @@ import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
+import cc.xiaojiang.liangbo.utils.ProgressDialogUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cn.smssdk.EventHandler;
@@ -153,7 +154,7 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new Observer<LoginModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        showDialog();
+                        mProgressDialog = ProgressDialogUtils.show(LoginActivity.this);
                     }
 
                     @Override
@@ -167,8 +168,8 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        ProgressDialogUtils.dismiss(mProgressDialog);
                         ToastUtils.show(e.getMessage());
-                        hideDialog();
                     }
 
                     @Override
@@ -179,17 +180,6 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
-    private void showDialog() {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("请稍等...");
-        mProgressDialog.setCancelable(false);
-    }
-
-    private void hideDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
 
     private void getUserInfo() {
         RetrofitHelper.getService().userInfo()
@@ -204,29 +194,14 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onNext(UserInfoModel userInfoModel) {
                         DbUtils.setUserId(String.valueOf(userInfoModel.getTelphone()));
-                        IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
-                            @Override
-                            public void onCompleted(boolean isSucceed, String msg) {
-                                LoginCarrier invoker = getIntent().getParcelableExtra
-                                        (LoginInterceptor.INVOKER);
-                                if (invoker != null) {
-                                    invoker.invoke(LoginActivity.this);
-                                    EventBus.getDefault().post(new LoginEvent(LoginEvent
-                                            .CODE_LOGIN));
-                                } else {
-                                    startToActivity(MainActivity.class);
-                                }
-                                hideDialog();
-                                ToastUtils.show("登录成功");
-                                finish();
-                            }
-                        });
+                        startMain();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        ProgressDialogUtils.dismiss(mProgressDialog);
                         ToastUtils.show(e.getMessage());
-                        hideDialog();
+                        startMain();
                     }
 
                     @Override
@@ -235,6 +210,27 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
     }
+
+    public void startMain(){
+        IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
+            @Override
+            public void onCompleted(boolean isSucceed, String msg) {
+                ProgressDialogUtils.dismiss(mProgressDialog);
+                LoginCarrier invoker = getIntent().getParcelableExtra
+                        (LoginInterceptor.INVOKER);
+                if (invoker != null) {
+                    invoker.invoke(LoginActivity.this);
+                    EventBus.getDefault().post(new LoginEvent(LoginEvent
+                            .CODE_LOGIN));
+                } else {
+                    startToActivity(MainActivity.class);
+                }
+                ToastUtils.show("登录成功");
+                finish();
+            }
+        });
+    }
+
 
     @Override
     protected void onDestroy() {

@@ -39,9 +39,9 @@
                     android:id="@+id/tv_personal_center_nick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="请登录"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:text="Ami" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_personal_center_phone"

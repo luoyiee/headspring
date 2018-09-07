@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,18 +59,20 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     private List<Article.ListsBean> mListsBeans;
     private int mCurrentPage = 1;
     private int mTotalPage;
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         mTvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        mUserId = DbUtils.getUserId();
         initRecycleView();
         getArticleList();
     }
 
     private void getArticleList() {
-        IotKitCommunityManager.getInstance().getArticleList(DbUtils.getUserId(), mCurrentPage,
+        IotKitCommunityManager.getInstance().getArticleList(mUserId, mCurrentPage,
                 20, new IotKitHttpCallback<Article>() {
                     @Override
                     public void onSuccess(Article data) {

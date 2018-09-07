@@ -8,9 +8,9 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 19
+        versionCode 20
 
-        versionName "1.0.0-beta22"
+        versionName "1.0.0-beta23"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -52,7 +52,7 @@ android {
     //自动生成apk包名
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + ".apk"
+            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
         }
     }
 }
@@ -117,7 +117,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     //依赖注入
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
@@ -126,5 +126,6 @@ dependencies {
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     //其他
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.github.iwgang:simplifyspan:2.1'
 
 }

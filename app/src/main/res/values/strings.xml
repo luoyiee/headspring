@@ -82,7 +82,7 @@
     <string name="menu_add">添加</string>
     <string name="menu_more">更多</string>
 
-    <string name="product_scan">扫描二维码添加设备</string>
+    <string name="product_scan">扫描共享码添加设备</string>
     <string name="personal_male">男</string>
     <string name="personal_female">女</string>
     <string name="lunar_year_month">%d年%d月</string>

@@ -9,6 +9,14 @@
     tools:context="cc.xiaojiang.liangbo.activity.ProductListActivity"
     tools:showIn="@layout/activity_product_list">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+    <include layout="@layout/layout_divider_block" />
+
     <LinearLayout
         android:id="@+id/ll_product_list_scan"
         android:layout_width="match_parent"
@@ -29,14 +37,4 @@
             android:layout_marginLeft="5dp"
             android:text="@string/product_scan" />
     </LinearLayout>
-
-    <include layout="@layout/layout_divider_block" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_product"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.RecyclerView>
-
 </LinearLayout>

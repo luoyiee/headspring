@@ -114,9 +114,9 @@ public class MPChartUtils {
         // 设置y轴文字的大小
         yAxis.setTextSize(12);
 
-        LimitLine excellentLine = createLimitLine(35f,"优",R.color.air_1);
-        LimitLine goodLine = createLimitLine(75f,"良",R.color.air_2);
-        LimitLine badLine = createLimitLine(110f,"差",R.color.air_4);
+        LimitLine excellentLine = createLimitLine(35f, "优", R.color.air_1);
+        LimitLine goodLine = createLimitLine(75f, "良", R.color.air_2);
+        LimitLine badLine = createLimitLine(110f, "差", R.color.air_4);
 
         yAxis.addLimitLine(excellentLine);
         yAxis.addLimitLine(goodLine);
@@ -152,7 +152,7 @@ public class MPChartUtils {
     private static LimitLine createLimitLine(float value, String label, @ColorRes int colorId) {
         LimitLine ll = new LimitLine(value, label);
         ll.setLineWidth(1f);
-        ll.setLineColor(ContextCompat.getColor(MyApplication.getInstance(),colorId));
+        ll.setLineColor(ContextCompat.getColor(MyApplication.getInstance(), colorId));
         ll.enableDashedLine(10f, 10f, 0f);
         ll.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll.setTextSize(10f);
@@ -184,6 +184,7 @@ public class MPChartUtils {
         dataSet.setCircleColorHole(lineColor);
         //设置高亮线
         dataSet.setHighlightEnabled(true);
+        dataSet.setHighlightLineWidth(1.5f);
         dataSet.setDrawHorizontalHighlightIndicator(false);
         dataSet.setHighLightColor(Color.GRAY);
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
@@ -193,7 +194,7 @@ public class MPChartUtils {
         dataSet.setCircleRadius(3f);
         dataSet.setCircleHoleRadius(1f);
         // 设置线的宽度
-        dataSet.setLineWidth(1f);
+        dataSet.setLineWidth(1.5f);
         return dataSet;
     }
 
@@ -272,7 +273,6 @@ public class MPChartUtils {
     }
 
     private static LineData formatWeekData(Pm25HistoryModel pm25HistoryModel) {
-        // TODO: 2018/8/7 bug修复
         List<Entry> outEntries = new ArrayList<>();
         List<Entry> inEntries = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

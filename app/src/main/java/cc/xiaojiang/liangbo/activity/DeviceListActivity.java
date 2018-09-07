@@ -109,6 +109,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
             @Override
             public void onError(String code, String errorMsg) {
+                ToastUtils.show(errorMsg);
                 hideRefreshing();
             }
 

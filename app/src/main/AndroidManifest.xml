@@ -148,7 +148,7 @@
         <activity android:name=".activity.ShareHistoryDataActivity" />
         <activity android:name=".activity.ShareAirActivity" />
         <activity
-            android:name=".activity.LbInstructionsActivity"
+            android:name=".activity.InstructionsActivity"
             android:label="@string/title_activity_lb_instructions" />
     </application>
 
