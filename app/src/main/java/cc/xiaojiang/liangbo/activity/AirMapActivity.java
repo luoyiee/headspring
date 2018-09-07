@@ -33,6 +33,7 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindString;
@@ -200,24 +201,27 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
     private void setInfoWindowData(Marker marker, View infoWindow) {
         AqiModel aqiModel = (AqiModel) marker.getObject();
-        TextView mTvInfoWindowPm25 = infoWindow.findViewById(R.id.tv_info_window_pm25);
-        TextView mTvInfoWindowNo2 = infoWindow.findViewById(R.id.tv_info_window_no2);
-        TextView mTvInfoWindowO3 = infoWindow.findViewById(R.id.tv_info_window_o3);
-        TextView mTvInfoWindowPm10 = infoWindow.findViewById(R.id.tv_info_window_pm10);
-        TextView mTvInfoWindowSo2 = infoWindow.findViewById(R.id.tv_info_window_so2);
-        TextView mTvInfoWindowCo = infoWindow.findViewById(R.id.tv_info_window_co);
-        TextView mTvInfoWindowLocation = infoWindow.findViewById(R.id.tv_info_window_location);
-        mTvInfoWindowPm25.setText(String.valueOf(aqiModel.getPm25()));
-        mTvInfoWindowNo2.setText(String.valueOf(aqiModel.getNo2()));
-        mTvInfoWindowO3.setText(String.valueOf(aqiModel.getO3()));
-        mTvInfoWindowPm10.setText(String.valueOf(aqiModel.getPm10()));
-        mTvInfoWindowSo2.setText(String.valueOf(aqiModel.getSo2()));
-        mTvInfoWindowCo.setText(String.valueOf(aqiModel.getCo()));
-        String title = aqiModel.getCity();
-        if (aqiModel.getStation() != null) {
-            title = title + aqiModel.getStation();
+        if (aqiModel != null) {
+            TextView mTvInfoWindowPm25 = infoWindow.findViewById(R.id.tv_info_window_pm25);
+            TextView mTvInfoWindowNo2 = infoWindow.findViewById(R.id.tv_info_window_no2);
+            TextView mTvInfoWindowO3 = infoWindow.findViewById(R.id.tv_info_window_o3);
+            TextView mTvInfoWindowPm10 = infoWindow.findViewById(R.id.tv_info_window_pm10);
+            TextView mTvInfoWindowSo2 = infoWindow.findViewById(R.id.tv_info_window_so2);
+            TextView mTvInfoWindowCo = infoWindow.findViewById(R.id.tv_info_window_co);
+            TextView mTvInfoWindowLocation = infoWindow.findViewById(R.id.tv_info_window_location);
+            mTvInfoWindowPm25.setText(String.valueOf(aqiModel.getPm25()));
+            mTvInfoWindowNo2.setText(String.valueOf(aqiModel.getNo2()));
+            mTvInfoWindowO3.setText(String.valueOf(aqiModel.getO3()));
+            mTvInfoWindowPm10.setText(String.valueOf(aqiModel.getPm10()));
+            mTvInfoWindowSo2.setText(String.valueOf(aqiModel.getSo2()));
+            mTvInfoWindowCo.setText(String.valueOf(aqiModel.getCo()));
+            String title = aqiModel.getCity();
+            if (aqiModel.getStation() != null) {
+                title = title + aqiModel.getStation();
+            }
+            mTvInfoWindowLocation.setText(title);
         }
-        mTvInfoWindowLocation.setText(title);
+
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
@@ -239,6 +243,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
                         .getLatitude(), location.getLongitude()), 10));
             }
         });
+        aMap.setOnMarkerClickListener(this);
+        aMap.setInfoWindowAdapter(this);
     }
 
     @Override
@@ -307,7 +313,6 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
 
                     @Override
                     public void onNext(List<AqiModel> aqiModels) {
-                        aMap.clear();
                         showMarkers(aqiModels);
                     }
 
@@ -324,27 +329,27 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     }
 
     private void showMarkers(List<AqiModel> aqiModels) {
+        ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
         for (AqiModel aqiModel : aqiModels) {
-            showMarker(aqiModel);
+            LatLng latLng = new LatLng(aqiModel.getLatitude(), aqiModel.getLongtitude());
+            //自定义marker
+            View view = getLayoutInflater().inflate(R.layout.layout_marker, null);
+            TextView aqi = view.findViewById(R.id.tv_marker_aqi);
+            ImageView ivMarker = view.findViewById(R.id.iv_marker_marker);
+
+            ivMarker.setImageResource(getMarkerIcon(aqiModel.getAqi()));
+            aqi.setText(String.valueOf(aqiModel.getAqi()));
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .infoWindowEnable(true)
+                    .icon(BitmapDescriptorFactory.fromView(view));
+            markerOptionlst.add(markerOptions);
         }
-    }
-
-    private void showMarker(AqiModel aqiModel) {
-        LatLng latLng = new LatLng(aqiModel.getLatitude(), aqiModel.getLongtitude());
-        //自定义marker
-        View view = getLayoutInflater().inflate(R.layout.layout_marker, null);
-        TextView aqi = view.findViewById(R.id.tv_marker_aqi);
-        ImageView ivMarker = view.findViewById(R.id.iv_marker_marker);
-
-        ivMarker.setImageResource(getMarkerIcon(aqiModel.getAqi()));
-        aqi.setText(String.valueOf(aqiModel.getAqi()));
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromView(view));
-        Marker marker = aMap.addMarker(markerOptions);
-        marker.setObject(aqiModel);
-        aMap.setOnMarkerClickListener(this);
-        aMap.setInfoWindowAdapter(this);
+        aMap.clear();
+        ArrayList<Marker> ss = aMap.addMarkers(markerOptionlst, false);
+        for (int i = 0; i < aqiModels.size(); i++) {
+            ss.get(i).setObject(aqiModels.get(i));
+        }
     }
 
     private int getMarkerIcon(int aqi) {

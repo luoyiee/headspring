@@ -35,7 +35,7 @@ public class InstructionActivity extends BaseActivity {
                 Intent intent = new Intent(this, BrowserActivity.class);
                 intent.putExtra("show_title", "APP使用说明书");
                 intent.putExtra("dynamic_url", "http://dev.xjiangiot" +
-                        ".com/app-preview/instruction/info.html?client_key=i8d53f&value=1");
+                        ".com/app-preview/instruction/info.html?client_key=i8d53&value=1");
                 startActivity(intent);
                 break;
         }

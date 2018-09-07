@@ -1,119 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context=".activity.LunarActivity"
     tools:showIn="@layout/activity_lunar">
-
-    <com.haibin.calendarview.CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:calendar_height="60dp"
-        app:calendar_padding="10dp"
-        app:current_day_lunar_text_color="@color/primary_blue"
-        app:current_day_text_color="@color/primary_blue"
-        app:current_month_lunar_text_color="#CFCFCF"
-        app:current_month_text_color="#333333"
-        app:layout_constraintTop_toTopOf="parent"
-        app:max_year="2020"
-        app:min_year="2004"
-        app:month_view="cc.xiaojiang.liangbo.view.CustomMonthView"
-        app:month_view_show_mode="mode_fix"
-        app:other_month_lunar_text_color="#e1e1e1"
-        app:other_month_text_color="#e1e1e1"
-        app:selected_lunar_text_color="#fff"
-        app:selected_text_color="#fff"
-        app:selected_theme_color="@color/primary_blue"
-        app:week_background="@color/transparent"
-        app:week_text_color="#e1e1e1"
-        app:week_text_size="14sp"
-        app:week_view="cc.xiaojiang.liangbo.view.CustomWeekView"
-        app:year_view_day_text_color="#333333"
-        app:year_view_day_text_size="9sp"
-        app:year_view_month_text_color="@color/black"
-        app:year_view_month_text_size="20sp"
-        app:year_view_scheme_color="#f17706">
-
-    </com.haibin.calendarview.CalendarView>
-
-    <View
-        android:id="@+id/view3"
-        style="@style/horizontalBlockView" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/tv_calendar_day"
-            style="@style/commonText"
-            android:layout_gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:textColor="@color/primary_blue"
-            android:textSize="60sp"
-            tools:text="15" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_lunar_week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:paddingRight="8dp"
-                tools:text="星期五" />
-
-
-            <TextView
-                android:id="@+id/tv_lunar_lunar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:paddingRight="8dp"
-                tools:text="五月初二" />
-
-            <TextView
-                android:id="@+id/tv_lunar_lunarYear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                tools:text="戊戌年【狗年】" />
-
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <include layout="@layout/layout_divider_line_horizontal" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/tv_lunar_suit"
+        android:layout_height="wrap_content">
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            tools:text="宜" />
+            app:calendar_height="60dp"
+            app:calendar_padding="10dp"
+            app:current_day_lunar_text_color="@color/primary_blue"
+            app:current_day_text_color="@color/primary_blue"
+            app:current_month_lunar_text_color="#CFCFCF"
+            app:current_month_text_color="#333333"
+            app:layout_constraintTop_toTopOf="parent"
+            app:max_year="2020"
+            app:min_year="2004"
+            app:month_view="cc.xiaojiang.liangbo.view.CustomMonthView"
+            app:month_view_show_mode="mode_fix"
+            app:other_month_lunar_text_color="#e1e1e1"
+            app:other_month_text_color="#e1e1e1"
+            app:selected_lunar_text_color="#fff"
+            app:selected_text_color="#fff"
+            app:selected_theme_color="@color/primary_blue"
+            app:week_background="@color/transparent"
+            app:week_text_color="#e1e1e1"
+            app:week_text_size="14sp"
+            app:week_view="cc.xiaojiang.liangbo.view.CustomWeekView"
+            app:year_view_day_text_color="#333333"
+            app:year_view_day_text_size="9sp"
+            app:year_view_month_text_color="@color/black"
+            app:year_view_month_text_size="20sp"
+            app:year_view_scheme_color="#f17706">
 
-        <TextView
-            android:id="@+id/tv_lunar_avoid"
+        </com.haibin.calendarview.CalendarView>
+
+        <View
+            android:id="@+id/view3"
+            style="@style/horizontalBlockView" />
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="忌" />
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_calendar_day"
+                style="@style/commonText"
+                android:layout_gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/primary_blue"
+                android:textSize="60sp"
+                tools:text="15" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_lunar_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:paddingRight="8dp"
+                    tools:text="星期五" />
+
+
+                <TextView
+                    android:id="@+id/tv_lunar_lunar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:paddingRight="8dp"
+                    tools:text="五月初二" />
+
+                <TextView
+                    android:id="@+id/tv_lunar_lunarYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    tools:text="戊戌年【狗年】" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <include layout="@layout/layout_divider_line_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_lunar_suit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:text="宜" />
+
+            <TextView
+                android:id="@+id/tv_lunar_avoid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="忌" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+
+</ScrollView>

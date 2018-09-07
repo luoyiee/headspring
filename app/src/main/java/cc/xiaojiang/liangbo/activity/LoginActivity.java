@@ -211,7 +211,7 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
-    public void startMain(){
+    public void startMain() {
         IotKitAccountManager.getInstance().login(new IotKitAccountCallback() {
             @Override
             public void onCompleted(boolean isSucceed, String msg) {

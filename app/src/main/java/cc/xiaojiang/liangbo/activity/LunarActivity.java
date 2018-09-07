@@ -122,7 +122,7 @@ public class LunarActivity extends BaseActivity implements CalendarView.OnDateSe
                                             .append(resultBean.getLunarYear())
                                             .append("【")
                                             .append(resultBean.getZodiac())
-                                            .append("年】").build());
+                                            .append("】").build());
                                     mTvLunarLunar.setText(resultBean.getLunar());
                                     mTvCalendarDay.setText(day + "");
 

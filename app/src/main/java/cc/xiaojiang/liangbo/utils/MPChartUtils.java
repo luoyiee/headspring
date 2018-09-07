@@ -96,6 +96,8 @@ public class MPChartUtils {
 
         YAxis yAxis = mChart.getAxisLeft();
         yAxis.setEnabled(true);
+
+
         //设置x轴的最大值
 //        yAxis.setAxisMaximum(yMax);
         // 设置y轴的最大值

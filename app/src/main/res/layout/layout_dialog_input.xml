@@ -11,7 +11,8 @@
         android:layout_height="48dp"
         android:layout_margin="16dp"
         android:background="@drawable/bg_dialog_nick"
-        android:maxLength="6"
+        android:ellipsize="end"
+        android:maxLength="10"
         android:padding="5dp"
         android:textSize="14dp" />
 

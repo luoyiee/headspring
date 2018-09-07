@@ -27,6 +27,8 @@ import cc.xiaojiang.liangbo.BuildConfig;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
 
+import static cc.xiaojiang.liangbo.activity.FilterTimeRemainActivity.FLITER_MAX_VALUE;
+
 /**
  * 水波进度条
  * Created by littlejie on 2017/2/26.
@@ -440,6 +442,9 @@ public class WaveProgressView extends View {
     public void setValue(float value) {
         if (value > mMaxValue) {
             value = mMaxValue;
+        }
+        if (value < 0) {
+            value = 0;
         }
         float start = mPercent;
         float end = 1.0f * value / mMaxValue;

@@ -436,6 +436,9 @@ public class KZZActivity extends BaseActivity implements
 
     private void refreshFilter() {
         int percent = (int) (100f * (FLITER_MAX_VALUE - mUseTime) / FLITER_MAX_VALUE);
+        if (percent < 0) {
+            percent = 0;
+        }
         mTvStatusFilter.setText(String.format("%02d", percent) + "%");
         if (mUseTime >= FLITER_MAX_VALUE) {
             showChangeFilter();

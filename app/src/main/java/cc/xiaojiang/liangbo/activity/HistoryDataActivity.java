@@ -25,6 +25,8 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import butterknife.BindView;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.liangbo.R;
@@ -40,6 +42,7 @@ import cc.xiaojiang.liangbo.utils.MPChartUtils;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
+import cc.xiaojiang.liangbo.view.MyMarkerView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -62,6 +65,7 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
     private Device mDevice;
     private LocationClient mLocationClient;
     private String mCity;
+    private MyMarkerView mMyMarkerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,9 +178,38 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
                 .subscribe(new ProgressObserver<Pm25HistoryModel>(this) {
                     @Override
                     public void onSuccess(Pm25HistoryModel pm25HistoryModel) {
-                        showData(pm25HistoryModel);
+                        if (pm25HistoryModel != null) {
+                            showData(pm25HistoryModel);
+                            setAvg(pm25HistoryModel);
+                        }
                     }
                 });
+    }
+
+    private void setAvg(Pm25HistoryModel pm25HistoryModel) {
+        List<Pm25HistoryModel.IndoorBean> indoors = pm25HistoryModel.getIndoor();
+        if (indoors != null && indoors.size() > 0) {
+            float sum = 0;
+            for (int i = 0; i < indoors.size(); i++) {
+                sum += indoors.get(i).getPm25();
+            }
+            mTvHistoryDataIndoor.setText((int) sum / indoors.size() + "μg/m³");
+        }
+        List<Pm25HistoryModel.OutdoorBean> outers = pm25HistoryModel.getOutdoor();
+        if (outers != null && outers.size() > 0) {
+            float sum = 0;
+            for (int i = 0; i < outers.size(); i++) {
+                sum += outers.get(i).getPm25();
+            }
+            mTvHistoryDataOutdoor.setText((int) sum / outers.size() + "μg/m³");
+        }
+
+
+        //            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX
+        // ()).getY()
+//                    + "μg/m³");
+//            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
+//                    "μg/m³");
     }
 
     private void showData(Pm25HistoryModel pm25HistoryModel) {
@@ -212,7 +245,8 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
             return;
         }
         mLineChart.setData(lineData);
-        //todo 默认选中哪一个值
+        mMyMarkerView = new MyMarkerView(this, R.layout.item_mark_layout);
+        mLineChart.setMarkerView(mMyMarkerView);
         mLineChart.highlightValue(index, 0, true);
         mLineChart.getXAxis().setValueFormatter(iAxisValueFormatter);
         mLineChart.animateX(1000);
@@ -235,10 +269,14 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         if (mLineChart.getData().getDataSets().size() == 2) {
             LineDataSet indoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(0);
             LineDataSet outdoorDataSet = (LineDataSet) mLineChart.getData().getDataSets().get(1);
-            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX()).getY()
-                    + "μg/m³");
-            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
+
+
+            TextView inner = mMyMarkerView.findViewById(R.id.tv_marker_inner);
+            TextView outer = mMyMarkerView.findViewById(R.id.tv_marker_outer);
+            inner.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
                     "μg/m³");
+            outer.setText(outdoorDataSet.getEntryForIndex((int) e.getX()).getY()
+                    + "μg/m³");
         } else {
             Logger.e("error data!");
         }
