@@ -169,8 +169,7 @@ public class BrowserActivity extends BaseActivity {
 
     @JavascriptInterface
     public String getUuid() {
-//        return DbUtils.getXJUserId();
-        return "11";
+        return DbUtils.getXJUserId();
     }
 
     @Override
