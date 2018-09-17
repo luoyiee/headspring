@@ -257,9 +257,8 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 });
     }
 
-
     @Override
-    public void messageArrived(String deviceId, String productKey, String data) {
+    public void messageArrived(String type, String deviceId, String productKey, String data) {
         BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
         BaseDataModel.ParamsBean paramsBean = model.getParams();
         if (paramsBean == null || paramsBean.getOnlineStatus() == null) {

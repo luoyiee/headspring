@@ -326,9 +326,8 @@ public class KZZActivity extends BaseActivity implements
         getMenuInflater().inflate(R.menu.menu_more, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
     @Override
-    public void messageArrived(String deviceId, String productKey, String data) {
+    public void messageArrived(String type, String deviceId, String productKey, String data) {
         if (!deviceId.equals(mDevice.getDeviceId())) {
             Logger.e("error device!");
             return;

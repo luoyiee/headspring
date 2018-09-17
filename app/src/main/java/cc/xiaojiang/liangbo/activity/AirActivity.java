@@ -377,8 +377,9 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         }
     }
 
+
     @Override
-    public synchronized void messageArrived(String deviceId, String productKey, String data) {
+    public void messageArrived(String type, String deviceId, String productKey, String data) {
         BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
         BaseDataModel.ParamsBean paramsBean = model.getParams();
         if (paramsBean == null || paramsBean.getPM205() == null || paramsBean.getOnlineStatus

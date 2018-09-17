@@ -100,7 +100,7 @@
                 android:id="@+id/tv_history_data_outdoor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="56μg/m³" />
+                android:text="0μg/m³" />
         </LinearLayout>
 
         <TextView
@@ -124,7 +124,7 @@
                 android:id="@+id/tv_history_data_indoor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="47μg/m³" />
+                android:text="0μg/m³" />
         </LinearLayout>
 
     </LinearLayout>
