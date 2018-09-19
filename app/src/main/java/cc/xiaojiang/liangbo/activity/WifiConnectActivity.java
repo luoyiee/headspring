@@ -36,7 +36,6 @@ public class WifiConnectActivity extends BaseActivity {
             public void onTick(long millisUntilFinished) {
                 mTvWifiConnectCountDowm.setText(millisUntilFinished / 1000 + "s");
             }
-
             @Override
             public void onFinish() {
 

@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-              tools:context=".activity.InstructionActivity"
-              tools:showIn="@layout/activity_instruction">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.InstructionActivity"
+    tools:showIn="@layout/activity_instruction">
 
     <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_one_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemKey="空智子使用说明书"/>
+        app:itemKey="DY系列净化器使用说明书" />
 
     <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_two_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemKey="LB净化器使用说明书"/>
+        app:itemKey="LB净化器使用说明书" />
 
     <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_three_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemKey="APP使用说明书"/>
+        app:itemKey="APP使用说明书" />
 </LinearLayout>
