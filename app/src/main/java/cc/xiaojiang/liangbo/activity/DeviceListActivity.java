@@ -180,10 +180,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 } else {
                     ToastUtils.show("设备离线");
                 }
-//// TODO: 2018/8/13 test
-//                intent = new Intent(this, KZZActivity.class);
-//                intent.putExtra("device_data", device);
-//                startActivity(intent);
                 break;
             case R.id.tv_device_swipe_menu_modify:
                 showModifyDialog(device.getDeviceId());
@@ -246,6 +242,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 IotKitHttpCallback<DeviceUnbindRes>() {
                     @Override
                     public void onSuccess(DeviceUnbindRes data) {
+                        mDeviceAdapter.clear();
                         getDevices();
                     }
 
@@ -259,17 +256,19 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
     @Override
     public void messageArrived(String type, String deviceId, String productKey, String data) {
-        BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
-        BaseDataModel.ParamsBean paramsBean = model.getParams();
-        if (paramsBean == null || paramsBean.getOnlineStatus() == null) {
-            Logger.e("error getParams!");
-            return;
-        }
-        String onlineStatus = paramsBean.getOnlineStatus().getValue();
-        if (onlineStatus.startsWith("online")) {
-            mDeviceAdapter.setOnlineStatus(deviceId, "online");
-        } else {
-            mDeviceAdapter.setOnlineStatus(deviceId, "offline");
+        if ("get".equals(type)) {
+            BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
+            BaseDataModel.ParamsBean paramsBean = model.getParams();
+            if (paramsBean == null || paramsBean.getOnlineStatus() == null) {
+                Logger.e("error getParams!");
+                return;
+            }
+            String onlineStatus = paramsBean.getOnlineStatus().getValue();
+            if (onlineStatus.startsWith("online")) {
+                mDeviceAdapter.setOnlineStatus(deviceId, "online");
+            } else {
+                mDeviceAdapter.setOnlineStatus(deviceId, "offline");
+            }
         }
     }
 
