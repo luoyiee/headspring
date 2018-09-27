@@ -26,8 +26,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -102,6 +105,8 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     private boolean firstLoad = true;
     private List<Device> mDeviceList = new ArrayList<>();
 
+    private Timer mTimer = new Timer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +119,28 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         mLocationClient = new LocationClient();
         AirActivityPermissionsDispatcher.locationWithPermissionCheck(this);
         initView();
+
+
+    }
+
+    private void openRealReporting(Device device, int isOpen) {
+        HashMap<String, String> hashMap1 = new HashMap<>();
+        hashMap1.put("RealReportingSwitch", String.valueOf(isOpen));
+        sendCmd(device, hashMap1);
+    }
+
+    private void sendCmd(Device device, HashMap<String, String> hashMap) {
+        IotKitMqttManager.getInstance().sendCmd(device, hashMap, new IotKitActionCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String msg) {
+
+            }
+        });
     }
 
     @Override
@@ -196,6 +223,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     private void queryDevices(List<Device> data) {
         for (int i = 0; i < data.size(); i++) {
             queryDevice(data.get(i));
+            openRealReporting(data.get(i), 1);
         }
     }
 
@@ -263,11 +291,21 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         }
         firstLoad = false;
         IotKitMqttManager.getInstance().addDataCallback(this);
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                for (Device device : mDeviceList) {
+                    openRealReporting(device, 1);
+                }
+            }
+        }, 3000, 60 * 1000);
     }
 
     @Override
     protected void onPause() {
         IotKitMqttManager.getInstance().removeDataCallback(this);
+        mTimer.cancel();
         super.onPause();
     }
 
@@ -380,33 +418,36 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
 
     @Override
     public void messageArrived(String type, String deviceId, String productKey, String data) {
-        BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
-        BaseDataModel.ParamsBean paramsBean = model.getParams();
-        if (paramsBean == null || paramsBean.getPM205() == null || paramsBean.getOnlineStatus
-                () == null) {
-            Logger.e("error getParams!");
-            return;
-        }
-        String pm205 = paramsBean.getPM205().getValue();
-        String onlineStatus = paramsBean.getOnlineStatus().getValue();
-        if (onlineStatus.startsWith("online")) {
-            mIndoorMap.put(deviceId, pm205);
-        } else {
-            mIndoorMap.put(deviceId, DEFAULT_DATA);
-        }
-        if (mIndoorMap.size() == mDeviceSize && mDeviceSize > 0) {
-            mIndoorPmList.clear();
-            // 遍历 ArrayMap
-            mIndoorPmList.addAll(mIndoorMap.values());
-            int currentItem = mConvenientBanner.getCurrentItem();
-            mConvenientBanner.notifyDataSetChanged();
-            mConvenientBanner.setCurrentItem(currentItem, false);
-            mConvenientBanner.setFirstItemPos(currentItem);
-            if (mIndoorMap.size() > 1) {
-                mConvenientBanner.setPageIndicator(new int[]{R.drawable.dot_default_indicator,
-                        R.drawable.dot_select_indicator});
+        if ("get".equals(type)) {
+            BaseDataModel model = new Gson().fromJson(data, BaseDataModel.class);
+            BaseDataModel.ParamsBean paramsBean = model.getParams();
+            if (paramsBean == null || paramsBean.getPM205() == null || paramsBean.getOnlineStatus
+                    () == null) {
+                Logger.e("error getParams!");
+                return;
+            }
+            String pm205 = paramsBean.getPM205().getValue();
+            String onlineStatus = paramsBean.getOnlineStatus().getValue();
+            if (onlineStatus.startsWith("online")) {
+                mIndoorMap.put(deviceId, pm205);
+            } else {
+                mIndoorMap.put(deviceId, DEFAULT_DATA);
+            }
+            if (mIndoorMap.size() == mDeviceSize && mDeviceSize > 0) {
+                mIndoorPmList.clear();
+                // 遍历 ArrayMap
+                mIndoorPmList.addAll(mIndoorMap.values());
+                int currentItem = mConvenientBanner.getCurrentItem();
+                mConvenientBanner.notifyDataSetChanged();
+                mConvenientBanner.setCurrentItem(currentItem, false);
+                mConvenientBanner.setFirstItemPos(currentItem);
+                if (mIndoorMap.size() > 1) {
+                    mConvenientBanner.setPageIndicator(new int[]{R.drawable.dot_default_indicator,
+                            R.drawable.dot_select_indicator});
+                }
             }
         }
+
     }
 
     @Override

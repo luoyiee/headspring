@@ -221,7 +221,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     }
 
     private void modifyDevice(String deviceId, String test) {
-        IotKitDeviceManager.getInstance().deviceNick(deviceId, test, new
+        IotKitDeviceManager.getInstance().deviceNickAdmin(deviceId, test, new
                 IotKitHttpCallback<DeviceNickRes>() {
                     @Override
                     public void onSuccess(DeviceNickRes data) {

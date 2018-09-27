@@ -328,17 +328,19 @@ public class KZZActivity extends BaseActivity implements
     }
     @Override
     public void messageArrived(String type, String deviceId, String productKey, String data) {
-        if (!deviceId.equals(mDevice.getDeviceId())) {
-            Logger.e("error device!");
-            return;
+        if ("get".equals(type)) {
+            if (!deviceId.equals(mDevice.getDeviceId())) {
+                Logger.e("error device!");
+                return;
+            }
+            KzzDataModel model = new Gson().fromJson(data, KzzDataModel.class);
+            KzzDataModel.ParamsBean paramsBean = model.getParams();
+            if (paramsBean == null) {
+                Logger.e("error getParams!");
+                return;
+            }
+            showData(paramsBean);
         }
-        KzzDataModel model = new Gson().fromJson(data, KzzDataModel.class);
-        KzzDataModel.ParamsBean paramsBean = model.getParams();
-        if (paramsBean == null) {
-            Logger.e("error getParams!");
-            return;
-        }
-        showData(paramsBean);
     }
 
     @Override
