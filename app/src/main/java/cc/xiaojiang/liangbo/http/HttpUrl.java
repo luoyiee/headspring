@@ -1,8 +1,8 @@
 package cc.xiaojiang.liangbo.http;
 
 public class HttpUrl {
-    public static final String HOST_TEST = "http://192.168.199.124:20001/liangbo/api/";
-//        public static final String HOST_TEST = "http://47.98.104.64:20001/liangbo/api/";
+//    public static final String HOST_TEST = "http://192.168.199.124:20001/liangbo/api/";
+        public static final String HOST_TEST = "http://47.98.104.64:20001/liangbo/api/";
 //    public static final String HOST = "http://liangbo.xjiangiot.com/liangbo/api/";
     //登陆
     public static final String LOGIN = "account/login";

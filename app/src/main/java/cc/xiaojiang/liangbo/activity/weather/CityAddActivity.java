@@ -126,6 +126,7 @@ public class CityAddActivity extends BaseActivity implements BaseQuickAdapter
                 .subscribe(new MyObserver<Object>() {
                     @Override
                     public void onSuccess(Object o) {
+                        // TODO: 2018/10/12 重复添加提示
                         ToastUtils.show("添加成功");
                         finish();
                     }
