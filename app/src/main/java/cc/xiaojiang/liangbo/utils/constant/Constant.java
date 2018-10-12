@@ -1,4 +1,4 @@
-package cc.xiaojiang.liangbo;
+package cc.xiaojiang.liangbo.utils.constant;
 
 /**
  * @author jinjiafeng
@@ -20,5 +20,6 @@ public class Constant {
     public static final String WIFI_PASSWORD = "wifi_password";
     public static final String WIFI_SSID = "wifi_ssid";
     public static final String DEVICE_INFO = "device_info";
+    public static final String CITY = "city";
 
 }

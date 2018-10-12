@@ -42,6 +42,7 @@ import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
+import cc.xiaojiang.liangbo.activity.weather.CityManagerActivity;
 import cc.xiaojiang.liangbo.adapter.HomeIndoorPmHolder;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
@@ -74,25 +75,25 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     private static final String UNIT_TEMPERATURE = "°C";
     private static final String UNIT_HUMIDITY = "%";
     public static final String DEFAULT_DATA = "-/-";
-    @BindView(R.id.tv_outdoor_pm)
+    @BindView(R.id.tv_outdoor_weather_text)
     TextView mTvOutdoorPm;
-    @BindView(R.id.tv_outdoor_temperature)
+    @BindView(R.id.tv_outdoor_weather_temperature)
     TextView mTvOutdoorTemperature;
-    @BindView(R.id.tv_outdoor_humidity)
+    @BindView(R.id.tv_outdoor_weather_wind_direction)
     TextView mTvOutdoorHumidity;
     @BindView(R.id.tv_home_location)
     TextView mTvHomeLocation;
-    @BindView(R.id.tv_weather_today)
+    @BindView(R.id.tv_weather_forecast_0)
     TextView mTvWeatherToday;
-    @BindView(R.id.tv_weather_tomorrow)
+    @BindView(R.id.tv_weather_forecast_1)
     TextView mTvWeatherTomorrow;
-    @BindView(R.id.tv_weather_after_tomorrow)
+    @BindView(R.id.tv_weather_forecast_2)
     TextView mTvWeatherAfterTomorrow;
-    @BindView(R.id.ctv_select_device_name)
+    @BindView(R.id.tv_select_device_name)
     CommonTextView mCtvSelectDeviceName;
     @BindView(R.id.convenientBanner)
     ConvenientBanner<String> mConvenientBanner;
-    @BindView(R.id.fl_selected_devices)
+    @BindView(R.id.ll_selected_devices)
     FrameLayout mFlSelectedDevices;
     @BindView(R.id.ll_device_add)
     LinearLayout mLlDeviceAdd;
@@ -213,8 +214,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         setAirView(mTvOutdoorPm, DEFAULT_DATA, UNIT_PM25);
         setAirView(mTvOutdoorTemperature, DEFAULT_DATA + "", UNIT_TEMPERATURE);
         setAirView(mTvOutdoorHumidity, DEFAULT_DATA + "", UNIT_HUMIDITY);
-        mIndoorPmList.add(DEFAULT_DATA);
-        setIndoorPmBannerView();
+
     }
 
     /**
@@ -237,11 +237,14 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
         textView.setText(spanUtils.create());
     }
 
-    @OnClick({R.id.iv_add_device})
+    @OnClick({R.id.iv_add_device, R.id.tv_home_location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_add_device:
                 LoginInterceptor.interceptor(this, ProductListActivity.class.getName(), null);
+                break;
+            case R.id.tv_home_location:
+                startToActivity(CityManagerActivity.class);
                 break;
             default:
                 break;
@@ -321,7 +324,7 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
                     String district = aMapLocation.getDistrict();//城区信息
                     String street = aMapLocation.getStreet();//街道信息
                     String city = aMapLocation.getCity();//街道信息
-                    mTvHomeLocation.setText(district + street);
+                    mTvHomeLocation.setText(district);
                     requestWeatherAirData(aMapLocation.getCity());
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -397,8 +400,6 @@ public class AirActivity extends BaseActivity implements IotKitReceivedCallback,
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        AirActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
-                grantResults);
         AirActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode,
                 grantResults);
     }

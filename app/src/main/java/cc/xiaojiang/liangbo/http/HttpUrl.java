@@ -1,8 +1,9 @@
 package cc.xiaojiang.liangbo.http;
 
 public class HttpUrl {
-//    public static final String HOST = "http://47.98.104.64:20001/liangbo/api/";
-    public static final String HOST = "http://liangbo.xjiangiot.com/liangbo/api/";
+    public static final String HOST_TEST = "http://192.168.199.124:20001/liangbo/api/";
+//        public static final String HOST_TEST = "http://47.98.104.64:20001/liangbo/api/";
+//    public static final String HOST = "http://liangbo.xjiangiot.com/liangbo/api/";
     //登陆
     public static final String LOGIN = "account/login";
     //意见反馈
@@ -53,5 +54,25 @@ public class HttpUrl {
      * 量波动态点赞接口
      */
     public static final String DYNAMIC_LIKE = "dynamic/like";
+    /**
+     * 查询系统支持的县市
+     */
+    public static final String CITY_QUERY = "userCounty/qryCounty";
+    /**
+     * 查询用户城市列表
+     */
+    public static final String CITY_LIST = "userCounty/qryList";
+    /**
+     * 添加天气城市
+     */
+    public static final String CITY_ADD = "userCounty/bind";
+    /**
+     * 删除天气城市
+     */
+    public static final String CITY_DEL = "userCounty/unbind";
+    /**
+     * 新天气接口
+     */
+    public static final String NEW_WEATHER = "weather/newHomePage";
 
 }

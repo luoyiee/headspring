@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.orhanobut.logger.Logger;
+
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cc.xiaojiang.liangbo.activity.LoginActivity;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
@@ -33,7 +35,8 @@ public class LoginInterceptor {
             if (getLogin()) {
                 invoker.invoke(ctx);
             } else {
-                ToastUtils.show("请登录后重试");
+//                ToastUtils.show("请登录后重试");
+                Logger.e("need login!");
                 if (intent == null) {
                     intent = new Intent(ctx, LoginActivity.class);
                     intent.putExtra(INVOKER, invoker);

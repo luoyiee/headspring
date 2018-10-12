@@ -115,4 +115,11 @@
     <string name="main_my_air">我的空气</string>
     <string name="wifi_config_connect_wifi">当前Wi-Fi：%s</string>
     <string name="title_activity_lb_instructions">LB净化器使用说明书</string>
+    <string name="title_activity_city_manager">城市管理</string>
+    <string name="title_activity_weather_city_add">添加城市</string>
+    <string name="weather_city_add_recommend_city">推荐城市</string>
+    <string name="weather_city_add_my_location">定位</string>
+    <string name="title_activity_air_new"> </string>
+    <string name="title_activity_city_search">添加城市</string>
+    <string name="title_activity_test">TestActivity</string>
 </resources>

@@ -6,8 +6,4 @@ public class AccountUtils {
     public static boolean isLogin() {
         return !TextUtils.isEmpty(DbUtils.getAccessToken());
     }
-
-    public static void logout() {
-
-    }
 }

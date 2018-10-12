@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cc.xiaojiang.iotkit.bean.http.Product;
 import cc.xiaojiang.iotkit.bean.http.ProductInfo;
 import cc.xiaojiang.iotkit.wifi.IotKitWifiSetupManager;
 import cc.xiaojiang.iotkit.wifi.WifiSetupInfo;
-import cc.xiaojiang.liangbo.Constant;
+import cc.xiaojiang.liangbo.utils.constant.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.ActivityCollector;

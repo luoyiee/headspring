@@ -7,15 +7,19 @@ import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.model.LunarBean;
 import cc.xiaojiang.liangbo.model.http.AirRankModel;
 import cc.xiaojiang.liangbo.model.http.AqiModel;
+import cc.xiaojiang.liangbo.model.http.CityAddBody;
+import cc.xiaojiang.liangbo.model.http.CityQueryModel;
 import cc.xiaojiang.liangbo.model.http.DynamicModel;
 import cc.xiaojiang.liangbo.model.http.FeedbackBody;
 import cc.xiaojiang.liangbo.model.http.HomeWeatherAirModel;
+import cc.xiaojiang.liangbo.model.http.HomeNewWeatherModel;
 import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.model.http.LunarInfoModel;
 import cc.xiaojiang.liangbo.model.http.Pm25HistoryModel;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
 import cc.xiaojiang.liangbo.model.http.UserModifyBody;
+import cc.xiaojiang.liangbo.model.http.WeatherCityModel;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -78,4 +82,21 @@ public interface XJApis {
     @GET("appstore/calendar/day")
     Observable<LunarBean> lunar(@Query("key") String key, @Query("date") String date);
 
+
+    //    --------------------------天气模块----------------------------------
+    @GET(HttpUrl.CITY_QUERY)
+    Observable<BaseModel<List<CityQueryModel>>> cityQuery(@Query("countyName") String countyName);
+
+    @GET(HttpUrl.CITY_LIST)
+    Observable<BaseModel<List<WeatherCityModel>>> cityList();
+
+
+    @POST(HttpUrl.CITY_ADD)
+    Observable<BaseModel<Object>> cityAdd(@Body CityAddBody cityAddBody);
+
+    @POST(HttpUrl.CITY_DEL)
+    Observable<BaseModel<Object>> cityDel(@Body CityAddBody cityAddBody);
+
+    @GET(HttpUrl.NEW_WEATHER)
+    Observable<BaseModel<HomeNewWeatherModel>> newWeather(@Query("countyId") String countyId);
 }

@@ -9,4 +9,8 @@
     <dimen name="air_knowledge_info">12sp</dimen>
     <dimen name="personal_center_icon">18dp</dimen>
     <dimen name="app_block_height">56dp</dimen>
+
+    <dimen name="air_new_text">12sp</dimen>
+
+
 </resources>

@@ -72,6 +72,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     private View mInfoWindow;
     private Marker mCurrentMarker;
 
+
+    // TODO: 2018/10/8 判断用户是否开启gps功能，引导用户开启
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

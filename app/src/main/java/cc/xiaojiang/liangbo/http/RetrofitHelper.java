@@ -35,7 +35,7 @@ public class RetrofitHelper {
 //        builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HttpUrl.HOST)
+                .baseUrl(HttpUrl.HOST_TEST)
                 .client(builder.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

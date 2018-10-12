@@ -83,13 +83,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         super.onDestroy();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_add) {
-            startToActivity(ProductListActivity.class);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onResume() {
@@ -154,6 +147,14 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_add) {
+            startToActivity(ProductListActivity.class);
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void hideRefreshing() {
         if (mSrlRefreshDevice != null && mSrlRefreshDevice.isRefreshing()) {
             mSrlRefreshDevice.setRefreshing(false);

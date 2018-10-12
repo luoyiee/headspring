@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
+import android.widget.ScrollView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,6 +99,22 @@ public class ScreenShotUtils {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         canvas.setBitmap(null);
+        return bitmap;
+    }
+    public static Bitmap getBitmapByView(NestedScrollView scrollView) {
+        int h = 0;
+        Bitmap bitmap = null;
+        // 获取scrollview实际高度
+        for (int i = 0; i < scrollView.getChildCount(); i++) {
+            h += scrollView.getChildAt(i).getHeight();
+            scrollView.getChildAt(i).setBackgroundColor(
+                    Color.parseColor("#ffffff"));
+        }
+        // 创建对应大小的bitmap
+        bitmap = Bitmap.createBitmap(scrollView.getWidth(), h,
+                Bitmap.Config.RGB_565);
+        final Canvas canvas = new Canvas(bitmap);
+        scrollView.draw(canvas);
         return bitmap;
     }
 }

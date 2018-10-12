@@ -24,6 +24,8 @@ public class HomeIndoorPmHolder extends Holder<String> {
         super(itemView);
     }
 
+
+
     @Override
     protected void initView(View itemView) {
         mTextView = itemView.findViewById(R.id.tv_indoor_pm);

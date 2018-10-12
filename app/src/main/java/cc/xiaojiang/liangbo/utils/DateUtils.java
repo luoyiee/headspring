@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         int index = calendar.get(Calendar.DAY_OF_WEEK);
-        return  (index - 3) >= 0 ? (index - 3) : 6;
+        return (index - 3) >= 0 ? (index - 3) : 6;
     }
 
     public static int getMonthIndex() {
@@ -75,5 +76,25 @@ public class DateUtils {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale
                 .getDefault());
         return sdf.format(new Date(birthday));
+    }
+
+    // strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日
+    // HH时mm分ss秒，
+    // strTime的时间格式必须要与formatType的时间格式相同
+    public static Date stringToDate(String strTime, String formatType)
+            throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(formatType);
+        Date date = null;
+        date = formatter.parse(strTime);
+        return date;
+    }
+
+    public static String formatDate(int ymdh) throws ParseException {
+        Date date = DateUtils.stringToDate(String.valueOf(ymdh), "yyyyMMddhh");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return String.format(Locale.getDefault(), "%02d/%02d", day, month);
     }
 }

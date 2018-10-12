@@ -41,7 +41,6 @@ import cn.smssdk.SMSSDK;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-//todo:回复
 public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.tv_get_verify_code)

@@ -21,18 +21,13 @@ public abstract class BaseFragment extends RxFragment {
 
     protected BaseActivity mActivity;
     private Unbinder unBinder;
+
     /**
      * 初始化布局id
      * @return 布局id
      */
     protected abstract int getLayoutId();
 
-    protected abstract void initView(View view);
-
-    /**
-     * 初始化数据
-     */
-    protected abstract void initData();
 
     @Override
     public void onAttach(Activity activity) {
@@ -56,14 +51,15 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView(view);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData();
+        init();
     }
+
+    protected abstract void init();
 
 
     @Override

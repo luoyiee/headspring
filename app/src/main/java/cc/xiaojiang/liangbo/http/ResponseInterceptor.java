@@ -37,10 +37,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
 
-import static cc.xiaojiang.liangbo.Constant.ACCESS_TOKEN;
-import static cc.xiaojiang.liangbo.Constant.REFRESH_TOKEN;
-import static cc.xiaojiang.liangbo.Constant.SIGN;
-import static cc.xiaojiang.liangbo.Constant.TIMESTAMP;
+import static cc.xiaojiang.liangbo.utils.constant.Constant.ACCESS_TOKEN;
+import static cc.xiaojiang.liangbo.utils.constant.Constant.REFRESH_TOKEN;
+import static cc.xiaojiang.liangbo.utils.constant.Constant.SIGN;
+import static cc.xiaojiang.liangbo.utils.constant.Constant.TIMESTAMP;
 
 
 public class ResponseInterceptor implements Interceptor {
@@ -50,8 +50,14 @@ public class ResponseInterceptor implements Interceptor {
         Request request = chain.request();
 
         String url = request.url().toString();
-        if (url.contains(HttpUrl.USER_INFO) || url.contains(HttpUrl.USER_MODIFY) ||
-                url.contains(HttpUrl.QINIU_TOKEN) || url.contains(HttpUrl.PM25_HISTORY)) {
+        if (url.contains(HttpUrl.USER_INFO)
+                || url.contains(HttpUrl.USER_MODIFY)
+                || url.contains(HttpUrl.QINIU_TOKEN)
+                || url.contains(HttpUrl.PM25_HISTORY)
+                || url.contains(HttpUrl.CITY_ADD)
+                || url.contains(HttpUrl.CITY_LIST)
+                || url.contains(HttpUrl.CITY_QUERY)
+                || url.contains(HttpUrl.CITY_DEL)) {
             String accessToken = DbUtils.getAccessToken();
             request = request.newBuilder()
                     .header(ACCESS_TOKEN, accessToken)
@@ -100,6 +106,8 @@ public class ResponseInterceptor implements Interceptor {
                     }
                 });
             }
+
+            // TODO: 2018/10/12 token刷新
         }
         return response;
     }
@@ -166,7 +174,8 @@ public class ResponseInterceptor implements Interceptor {
                     @Override
                     public void accept(String s) throws Exception {
                         DbUtils.clear();
-                        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
+                        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity
+                                .class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent
                                 .FLAG_ACTIVITY_NEW_TASK);
                         MyApplication.getInstance().getApplicationContext().startActivity(intent);

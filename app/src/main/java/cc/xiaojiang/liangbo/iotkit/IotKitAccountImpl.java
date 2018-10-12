@@ -17,7 +17,7 @@ public class IotKitAccountImpl implements IotKitAccountConfig2 {
     public static final String DEVELOP_KEY = "2b23ae32e90589b554611f19b3de923d";
     public static final String DEVELOP_SECRET = "20f3eceb81a7ecb559dd093bf0480c13";
 
-    public boolean isDebug = false;
+    public boolean isDebug = true;
 
     @Override
     public Context getApplicationContext() {

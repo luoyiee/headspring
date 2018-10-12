@@ -41,7 +41,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
     private static final String TYPE_DAY = "day";
     private static final String TYPE_WEEK = "week";
     private static final String TYPE_MONTH = "month";
-    private static  final String[] TYPES ={TYPE_DAY,TYPE_WEEK,TYPE_MONTH};
+    private static final String[] TYPES = {TYPE_DAY, TYPE_WEEK, TYPE_MONTH};
     private static final int RANK_DAY = 0;
     private static final int RANK_WEEK = 1;
     private static final int RANK_MONTH = 2;
@@ -116,6 +116,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
             }
         });
     }
+
     private void getRankList(int tabPosition) {
         if (TextUtils.isEmpty(mCity)) {
             ToastUtils.show("获取位置信息失败");
@@ -129,7 +130,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
                     @Override
                     public void onSuccess(List<AirRankModel> airRankModels) {
                         mRankAdapter.setNewData(airRankModels);
-                        mBufferRankArray.put(tabPosition,airRankModels);
+                        mBufferRankArray.put(tabPosition, airRankModels);
                     }
                 });
     }
@@ -158,7 +159,7 @@ public class AirMapRankListActivity extends BaseActivity implements TabLayout
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int tabPosition = tab.getPosition();
-        if(mBufferRankArray.get(tabPosition)!=null){
+        if (mBufferRankArray.get(tabPosition) != null) {
             mRankAdapter.setNewData(mBufferRankArray.get(tabPosition));
             return;
         }

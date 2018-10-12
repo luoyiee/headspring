@@ -51,7 +51,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
-import cc.xiaojiang.liangbo.Constant;
+import cc.xiaojiang.liangbo.utils.constant.Constant;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;

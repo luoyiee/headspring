@@ -2,20 +2,16 @@ package cc.xiaojiang.liangbo.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.app.hubert.guide.util.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -29,10 +25,10 @@ import cc.xiaojiang.iotkit.bean.http.Article;
 import cc.xiaojiang.iotkit.community.IotKitCommunityManager;
 import cc.xiaojiang.iotkit.http.IotKitHttpCallback;
 import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.activity.weather.AirNewActivity;
 import cc.xiaojiang.liangbo.adapter.ArticleAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
-import cc.xiaojiang.liangbo.model.http.DynamicModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
@@ -186,7 +182,8 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                 startToActivity(PersonalCenterActivity.class);
                 break;
             case R.id.iv_device_air:
-                startToActivity(AirActivity.class);
+                startToActivity(AirNewActivity.class);
+//                startToActivity(TestActivity.class);
                 break;
         }
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimary">@color/primary_blue</color>
     <color name="colorPrimaryDark">@color/black</color>
-    <color name="colorAccent">@color/primary_blue</color>
+    <color name="colorAccent">@color/white</color>
 
 
-    <color name="primary_blue">#82d8d0</color>
+    <color name="primary_blue">#01D2C3</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -28,7 +28,7 @@
     <color name="light_grey">#EBEBEB</color>
     <color name="status_label">#66ffffff</color>
 
-    <color name="personal_text_btn">#AEE1DB</color>
+    <!--<color name="personal_text_btn">#AEE1DB</color>-->
     <color name="app_background_grey">#f2f2f2</color>
     <color name="personal_picker_cancel">#949494</color>
     <color name="dialog_text_btn">#879DF9</color>
@@ -43,4 +43,6 @@
     <color name="air_purifier_background_good">#f7b042</color>
     <color name="air_purifier_background_poor">#ef664a</color>
     <color name="air_purifier_background_off">#7e7e7e</color>
+
+    <color name="text_light_white">#99ffffff</color>
 </resources>
