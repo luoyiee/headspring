@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="NO2"
+                    android:text="NO₂"
                     android:textColor="@color/text_light_white"
                     android:textSize="@dimen/air_new_text" />
 
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="SO2"
+                    android:text="SO₂"
                     android:textColor="@color/text_light_white"
                     android:textSize="@dimen/air_new_text" />
 
@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="O3"
+                    android:text="O₃"
                     android:textColor="@color/text_light_white"
                     android:textSize="@dimen/air_new_text" />
 

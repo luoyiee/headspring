@@ -93,8 +93,8 @@ public class DateUtils {
         Date date = DateUtils.stringToDate(String.valueOf(ymdh), "yyyyMMddhh");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        return String.format(Locale.getDefault(), "%02d/%02d", day, month);
+        return String.format(Locale.getDefault(), "%02d/%02d", month, day);
     }
 }

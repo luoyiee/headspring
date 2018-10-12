@@ -122,8 +122,13 @@ public class CitySearchActivity extends BaseActivity implements TextView.OnEdito
                 .compose(bindToLifecycle())
                 .subscribe(new MyObserver<List<CityQueryModel>>() {
                     @Override
-                    public void onSuccess(List<CityQueryModel> list) {
+                    public void onSucceed(List<CityQueryModel> list) {
                         mCitySearchAdapter.setNewData(list);
+                    }
+
+                    @Override
+                    public void onFailed(String code, String msg) {
+
                     }
                 });
     }
@@ -152,10 +157,17 @@ public class CitySearchActivity extends BaseActivity implements TextView.OnEdito
                 .compose(bindToLifecycle())
                 .subscribe(new MyObserver<Object>() {
                     @Override
-                    public void onSuccess(Object o) {
+                    public void onSucceed(Object o) {
                         ToastUtils.show("添加成功");
                         EventBus.getDefault().post(new MessageCityAdd());
                         finish();
+                    }
+
+                    @Override
+                    public void onFailed(String code, String msg) {
+                        if ("1112".equals(code)) {
+                            ToastUtils.show("您已经添加了这个城市");
+                        }
                     }
                 });
     }

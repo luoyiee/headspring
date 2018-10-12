@@ -15,16 +15,16 @@ public abstract class MyObserver<T> implements Observer<BaseModel<T>> {
     @Override
     public void onNext(BaseModel<T> baseModel) {
         if (baseModel.getCode() == BaseModel.SUCCESS) {
-            onSuccess(baseModel.getData());
+            onSucceed(baseModel.getData());
         } else {
-            ToastUtils.show(baseModel.getMsg());
-            onError(new Throwable(baseModel.getMsg()));
+            onFailed(String.valueOf(baseModel.getCode()), baseModel.getMsg());
         }
     }
 
     @Override
     public void onError(Throwable e) {
-
+        ToastUtils.show(e.getMessage());
+        onFailed("-1", e.getMessage());
     }
 
     @Override
@@ -32,7 +32,9 @@ public abstract class MyObserver<T> implements Observer<BaseModel<T>> {
 
     }
 
-    public abstract void onSuccess(T t);
+    public abstract void onSucceed(T t);
+
+    public abstract void onFailed(String code, String msg);
 
 
 }

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,8 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class AirNewActivity extends BaseActivity {
+    private static final int LOCATION = 1;
+    private static final int CITY = 0;
     @BindView(R.id.view_air_new_quality)
     AirIndicator mViewAirNewQuality;
     @BindView(R.id.tv_air_new_air_quality_rank)
@@ -124,8 +127,10 @@ public class AirNewActivity extends BaseActivity {
     TextView mTvTitle;
     @BindView(R.id.sv_air_new_content)
     NestedScrollView mSvAirNewContent;
+    @BindView(R.id.iv_location)
+    ImageView mIvLocation;
 
-
+    private String mMyLocation;
     private LocationClient mLocationClient;
     private Realm mRealm;
 
@@ -151,7 +156,8 @@ public class AirNewActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageCitySwitch messageCitySwitch) {
-        getNewWeather(messageCitySwitch.getCityId());
+        mIvLocation.setVisibility(View.GONE);
+        getNewWeather(messageCitySwitch.getCityId(), CITY);
     }
 
     /**
@@ -174,8 +180,10 @@ public class AirNewActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        mLocationClient.stopLocation();
-        mLocationClient.onDestroy();
+        if (mLocationClient != null) {
+            mLocationClient.stopLocation();
+            mLocationClient.onDestroy();
+        }
         mRealm.close();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
@@ -202,10 +210,13 @@ public class AirNewActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setView(HomeNewWeatherModel homeNewWeatherModel) throws ParseException {
+    private void setView(HomeNewWeatherModel homeNewWeatherModel, int type) throws ParseException {
         if (homeNewWeatherModel.getCountyWeather() != null) {
             HomeNewWeatherModel.CountyWeatherBean countyWeather = homeNewWeatherModel
                     .getCountyWeather();
+            if (type == 1) {
+                mMyLocation = countyWeather.getCountyName();
+            }
             mTvTitle.setText(countyWeather.getCountyName());
             //天气实况
             mTvAirNewWeatherText.setText(countyWeather.getText());
@@ -336,7 +347,8 @@ public class AirNewActivity extends BaseActivity {
                     Logger.d(aMapLocation.toString());
                     //定位成功回调信息，设置相关消息
                     getNewWeather(WeatherUtils.getXinZhiCityCode(aMapLocation.getCityCode(),
-                            aMapLocation.getAdCode()));
+                            aMapLocation.getAdCode()), LOCATION);
+                    mMyLocation = aMapLocation.getDistrict();
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
@@ -349,7 +361,6 @@ public class AirNewActivity extends BaseActivity {
     }
 
     @Override
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -383,12 +394,11 @@ public class AirNewActivity extends BaseActivity {
     @OnClick(R.id.tv_title)
     public void onViewClicked() {
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.CITY, mTvTitle.getText().toString());
+        bundle.putString(Constant.CITY, mMyLocation);
         LoginInterceptor.interceptor(this, CityManagerActivity.class.getName(), bundle);
     }
 
-
-    private void getNewWeather(String cityId) {
+    private void getNewWeather(String cityId, int type) {
         if (TextUtils.isEmpty(cityId)) {
             ToastUtils.show("城市暂时不支持");
             return;
@@ -398,15 +408,20 @@ public class AirNewActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .subscribe(new MyObserver<HomeNewWeatherModel>() {
                     @Override
-                    public void onSuccess(HomeNewWeatherModel homeNewWeatherModel) {
+                    public void onSucceed(HomeNewWeatherModel homeNewWeatherModel) {
                         if (homeNewWeatherModel == null) {
                             return;
                         }
                         try {
-                            setView(homeNewWeatherModel);
+                            setView(homeNewWeatherModel, type);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onFailed(String code, String msg) {
+
                     }
                 });
     }

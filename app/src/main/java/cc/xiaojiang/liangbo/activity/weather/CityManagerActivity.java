@@ -110,13 +110,18 @@ public class CityManagerActivity extends BaseActivity implements SwipeRefreshLay
                 .compose(bindToLifecycle())
                 .subscribe(new MyObserver<List<WeatherCityModel>>() {
                     @Override
-                    public void onSuccess(List<WeatherCityModel> weatherCityModels) {
+                    public void onSucceed(List<WeatherCityModel> weatherCityModels) {
                         if (weatherCityModels == null) {
                             Logger.e("http response error!");
                             return;
                         }
                         mSrlCityManager.setRefreshing(false);
                         mWeatherCityManagerAdapter.setNewData(weatherCityModels);
+                    }
+
+                    @Override
+                    public void onFailed(String code, String msg) {
+
                     }
                 });
     }
@@ -127,8 +132,13 @@ public class CityManagerActivity extends BaseActivity implements SwipeRefreshLay
                 .compose(bindToLifecycle())
                 .subscribe(new MyObserver<Object>() {
                     @Override
-                    public void onSuccess(Object o) {
+                    public void onSucceed(Object o) {
                         mWeatherCityManagerAdapter.remove(position);
+                    }
+
+                    @Override
+                    public void onFailed(String code, String msg) {
+
                     }
                 });
     }
