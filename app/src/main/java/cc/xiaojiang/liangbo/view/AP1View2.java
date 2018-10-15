@@ -146,11 +146,11 @@ public class AP1View2 extends View {
         canvas.save();
         canvas.rotate(-90);
         mRectF = new RectF(-mAnnulusRadius, -mAnnulusRadius, mAnnulusRadius, mAnnulusRadius);
-        canvas.drawArc(mRectF, 0, 360-mAngle, false, mForeAnnulusPaint);
+        canvas.drawArc(mRectF, 0, 360 - mAngle, false, mForeAnnulusPaint);
         /**
          * draw circle indicator
          */
-        canvas.rotate(360-mAngle);
+        canvas.rotate(360 - mAngle);
         canvas.drawPoint(mAnnulusRadius, 0, mIndicatorPaint);
         canvas.restore();
     }
@@ -222,7 +222,8 @@ public class AP1View2 extends View {
     private void getAnnulusRadius() {
         mWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         mHeight = getHeight() - getPaddingBottom() - getPaddingTop();
-        mAnnulusRadius = Math.min(mWidth, mHeight) / 2 - ScreenUtils.dip2px(mContext, mIndicatorSize);
+        mAnnulusRadius = Math.min(mWidth, mHeight) / 2 - ScreenUtils.dip2px(mContext,
+                mIndicatorSize);
     }
 
     private void startAnimation(float preAngle, float angle) {
@@ -241,22 +242,25 @@ public class AP1View2 extends View {
 
 
     public void setValue(int value) {
+        float d1 = 35f;
+        float d2 = 75f;
+        float d3 = 115f;
 
         this.value = value;
         float angle = 0f;
         if (value >= 0) {
-            if (value <= 75) {
+            if (value <= d1) {
                 angle = value / 75f * 288;
                 rate = "优";
-            } else if (value <= 250) {
-                angle = 288 + ((value - 75) / 175f * 36);
+            } else if (value <= d2) {
+                angle = 288 + 1.0f * ((value - d1) / (d2 - d1) * 36);
                 rate = "良";
-            } else if (value <= 2000) {
-                angle = (288 + 36) + ((value - 250) / 1750f * 36);
+            } else if (value <= d3) {
+                angle = (288 + 36) + (1.0f * (value - d2) / (d3 - d2) * 36);
                 rate = "差";
             } else {
                 angle = 360f;
-                rate = "爆表";
+                rate = "差";
             }
             rate = AP1Utils.getRate(mContext, value);
             startAnimation(mPreAngle, angle);
