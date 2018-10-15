@@ -22,7 +22,7 @@
             android:layout_height="90dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_logo" />
+            app:srcCompat="@drawable/logo_liangbo" />
 
     </FrameLayout>
 
