@@ -11,7 +11,7 @@
     <fragment
         android:layout_width="match_parent"
         android:id="@+id/fm_test"
-        android:name="cc.xiaojiang.liangbo.TestFragment"
+        android:name="cc.xiaojiang.liangbo.fragment.TestFragment"
         android:layout_height="match_parent">
 
     </fragment>

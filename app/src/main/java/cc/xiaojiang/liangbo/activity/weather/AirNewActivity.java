@@ -45,6 +45,7 @@ import cc.xiaojiang.liangbo.utils.GetJsonDataUtil;
 import cc.xiaojiang.liangbo.utils.LocationClient;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
+import cc.xiaojiang.liangbo.utils.ScreenUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.utils.WeatherUtils;
 import cc.xiaojiang.liangbo.utils.constant.Constant;
@@ -205,7 +206,7 @@ public class AirNewActivity extends BaseActivity {
         if (item.getItemId() == R.id.action_share) {
             Bitmap bitmap = ScreenShotUtils.getBitmapByView(mSvAirNewContent);
             EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
-            startToActivity(ShareAirActivity.class);
+            ShareAirActivity.actionStart(this, mTvTitle.getText().toString());
         }
         return super.onOptionsItemSelected(item);
     }

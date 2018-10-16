@@ -25,7 +25,7 @@
 
             <fragment
                 android:id="@+id/fm_air_new_device_status"
-                android:name="cc.xiaojiang.liangbo.fragment.DeviceStatusFragment"
+                android:name="cc.xiaojiang.liangbo.fragment.TestFragment"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
 
