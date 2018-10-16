@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,6 +131,10 @@ public class AirNewActivity extends BaseActivity {
     NestedScrollView mSvAirNewContent;
     @BindView(R.id.iv_location)
     ImageView mIvLocation;
+    @BindView(R.id.ll_air_new_page1)
+    LinearLayout mLlAirNewPage1;
+    @BindView(R.id.ll_air_new_page2)
+    LinearLayout mLlAirNewPage2;
 
     private String mMyLocation;
     private LocationClient mLocationClient;
@@ -144,6 +149,7 @@ public class AirNewActivity extends BaseActivity {
     }
 
     private void init() {
+        setViewHeight();
         mRealm = Realm.getDefaultInstance();
         initWeatherCityCode();
         //初始化界面
@@ -153,6 +159,21 @@ public class AirNewActivity extends BaseActivity {
         mViewAirNewComfort.setMax(100);
         //定位当前位置
         AirNewActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck(this);
+    }
+
+    private void setViewHeight() {
+        int pageHeight = ScreenUtils.getScreenHeight(this) - ScreenUtils
+                .getActionBarHeight(this) - ScreenUtils.getStatusBarHeight(this);
+        //设置第一页
+        LinearLayout.LayoutParams layoutParamsPage1 = (LinearLayout.LayoutParams)
+                mLlAirNewPage1.getLayoutParams();
+        layoutParamsPage1.height =pageHeight;
+        mLlAirNewPage1.setLayoutParams(layoutParamsPage1);
+        //设置第二页
+        LinearLayout.LayoutParams layoutParamsPage2 = (LinearLayout.LayoutParams)
+                mLlAirNewPage2.getLayoutParams();
+        layoutParamsPage2.height = pageHeight;
+        mLlAirNewPage2.setLayoutParams(layoutParamsPage2);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
