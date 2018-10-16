@@ -36,6 +36,7 @@ import com.orhanobut.logger.Logger;
 import com.qiniu.android.storage.UploadManager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.File;
@@ -99,10 +100,14 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     private File mSelectAvatarFile;
     private String mSex, province, city;
     private ArrayList<AreaJsonBean> options1Items;
-    private ArrayList<ArrayList<String>> options2Items;
+    private ArrayList<ArrayList<AreaJsonBean.CityBean>> options2Items = new ArrayList<>();
     private OptionsPickerView pvCityOptions;
     private UploadManager mUploadManager;
     private String mNickname = "";
+    private int mProvinceCode = 110000;
+    private int mCityCode = 110100;
+    private int provinceIndex = 0;
+    private int cityIndex = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,7 +145,7 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         } else {
             mTvSex.setText("M".equals(mSex) ? R.string.personal_male : R.string.personal_female);
         }
-        mTvArea.setText(userInfo.getArea());
+        setCityView(userInfo.getArea());
         if ((userInfo.getBirthday() == 0)) {
             mTvBirthday.setText("请选择");
             mDate = new Date();
@@ -150,6 +155,36 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
             final String format = sdf.format(new Date(userInfo.getBirthday()));
             mTvBirthday.setText(format);
         }
+    }
+
+    private void setCityView(String area) {
+        try {
+            final String[] split = area.split("-");
+            mProvinceCode = Integer.parseInt(split[0]);
+            mCityCode = Integer.parseInt(split[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String province = "";
+        String city = "";
+        final int provinceSize = options1Items.size();
+        for (int i = 0; i < provinceSize; i++) {
+            if (options1Items.get(i).getId() == mProvinceCode) {
+                provinceIndex = i;
+                province = options1Items.get(i).getName();
+                break;
+            }
+        }
+        final ArrayList<AreaJsonBean.CityBean> cityBeans = options2Items.get(provinceIndex);
+        final int citySize = cityBeans.size();
+        for (int i = 0; i < citySize; i++) {
+            if (cityBeans.get(i).getId() == mCityCode) {
+                cityIndex = i;
+                city = cityBeans.get(i).getName();
+                break;
+            }
+        }
+        mTvArea.setText(province + "-" + city);
     }
 
     @Override
@@ -231,41 +266,52 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     }
 
     private void initJsonData() {
-        /*
+
+        /**
          * 注意：assets 目录下的Json文件仅供参考，实际使用可自行替换文件
          * 关键逻辑在于循环体
+         *
          * */
-        String JsonData = new GetJsonDataUtil().getJson(this, FILE_NAME);//获取assets目录下的json文件数据
+        String JsonData = new GetJsonDataUtil().getJson(this, FILE_NAME);
+        //获取assets目录下的json文件数据
 
         ArrayList<AreaJsonBean> areaJsonBeans = parseData(JsonData);//用Gson 转成实体
-        options1Items = new ArrayList<>(areaJsonBeans.size());
-        options2Items = new ArrayList<>(areaJsonBeans.size());
-        /*
+
+        /**
          * 添加省份数据
          *
          * 注意：如果是添加的JavaBean实体，则实体类需要实现 IPickerViewData 接口，
          * PickerView会通过getPickerViewText方法获取字符串显示出来。
          */
         options1Items = areaJsonBeans;
-        final int provinceSize = areaJsonBeans.size();
-        for (int i = 0; i < provinceSize; i++) {//遍历省份
-            final List<AreaJsonBean.CityBean> city = areaJsonBeans.get(i).getCity();
-            final int citySize = city.size();
-            ArrayList<String> cityList = new ArrayList<>(citySize);//该省的城市列表（第二级）
-            for (int c = 0; c < citySize; c++) {//遍历该省份的所有城市
-                String CityName = city.get(c).getName();
-                cityList.add(CityName);//添加城市
-            }
-            //添加城市数据
+        for (int i = 0; i < areaJsonBeans.size(); i++) {//遍历省份
+
+            //遍历该省份的所有城市
+            //添加城市
+            ArrayList<AreaJsonBean.CityBean> cityList = new ArrayList<>(areaJsonBeans.get(i)
+                    .getCity());
+
+            /**
+             * 添加城市数据
+             */
             options2Items.add(cityList);
         }
     }
 
     public ArrayList<AreaJsonBean> parseData(String result) {//Gson 解析
-        Type type = new TypeToken<List<AreaJsonBean>>() {
-        }.getType();
-        final Gson gson = new Gson();
-        return gson.fromJson(result, type);
+        ArrayList<AreaJsonBean> detail = new ArrayList<>();
+        try {
+            JSONArray data = new JSONArray(result);
+            Gson gson = new Gson();
+            for (int i = 0; i < data.length(); i++) {
+                AreaJsonBean entity = gson.fromJson(data.optJSONObject(i).toString(),
+                        AreaJsonBean.class);
+                detail.add(entity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return detail;
     }
 
     @Override
@@ -365,7 +411,8 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
                 mUpdateMap.put(Constant.KEY_BIRTHDAY, date.getTime());
             })
                     .setTitleText("选择出生年月")
-                    .setCancelColor(ContextCompat.getColor(this, R.color.personal_picker_cancel))
+                    .setCancelColor(ContextCompat.getColor(this, R.color
+                            .personal_picker_cancel))
                     .setSubmitColor(ContextCompat.getColor(this, R.color.black))
                     .setType(new boolean[]{true, true, true, false, false, false})
                     .setLabel("", "", "", "", "", "")
@@ -380,17 +427,20 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         if (pvCityOptions == null) {
             pvCityOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v)
                     -> {
-                province = options1Items.get(options1).getPickerViewText();
-                city = options2Items.get(options1).get(options2);
-                mTvArea.setText(String.format("%s%s", province, city));
-                mUpdateMap.put(Constant.KEY_AREA, province + city);
+                String province = options1Items.get(options1).getPickerViewText();
+                String city = options2Items.get(options1).get(options2).getName();
+                int provinceCode = options1Items.get(options1).getId();
+                int cityCode = options2Items.get(options1).get(options2).getId();
+                mTvArea.setText(province + "-" + city);
+                mUpdateMap.put(Constant.KEY_AREA, provinceCode + "-" + cityCode);
             })
                     .setTitleText("城市选择")
                     .setSubmitText("确定")//确定按钮文字
                     .setCancelText("取消")//取消按钮文字
                     .setSubmitColor(ContextCompat.getColor(this, R.color.black))
-                    .setCancelColor(ContextCompat.getColor(this, R.color.personal_picker_cancel))
-                    .setSelectOptions(0, 0)  //设置默认选中项
+                    .setCancelColor(ContextCompat.getColor(this, R.color
+                            .personal_picker_cancel))
+                    .setSelectOptions(provinceIndex, cityIndex)  //设置默认选中项
                     .build();
             pvCityOptions.setPicker(options1Items, options2Items);
         }

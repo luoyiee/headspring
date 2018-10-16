@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ubuntu on 18-1-10.
  */
 
-public class AreaJsonBean implements IPickerViewData{
+public class AreaJsonBean implements IPickerViewData {
 
     private int id;
     private String name;
@@ -61,6 +61,11 @@ public class AreaJsonBean implements IPickerViewData{
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 }
