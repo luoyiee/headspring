@@ -17,7 +17,9 @@ import java.util.Objects;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.utils.NetworkUtils;
 import cc.xiaojiang.liangbo.utils.ScreenUtils;
+import cc.xiaojiang.liangbo.utils.ToastUtils;
 
 
 /**
@@ -48,8 +50,14 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             setSupportActionBar(toolbar);
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
+        checkNetwork();
     }
 
+    private void checkNetwork() {
+        if (!NetworkUtils.isConnected(this)) {
+            ToastUtils.show("没有检测到网络连接，请检查手机网络");
+        }
+    }
     /**
      * 初始化布局id
      * @return 布局id

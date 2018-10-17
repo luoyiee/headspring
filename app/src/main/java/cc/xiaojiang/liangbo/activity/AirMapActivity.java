@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import cc.xiaojiang.liangbo.LocationActivity;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
@@ -59,7 +60,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickListener, AMap
+public class AirMapActivity extends LocationActivity implements AMap.OnMarkerClickListener, AMap
         .InfoWindowAdapter, AMap.OnCameraChangeListener, AMap.OnMapClickListener {
 
     @BindView(R.id.mv_map)
@@ -76,8 +77,8 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
     // TODO: 2018/10/8 判断用户是否开启gps功能，引导用户开启
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
+        super.onCreate(savedInstanceState);
         mMapView.onCreate(savedInstanceState);
         if (aMap == null) {
             aMap = mMapView.getMap();
@@ -85,6 +86,11 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
         //监听地图移动和缩放
         aMap.setOnCameraChangeListener(this);
         aMap.setOnMapClickListener(this);
+        checkGps();
+    }
+
+    @Override
+    public void locationAvailable() {
         AirMapActivityPermissionsDispatcher.showMyLocationWithPermissionCheck(this);
     }
 
@@ -242,7 +248,7 @@ public class AirMapActivity extends BaseActivity implements AMap.OnMarkerClickLi
             public void onMyLocationChange(Location location) {
                 Logger.d(location.toString());
                 aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location
-                        .getLatitude(), location.getLongitude()), 10));
+                        .getLatitude(), location.getLongitude()), 11));
             }
         });
         aMap.setOnMarkerClickListener(this);

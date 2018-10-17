@@ -2,20 +2,25 @@ package cc.xiaojiang.liangbo.activity.weather;
 
 import android.Manifest;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.amap.api.maps.AMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
@@ -32,6 +37,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
+import cc.xiaojiang.liangbo.activity.AirMapRankListActivity;
+import cc.xiaojiang.liangbo.activity.ShareActivity;
 import cc.xiaojiang.liangbo.activity.ShareAirActivity;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
@@ -135,6 +142,8 @@ public class AirNewActivity extends BaseActivity {
     LinearLayout mLlAirNewPage1;
     @BindView(R.id.ll_air_new_page2)
     LinearLayout mLlAirNewPage2;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private String mMyLocation;
     private LocationClient mLocationClient;
@@ -145,7 +154,29 @@ public class AirNewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         init();
+    }
 
+    private void showPupWindow() {
+        final View contentView = getLayoutInflater().inflate(R.layout.layout_pop_window_new_air,
+                null);
+        final PopupWindow popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams
+                .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        contentView.findViewById(R.id.tv_new_air_city).setOnClickListener(v -> {
+            startToCityManagerActivity();
+            popupWindow.dismiss();
+        });
+        popupWindow.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec
+                .UNSPECIFIED);
+        contentView.findViewById(R.id.tv_new_air_share).setOnClickListener(v -> {
+            Bitmap bitmap = ScreenShotUtils.getBitmapByView(mSvAirNewContent);
+            EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
+            ShareAirActivity.actionStart(this, mTvTitle.getText().toString());
+            popupWindow.dismiss();
+
+        });
+        popupWindow.showAsDropDown(mToolbar, ScreenUtils.getScreenWidth(this) - popupWindow
+                .getContentView().getMeasuredWidth(), 0);
     }
 
     private void init() {
@@ -157,8 +188,12 @@ public class AirNewActivity extends BaseActivity {
         mViewAirNewQuality.setMax(500);
         mViewAirNewComfort.setMin(0);
         mViewAirNewComfort.setMax(100);
-        //定位当前位置
         AirNewActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void setViewHeight() {
@@ -167,7 +202,7 @@ public class AirNewActivity extends BaseActivity {
         //设置第一页
         LinearLayout.LayoutParams layoutParamsPage1 = (LinearLayout.LayoutParams)
                 mLlAirNewPage1.getLayoutParams();
-        layoutParamsPage1.height =pageHeight;
+        layoutParamsPage1.height = pageHeight;
         mLlAirNewPage1.setLayoutParams(layoutParamsPage1);
         //设置第二页
         LinearLayout.LayoutParams layoutParamsPage2 = (LinearLayout.LayoutParams)
@@ -218,16 +253,15 @@ public class AirNewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share_dark, menu);
+        getMenuInflater().inflate(R.menu.menu_more, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_share) {
-            Bitmap bitmap = ScreenShotUtils.getBitmapByView(mSvAirNewContent);
-            EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
-            ShareAirActivity.actionStart(this, mTvTitle.getText().toString());
+        if (item.getItemId() == R.id.menu_more) {
+
+            showPupWindow();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -376,7 +410,8 @@ public class AirNewActivity extends BaseActivity {
                     Log.e("AmapError", "location Error, ErrCode:"
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
-                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
+                    mTvTitle.setText("定位失败");
                 }
             }
         });
@@ -415,6 +450,11 @@ public class AirNewActivity extends BaseActivity {
 
     @OnClick(R.id.tv_title)
     public void onViewClicked() {
+
+        startToCityManagerActivity();
+    }
+
+    private void startToCityManagerActivity() {
         Bundle bundle = new Bundle();
         bundle.putString(Constant.CITY, mMyLocation);
         LoginInterceptor.interceptor(this, CityManagerActivity.class.getName(), bundle);

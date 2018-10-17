@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission-group.LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 允许程序设置内置sd卡的写权限 -->
@@ -18,8 +17,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:name=".base.MyApplication"
@@ -157,7 +158,7 @@
         <activity
             android:name=".activity.weather.CityAddActivity"
             android:label="@string/title_activity_weather_city_add"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.weather.AirNewActivity"
             android:label="@string/title_activity_air_new"
@@ -169,7 +170,8 @@
         <activity
             android:name=".activity.TestActivity"
             android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".LocationActivity"></activity>
     </application>
 
 </manifest>

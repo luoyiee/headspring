@@ -148,11 +148,12 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
         setCityView(userInfo.getArea());
         if ((userInfo.getBirthday() == 0)) {
             mTvBirthday.setText("请选择");
-            mDate = new Date();
         } else {
             final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale
                     .getDefault());
-            final String format = sdf.format(new Date(userInfo.getBirthday()));
+            mDate = new Date(userInfo.getBirthday() * 1000);
+            final String format = sdf.format(mDate);
+
             mTvBirthday.setText(format);
         }
     }
@@ -400,15 +401,13 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
             Calendar startDate = Calendar.getInstance();
             startDate.set(1920, 1, 1);
             Calendar endDate = Calendar.getInstance();
-
             endDate.setTime(new Date());
-
             selectedDate.setTime(mDate);
             mAgePicker = new TimePickerView.Builder(this, (date, v) -> {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String dateStr = sdf.format(date);
                 mTvBirthday.setText(dateStr);
-                mUpdateMap.put(Constant.KEY_BIRTHDAY, date.getTime());
+                mUpdateMap.put(Constant.KEY_BIRTHDAY, date.getTime() / 1000);
             })
                     .setTitleText("选择出生年月")
                     .setCancelColor(ContextCompat.getColor(this, R.color
