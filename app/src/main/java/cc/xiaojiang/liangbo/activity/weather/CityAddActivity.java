@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cc.xiaojiang.liangbo.LocationActivity;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.adapter.WeatherRecommendCityAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
@@ -44,7 +45,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CityAddActivity extends BaseActivity implements BaseQuickAdapter
+public class CityAddActivity extends LocationActivity implements BaseQuickAdapter
         .OnItemClickListener, View.OnTouchListener {
 
     @BindView(R.id.rv_weather_city_add)
@@ -62,6 +63,12 @@ public class CityAddActivity extends BaseActivity implements BaseQuickAdapter
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         init();
+    }
+
+    @Override
+    public void locationAvailable() {
+        CityAddActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck
+                (CityAddActivity.this);
     }
 
     private void init() {
@@ -84,8 +91,7 @@ public class CityAddActivity extends BaseActivity implements BaseQuickAdapter
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CityAddActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck
-                        (CityAddActivity.this);
+               checkGps();
             }
         });
         return view;

@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.amap.api.maps.AMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
@@ -37,8 +37,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
-import cc.xiaojiang.liangbo.activity.AirMapRankListActivity;
-import cc.xiaojiang.liangbo.activity.ShareActivity;
 import cc.xiaojiang.liangbo.activity.ShareAirActivity;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
@@ -67,7 +65,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class AirNewActivity extends BaseActivity {
+public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final int LOCATION = 1;
     private static final int CITY = 0;
     @BindView(R.id.view_air_new_quality)
@@ -144,6 +142,8 @@ public class AirNewActivity extends BaseActivity {
     LinearLayout mLlAirNewPage2;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.srl_air_new_content)
+    SwipeRefreshLayout mSrlAirNewContent;
 
     private String mMyLocation;
     private LocationClient mLocationClient;
@@ -188,6 +188,7 @@ public class AirNewActivity extends BaseActivity {
         mViewAirNewQuality.setMax(500);
         mViewAirNewComfort.setMin(0);
         mViewAirNewComfort.setMax(100);
+        mSrlAirNewContent.setOnRefreshListener(this);
         AirNewActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck(this);
     }
 
@@ -398,6 +399,7 @@ public class AirNewActivity extends BaseActivity {
         }
         mLocationClient.initClient(this);
         mLocationClient.startLocation(aMapLocation -> {
+            mSrlAirNewContent.setRefreshing(false);
             if (aMapLocation != null) {
                 if (aMapLocation.getErrorCode() == 0) {
                     Logger.d(aMapLocation.toString());
@@ -411,7 +413,7 @@ public class AirNewActivity extends BaseActivity {
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
 //                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
-                    mTvTitle.setText("定位失败");
+                    mTvTitle.setText("定位失败,请选择城市");
                 }
             }
         });
@@ -450,7 +452,6 @@ public class AirNewActivity extends BaseActivity {
 
     @OnClick(R.id.tv_title)
     public void onViewClicked() {
-
         startToCityManagerActivity();
     }
 
@@ -488,4 +489,8 @@ public class AirNewActivity extends BaseActivity {
                 });
     }
 
+    @Override
+    public void onRefresh() {
+        AirNewActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck(this);
+    }
 }

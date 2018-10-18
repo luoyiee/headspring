@@ -1,13 +1,18 @@
 package cc.xiaojiang.liangbo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 
 import com.github.mikephil.charting.formatter.IFillFormatter;
+
+import java.util.logging.Logger;
 
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.NetworkUtils;
@@ -33,6 +38,16 @@ public abstract class LocationActivity extends BaseActivity {
      * 检测GPS是否打开
      */
     public void checkGps() {
+        // TODO: 2018/10/17 优化
+//        com.orhanobut.logger.Logger.d(NetworkUtils.isGpsAvailiable(this));
+//        com.orhanobut.logger.Logger.d(NetworkUtils.isAGPSAvailiable(this));
+//        try {
+//            int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure
+//                    .LOCATION_MODE);
+//            com.orhanobut.logger.Logger.d("locationMode: "+locationMode);
+//        } catch (Settings.SettingNotFoundException e) {
+//            e.printStackTrace();
+//        }
         if (NetworkUtils.isLocationAvailiable(this)) {
             com.orhanobut.logger.Logger.d("location is open");
             locationAvailable();

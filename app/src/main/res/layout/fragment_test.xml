@@ -11,9 +11,9 @@
         android:id="@+id/ll_device_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="invisible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_air_new_device_status"
@@ -42,7 +42,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_add_device"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sv_air_new_content"
+    android:id="@+id/srl_air_new_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_blue"
@@ -10,51 +10,58 @@
     tools:context=".activity.weather.AirNewActivity"
     tools:showIn="@layout/activity_air_new">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/sv_air_new_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/ll_air_new_page1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <fragment
-                android:id="@+id/fm_air_new_device_status"
-                android:name="cc.xiaojiang.liangbo.fragment.TestFragment"
+            <LinearLayout
+                android:id="@+id/ll_air_new_page1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <include layout="@layout/layout_air_new_weather" />
+                <fragment
+                    android:id="@+id/fm_air_new_device_status"
+                    android:name="cc.xiaojiang.liangbo.fragment.TestFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
-            <include layout="@layout/layout_air_new_forecast" />
+                <include layout="@layout/layout_air_new_weather" />
+
+                <include layout="@layout/layout_air_new_forecast" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_air_new_page2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/layout_air_new_air_quality"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <include
+                    layout="@layout/layout_air_new_comfort"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_air_new_page2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <include
-                layout="@layout/layout_air_new_air_quality"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+    </android.support.v4.widget.NestedScrollView>
 
-            <include
-                layout="@layout/layout_air_new_comfort"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-
-</android.support.v4.widget.NestedScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
