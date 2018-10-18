@@ -57,11 +57,8 @@ public class LoginActivity extends BaseActivity {
         public void afterEvent(int event, int result, Object data) {
             runOnUiThread(() -> {
                 if (data instanceof Throwable) {
-                    Throwable throwable = (Throwable) data;
-                    MobThrowable mobThrowable = new Gson().fromJson(throwable.getMessage
-                            (), MobThrowable.class);
-                    ToastUtils.show(mobThrowable.getDetail());
-                    Logger.e(throwable.getMessage());
+                    ToastUtils.show("获取验证码出错！");
+                    Logger.e(((Throwable) data).getMessage());
                 } else {
                     if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         mCountDownTimer.start();
