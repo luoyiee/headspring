@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="@color/primary_blue"
+    app:contentView="@+id/cl_city_manager_content"
+    app:rightMenuView="@id/tv_city_manager_swipe_menu_delete">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_city_manager_content"
+        android:layout_width="match_parent"
+        android:layout_height="72dp">
+
+        <TextView
+            android:id="@+id/tv_item_weather_city_manager_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="宁波" />
+
+        <TextView
+            android:id="@+id/tv_item_weather_city_manager_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="26℃|晴" />
+
+        <ImageView
+            android:id="@+id/iv_item_weather_city_manager_my_location"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:visibility="visible"
+            android:src="@drawable/home_position"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_item_weather_city_manager_city"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_city_manager_swipe_menu_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/swipe_menu_delete"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="删除"
+        android:textColor="@color/white" />
+</com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout>

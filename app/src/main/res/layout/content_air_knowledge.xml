@@ -8,7 +8,7 @@
     android:padding="16dp"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".feature.AirKnowledgeActivity"
+    tools:context="cc.xiaojiang.liangbo.activity.AirKnowledgeActivity"
     tools:showIn="@layout/activity_air_knowledge">
 
     <LinearLayout
@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="优" />
+                    android:text="@string/air_knowledge_excellent" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="良" />
+                    android:text="@string/air_knowledge_good" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="轻度污染" />
+                    android:text="@string/air_knowledge_mild_pollution" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -261,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="中度污染" />
+                    android:text="@string/air_knowledge_moderate_pollution" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -336,7 +336,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="重度污染" />
+                    android:text="@string/air_knowledge_severe_pollution" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -411,7 +411,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="严重污染" />
+                    android:text="@string/air_knowledge_serious_pollution" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

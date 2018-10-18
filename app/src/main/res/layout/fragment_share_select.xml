@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView9"
+        style="@style/common_16_black_text"
+        android:layout_marginTop="16dp"
+        android:text="@string/share_to"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <cc.xiaojiang.liangbo.view.CommonTextView
+        android:id="@+id/tv_share_wechat"
+        style="@style/shareTextStyle"
+        android:layout_marginTop="16dp"
+        android:text="@string/share_wechat_friend"
+        app:icon_src_normal="@drawable/share_wechat"
+        app:layout_constraintEnd_toStartOf="@+id/tv_share_wechat_comment"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"/>
+
+    <cc.xiaojiang.liangbo.view.CommonTextView
+        android:id="@+id/tv_share_wechat_comment"
+        style="@style/shareTextStyle"
+        android:text="@string/share_wecaht_comment"
+        app:icon_src_normal="@drawable/share_wechat_comment"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_share_wechat"
+        app:layout_constraintEnd_toStartOf="@+id/tv_share_qq"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_share_wechat"/>
+
+    <cc.xiaojiang.liangbo.view.CommonTextView
+        android:id="@+id/tv_share_qq"
+        style="@style/shareTextStyle"
+        android:text="@string/share_qq"
+        app:icon_src_normal="@drawable/share_qq"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_share_wechat"
+        app:layout_constraintEnd_toStartOf="@+id/tv_share_qq_zone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_share_wechat_comment"/>
+
+    <cc.xiaojiang.liangbo.view.CommonTextView
+        android:id="@+id/tv_share_qq_zone"
+        style="@style/shareTextStyle"
+        android:visibility="gone"
+        android:text="@string/share_qq_zone"
+        app:icon_src_normal="@drawable/share_qq_zone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_share_wechat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_share_qq"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:text="@string/cancel"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_share_wechat_comment"/>
+</android.support.constraint.ConstraintLayout>

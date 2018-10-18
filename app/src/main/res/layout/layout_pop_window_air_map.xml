@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_air_map_rank"
+        style="@style/common_14_black_text"
+        android:drawablePadding="2dp"
+        android:drawableStart="@drawable/ic_rank"
+        android:padding="12dp"
+        android:text="排行榜" />
+
+    <include layout="@layout/layout_vertical_line" />
+
+    <TextView
+        android:id="@+id/tv_air_map_share"
+        style="@style/common_14_black_text"
+        android:drawablePadding="2dp"
+        android:drawableStart="@drawable/ic_share"
+        android:padding="12dp"
+        android:text="分享" />
+
+
+</LinearLayout>

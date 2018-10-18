@@ -1,222 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".feature.PersonalCenterActivity"
+    tools:context="cc.xiaojiang.liangbo.activity.PersonalCenterActivity"
     tools:showIn="@layout/activity_personal_center">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/test_24dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:id="@+id/ll_personal_info"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_personal_center_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/not_login_avatar" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_personal_center_nick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="请登录"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_personal_center_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="ID:123456" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_item_next" />
+        </LinearLayout>
+
+        <include layout="@layout/layout_divider_block" />
+
+        <LinearLayout
+            android:id="@+id/ll_personal_share"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_block_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_personal_share" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Ami"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="共享服务" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID:123456" />
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_item_next" />
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/test_24dp" />
-    </LinearLayout>
+        <include layout="@layout/layout_divider_line" />
 
-    <include layout="@layout/layout_divider_block" />
+        <LinearLayout
+            android:id="@+id/ll_personal_air_knowledge"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_block_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_block_height"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_personal_air_knowledge" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="空气知识" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="共享服务" />
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_item_next" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+        </LinearLayout>
 
-    </LinearLayout>
+        <include layout="@layout/layout_divider_line" />
 
-    <include layout="@layout/layout_divider_line" />
+        <LinearLayout
+            android:id="@+id/ll_personal_lunar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_block_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_block_height"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_personal_lunar" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="黄道吉日" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="空气知识" />
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_item_next" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+        </LinearLayout>
 
-    </LinearLayout>
+        <include layout="@layout/layout_divider_line" />
 
-    <include layout="@layout/layout_divider_line" />
+        <LinearLayout
+            android:id="@+id/ll_personal_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_block_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_block_height"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_personal_instructions" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="使用说明" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="说明书" />
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_item_next" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+        </LinearLayout>
 
-    </LinearLayout>
+        <include layout="@layout/layout_divider_line" />
 
-    <include layout="@layout/layout_divider_line" />
+        <LinearLayout
+            android:id="@+id/ll_personal_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_block_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_block_height"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_personal_feedback" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="售后服务" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="量波动态" />
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_item_next" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+        </LinearLayout>
 
-    </LinearLayout>
+        <include layout="@layout/layout_divider_line" />
 
-    <include layout="@layout/layout_divider_line" />
+        <LinearLayout
+            android:id="@+id/ll_personal_update"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_block_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_block_height"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_personal_update" />
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="软件更新" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="意见反馈" />
+            <ImageView
+                android:layout_width="@dimen/personal_center_icon"
+                android:layout_height="@dimen/personal_center_icon"
+                android:src="@drawable/ic_item_next" />
+        </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
-
-    </LinearLayout>
-
-    <include layout="@layout/layout_divider_line" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_block_height"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="软件更新" />
-
-        <ImageView
-            android:layout_width="@dimen/personal_center_icon"
-            android:layout_height="@dimen/personal_center_icon"
-            android:src="@drawable/test_24dp" />
+        <include layout="@layout/layout_divider_line" />
 
     </LinearLayout>
 
-    <include layout="@layout/layout_divider_line" />
 
-</LinearLayout>
+</ScrollView>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentView="@id/ll_device_content"
+    app:rightMenuView="@id/ll_device_swipe_menu">
+
+
+    <LinearLayout
+        android:id="@+id/ll_device_content"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_device_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:civ_border_color="@color/device_status_offline"
+            app:civ_border_width="1dp"
+            tools:src="@drawable/test_24dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/black"
+                tools:text="空智子" />
+
+            <TextView
+                android:id="@+id/tv_device_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textSize="12sp"
+                tools:text="已开启" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_device_admin"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            tools:src="@drawable/ic_device_admin" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_device_swipe_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp">
+
+        <TextView
+            android:id="@+id/tv_device_swipe_menu_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/swipe_menu_modify"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="修改"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_device_swipe_menu_share"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/swipe_menu_share"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="共享"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_device_swipe_menu_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/swipe_menu_delete"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="删除"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout>

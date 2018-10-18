@@ -1,19 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cc.xiaojiang.headerspring">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="cc.xiaojiang.liangbo">
+
+    <uses-permission android:name="android.permission-group.LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:name,android:allowBackup">
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="ea216999d18a19c8e50cecbc13da6e30" />
+
+        <!-- Mqtt Service -->
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service android:name="com.amap.api.location.APSService" />
+
         <activity
-            android:name=".MainActivity"
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AirKnowledgeActivity"
+            android:label="@string/title_activity_air_knowledge"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AppUpdateActivity"
+            android:label="@string/title_activity_app_update"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ProductListActivity"
+            android:label="@string/title_activity_device_choose"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.WifiConfigInfoActivity"
+            android:label="@string/title_activity_config_info"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.WifiConfirmActivity"
+            android:label="@string/title_activity_wifi_cofirm"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.PersonalCenterActivity"
+            android:label="@string/title_activity_personal_center"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.DeviceListActivity"
+            android:label="@string/title_activity_device_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.PersonalInfoActivity"
+            android:label="@string/title_activity_personal_info"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AirMapRankListActivity"
+            android:label="@string/title_activity_top_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.KZZActivity"
+            android:label="@string/title_activity_kzz"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.HistoryDataActivity"
+            android:label="@string/title_activity_history_data"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.FilterTimeRemainActivity"
+            android:label="@string/title_activity_filter_element"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,37 +109,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".feature.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".activity.WifiConnectActivity"
+            android:label="@string/title_activity_wifi_connect"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.RegisterActivity"
-            android:label="@string/title_activity_register"
+            android:name=".activity.ShopActivity"
+            android:label="@string/title_activity_shop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.AirKnowledgeActivity"
-            android:label="@string/title_activity_air_knowledge"
+            android:name=".activity.LunarActivity"
+            android:label="@string/title_activity_lunar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.AppUpdateActivity"
-            android:label="@string/title_activity_app_update"
+            android:name=".activity.InstructionActivity"
+            android:label="@string/title_activity_instruction"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.ProductListActivity"
-            android:label="@string/title_activity_device_choose"
+            android:name=".activity.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.ConfigInfoActivity"
-            android:label="@string/title_activity_config_info"
+            android:name=".activity.TopActivityActivity"
+            android:label="@string/title_activity_top_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.WifiConfirmActivity"
-            android:label="@string/title_activity_wifi_cofirm"
+            android:name=".activity.AirMapActivity"
+            android:label="@string/title_activity_air_map"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.ShareActivity" />
         <activity
-            android:name=".feature.PersonalCenterActivity"
-            android:label="@string/title_activity_personal_center"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".activity.ScanCodeActivity"
+            android:label="@string/title_activity_scan_code" />
+        <activity android:name=".activity.BrowserActivity" />
+        <activity
+            android:name=".activity.ShareQrCodeActivity"
+            android:label="@string/title_activity_share_qr_code"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.AirActivity" />
+        <activity android:name=".activity.ShareHistoryDataActivity" />
+        <activity android:name=".activity.ShareAirActivity" />
+        <activity
+            android:name=".activity.InstructionsActivity"
+            android:label="@string/title_activity_lb_instructions" />
+        <activity
+            android:name=".activity.weather.CityManagerActivity"
+            android:label="@string/title_activity_city_manager"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.weather.CityAddActivity"
+            android:label="@string/title_activity_weather_city_add"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.weather.AirNewActivity"
+            android:label="@string/title_activity_air_new"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.weather.CitySearchActivity"
+            android:label="@string/title_activity_city_search"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.TestActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".LocationActivity"></activity>
     </application>
 
 </manifest>

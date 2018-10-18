@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.FilterTimeRemainActivity"
+    tools:showIn="@layout/activity_filtere_time_remain">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_filter_2"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_filter_1">
+
+                <cc.xiaojiang.liangbo.view.WaveProgressView
+                    android:id="@+id/view_filter_time_remain"
+                    android:layout_width="220dp"
+                    android:layout_height="220dp"
+                    android:layout_margin="36dp"
+                    app:circleWidth="1dp"
+                    app:hint="滤芯剩余"
+                    app:hintColor="@color/white"
+                    app:hintSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/toolbar"
+                    app:layout_constraintVertical_bias="0.38"
+                    app:valueColor="@color/white"
+                    app:valueSize="52sp"
+                    app:waveHeight="20dp" />
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_filter_use_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            tools:text="@string/filter_use_time" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_filter_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:drawablePadding="4dp"
+        android:drawableTop="@drawable/filter_reset"
+        android:text="滤芯复位"
+        android:textColor="@color/white" />
+
+
+</FrameLayout>

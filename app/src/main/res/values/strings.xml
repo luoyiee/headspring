@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HeaderSpring</string>
+    <string name="app_name">量波·未来</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -11,6 +11,115 @@
     <string name="title_activity_config_info">添加设备</string>
     <string name="title_activity_wifi_cofirm">确认Wi-Fi</string>
     <string name="title_activity_personal_center">个人中心</string>
+    <string name="title_activity_map">地图</string>
+    <string name="title_activity_top_activity">空气质量排行榜</string>
+
+    <string name="day">日</string>
+    <string name="week">周</string>
+    <string name="month">月</string>
 
 
+    <string name="title_activity_kzz">空智子</string>
+    <string name="title_activity_lb">LB</string>
+    <string name="title_activity_scan_code">扫描二维码</string>
+    <string name="title_activity_dynamic">量波动态</string>
+    <string name="title_activity_lunar">农历节气</string>
+    <string name="title_activity_instruction">说明书</string>
+    <string name="title_activity_feedback">意见反馈</string>
+    <string name="title_activity_history_data">历史数据</string>
+    <string name="title_activity_filter_element">滤芯</string>
+    <string name="int2String">%d</string>
+
+    <string name="action_save">保存</string>
+    <string name="share_content">量波，帝源空气净化器全球合作伙伴</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_device_list">设备列表</string>
+    <string name="title_activity_personal_info">个人信息</string>
+    <string name="title_activity_wifi_connect">连接中</string>
+    <string name="title_activity_shop">商城</string>
+
+    <string name="login_second_retry">%ds后重试</string>
+    <string name="login_get_verify_code">获取验证码</string>
+    <string name="login_toast_phone_not_null">手机号不能为空</string>
+    <string name="login_toast_verify_code_not_null">验证码不能为空</string>
+
+    <string name="air_purifier_rate_excellent">优</string>
+    <string name="air_purifier_rate_good">良</string>
+    <string name="air_purifier_rate_poor">差</string>
+    <string name="air_purifier_view2_type">PM2.5</string>
+    <string name="air_purifier_view2_type_unit">μg/m³</string>
+    <string name="air_purifier_view2_rate_string">室内空气:</string>
+    <string name="air_purifier_offline">-</string>
+
+    <string name="air_knowledge_excellent">优</string>
+    <string name="air_knowledge_good">良</string>
+    <string name="air_knowledge_mild_pollution">轻度污染</string>
+    <string name="air_knowledge_moderate_pollution">中度污染</string>
+    <string name="air_knowledge_severe_pollution">重度污染</string>
+    <string name="air_knowledge_serious_pollution">严重污染</string>
+
+    <string name="air_purifier_view1_wireless">无线</string>
+    <string name="air_purifier_view1_timing">定时</string>
+    <string name="air_purifier_view1_strainer">滤网</string>
+    <string name="air_purifier_view1_battery">电量</string>
+    <string name="air_purifier_view1_temperature">温度</string>
+    <string name="air_purifier_view1_humidity">湿度</string>
+    <string name="personal_avatar_picker_camera">拍照</string>
+    <string name="personal_avatar_picker_album">从手机相册选择</string>
+    <string name="personal_info_change_name">更改头像</string>
+    <string name="personal_info_nickname">昵称</string>
+    <string name="personal_info_hint_nickname">请输入昵称</string>
+    <string name="personal_info_phone">手机号</string>
+    <string name="personal_info_sex">性别</string>
+    <string name="personal_info_birthday">出生年月</string>
+    <string name="personal_info_area">地区</string>
+    <string name="personal_info_log_out">退出当前账号</string>
+    <string name="cancel">取消</string>
+    <string name="device_hint_nickname">设备名称</string>
+    <string name="confirm">确认</string>
+    <string name="login_get_verification_code_success">验证码获取成功</string>
+    <string name="title_activity_splash">量波·未来</string>
+    <string name="menu_add">添加</string>
+    <string name="menu_more">更多</string>
+
+    <string name="product_scan">扫描共享码添加设备</string>
+    <string name="personal_male">男</string>
+    <string name="personal_female">女</string>
+    <string name="lunar_year_month">%d年%d月</string>
+
+    <string name="lunar_info_time">%d %s %s日</string>
+    <string name="lunar_info_year">%s【%s】年</string>
+    <string name="lunar_info_month_day">%s月  %s日</string>
+
+    <string name="filter_use_time">滤芯使用时间：%dh</string>
+    <string name="share">分享</string>
+    <string name="title_activity_dynamic_list">量波动态</string>
+    <string name="title_activity_air_map">空气质量地图</string>
+    <string name="feedback_hint">请描述你的问题和意见</string>
+    <string name="feedback_submit">提交</string>
+    <string name="history_filter_user_time">滤芯服务</string>
+    <string name="device_share_data">分享数据</string>
+
+    <string name="update_version_name">当前版本V%s</string>
+    <string name="scan_code_permission_tip">需要同意相机权限才能正常使用</string>
+    <string name="wifi_config_explain_kzz">配置说明:\n 1.请将空智子连接电源; \n 2.长按空智子面板WIFI图标配置按键3秒以上;\n 3.液晶屏有WIFI图标闪烁时点击下一步。</string>
+    <string name="wifi_config_explain_lb">配置说明:\n 1.请将净化器连接电源; \n 2.长按净化器侧面WIFI图标旁边按键配置3秒以上;\n 3.听到净化器发出“叮当”声音时点击下一步。</string>
+    <string name="share_to">分享到</string>
+    <string name="share_wechat_friend">微信好友</string>
+    <string name="share_wecaht_comment">微信朋友圈</string>
+    <string name="share_qq">手机QQ</string>
+    <string name="share_qq_zone">QQ空间</string>
+    <string name="title_activity_share_qr_code">设备共享</string>
+    <string name="personal_not_update">请修改后保存</string>
+    <string name="personal_update_success">修改成功</string>
+    <string name="main_my_air">我的空气</string>
+    <string name="wifi_config_connect_wifi">当前Wi-Fi：%s</string>
+    <string name="title_activity_lb_instructions">LB净化器使用说明书</string>
+    <string name="title_activity_city_manager">管理城市</string>
+    <string name="title_activity_weather_city_add">添加城市</string>
+    <string name="weather_city_add_recommend_city">推荐城市</string>
+    <string name="weather_city_add_my_location">定位</string>
+    <string name="title_activity_air_new"> </string>
+    <string name="title_activity_city_search">添加城市</string>
+    <string name="title_activity_test">TestActivity</string>
 </resources>

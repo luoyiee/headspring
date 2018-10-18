@@ -7,6 +7,10 @@
     <dimen name="air_knowledge_left_width">150dp</dimen>
     <dimen name="air_knowledge_aqi">12sp</dimen>
     <dimen name="air_knowledge_info">12sp</dimen>
-    <dimen name="personal_center_icon">24dp</dimen>
+    <dimen name="personal_center_icon">18dp</dimen>
     <dimen name="app_block_height">56dp</dimen>
+
+    <dimen name="air_new_text">12sp</dimen>
+
+
 </resources>
