@@ -171,7 +171,11 @@
             android:name=".activity.TestActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme" />
-        <activity android:name=".LocationActivity"></activity>
+        <activity android:name=".LocationActivity" />
+        <activity
+            android:name=".activity.StoreActivity"
+            android:label="@string/title_activity_store"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

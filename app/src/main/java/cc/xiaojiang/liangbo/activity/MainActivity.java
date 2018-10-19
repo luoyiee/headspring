@@ -176,7 +176,8 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                 LoginInterceptor.interceptor(this, DeviceListActivity.class.getName(), null);
                 break;
             case R.id.ctv_shop:
-                ToastUtils.show("商城正在建设中，暂不开放");
+//                ToastUtils.show("商城正在建设中，暂不开放");
+                startToActivity(StoreActivity.class);
                 break;
             case R.id.ctv_personal:
                 startToActivity(PersonalCenterActivity.class);

@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 44
-        versionName "1.0.1"
+        versionCode 45
+        versionName "1.0.2-beta1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {

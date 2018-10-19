@@ -248,7 +248,7 @@ public class AirMapActivity extends LocationActivity implements AMap.OnMarkerCli
             public void onMyLocationChange(Location location) {
                 Logger.d(location.toString());
                 aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location
-                        .getLatitude(), location.getLongitude()), 11));
+                        .getLatitude(), location.getLongitude()), (float) 6.28));
             }
         });
         aMap.setOnMarkerClickListener(this);
