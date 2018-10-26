@@ -42,7 +42,7 @@ public class WifiConfigInfoActivity extends BaseActivity {
             return;
         }
         mProductKey = intent.getStringExtra("product_key");
-        showInfo(mProductKey);
+
         getProductInfo(mProductKey);
 
     }
@@ -59,24 +59,17 @@ public class WifiConfigInfoActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    private void showInfo(String productKey) {
-        if (ProductKey.LB.equals(productKey)) {
-            mTvConfigInfo.setText(getString(R.string.wifi_config_explain_lb));
-            setGuide(R.drawable.ic_wifi_setup_guide_lb);
-        } else if (ProductKey.KZZ.equals(productKey)) {
-            mTvConfigInfo.setText(getString(R.string.wifi_config_explain_kzz));
-            setGuide(R.drawable.ic_wifi_setup_guide_kzz);
-        } else {
-            mTvConfigInfo.setText("无效的设备");
-        }
-    }
 
     private void getProductInfo(String productKey) {
         IotKitDeviceManager.getInstance().productInfo(productKey, new
                 IotKitHttpCallback<ProductInfo>() {
                     @Override
                     public void onSuccess(ProductInfo data) {
+                        if (data == null) {
+                            return;
+                        }
                         mProductInfo = data;
+                        showInfo(data);
                     }
 
                     @Override
@@ -84,6 +77,19 @@ public class WifiConfigInfoActivity extends BaseActivity {
                         ToastUtils.show(errorMsg);
                     }
                 });
+    }
+
+    private void showInfo(ProductInfo productInfo) {
+        String productKey = productInfo.getProductKey();
+        if (ProductKey.LB.equals(productKey)) {
+            mTvConfigInfo.setText(productInfo.getConfigNetworkCharacter());
+            setGuide(R.drawable.ic_wifi_setup_guide_lb);
+        } else if (ProductKey.KZZ.equals(productKey)) {
+            mTvConfigInfo.setText(productInfo.getConfigNetworkCharacter());
+            setGuide(R.drawable.ic_wifi_setup_guide_kzz);
+        } else {
+            mTvConfigInfo.setText("无效的设备");
+        }
     }
 
     @Override
