@@ -176,7 +176,7 @@ public class KZZActivity extends BaseActivity implements
         contentView.findViewById(R.id.tv_popup_share_data).setOnClickListener(v -> {
             Bitmap bitmap = ScreenShotUtils.screenShot(this, 0);
             EventBus.getDefault().postSticky(new ShareBitmapEvent(bitmap));
-            startToActivity(ShareAirActivity.class);
+            startToActivity(ShareActivity.class);
             popupWindow.dismiss();
         });
 
