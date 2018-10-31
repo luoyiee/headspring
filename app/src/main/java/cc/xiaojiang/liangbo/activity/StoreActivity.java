@@ -1,73 +1,56 @@
 package cc.xiaojiang.liangbo.activity;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.view.menu.MenuWrapperFactory;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStructure;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import java.sql.DataTruncation;
+import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
+import cc.xiaojiang.liangbo.base.webview.WebViewActivity;
+import cc.xiaojiang.liangbo.base.webview.WebViewHelper;
+import cc.xiaojiang.liangbo.base.webview.XjWebViewClient;
 
-public class StoreActivity extends BaseActivity {
+/**
+ * @author facexyz
+ */
+public class StoreActivity extends WebViewActivity {
     private static final String STORE_URL = "https://liangboweilai123456.m.yswebportal.cc/col" +
             ".jsp?id=106";
 
     @BindView(R.id.wv_store_content)
     WebView mWvStoreContent;
+    @BindView(R.id.cl_content)
+    ConstraintLayout mClContent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
-
-    }
-
-    private void init() {
-        WebSettings webSettings = mWvStoreContent.getSettings();
-
-        // add java script interface
-        webSettings.setJavaScriptEnabled(true);
-        // init webView settings
-//        webSettings.setAllowContentAccess(true);
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        webSettings.setDatabaseEnabled(true);
-//        webSettings.setDomStorageEnabled(true);
-//        webSettings.setAppCacheEnabled(true);
-//        webSettings.setSaveFormData(false);
-        webSettings.setUseWideViewPort(true);
-//        webSettings.setLoadWithOverviewMode(true);
-        mWvStoreContent.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return false;
-            }
-        });
-        mWvStoreContent.loadUrl(STORE_URL);
+        mWebViewHelper.quickLoadUrl(STORE_URL);
     }
 
     @Override
-    public void onBackPressed() {
-        if (mWvStoreContent.canGoBack()) {
-            mWvStoreContent.goBack();
-        } else {
-            finish();
-        }
+    public WebView getWebView() {
+        return mWvStoreContent;
     }
+
+
+
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_store;
     }
 
-    @Override
-    protected void onDestroy() {
-        //释放资源
-        mWvStoreContent.destroy();
-        mWvStoreContent = null;
-        super.onDestroy();
-    }
+
 }
