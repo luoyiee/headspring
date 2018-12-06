@@ -123,4 +123,7 @@
     <string name="title_activity_city_search">添加城市</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_store">商城</string>
+    <string name="dy_operating_instruction">DY系列净化器使用说明书</string>
+    <string name="lb_operating_instruction">LB系列净化器使用说明书</string>
+    <string name="app_operating_instruction">APP使用说明书</string>
 </resources>

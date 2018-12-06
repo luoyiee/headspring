@@ -205,12 +205,6 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
             mTvHistoryDataOutdoor.setText((int) sum / outers.size() + "μg/m³");
         }
 
-
-        //            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX
-        // ()).getY()
-//                    + "μg/m³");
-//            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
-//                    "μg/m³");
     }
 
     private void showData(Pm25HistoryModel pm25HistoryModel) {
