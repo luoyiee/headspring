@@ -75,6 +75,7 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
         initChart();
         mLocationClient = new LocationClient();
         HistoryDataActivityPermissionsDispatcher.locationWithPermissionCheck(this);
+        // TODO: 2018/10/26 首次定位不显示数据
     }
 
     @Override
@@ -204,12 +205,6 @@ public class HistoryDataActivity extends BaseActivity implements TabLayout.OnTab
             mTvHistoryDataOutdoor.setText((int) sum / outers.size() + "μg/m³");
         }
 
-
-        //            mTvHistoryDataOutdoor.setText(outdoorDataSet.getEntryForIndex((int) e.getX
-        // ()).getY()
-//                    + "μg/m³");
-//            mTvHistoryDataIndoor.setText(indoorDataSet.getEntryForIndex((int) e.getX()).getY() +
-//                    "μg/m³");
     }
 
     private void showData(Pm25HistoryModel pm25HistoryModel) {

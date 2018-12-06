@@ -14,7 +14,6 @@ public class InstructionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -33,7 +32,7 @@ public class InstructionActivity extends BaseActivity {
                 break;
             case R.id.item_three_instrument:
                 Intent intent = new Intent(this, BrowserActivity.class);
-                intent.putExtra("show_title", "APP使用说明书");
+                intent.putExtra("show_title", getString(R.string.app_operating_instruction));
                 intent.putExtra("dynamic_url", "http://dev.xjiangiot" +
                         ".com/app-preview/instruction/info.html?client_key=i8d53&value=1");
                 startActivity(intent);

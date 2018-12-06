@@ -60,7 +60,7 @@ public class WifiConnectActivity extends BaseActivity {
 
     private void startWifiSetup(WifiSetupInfo wifiSetupInfo) {
         mCountDownTimer.start();
-        IotKitWifiSetupManager.getInstance().startWifiSetup(this, wifiSetupInfo, 100 * 1000, new
+        IotKitWifiSetupManager.getInstance().startWifiSetup2(this, wifiSetupInfo, 100 * 1000, new
                 WifiSetupCallback() {
                     @Override
                     public void connectSucceed() {

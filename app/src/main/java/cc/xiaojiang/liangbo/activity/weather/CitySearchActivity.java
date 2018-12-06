@@ -84,16 +84,6 @@ public class CitySearchActivity extends BaseActivity implements TextView.OnEdito
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-//    private void searchCity(String city) {
-//        if (TextUtils.isEmpty(city)) {
-//            ToastUtils.show("城市不能为空");
-//            return;
-//        }
-//        RealmResults<WeatherCityCodeRealm> cities = mRealm.where(WeatherCityCodeRealm.class)
-//                .like("name", "*" + city + "*")
-//                .findAll();
-//        mCitySearchAdapter.setNewData(cities);
-//    }
 
     @Override
     protected void onDestroy() {

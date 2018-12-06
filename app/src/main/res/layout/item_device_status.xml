@@ -14,7 +14,7 @@
         android:id="@+id/tv_device_status_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_margin="8dp"
         android:background="@drawable/bg_search"
         android:ellipsize="end"
         android:gravity="center"
@@ -31,12 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/tv_device_status_pm25"
@@ -46,8 +47,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/white"
-                android:textSize="60sp"
-                tools:text="TextView" />
+                android:textSize="70sp"
+                tools:text="28" />
 
             <TextView
                 android:id="@+id/tv_device_status_air_quality"
@@ -57,17 +58,14 @@
                 android:gravity="center"
                 android:text="优" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/textView22"
+            style="@style/common_16_white_text"
+            android:layout_margin="8dp"
+            android:text="室内PM2.5值" />
+
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/textView22"
-        style="@style/common_14_white_text"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="室内PM2.5值" />
 
 
 </LinearLayout>

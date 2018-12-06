@@ -232,8 +232,8 @@ public class MPChartUtils {
                 }
             }
             Entry outEntry = new Entry(i, outdoorY);
-            Entry inEntry = new Entry(i, indoorY);
             outEntries.add(outEntry);
+            Entry inEntry = new Entry(i, indoorY);
             inEntries.add(inEntry);
         }
         LineDataSet inLineDataSet = getLineData(inEntries, "indoor", Color.parseColor

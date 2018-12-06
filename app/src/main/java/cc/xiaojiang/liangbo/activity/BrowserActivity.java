@@ -1,50 +1,44 @@
 package cc.xiaojiang.liangbo.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.orhanobut.logger.Logger;
-import com.tencent.sonic.sdk.SonicConfig;
-import com.tencent.sonic.sdk.SonicEngine;
-import com.tencent.sonic.sdk.SonicSession;
-import com.tencent.sonic.sdk.SonicSessionConfig;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import butterknife.BindView;
+import cc.xiaojiang.liangbo.BuildConfig;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.DbUtils;
-import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
 import cc.xiaojiang.liangbo.utils.ShareUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.widget.ShareSelectDialog;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
 public class BrowserActivity extends BaseActivity {
 
     @BindView(R.id.webView)
     WebView mWebView;
+    @BindView(R.id.fl_parent)
+    FrameLayout mFlParent;
     private String mUrl;
     private String mTitle;
     private String mText;
@@ -107,6 +101,13 @@ public class BrowserActivity extends BaseActivity {
                 return false;
 
             }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request,
+                                        WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                showErrorView();
+            }
         });
         WebSettings webSettings = mWebView.getSettings();
 
@@ -123,6 +124,21 @@ public class BrowserActivity extends BaseActivity {
         webSettings.setLoadWithOverviewMode(true);
         mWebView.addJavascriptInterface(this, "app");
         mWebView.loadUrl(mUrl);
+    }
+
+    public void showErrorView() {
+        View errorView = getLayoutInflater().inflate(R.layout.layout_load_error, null);
+        if (mFlParent == null || errorView == null) {
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "not show error page");
+            }
+            return;
+        }
+        mFlParent.removeAllViews(); //移除加载网页错误时，默认的提示信息
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
+                .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        //添加自定义的错误提示的View
+        mFlParent.addView(errorView, 0, layoutParams);
     }
 
     @JavascriptInterface

@@ -13,17 +13,17 @@
         android:id="@+id/item_one_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemKey="DY系列净化器使用说明书" />
+        app:itemKey="@string/dy_operating_instruction" />
 
     <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_two_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemKey="LB系列净化器使用说明书" />
+        app:itemKey="@string/lb_operating_instruction" />
 
     <cc.xiaojiang.liangbo.view.ItemView
         android:id="@+id/item_three_instrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemKey="APP使用说明书" />
+        app:itemKey="@string/app_operating_instruction" />
 </LinearLayout>

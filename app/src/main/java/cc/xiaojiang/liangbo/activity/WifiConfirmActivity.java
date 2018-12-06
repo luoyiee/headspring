@@ -96,6 +96,7 @@ public class WifiConfirmActivity extends BaseActivity {
                 wifiSetupInfo.setPassword(password);
                 wifiSetupInfo.setSsid(mSsid);
                 wifiSetupInfo.setWifiVendor(mProductInfo.getModuleVendor());
+                wifiSetupInfo.setConfigType(mProductInfo.getConfigNetworkType());
                 Intent intent = new Intent(this, WifiConnectActivity.class);
                 intent.putExtra(Constant.DEVICE_INFO, wifiSetupInfo);
                 startActivity(intent);

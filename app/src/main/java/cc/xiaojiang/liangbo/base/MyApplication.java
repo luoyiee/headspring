@@ -10,6 +10,7 @@ import com.tencent.bugly.beta.Beta;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import cc.xiaojiang.iotkit.IotKit;
+import cc.xiaojiang.liangbo.BuildConfig;
 import cc.xiaojiang.liangbo.iotkit.IotKitAccountImpl;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -26,10 +27,10 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         IotKit.init(this, new IotKitAccountImpl(), false);
-//        if(!BuildConfig.DEBUG){
-        Bugly.init(getApplicationContext(), "be4413cd77", false);
-        Beta.autoCheckUpgrade = true;
-//        }
+        if (!BuildConfig.DEBUG) {
+            Bugly.init(getApplicationContext(), "be4413cd77", false);
+            Beta.autoCheckUpgrade = true;
+        }
         ZXingLibrary.initDisplayOpinion(this);
         MobSDK.init(this);
         initRealm();

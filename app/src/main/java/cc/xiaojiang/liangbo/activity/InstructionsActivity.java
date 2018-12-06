@@ -38,11 +38,11 @@ public class InstructionsActivity extends BaseActivity {
         int type = getIntent().getIntExtra("type", 0);
         if (type == 1) {
             mLbInstructionsAdapter.setNewData(getDyInstructions());
-            setTitle("空智子使用说明书");
+            setTitle(R.string.dy_operating_instruction);
         }
         if (type == 2) {
             mLbInstructionsAdapter.setNewData(getLbInstructions());
-            setTitle("LB净化器使用说明书");
+            setTitle(R.string.lb_operating_instruction);
         }
     }
 

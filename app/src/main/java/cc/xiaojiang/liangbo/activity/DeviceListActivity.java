@@ -1,5 +1,6 @@
 package cc.xiaojiang.liangbo.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cc.xiaojiang.iotkit.IotKit;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.bean.http.DeviceNickRes;
 import cc.xiaojiang.iotkit.bean.http.DeviceUnbindRes;
@@ -36,8 +39,10 @@ import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.adapter.DeviceAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
+import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
 import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
+import cc.xiaojiang.liangbo.utils.ViewUtils;
 
 public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemChildClickListener, IotKitReceivedCallback, SwipeRefreshLayout.OnRefreshListener {
@@ -155,6 +160,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void hideRefreshing() {
         if (mSrlRefreshDevice != null && mSrlRefreshDevice.isRefreshing()) {
             mSrlRefreshDevice.setRefreshing(false);
@@ -183,7 +189,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                 }
                 break;
             case R.id.tv_device_swipe_menu_modify:
-                showModifyDialog(device.getDeviceId());
+                showModifyDialog(device);
                 break;
             case R.id.tv_device_swipe_menu_share:
                 intent = new Intent(this, ShareQrCodeActivity.class);
@@ -196,9 +202,11 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         }
     }
 
-    private void showModifyDialog(String deviceId) {
+    private void showModifyDialog(Device device) {
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_input, null);
         EditText editText = view.findViewById(R.id.edTxt_dialog_input_nick);
+        editText.setText(IotKitUtils.getDeviceName(device));
+        editText.setSelection(IotKitUtils.getDeviceName(device).length());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         mAlertDialog = builder.setTitle("修改设备昵称")
                 .setView(view)
@@ -215,11 +223,13 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                             ToastUtils.show("输入设备昵称大于6位");
                             return;
                         }
-                        modifyDevice(deviceId, nick);
+                        modifyDevice(device.getDeviceId(), nick);
                     }
                 }).create();
         mAlertDialog.show();
+
     }
+
 
     private void modifyDevice(String deviceId, String test) {
         IotKitDeviceManager.getInstance().deviceNickAdmin(deviceId, test, new
