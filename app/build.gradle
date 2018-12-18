@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 54
-        versionName "1.0.4"
+        versionCode 55
+        versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -88,7 +88,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.amap.api:3dmap:6.4.1'
-    implementation 'com.amap.api:location:4.2.0'
+    implementation 'com.amap.api:location:4.4.0'
     implementation('com.github.hotchemi:permissionsdispatcher:3.3.1') {
         exclude module: "support-v13"
     }

@@ -58,9 +58,7 @@ public class LoginActivity extends BaseActivity {
             runOnUiThread(() -> {
                 if (data instanceof Throwable) {
                     Throwable throwable = (Throwable) data;
-                    MobThrowable mobThrowable = new Gson().fromJson(throwable.getMessage
-                            (), MobThrowable.class);
-                    ToastUtils.show(mobThrowable.getDetail());
+                    ToastUtils.show("获取验证码失败");
                     Logger.e(throwable.getMessage());
                 } else {
                     if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
