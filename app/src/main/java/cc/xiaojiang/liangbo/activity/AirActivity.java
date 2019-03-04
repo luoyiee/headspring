@@ -43,6 +43,7 @@ import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
 import cc.xiaojiang.liangbo.activity.weather.CityManagerActivity;
+import cc.xiaojiang.liangbo.activity.wifiConfig.ProductListActivity;
 import cc.xiaojiang.liangbo.adapter.HomeIndoorPmHolder;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;

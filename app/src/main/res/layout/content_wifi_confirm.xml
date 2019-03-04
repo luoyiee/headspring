@@ -5,8 +5,9 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cc.xiaojiang.liangbo.activity.WifiConfirmActivity"
+    tools:context="cc.xiaojiang.liangbo.activity.wifiConfig.WifiConnectInfoActivity"
     tools:showIn="@layout/activity_wifi_confirm">
 
     <LinearLayout
@@ -20,67 +21,62 @@
             android:id="@+id/imageView2"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_marginBottom="30dp"
             android:layout_marginTop="40dp"
-            android:src="@drawable/wifi"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_wifi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="56dp">
 
             <TextView
                 android:id="@+id/tv_wifi_confirm_ssid"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="没有检测到wifi连接" />
+                android:padding="5dp" />
 
             <TextView
                 android:id="@+id/tv_wifi_confirm_change_wifi"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="更换wifi" />
-        </RelativeLayout>
+                android:text="@string/switch_wifi"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
 
 
         <include layout="@layout/layout_divider_line" />
 
-        <RelativeLayout
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edTxt_wifi_confirm_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginTop="8dp"
-            android:gravity="center">
-
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/edTxt_wifi_confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@null"
-                android:hint="请输入当前wifi密码"
-                android:inputType="textPassword"
-                android:paddingLeft="5dp"
-                android:textSize="14sp"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/colorAccent" />
-
-            <ImageView
-                android:id="@+id/iv_wifi_config_show_pwd"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:src="@drawable/selector_password" />
-
-        </RelativeLayout>
+            android:background="@null"
+            android:singleLine="true"
+            android:hint="@string/please_enter_wifi_password"
+            android:padding="5dp"
+            android:textSize="14sp" />
 
 
         <include layout="@layout/layout_divider_line" />
+
+        <TextView
+            android:id="@+id/tv_not_support_5g"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"
+            android:drawableLeft="@drawable/ic_error"
+            android:gravity="center"
+            android:text="@string/not_support_5g_wifi"
+            android:textColor="@color/text_error" />
 
     </LinearLayout>
 
@@ -89,11 +85,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/bg_button"
-        android:text="下一步"
+        android:text="@string/next"
         android:textColor="@color/white" />
 
 

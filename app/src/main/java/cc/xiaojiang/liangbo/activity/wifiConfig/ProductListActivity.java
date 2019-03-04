@@ -1,4 +1,4 @@
-package cc.xiaojiang.liangbo.activity;
+package cc.xiaojiang.liangbo.activity.wifiConfig;
 
 import android.Manifest;
 import android.content.Intent;
@@ -39,7 +39,6 @@ import permissions.dispatcher.RuntimePermissions;
 public class ProductListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemClickListener {
 
-
     @BindView(R.id.ll_product_list_scan)
     LinearLayout llProductListScan;
     @BindView(R.id.rv_product)
@@ -49,7 +48,6 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     private static final int REQUEST_CODE = 1;
 
     private ProductAdapter mProductAdapter;
-    private List<Product> mProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +64,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     }
 
     private void initView() {
-        mProducts = new ArrayList<>();
-        mProductAdapter = new ProductAdapter(R.layout.item_product, mProducts);
+        mProductAdapter = new ProductAdapter(R.layout.item_product, new ArrayList<>());
         mProductAdapter.setOnItemClickListener(this);
         rvProduct.setLayoutManager(new LinearLayoutManager(this));
         rvProduct.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration
@@ -123,14 +120,12 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Product product = (Product) adapter.getItem(position);
-        startToConfigInfoActivity(product.getProductKey());
+        if (product == null) {
+            return;
+        }
+        WifiConnectInfoActivity.actionStart(this, product.getProductKey());
     }
 
-    public void startToConfigInfoActivity(String productKey) {
-        Intent intent = new Intent(this, WifiConfigInfoActivity.class);
-        intent.putExtra("product_key", productKey);
-        startActivity(intent);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -154,40 +149,45 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
                         return;
                     }
                     Logger.d("解析成功，result=" + result);
-                    IotKitQrCodeUtils.parseQrCode(result, new ParseQrCodeCallback() {
-                        @Override
-                        public void onDeviceAdd(String productKey) {
-                            startToConfigInfoActivity(productKey);
-                        }
+                    parseQrCode(result);
 
-                        @Override
-                        public void onDeviceShare(String shareString) {
-                            IotKitDeviceManager.getInstance().acceptDeviceShare(result, new
-                                    IotKitHttpCallback<AcceptShareRes>() {
-                                        @Override
-                                        public void onSuccess(AcceptShareRes data) {
-                                            ToastUtils.show("添加成功");
-                                            finish();
-
-                                        }
-
-                                        @Override
-                                        public void onError(String code, String errorMsg) {
-                                            ToastUtils.show(errorMsg);
-                                        }
-                                    });
-                        }
-
-                        @Override
-                        public void onParseFailed() {
-                            ToastUtils.show("二维码解析错误");
-
-                        }
-                    });
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     ToastUtils.show("解析失败 请重新尝试!");
                 }
             }
         }
+    }
+
+    private void parseQrCode(String result) {
+        IotKitQrCodeUtils.parseQrCode(result, new ParseQrCodeCallback() {
+            @Override
+            public void onDeviceAdd(String productKey) {
+                WifiConnectInfoActivity.actionStart(ProductListActivity.this, productKey);
+            }
+
+            @Override
+            public void onDeviceShare(String shareString) {
+                IotKitDeviceManager.getInstance().acceptDeviceShare(result, new
+                        IotKitHttpCallback<AcceptShareRes>() {
+                            @Override
+                            public void onSuccess(AcceptShareRes data) {
+                                ToastUtils.show("添加成功");
+                                finish();
+
+                            }
+
+                            @Override
+                            public void onError(String code, String errorMsg) {
+                                ToastUtils.show(errorMsg);
+                            }
+                        });
+            }
+
+            @Override
+            public void onParseFailed() {
+                ToastUtils.show("二维码解析错误");
+
+            }
+        });
     }
 }

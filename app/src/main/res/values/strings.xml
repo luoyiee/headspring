@@ -126,4 +126,10 @@
     <string name="dy_operating_instruction">DY系列净化器使用说明书</string>
     <string name="lb_operating_instruction">LB系列净化器使用说明书</string>
     <string name="app_operating_instruction">APP使用说明书</string>
+    <string name="switch_wifi">更换WiFi</string>
+    <string name="next">下一步</string>
+    <string name="please_enter_wifi_password">请输入对应的Wi-Fi密码</string>
+    <string name="not_support_5g_wifi">不支持5G Wi-Fi</string>
+    <string name="wifi_connecting">设备连接中…</string>
+    <string name="wifi_connect_failed">设备连接失败</string>
 </resources>

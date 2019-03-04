@@ -36,7 +36,7 @@ import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
-import cc.xiaojiang.liangbo.activity.ProductListActivity;
+import cc.xiaojiang.liangbo.activity.wifiConfig.ProductListActivity;
 import cc.xiaojiang.liangbo.adapter.DeviceStatusAdapter;
 import cc.xiaojiang.liangbo.base.BaseFragment;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;

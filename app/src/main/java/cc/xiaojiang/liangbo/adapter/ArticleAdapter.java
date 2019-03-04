@@ -3,6 +3,7 @@ package cc.xiaojiang.liangbo.adapter;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -27,10 +28,9 @@ public class ArticleAdapter extends BaseQuickAdapter<Article.ListsBean, BaseView
         ImageLoader.loadImage(mContext, item.getCover(), ivDynamicCover);
         helper.setText(R.id.tv_dynamic_title, item.getTitle())
                 .setText(R.id.tv_dynamic_like, item.getPraise_quantity() + "")
-                .setText(R.id.tv_dynamic_comment, item.getRead_quantity() + "")
+                .setText(R.id.tv_dynamic_comment, item.getComment_quantity() + "")
                 .setText(R.id.tv_dynamic_author, item.getAuthor())
                 .setText(R.id.tv_content, item.getAbstractX());
-
         // TODO: 2018/8/13 支持视频
     }
 }

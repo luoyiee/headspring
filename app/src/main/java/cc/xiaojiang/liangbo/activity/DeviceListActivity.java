@@ -1,6 +1,5 @@
 package cc.xiaojiang.liangbo.activity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,20 +12,16 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cc.xiaojiang.iotkit.IotKit;
 import cc.xiaojiang.iotkit.bean.http.Device;
 import cc.xiaojiang.iotkit.bean.http.DeviceNickRes;
 import cc.xiaojiang.iotkit.bean.http.DeviceUnbindRes;
@@ -36,13 +31,13 @@ import cc.xiaojiang.iotkit.mqtt.IotKitActionCallback;
 import cc.xiaojiang.iotkit.mqtt.IotKitMqttManager;
 import cc.xiaojiang.iotkit.mqtt.IotKitReceivedCallback;
 import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.activity.wifiConfig.ProductListActivity;
 import cc.xiaojiang.liangbo.adapter.DeviceAdapter;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.iotkit.BaseDataModel;
 import cc.xiaojiang.liangbo.iotkit.IotKitUtils;
 import cc.xiaojiang.liangbo.iotkit.ProductKey;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
-import cc.xiaojiang.liangbo.utils.ViewUtils;
 
 public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         .OnItemChildClickListener, IotKitReceivedCallback, SwipeRefreshLayout.OnRefreshListener {
