@@ -49,6 +49,7 @@ public class ResponseInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
 
+
         String url = request.url().toString();
         if (url.contains(HttpUrl.USER_INFO)
                 || url.contains(HttpUrl.USER_MODIFY)

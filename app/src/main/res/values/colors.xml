@@ -45,4 +45,12 @@
     <color name="air_purifier_background_off">#7e7e7e</color>
 
     <color name="text_light_white">#99ffffff</color>
+
+    <color name="text_error">#FA545F</color>
+
+
+    <color name="text_32">#323232</color>
+    <color name="text_64">#646464</color>
+
+    <color name="button_disable">#E9E9E9</color>
 </resources>

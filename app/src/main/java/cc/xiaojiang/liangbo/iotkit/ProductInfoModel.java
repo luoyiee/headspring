@@ -53,7 +53,7 @@ public class ProductInfoModel {
      * \"step\":\"1\"}]","productIcon":"http://static.platform.xjiangiot
      * .com/m_8fa61466b18a8b4d20e43c272ecc9940.png","configNetworkCharacter":"详见配网说明书",
      * "configNetworkImg":"http://static.platform.xjiangiot.com/o_1cbo59osi15b21c8h1eku1jak1ttma
-     * .png","hasAdmin":0,"developerId":"b0ebb9d173444f71b76059a7614c6131","netType":"wifi",
+     * .png","hasAdmin":0,"developerId":"b0ebb9d173444f71b76059a7614c6131","netType":"ic_wifi",
      * "dataType":"binary","moduleVendor":"","moduleType":"","pushUrl":"",
      * "createTime":1528881255652,"updateTime":1530255519196}
      */
@@ -136,7 +136,7 @@ public class ProductInfoModel {
          * .com/o_1cbo59osi15b21c8h1eku1jak1ttma.png
          * hasAdmin : 0
          * developerId : b0ebb9d173444f71b76059a7614c6131
-         * netType : wifi
+         * netType : ic_wifi
          * dataType : binary
          * moduleVendor :
          * moduleType :

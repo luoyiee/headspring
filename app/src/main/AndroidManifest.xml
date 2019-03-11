@@ -30,7 +30,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:name,android:allowBackup">
+        tools:replace="android:name,android:allowBackup,android:icon"
+        tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ea216999d18a19c8e50cecbc13da6e30" />
@@ -60,15 +61,19 @@
             android:label="@string/title_activity_app_update"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.ProductListActivity"
+            android:name=".activity.wifiConfig.ProductListActivity"
             android:label="@string/title_activity_device_choose"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.WifiConfigInfoActivity"
+            android:name=".activity.wifiConfig.WifiResetInfoActivity"
             android:label="@string/title_activity_config_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.WifiConfirmActivity"
+            android:name=".activity.wifiConfig.WifiConnectInfoActivity"
+            android:label="@string/title_activity_wifi_cofirm"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.wifiConfig.WifiConnectInfo2Activity"
             android:label="@string/title_activity_wifi_cofirm"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -110,7 +115,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.WifiConnectActivity"
+            android:name=".activity.wifiConfig.WifiConfigActivity"
             android:label="@string/title_activity_wifi_connect"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

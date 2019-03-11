@@ -2,6 +2,7 @@ package cc.xiaojiang.liangbo.http;
 
 
 import cc.xiaojiang.liangbo.BuildConfig;
+import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -29,11 +30,11 @@ public class RetrofitHelper {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addNetworkInterceptor(loggingInterceptor);
         }
-        builder.addInterceptor(new ResponseInterceptor());
-//        builder.connectTimeout(20, TimeUnit.SECONDS);
-//        builder.readTimeout(20, TimeUnit.SECONDS);
-//        builder.writeTimeout(20, TimeUnit.SECONDS);
-        builder.retryOnConnectionFailure(true);
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(1);
+        builder.addInterceptor(new ResponseInterceptor())
+                .dispatcher(dispatcher)
+                .retryOnConnectionFailure(true);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(HttpUrl.HOST)
                 .client(builder.build())

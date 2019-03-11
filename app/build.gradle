@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 55
-        versionName "1.0.5"
+        versionCode 58
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -51,7 +51,7 @@ android {
     //自动生成apk包名
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
+            outputFileName = "liangbo" + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
         }
     }
 }
@@ -93,8 +93,10 @@ dependencies {
         exclude module: "support-v13"
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"
-    implementation 'com.bigkoo:ConvenientBanner:2.1.4'//地址变ConvenientBanner 大写了，额。。。
-    implementation 'com.youth.banner:banner:1.4.10'  //最新版本
+    implementation 'com.bigkoo:ConvenientBanner:2.1.4'
+    //地址变ConvenientBanner 大写了，额。。。
+    implementation 'com.youth.banner:banner:1.4.10'
+    //最新版本
     //引导
     implementation 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
     implementation 'com.qiniu:qiniu-android-sdk:7.3.10'
@@ -123,9 +125,10 @@ dependencies {
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     //其他
-//    implementation 'com.orhanobut:logger:2.2.0'
+    //    implementation 'com.orhanobut:logger:2.2.0'
     implementation 'com.github.iwgang:simplifyspan:2.1'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.romandanylyk:pageindicatorview:1.0.2@aar'
     implementation 'com.wang.avi:library:2.1.3'
+    implementation project(':common')
 }
