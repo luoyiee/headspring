@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 57
-        versionName "1.0.6-beta2"
+        versionCode 58
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -51,7 +51,7 @@ android {
     //自动生成apk包名
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
+            outputFileName = "liangbo" + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk"
         }
     }
 }
