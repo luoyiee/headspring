@@ -2,8 +2,6 @@ package cc.xiaojiang.liangbo.activity;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.view.menu.MenuWrapperFactory;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStructure;
 import android.webkit.WebResourceError;

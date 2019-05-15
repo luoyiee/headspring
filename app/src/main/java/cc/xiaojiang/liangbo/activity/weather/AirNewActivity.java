@@ -45,6 +45,7 @@ import cc.xiaojiang.liangbo.http.MyObserver;
 import cc.xiaojiang.liangbo.http.RetrofitHelper;
 import cc.xiaojiang.liangbo.model.event.ShareBitmapEvent;
 import cc.xiaojiang.liangbo.model.eventbus.MessageCitySwitch;
+import cc.xiaojiang.liangbo.model.http.CityIdModel;
 import cc.xiaojiang.liangbo.model.http.HomeNewWeatherModel;
 import cc.xiaojiang.liangbo.model.realm.WeatherCityCodeRealm;
 import cc.xiaojiang.liangbo.utils.DateUtils;
@@ -183,7 +184,6 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
     private void init() {
         setViewHeight();
         mRealm = Realm.getDefaultInstance();
-        initWeatherCityCode();
         //初始化界面
         mViewAirNewQuality.setMin(0);
         mViewAirNewQuality.setMax(500);
@@ -217,23 +217,6 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
     public void onMessageEvent(MessageCitySwitch messageCitySwitch) {
         mIvLocation.setVisibility(View.GONE);
         getNewWeather(messageCitySwitch.getCityId(), CITY);
-    }
-
-    /**
-     * 本地存储高德对应心知城市id
-     */
-    private void initWeatherCityCode() {
-        if (mRealm.where(WeatherCityCodeRealm.class).findAll().isEmpty()) {
-            String weatherCodeStr = new GetJsonDataUtil().getJson(this,
-                    "weather_city_code_v1.0.json");
-            List<WeatherCityCodeRealm> cityCodeRealmList = new Gson().fromJson(weatherCodeStr, new
-                    TypeToken<List<WeatherCityCodeRealm>>() {
-                    }.getType());
-            mRealm.beginTransaction();
-            mRealm.insert(cityCodeRealmList);
-            mRealm.commitTransaction();
-            Logger.d("insert weather city code");
-        }
     }
 
 
@@ -298,7 +281,6 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
             for (int i = 0; i < countyForecastBeans.size(); i++) {
                 HomeNewWeatherModel.CountyForecastBean countyForecastBean = countyForecastBeans
                         .get(i);
-
                 switch (i) {
                     case 0:
                         mTvAirNewForecastDate0.setText(DateUtils.formatDate(countyForecastBean
@@ -405,8 +387,27 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
                 if (aMapLocation.getErrorCode() == 0) {
                     Logger.d(aMapLocation.toString());
                     //定位成功回调信息，设置相关消息
-                    getNewWeather(WeatherUtils.getXinZhiCityCode(aMapLocation.getCityCode(),
-                            aMapLocation.getAdCode()), LOCATION);
+                    RetrofitHelper.getService().cityId(aMapLocation.getCityCode(),
+                            aMapLocation.getAdCode(), (float) aMapLocation.getLatitude(),
+                            (float) aMapLocation.getLongitude())
+                            .compose(RxUtils.rxSchedulerHelper())
+                            .compose(bindToLifecycle())
+                            .subscribe(new MyObserver<CityIdModel>() {
+                                @Override
+                                public void onSucceed(CityIdModel cityIdModel) {
+                                    if (cityIdModel!=null){
+                                        getNewWeather(cityIdModel.getCityId(),LOCATION);
+                                    }else {
+                                        ToastUtils.show("城市暂时不支持");
+                                    }
+                                }
+
+                                @Override
+                                public void onFailed(String code, String msg) {
+                                    ToastUtils.show("城市暂时不支持");
+                                }
+                            });
+
                     mMyLocation = aMapLocation.getDistrict();
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。

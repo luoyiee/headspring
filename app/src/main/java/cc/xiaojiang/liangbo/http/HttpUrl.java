@@ -67,6 +67,10 @@ public class HttpUrl {
      */
     public static final String CITY_ADD = "userCounty/bind";
     /**
+     * 查询城市id
+     */
+    public static final String CITY_ID = "weather/countyId";
+    /**
      * 删除天气城市
      */
     public static final String CITY_DEL = "userCounty/unbind";
