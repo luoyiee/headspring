@@ -57,7 +57,6 @@ public class CityManagerActivity extends BaseActivity implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_blue));
         init();
-
     }
 
 
@@ -80,7 +79,6 @@ public class CityManagerActivity extends BaseActivity implements SwipeRefreshLay
                 .VERTICAL, false));
         mRvCityManager.setAdapter(mWeatherCityManagerAdapter);
         mWeatherCityManagerAdapter.setOnItemChildClickListener(this);
-
     }
 
 

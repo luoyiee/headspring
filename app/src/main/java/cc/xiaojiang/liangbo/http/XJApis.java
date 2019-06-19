@@ -8,6 +8,7 @@ import cc.xiaojiang.liangbo.model.LunarBean;
 import cc.xiaojiang.liangbo.model.http.AirRankModel;
 import cc.xiaojiang.liangbo.model.http.AqiModel;
 import cc.xiaojiang.liangbo.model.http.CityAddBody;
+import cc.xiaojiang.liangbo.model.http.CityIdModel;
 import cc.xiaojiang.liangbo.model.http.CityQueryModel;
 import cc.xiaojiang.liangbo.model.http.DynamicModel;
 import cc.xiaojiang.liangbo.model.http.FeedbackBody;
@@ -90,6 +91,11 @@ public interface XJApis {
     @GET(HttpUrl.CITY_LIST)
     Observable<BaseModel<List<WeatherCityModel>>> cityList();
 
+    @GET(HttpUrl.CITY_ID)
+    Observable<BaseModel<CityIdModel>> cityId(@Query("citycode") String cityCode,
+                                                    @Query("adcode") String adCode,
+                                                    @Query("latitude") float latitude,
+                                                    @Query("longtitude") float longtitude);
 
     @POST(HttpUrl.CITY_ADD)
     Observable<BaseModel<Object>> cityAdd(@Body CityAddBody cityAddBody);
