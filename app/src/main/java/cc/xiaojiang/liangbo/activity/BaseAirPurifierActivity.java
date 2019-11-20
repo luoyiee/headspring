@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.constraint.Group;
-import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ import com.app.hubert.guide.model.HighlightOptions;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
@@ -55,57 +53,55 @@ import cc.xiaojiang.liangbo.widget.AP1TimingDialog;
 
 import static cc.xiaojiang.liangbo.activity.FilterTimeRemainActivity.FLITER_MAX_VALUE;
 
-public class KZZActivity extends BaseActivity implements
+public class BaseAirPurifierActivity extends BaseActivity implements
         AP1View4.OnSeekBarChangeListener, IotKitReceivedCallback, AP1TimingDialog
         .OnTimeSelectedListener {
-    @BindView(R.id.tv_view1_timing)
-    TextView mTvAirPurifierView1Timing;
-    @BindView(R.id.tv_air_purifier_view3_temp)
-    TextView mTvAirPurifierView3Temp;
-    @BindView(R.id.tv_air_purifier_view3_humidity)
-    TextView mTvAirPurifierView3Humidity;
+    @BindView(R.id.iv_status_kzz2_24g)
+    ImageView ivStatusKzz224g;
+    @BindView(R.id.tv_status_kzz2_timing)
+    TextView tvStatusKzz2Timing;
+    @BindView(R.id.tv_status_kzz2_filter)
+    TextView tvStatusKzz2Filter;
+    @BindView(R.id.iv_status_kzz2_battery)
+    ImageView ivStatusKzz2Battery;
+    @BindView(R.id.tv_status_lb_timing)
+    TextView tvStatusLbTiming;
+    @BindView(R.id.tv_status_lb_filter)
+    TextView tvStatusLbFilter;
+    @BindView(R.id.ic_status_dy_wifi)
+    ImageView icStatusDyWifi;
+    @BindView(R.id.tv_status_dy_timing)
+    TextView tvStatusDyTiming;
+    @BindView(R.id.tv_status_dy_filter)
+    TextView tvStatusDyFilter;
     @BindView(R.id.view_air_purifier_pm25)
-    AP1View2 mViewAirPurifierPm25;
-    @BindView(R.id.view_air_purifier_gear)
-    AP1View4 mViewAirPurifierGear;
-    @BindView(R.id.textView16)
-    TextView mTextView16;
-    @BindView(R.id.textView17)
-    TextView mTextView17;
-    @BindView(R.id.tv_lb_mode)
-    CommonTextView mTvAuto;
-    @BindView(R.id.tv_switch)
-    CommonTextView mTvSwitch;
-    @BindView(R.id.tv_timing)
-    CommonTextView mTvTiming;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.guideline2)
-    Guideline mGuideline2;
+    AP1View2 viewAirPurifierPm25;
     @BindView(R.id.iv_air_purifier_view4_minus)
-    ImageView mIvAirPurifierView4Minus;
+    ImageView ivAirPurifierView4Minus;
+    @BindView(R.id.view_air_purifier_gear)
+    AP1View4 viewAirPurifierGear;
     @BindView(R.id.iv_air_purifier_view4_plus)
-    ImageView mIvAirPurifierView4Plus;
-    @BindView(R.id.tv_air_purifier_wifi)
-    TextView mTvAirPurifierWifi;
-    @BindView(R.id.group2)
-    Group mGroup2;
-    @BindView(R.id.ic_air_purifier_wifi)
-    ImageView mIcAirPurifierWifi;
-    @BindView(R.id.textView33)
-    TextView mTextView33;
-    @BindView(R.id.guideline6)
-    Guideline mGuideline6;
-    @BindView(R.id.tv_status_filter)
-    TextView mTvStatusFilter;
-    @BindView(R.id.tv_view1_timing_label)
-    TextView mTvView1TimingLabel;
-    @BindView(R.id.view_status_divider)
-    View mViewStatusDivider;
-    @BindView(R.id.view_air_purifier_wifi)
-    View mViewAirPurifierWifi;
+    ImageView ivAirPurifierView4Plus;
+    @BindView(R.id.tv_lb_mode)
+    CommonTextView tvLbMode;
+    @BindView(R.id.tv_switch)
+    CommonTextView tvSwitch;
+    @BindView(R.id.tv_timing)
+    CommonTextView tvTiming;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.ll_kzz2g_status)
+    LinearLayout llKzz2gStatus;
+    @BindView(R.id.ll_lb_status)
+    LinearLayout llLbStatus;
+    @BindView(R.id.ll_dy_status)
+    LinearLayout llDyStatus;
+    @BindView(R.id.tv_temperature)
+    TextView tvTemperature;
+    @BindView(R.id.tv_humidity)
+    TextView tvHumidity;
     private Device mDevice;
 
     private int mControlGear;
@@ -115,6 +111,8 @@ public class KZZActivity extends BaseActivity implements
     private int mShutdownRemainingTime;
     private int mUseTime;
     private int mPM205;
+    private int m24GState;
+    private int mBattery;
     private int mTemperature;
     private int mHumidity;
     private Controller mGuidePage;
@@ -135,8 +133,7 @@ public class KZZActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
-        initView();
+        init();
         initGuidePage();
 
     }
@@ -180,34 +177,36 @@ public class KZZActivity extends BaseActivity implements
             popupWindow.dismiss();
         });
 
-        popupWindow.showAsDropDown(mToolbar, ScreenUtils.getScreenWidth(this) - popupWindow
+        popupWindow.showAsDropDown(toolbar, ScreenUtils.getScreenWidth(this) - popupWindow
                 .getContentView().getMeasuredWidth(), 0);
     }
 
-    private void initData() {
+    private void init() {
         mDevice = getIntent().getParcelableExtra("device_data");
         if (mDevice == null) {
             ToastUtils.show("内部错误！");
             finish();
         }
         setTitle(IotKitUtils.getDeviceName(mDevice));
-        if (ProductKey.KZZ.equals(mDevice.getProductKey())) {
-            mIcAirPurifierWifi.setVisibility(View.VISIBLE);
-            mTvAirPurifierWifi.setVisibility(View.VISIBLE);
-            mViewAirPurifierWifi.setVisibility(View.VISIBLE);
-            mGroup2.setVisibility(View.VISIBLE);
-            mViewAirPurifierGear.setGearCount(6);
-        } else if (ProductKey.LB.equals(mDevice.getProductKey())) {
-            mViewAirPurifierGear.setGearCount(4);
-        } else {
-            ToastUtils.show("暂不支持该设备！");
+        switch (mDevice.getProductKey()) {
+            case ProductKey.DY:
+                viewAirPurifierGear.setGearCount(6);
+                llDyStatus.setVisibility(View.VISIBLE);
+                break;
+            case ProductKey.LB:
+                viewAirPurifierGear.setGearCount(4);
+                llLbStatus.setVisibility(View.VISIBLE);
+                break;
+            case ProductKey.KZZ2G:
+                viewAirPurifierGear.setGearCount(6);
+                llKzz2gStatus.setVisibility(View.VISIBLE);
+                break;
+            default:
+                ToastUtils.show("暂不支持该设备！");
         }
-    }
-
-    private void initView() {
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R
                 .color.air_purifier_background_off));
-        mViewAirPurifierGear.setOnSeekBarChangeListener(this);
+        viewAirPurifierGear.setOnSeekBarChangeListener(this);
         mAP1TimingDialog = new AP1TimingDialog();
         mAP1TimingDialog.setOnTimeSelectedListener(this);
 
@@ -215,15 +214,15 @@ public class KZZActivity extends BaseActivity implements
 
     private void initGuidePage() {
         HighlightOptions options = new HighlightOptions.Builder()
-                .setOnClickListener(v -> mTvSwitch.callOnClick())
+                .setOnClickListener(v -> tvSwitch.callOnClick())
                 .build();
-        GuidePage page = GuidePage.newInstance().addHighLightWithOptions(mTvSwitch, options);
+        GuidePage page = GuidePage.newInstance().addHighLightWithOptions(tvSwitch, options);
         mGuidePage = NewbieGuide.with(this)
                 .setLabel("guide1")
                 .alwaysShow(true)
                 .addGuidePage(page
                         .setEverywhereCancelable(false)
-                        .addHighLight(mTvSwitch)
+                        .addHighLight(tvSwitch)
                         .setLayoutRes(R.layout.view_guide)).build();
     }
 
@@ -326,6 +325,7 @@ public class KZZActivity extends BaseActivity implements
         getMenuInflater().inflate(R.menu.menu_more, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public void messageArrived(String type, String deviceId, String productKey, String data) {
         if ("get".equals(type)) {
@@ -387,20 +387,46 @@ public class KZZActivity extends BaseActivity implements
             refreshHumidity();
 
         }
+        if (paramsBean.getBattery() != null) {
+            mBattery = Integer.parseInt(paramsBean.getBattery().getValue());
+            refreshBattery();
+
+        }
+        if (paramsBean.getWifiState() != null) {
+            m24GState = Integer.parseInt(paramsBean.getWifiState().getValue());
+            refresh24gState();
+
+        }
+    }
+
+    private void refresh24gState() {
+        if (m24GState == 0) {
+            ivStatusKzz224g.setImageResource(R.drawable.ic_24_disconnect);
+        } else {
+            ivStatusKzz224g.setImageResource(R.drawable.ic_24g_connect);
+        }
+    }
+
+    private void refreshBattery() {
+        if (mBattery == 0) {
+            ivStatusKzz2Battery.setImageResource(R.drawable.ic_battery_empty);
+        } else {
+            ivStatusKzz2Battery.setImageResource(R.drawable.ic_battery_full);
+        }
     }
 
     private void refreshSwitch() {
         if (mSwitch == 0) {
-            mTvSwitch.setText("关机");
-            mTvSwitch.setIconNormal(getResources().getDrawable(R.drawable
+            tvSwitch.setText("关机");
+            tvSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_on));
             if (!isShowGuidePage) {
                 mGuidePage.show();
                 isShowGuidePage = true;
             }
         } else {
-            mTvSwitch.setText("开机");
-            mTvSwitch.setIconNormal(getResources().getDrawable(R.drawable
+            tvSwitch.setText("开机");
+            tvSwitch.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_switch_off));
             if (isShowGuidePage) {
                 mGuidePage.remove();
@@ -411,36 +437,40 @@ public class KZZActivity extends BaseActivity implements
 
     private void refreshMode() {
         if (mControlMode == 0) {
-            mTvAuto.setText("自动");
-            mTvAuto.setIconNormal(getResources().getDrawable(R.drawable.ic_air_purifier_mode_auto));
+            tvLbMode.setText("自动");
+            tvLbMode.setIconNormal(getResources().getDrawable(R.drawable.ic_air_purifier_mode_auto));
         } else {
-            mTvAuto.setText("手动");
-            mTvAuto.setIconNormal(getResources().getDrawable(R.drawable
+            tvLbMode.setText("手动");
+            tvLbMode.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_mode_manual));
         }
     }
 
     private void refreshGear() {
-        mViewAirPurifierGear.setGear(mControlGear);
+        viewAirPurifierGear.setGear(mControlGear);
     }
 
     private void refreshShutDown() {
-        mTvAirPurifierView1Timing.setText(getFormatTime(mShutdownRemainingTime));
+        tvStatusDyTiming.setText(getFormatTime(mShutdownRemainingTime));
+        tvStatusLbTiming.setText(getFormatTime(mShutdownRemainingTime));
+        tvStatusKzz2Timing.setText(getFormatTime(mShutdownRemainingTime));
         if (mShutdownRemainingTime == 0) {
-            mTvTiming.setIconNormal(getResources().getDrawable(R.drawable
+            tvTiming.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_timing_off));
         } else {
-            mTvTiming.setIconNormal(getResources().getDrawable(R.drawable
+            tvTiming.setIconNormal(getResources().getDrawable(R.drawable
                     .ic_air_purifier_timing_on));
         }
     }
 
     private void refreshFilter() {
-        int percent = (int) (100f * (FLITER_MAX_VALUE - mUseTime) / FLITER_MAX_VALUE);
+        int percent = (int) Math.ceil(100f * (FLITER_MAX_VALUE - mUseTime) / FLITER_MAX_VALUE);
         if (percent < 0) {
             percent = 0;
         }
-        mTvStatusFilter.setText(String.format("%02d", percent) + "%");
+        tvStatusDyFilter.setText(String.format("%02d", percent) + "%");
+        tvStatusLbFilter.setText(String.format("%02d", percent) + "%");
+        tvStatusKzz2Filter.setText(String.format("%02d", percent) + "%");
         if (mUseTime >= FLITER_MAX_VALUE) {
             showChangeFilter();
         }
@@ -466,15 +496,15 @@ public class KZZActivity extends BaseActivity implements
     }
 
     private void refreshPm25() {
-        mViewAirPurifierPm25.setValue(mPM205);
+        viewAirPurifierPm25.setValue(mPM205);
     }
 
     private void refreshTemperature() {
-        mTvAirPurifierView3Temp.setText(mTemperature + "°C");
+        tvTemperature.setText("温度 " + mTemperature + "°C");
     }
 
     private void refreshHumidity() {
-        mTvAirPurifierView3Humidity.setText(mHumidity + "%");
+        tvHumidity.setText("湿度 " + mHumidity + "%");
     }
 
     public String getFormatTime(int timingShutdown) {
@@ -506,4 +536,6 @@ public class KZZActivity extends BaseActivity implements
         hashMap.put("TimingShutdown", hour + "");
         sendCmd(hashMap);
     }
+
+
 }

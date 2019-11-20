@@ -123,7 +123,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
         if (product == null) {
             return;
         }
-        WifiConnectInfoActivity.actionStart(this, product.getProductKey());
+        WifiResetInfoActivity.actionStart(this, product.getProductKey());
     }
 
 

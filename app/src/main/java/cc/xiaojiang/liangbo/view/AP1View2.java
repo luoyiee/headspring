@@ -250,13 +250,13 @@ public class AP1View2 extends View {
         float angle = 0f;
         if (value >= 0) {
             if (value <= d1) {
-                angle = value / 75f * 288;
+                angle = value / d1 * 288;
                 rate = "优";
             } else if (value <= d2) {
-                angle = 288 + 1.0f * ((value - d1) / (d2 - d1) * 36);
+                angle = 288 +  (value - d1) / (d2 - d1) * 36f;
                 rate = "良";
             } else if (value <= d3) {
-                angle = (288 + 36) + (1.0f * (value - d2) / (d3 - d2) * 36);
+                angle = (288 + 36) +  (value - d2) / (d3 - d2) * 36f;
                 rate = "差";
             } else {
                 angle = 360f;

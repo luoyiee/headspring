@@ -93,7 +93,7 @@
             android:label="@string/title_activity_top_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.KZZActivity"
+            android:name=".activity.BaseAirPurifierActivity"
             android:label="@string/title_activity_kzz"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

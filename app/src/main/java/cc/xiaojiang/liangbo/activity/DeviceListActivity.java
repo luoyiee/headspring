@@ -169,9 +169,9 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         switch (view.getId()) {
 
             case R.id.ll_device_content:
-                if (ProductKey.KZZ.equals(device.getProductKey()) || ProductKey.LB.equals(device
-                        .getProductKey())) {
-                    intent = new Intent(this, KZZActivity.class);
+                if (ProductKey.DY.equals(device.getProductKey()) || ProductKey.LB.equals(device
+                        .getProductKey()) || ProductKey.KZZ2G.equals(device.getProductKey())) {
+                    intent = new Intent(this, BaseAirPurifierActivity.class);
                 } else {
                     ToastUtils.show("暂不支持该设备！");
                     return;

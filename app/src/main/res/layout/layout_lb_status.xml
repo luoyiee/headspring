@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_lb_status"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:layout_marginTop="24dp"
+    android:background="@drawable/bg_device_status"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:visibility="visible">
+
+
+    <TextView
+        style="@style/control_status_label"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/air_purifier_view1_timing"
+        android:textColor="@color/status_label" />
+
+    <TextView
+        android:id="@+id/tv_status_lb_timing"
+        style="@style/common_14_white_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="00:00" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/status_label" />
+
+    <TextView
+        style="@style/control_status_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="滤芯"
+        android:textColor="@color/status_label" />
+
+    <TextView
+        android:id="@+id/tv_status_lb_filter"
+        style="@style/common_14_white_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="90%" />
+
+
+</LinearLayout>

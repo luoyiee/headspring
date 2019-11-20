@@ -6,13 +6,15 @@ public class KzzDataModel {
 
     /**
      * msg_type : push
-     * params : {"onlineStatus":{"value":"online:1532157395"},"Switch":{"value":"1"},
-     * "ControlMode":{"value":"1"},"ControlGear":{"value":"3"},"TimingShutdown":{"value":"0"},
-     * "UseTime":{"value":"62"},"PM205":{"value":"3"},"Tempture":{"value":"26"},
-     * "Humidity":{"value":"54"},"ShutdownRemainingTime":{"value":"0"}}
+     * msg_id : 1684366951
+     * params : {"onlineStatus":{"value":"online:1574219331"},"Switch":{"value":"1"},"WifiState":
+     * {"value":"1"},"PM205":{"value":"35"},"ControlGear":{"value":"4"},"ControlMode":{"value":"0
+     * "},"UseTime":{"value":"1252"},"Tempture":{"value":"21"},"Humidity":{"value":"47"}
+     * ,"ShutdownRemainingTime":{"value":"237"},"Battery":{"value":"0"}}
      */
 
     private String msg_type;
+    private String msg_id;
     private ParamsBean params;
 
     public String getMsg_type() {
@@ -21,6 +23,14 @@ public class KzzDataModel {
 
     public void setMsg_type(String msg_type) {
         this.msg_type = msg_type;
+    }
+
+    public String getMsg_id() {
+        return msg_id;
+    }
+
+    public void setMsg_id(String msg_id) {
+        this.msg_id = msg_id;
     }
 
     public ParamsBean getParams() {
@@ -33,26 +43,30 @@ public class KzzDataModel {
 
     public static class ParamsBean {
         /**
-         * onlineStatus : {"value":"online:1532157395"}
+         * onlineStatus : {"value":"online:1574219331"}
          * Switch : {"value":"1"}
-         * ControlMode : {"value":"1"}
-         * ControlGear : {"value":"3"}
-         * UseTime : {"value":"62"}
-         * PM205 : {"value":"3"}
-         * Tempture : {"value":"26"}
-         * Humidity : {"value":"54"}
-         * ShutdownRemainingTime : {"value":"0"}
+         * WifiState : {"value":"1"}
+         * PM205 : {"value":"35"}
+         * ControlGear : {"value":"4"}
+         * ControlMode : {"value":"0"}
+         * UseTime : {"value":"1252"}
+         * Tempture : {"value":"21"}
+         * Humidity : {"value":"47"}
+         * ShutdownRemainingTime : {"value":"237"}
+         * Battery : {"value":"0"}
          */
 
         private OnlineStatusBean onlineStatus;
         private SwitchBean Switch;
-        private ControlModeBean ControlMode;
-        private ControlGearBean ControlGear;
-        private UseTimeBean UseTime;
+        private WifiStateBean WifiState;
         private PM205Bean PM205;
+        private ControlGearBean ControlGear;
+        private ControlModeBean ControlMode;
+        private UseTimeBean UseTime;
         private TemptureBean Tempture;
         private HumidityBean Humidity;
         private ShutdownRemainingTimeBean ShutdownRemainingTime;
+        private BatteryBean Battery;
 
         public OnlineStatusBean getOnlineStatus() {
             return onlineStatus;
@@ -70,12 +84,20 @@ public class KzzDataModel {
             this.Switch = Switch;
         }
 
-        public ControlModeBean getControlMode() {
-            return ControlMode;
+        public WifiStateBean getWifiState() {
+            return WifiState;
         }
 
-        public void setControlMode(ControlModeBean ControlMode) {
-            this.ControlMode = ControlMode;
+        public void setWifiState(WifiStateBean WifiState) {
+            this.WifiState = WifiState;
+        }
+
+        public PM205Bean getPM205() {
+            return PM205;
+        }
+
+        public void setPM205(PM205Bean PM205) {
+            this.PM205 = PM205;
         }
 
         public ControlGearBean getControlGear() {
@@ -86,7 +108,13 @@ public class KzzDataModel {
             this.ControlGear = ControlGear;
         }
 
+        public ControlModeBean getControlMode() {
+            return ControlMode;
+        }
 
+        public void setControlMode(ControlModeBean ControlMode) {
+            this.ControlMode = ControlMode;
+        }
 
         public UseTimeBean getUseTime() {
             return UseTime;
@@ -94,14 +122,6 @@ public class KzzDataModel {
 
         public void setUseTime(UseTimeBean UseTime) {
             this.UseTime = UseTime;
-        }
-
-        public PM205Bean getPM205() {
-            return PM205;
-        }
-
-        public void setPM205(PM205Bean PM205) {
-            this.PM205 = PM205;
         }
 
         public TemptureBean getTempture() {
@@ -128,9 +148,17 @@ public class KzzDataModel {
             this.ShutdownRemainingTime = ShutdownRemainingTime;
         }
 
+        public BatteryBean getBattery() {
+            return Battery;
+        }
+
+        public void setBattery(BatteryBean Battery) {
+            this.Battery = Battery;
+        }
+
         public static class OnlineStatusBean {
             /**
-             * value : online:1532157395
+             * value : online:1574219331
              */
 
             private String value;
@@ -160,7 +188,7 @@ public class KzzDataModel {
             }
         }
 
-        public static class ControlModeBean {
+        public static class WifiStateBean {
             /**
              * value : 1
              */
@@ -176,9 +204,9 @@ public class KzzDataModel {
             }
         }
 
-        public static class ControlGearBean {
+        public static class PM205Bean {
             /**
-             * value : 3
+             * value : 35
              */
 
             private String value;
@@ -192,26 +220,41 @@ public class KzzDataModel {
             }
         }
 
+        public static class ControlGearBean {
+            /**
+             * value : 4
+             */
+
+            private String value;
+
+            public String getValue() {
+                return value;
+            }
+
+            public void setValue(String value) {
+                this.value = value;
+            }
+        }
+
+        public static class ControlModeBean {
+            /**
+             * value : 0
+             */
+
+            private String value;
+
+            public String getValue() {
+                return value;
+            }
+
+            public void setValue(String value) {
+                this.value = value;
+            }
+        }
 
         public static class UseTimeBean {
             /**
-             * value : 62
-             */
-
-            private String value;
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
-
-        public static class PM205Bean {
-            /**
-             * value : 3
+             * value : 1252
              */
 
             private String value;
@@ -227,7 +270,7 @@ public class KzzDataModel {
 
         public static class TemptureBean {
             /**
-             * value : 26
+             * value : 21
              */
 
             private String value;
@@ -243,7 +286,7 @@ public class KzzDataModel {
 
         public static class HumidityBean {
             /**
-             * value : 54
+             * value : 47
              */
 
             private String value;
@@ -258,6 +301,22 @@ public class KzzDataModel {
         }
 
         public static class ShutdownRemainingTimeBean {
+            /**
+             * value : 237
+             */
+
+            private String value;
+
+            public String getValue() {
+                return value;
+            }
+
+            public void setValue(String value) {
+                this.value = value;
+            }
+        }
+
+        public static class BatteryBean {
             /**
              * value : 0
              */

@@ -103,14 +103,19 @@ public class WifiResetInfoActivity extends BaseActivity {
 
     private void showInfo(ProductInfo productInfo) {
         String productKey = productInfo.getProductKey();
-        if (ProductKey.LB.equals(productKey)) {
-            mTvConfigInfo.setText(productInfo.getConfigNetworkCharacter());
-            setGuide(R.drawable.ic_wifi_setup_guide_lb);
-        } else if (ProductKey.KZZ.equals(productKey)) {
-            mTvConfigInfo.setText(productInfo.getConfigNetworkCharacter());
-            setGuide(R.drawable.ic_wifi_setup_guide_kzz);
-        } else {
-            mTvConfigInfo.setText("无效的设备");
+        mTvConfigInfo.setText(productInfo.getConfigNetworkCharacter());
+        switch (productKey) {
+            case ProductKey.DY:
+                setGuide(R.drawable.ic_wifi_setup_guide_kzz);
+                break;
+            case ProductKey.LB:
+                setGuide(R.drawable.ic_wifi_setup_guide_lb);
+                break;
+            case ProductKey.KZZ2G:
+                setGuide(R.drawable.ic_wifi_setup_guide_kzz);
+                break;
+            default:
+                mTvConfigInfo.setText("无效的设备");
         }
     }
 
@@ -137,7 +142,7 @@ public class WifiResetInfoActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm_operation:
                 mTvConfirmOperation.setSelected(!mTvConfirmOperation.isSelected());
-                Logger.e(mTvConfirmOperation.isSelected()+"");
+                Logger.e(mTvConfirmOperation.isSelected() + "");
                 mBtnConfigInfoNext.setEnabled(mTvConfirmOperation.isSelected());
                 break;
         }

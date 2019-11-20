@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cc.xiaojiang.liangbo.activity.KZZActivity">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="cc.xiaojiang.liangbo.activity.BaseAirPurifierActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -26,143 +28,28 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <include
+        layout="@layout/layout_kzz2g_status"
+        android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/ll_kzz_device_status"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_device_status"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintWidth_percent="0.65">
+    <include
+        layout="@layout/layout_lb_status"
+        android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_air_purifier_wifi"
-            style="@style/control_status_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="无线"
-            android:textColor="@color/status_label"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/ic_air_purifier_wifi"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_air_purifier_wifi_off"
-            android:visibility="gone" />
-
-
-        <View
-            android:id="@+id/view_air_purifier_wifi"
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/status_label"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_view1_timing_label"
-            style="@style/control_status_label"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/air_purifier_view1_timing"
-            android:textColor="@color/status_label" />
-
-        <TextView
-            android:id="@+id/tv_view1_timing"
-            style="@style/common_14_white_text"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:text="00:00" />
-
-        <View
-            android:id="@+id/view_status_divider"
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/status_label" />
-
-        <TextView
-            android:id="@+id/textView33"
-            style="@style/control_status_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:text="滤芯"
-            android:textColor="@color/status_label" />
-
-        <TextView
-            android:id="@+id/tv_status_filter"
-            style="@style/common_14_white_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="90%" />
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tv_air_purifier_view3_temp"
-        style="@style/common_14_white_text"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
-        app:layout_constraintStart_toEndOf="@+id/textView16"
-        tools:text="25°C" />
-
-    <TextView
-        android:id="@+id/tv_air_purifier_view3_humidity"
-        style="@style/common_14_white_text"
-        android:layout_marginStart="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_air_purifier_view3_temp"
-        app:layout_constraintTop_toTopOf="@+id/tv_air_purifier_view3_temp"
-        tools:text="68%" />
-
-    <TextView
-        android:id="@+id/textView16"
-        style="@style/control_status_label"
-        android:drawablePadding="2dp"
-        android:drawableStart="@drawable/small_white_dot"
-        android:text="@string/air_purifier_view1_temperature"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.28"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_air_purifier_pm25"
-        app:layout_constraintVertical_bias="0.038" />
-
-    <TextView
-        android:id="@+id/textView17"
-        style="@style/control_status_label"
-        android:drawablePadding="2dp"
-        android:drawableStart="@drawable/small_white_dot"
-        android:text="@string/air_purifier_view1_humidity"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include
+        layout="@layout/layout_dy_status"
+        android:visibility="gone" />
 
 
     <cc.xiaojiang.liangbo.view.AP1View2
         android:id="@+id/view_air_purifier_pm25"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.42"
@@ -171,94 +58,94 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.26" />
 
-    <cc.xiaojiang.liangbo.view.AP1View4
-        android:id="@+id/view_air_purifier_gear"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginStart="2dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_air_purifier_view4_plus"
-        app:layout_constraintStart_toEndOf="@+id/iv_air_purifier_view4_minus" />
-
-
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/tv_lb_mode"
-        style="@style/device_control_bottom_text_icon"
-        android:layout_marginBottom="32dp"
-        android:text="自动"
-        app:icon_src_normal="@drawable/ic_air_purifier_mode_auto"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_switch"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/tv_switch"
-        style="@style/device_control_bottom_text_icon"
-        android:padding="12dp"
-        android:text="开启"
-        app:icon_src_normal="@drawable/ic_air_purifier_switch_on"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lb_mode"
-        app:layout_constraintEnd_toStartOf="@+id/tv_timing"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_lb_mode" />
-
-    <cc.xiaojiang.liangbo.view.CommonTextView
-        android:id="@+id/tv_timing"
-        style="@style/device_control_bottom_text_icon"
-        android:text="定时"
-        app:icon_src_normal="@drawable/ic_air_purifier_timing_off"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_switch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_switch" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
+    <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/small_white_dot"
+            tools:text="温度36℃"
+            android:drawablePadding="5dp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/small_white_dot"
+            tools:text="湿度35%"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.84" />
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/iv_air_purifier_view4_minus"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/view_air_purifier_gear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view_air_purifier_gear"
-        app:srcCompat="@drawable/ic_air_purifier_minus" />
+        <ImageView
+            android:id="@+id/iv_air_purifier_view4_minus"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            app:srcCompat="@drawable/ic_air_purifier_minus" />
 
-    <ImageView
-        android:id="@+id/iv_air_purifier_view4_plus"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/view_air_purifier_gear"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view_air_purifier_gear"
-        app:srcCompat="@drawable/ic_air_purifier_plus" />
+        <cc.xiaojiang.liangbo.view.AP1View4
+            android:id="@+id/view_air_purifier_gear"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
 
+        <ImageView
+            android:id="@+id/iv_air_purifier_view4_plus"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/ic_air_purifier_plus" />
+    </LinearLayout>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
-    <android.support.constraint.Group
-        android:id="@+id/group2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:constraint_referenced_ids="textView16,textView17,tv_air_purifier_view3_temp,tv_air_purifier_view3_humidity" />
+        <cc.xiaojiang.liangbo.view.CommonTextView
+            android:id="@+id/tv_lb_mode"
+            style="@style/device_control_bottom_text_icon"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="自动"
+            app:icon_src_normal="@drawable/ic_air_purifier_mode_auto" />
 
-</android.support.constraint.ConstraintLayout>
+        <cc.xiaojiang.liangbo.view.CommonTextView
+            android:id="@+id/tv_switch"
+            style="@style/device_control_bottom_text_icon"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="开启"
+            app:icon_src_normal="@drawable/ic_air_purifier_switch_on" />
+
+        <cc.xiaojiang.liangbo.view.CommonTextView
+            android:id="@+id/tv_timing"
+            style="@style/device_control_bottom_text_icon"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="定时"
+            app:icon_src_normal="@drawable/ic_air_purifier_timing_off" />
+
+    </LinearLayout>
+</LinearLayout>
