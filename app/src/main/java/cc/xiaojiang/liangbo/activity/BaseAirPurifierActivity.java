@@ -102,6 +102,8 @@ public class BaseAirPurifierActivity extends BaseActivity implements
     TextView tvTemperature;
     @BindView(R.id.tv_humidity)
     TextView tvHumidity;
+    @BindView(R.id.ll_air_purifier_pm25)
+    LinearLayout llAirPurifierPm25;
     private Device mDevice;
 
     private int mControlGear;
@@ -192,14 +194,17 @@ public class BaseAirPurifierActivity extends BaseActivity implements
             case ProductKey.DY:
                 viewAirPurifierGear.setGearCount(6);
                 llDyStatus.setVisibility(View.VISIBLE);
+                llAirPurifierPm25.setVisibility(View.VISIBLE);
                 break;
             case ProductKey.LB:
                 viewAirPurifierGear.setGearCount(4);
                 llLbStatus.setVisibility(View.VISIBLE);
+                llAirPurifierPm25.setVisibility(View.INVISIBLE);
                 break;
             case ProductKey.KZZ2G:
                 viewAirPurifierGear.setGearCount(6);
                 llKzz2gStatus.setVisibility(View.VISIBLE);
+                llAirPurifierPm25.setVisibility(View.VISIBLE);
                 break;
             default:
                 ToastUtils.show("暂不支持该设备！");

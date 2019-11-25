@@ -73,10 +73,6 @@
             android:label="@string/title_activity_wifi_cofirm"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.wifiConfig.WifiConnectInfo2Activity"
-            android:label="@string/title_activity_wifi_cofirm"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activity.PersonalCenterActivity"
             android:label="@string/title_activity_personal_center"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -176,12 +176,14 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
                     ToastUtils.show("暂不支持该设备！");
                     return;
                 }
-                if (mDeviceAdapter.getOnlineStatus(device.getDeviceId())) {
-                    intent.putExtra("device_data", device);
-                    startActivity(intent);
-                } else {
-                    ToastUtils.show("设备离线");
-                }
+//                if (mDeviceAdapter.getOnlineStatus(device.getDeviceId())) {
+//                    intent.putExtra("device_data", device);
+//                    startActivity(intent);
+//                } else {
+//                    ToastUtils.show("设备离线");
+//                }
+                intent.putExtra("device_data", device);
+                startActivity(intent);
                 break;
             case R.id.tv_device_swipe_menu_modify:
                 showModifyDialog(device);

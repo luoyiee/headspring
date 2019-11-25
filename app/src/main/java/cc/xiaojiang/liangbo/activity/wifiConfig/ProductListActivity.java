@@ -123,7 +123,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
         if (product == null) {
             return;
         }
-        WifiResetInfoActivity.actionStart(this, product.getProductKey());
+        goResetInfo(product.getProductKey());
     }
 
 
@@ -162,7 +162,7 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
         IotKitQrCodeUtils.parseQrCode(result, new ParseQrCodeCallback() {
             @Override
             public void onDeviceAdd(String productKey) {
-                WifiConnectInfoActivity.actionStart(ProductListActivity.this, productKey);
+                goResetInfo(productKey);
             }
 
             @Override
@@ -189,5 +189,10 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
 
             }
         });
+    }
+
+
+    private void goResetInfo(String productKey) {
+        WifiConnectInfoActivity.actionStart(ProductListActivity.this, productKey);
     }
 }
