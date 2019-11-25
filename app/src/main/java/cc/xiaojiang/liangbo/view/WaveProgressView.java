@@ -312,7 +312,7 @@ public class WaveProgressView extends View {
 //            mPercentValue = String.format(Locale.getDefault(), "%02d", (int) (mPercent * 100f));
 //            mPrePercent = mPercent;
 //        }
-        mPercentValue = String.format(Locale.getDefault(), "%02d", (int) (mPercent * 100f));
+        mPercentValue = String.format(Locale.getDefault(), "%02d", (int)Math.ceil(mPercent * 100f));
         mPrePercent = mPercent;
         Logger.e("mPrePercent:" + mPercentValue);
         canvas.drawText(mPercentValue, mCenterPoint.x - mOffSet, y - mOffSet, mPercentPaint);
