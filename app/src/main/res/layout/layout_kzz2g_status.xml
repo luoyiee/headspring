@@ -41,6 +41,7 @@
         <ImageView
             android:id="@+id/iv_status_kzz2_battery"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/ic_battery_full" />
@@ -82,6 +83,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="电量"
+            android:visibility="gone"
             android:textColor="@color/status_label" />
     </LinearLayout>
 </LinearLayout>

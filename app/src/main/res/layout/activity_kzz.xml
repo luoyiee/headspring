@@ -13,9 +13,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,7 +36,7 @@
 
     <include
         layout="@layout/layout_lb_status"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <include
         layout="@layout/layout_dy_status"
@@ -58,31 +58,31 @@
         app:layout_constraintVertical_bias="0.26" />
 
     <LinearLayout
+        android:id="@+id/ll_air_purifier_pm25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ll_air_purifier_pm25"
-        android:visibility="invisible"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/tv_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/small_white_dot"
-            tools:text="温度36℃"
             android:drawablePadding="5dp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            tools:text="温度36℃" />
 
         <TextView
             android:id="@+id/tv_humidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:drawablePadding="5dp"
             android:drawableLeft="@drawable/small_white_dot"
-            tools:text="湿度35%"
-            android:textColor="@color/white" />
+            android:drawablePadding="5dp"
+            android:textColor="@color/white"
+            tools:text="湿度35%" />
     </LinearLayout>
 
     <LinearLayout
