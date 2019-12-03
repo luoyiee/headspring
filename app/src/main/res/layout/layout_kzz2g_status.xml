@@ -1,89 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_kzz2g_status"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="center"
+    android:background="@color/primary_blue"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:visibility="visible">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        style="@style/control_status_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_marginEnd="8dp"
+        android:text="无线"
+        android:textColor="@color/status_label" />
 
-        <ImageView
-            android:id="@+id/iv_status_kzz2_24g"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_24g_connect" />
-
-        <TextView
-            android:id="@+id/tv_status_kzz2_timing"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="8h"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/tv_status_kzz2_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="90%"
-            android:textColor="@color/white" />
+    <ImageView
+        android:id="@+id/iv_status_kzz2_24g"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_24g_connect" />
 
 
-        <ImageView
-            android:id="@+id/iv_status_kzz2_battery"
-            android:layout_width="0dp"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_battery_full" />
-    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/status_label" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        style="@style/control_status_label"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/air_purifier_view1_timing"
+        android:textColor="@color/status_label" />
+
+    <TextView
+        android:id="@+id/tv_status_kzz2_timing"
+        style="@style/common_14_white_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="00:00" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/status_label" />
+
+    <TextView
+        style="@style/control_status_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="滤芯"
+        android:textColor="@color/status_label" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="无线"
-            android:textColor="@color/status_label" />
+    <TextView
+        android:id="@+id/tv_status_kzz2_filter"
+        style="@style/common_14_white_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="90%" />
 
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="定时"
-            android:textColor="@color/status_label" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="滤网"
-            android:textColor="@color/status_label" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="电量"
-            android:visibility="gone"
-            android:textColor="@color/status_label" />
-    </LinearLayout>
 </LinearLayout>

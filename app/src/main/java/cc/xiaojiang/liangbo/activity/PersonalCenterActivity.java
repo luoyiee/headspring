@@ -23,6 +23,7 @@ import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.http.progress.ProgressObserver;
 import cc.xiaojiang.liangbo.model.event.LoginEvent;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
+import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.ImageLoader;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ToastUtils;
@@ -76,6 +77,7 @@ public class PersonalCenterActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void getUser() {
+        DbUtils.setAccessToken("");
         RetrofitHelper.getService().userInfo()
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())

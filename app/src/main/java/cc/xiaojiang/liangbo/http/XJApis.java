@@ -18,6 +18,7 @@ import cc.xiaojiang.liangbo.model.http.LoginBody;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.model.http.LunarInfoModel;
 import cc.xiaojiang.liangbo.model.http.Pm25HistoryModel;
+import cc.xiaojiang.liangbo.model.http.RefreshTokenModel;
 import cc.xiaojiang.liangbo.model.http.UserInfoModel;
 import cc.xiaojiang.liangbo.model.http.UserModifyBody;
 import cc.xiaojiang.liangbo.model.http.WeatherCityModel;
@@ -39,7 +40,7 @@ public interface XJApis {
     Observable<BaseModel<Object>> feedback(@Body FeedbackBody feedbackBody);
 
     @POST(HttpUrl.REFRESH)
-    Call<BaseModel<LoginModel>> refreshToken();
+    Call<BaseModel<RefreshTokenModel>> refreshToken();
 
     @GET(HttpUrl.AIR)
     Observable<BaseModel<List<AqiModel>>> getAqi(@Query("level") int level,

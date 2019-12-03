@@ -62,8 +62,6 @@ public class BaseAirPurifierActivity extends BaseActivity implements
     TextView tvStatusKzz2Timing;
     @BindView(R.id.tv_status_kzz2_filter)
     TextView tvStatusKzz2Filter;
-    @BindView(R.id.iv_status_kzz2_battery)
-    ImageView ivStatusKzz2Battery;
     @BindView(R.id.tv_status_lb_timing)
     TextView tvStatusLbTiming;
     @BindView(R.id.tv_status_lb_filter)
@@ -392,11 +390,6 @@ public class BaseAirPurifierActivity extends BaseActivity implements
             refreshHumidity();
 
         }
-        if (paramsBean.getBattery() != null) {
-            mBattery = Integer.parseInt(paramsBean.getBattery().getValue());
-            refreshBattery();
-
-        }
         if (paramsBean.getWifiState() != null) {
             m24GState = Integer.parseInt(paramsBean.getWifiState().getValue());
             refresh24gState();
@@ -412,13 +405,6 @@ public class BaseAirPurifierActivity extends BaseActivity implements
         }
     }
 
-    private void refreshBattery() {
-        if (mBattery == 0) {
-            ivStatusKzz2Battery.setImageResource(R.drawable.ic_battery_empty);
-        } else {
-            ivStatusKzz2Battery.setImageResource(R.drawable.ic_battery_full);
-        }
-    }
 
     private void refreshSwitch() {
         if (mSwitch == 0) {

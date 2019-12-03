@@ -1,6 +1,8 @@
 package cc.xiaojiang.liangbo.utils;
 
 
+import com.orhanobut.logger.Logger;
+
 import cc.xiaojiang.liangbo.base.MyApplication;
 import cc.xiaojiang.iotkit.util.ASimpleCache;
 
@@ -52,6 +54,7 @@ public class DbUtils {
 
     public static void setAccessToken(String accessToken) {
         aSimpleCache.put(ACCESS_TOKEN, accessToken);
+        Logger.d("setAccessToken:"+accessToken);
     }
 
     /**
@@ -63,6 +66,7 @@ public class DbUtils {
 
     public static void setRefreshToken(String refreshToken) {
         aSimpleCache.put(REFRESH_TOKEN, refreshToken);
+        Logger.d("setRefreshToken:"+refreshToken);
     }
 
     /**
@@ -90,6 +94,7 @@ public class DbUtils {
 
     public static void setXJUserId(String xjUserId) {
         aSimpleCache.put(XJ_USER_ID, xjUserId);
+        Logger.d("setXJUserId:"+xjUserId);
     }
 
 

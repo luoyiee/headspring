@@ -56,7 +56,6 @@ public abstract class ProgressObserver<T> implements Observer<T>, ProgressCancel
             return;
         }
         ToastUtils.show(e.getMessage());
-        com.orhanobut.logger.Logger.e(e.getMessage());
         if (ApiException.class.isInstance(e)) {
             // TODO: 2018/5/16
         } else if (HttpException.class.isInstance(e)) {

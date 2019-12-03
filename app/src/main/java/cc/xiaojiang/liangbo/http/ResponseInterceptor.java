@@ -24,6 +24,7 @@ import cc.xiaojiang.liangbo.activity.LoginActivity;
 import cc.xiaojiang.liangbo.base.MyApplication;
 import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
+import cc.xiaojiang.liangbo.model.http.RefreshTokenModel;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.SignUtils;
 import io.reactivex.Observable;
@@ -48,8 +49,6 @@ public class ResponseInterceptor implements Interceptor {
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
-
-
         String url = request.url().toString();
         if (url.contains(HttpUrl.USER_INFO)
                 || url.contains(HttpUrl.USER_MODIFY)
@@ -76,18 +75,16 @@ public class ResponseInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         if (response.code() == 401) {
             Logger.d("code: " + response.code());
-            final retrofit2.Response<BaseModel<LoginModel>> execute =
+            final retrofit2.Response<BaseModel<RefreshTokenModel>> execute =
                     RetrofitHelper.getService().refreshToken().execute();
             if (execute.code() == 200 && execute.body() != null) {
-                //重新发起请求
-                final BaseModel<LoginModel> body = execute.body();
+                final BaseModel<RefreshTokenModel> body = execute.body();
                 if (body != null) {
-                    LoginModel loginModel = body.getData();
-                    DbUtils.setXJUserId(loginModel.getUserId());
-                    DbUtils.setAccessToken(loginModel.getAccessToken());
-                    DbUtils.setRefreshToken(loginModel.getRefreshToken());
+                    RefreshTokenModel refreshTokenModel = body.getData();
+                    DbUtils.setAccessToken(refreshTokenModel.getAccessToken());
+                    DbUtils.setRefreshToken(refreshTokenModel.getRefreshToken());
                     Request newRequest = request.newBuilder()
-                            .header(ACCESS_TOKEN, loginModel.getAccessToken())  //添加新的token
+                            .header(ACCESS_TOKEN, DbUtils.getAccessToken())  //添加新的token
                             .build();
                     //重新发起请求，此时是新的token
                     return chain.proceed(newRequest);

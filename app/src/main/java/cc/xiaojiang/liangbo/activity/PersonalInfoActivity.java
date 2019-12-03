@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -159,6 +160,9 @@ public class PersonalInfoActivity extends BaseActivity implements TakePhoto.Take
     }
 
     private void setCityView(String area) {
+        if (TextUtils.isEmpty(area)){
+            return;
+        }
         try {
             final String[] split = area.split("-");
             mProvinceCode = Integer.parseInt(split[0]);
