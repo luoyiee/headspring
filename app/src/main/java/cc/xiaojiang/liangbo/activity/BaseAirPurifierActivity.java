@@ -67,7 +67,7 @@ public class BaseAirPurifierActivity extends BaseActivity implements
     @BindView(R.id.tv_status_lb_filter)
     TextView tvStatusLbFilter;
     @BindView(R.id.ic_status_dy_wifi)
-    ImageView icStatusDyWifi;
+    ImageView ivStatusDyWifi;
     @BindView(R.id.tv_status_dy_timing)
     TextView tvStatusDyTiming;
     @BindView(R.id.tv_status_dy_filter)
@@ -135,6 +135,13 @@ public class BaseAirPurifierActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         init();
         initGuidePage();
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                openRealReporting(1);
+            }
+        }, 0, 60 * 1000);
 
     }
 
@@ -269,26 +276,19 @@ public class BaseAirPurifierActivity extends BaseActivity implements
         super.onResume();
         IotKitMqttManager.getInstance().addDataCallback(this);
         IotKitMqttManager.getInstance().queryStatus(mDevice, null);
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                openRealReporting(1);
-            }
-        }, 0, 60 * 1000);
     }
 
     @Override
     protected void onPause() {
         IotKitMqttManager.getInstance().removeDataCallback(this);
-        mTimer.cancel();
-        openRealReporting(0);
+
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-
+        mTimer.cancel();
+        openRealReporting(0);
         super.onDestroy();
     }
 
@@ -322,6 +322,7 @@ public class BaseAirPurifierActivity extends BaseActivity implements
                 break;
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -400,8 +401,10 @@ public class BaseAirPurifierActivity extends BaseActivity implements
     private void refresh24gState() {
         if (m24GState == 0) {
             ivStatusKzz224g.setImageResource(R.drawable.ic_24_disconnect);
+            ivStatusDyWifi.setImageResource(R.drawable.ic_24_disconnect);
         } else {
             ivStatusKzz224g.setImageResource(R.drawable.ic_24g_connect);
+            ivStatusDyWifi.setImageResource(R.drawable.ic_24g_connect);
         }
     }
 
