@@ -34,6 +34,8 @@ public class FilterTimeRemainActivity extends BaseActivity implements View.OnLon
     private int mUseTime;
     private Device mDevice;
 
+
+    // TODO: 2019-12-05 优化，监听滤芯状态
     public static void actionStart(Context context, int userTime, Device device) {
         Intent intent = new Intent(context, FilterTimeRemainActivity.class);
         intent.putExtra(INTENT_FILTER_TIME, userTime);
