@@ -162,32 +162,6 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         animatorSet.start();
     }
 
-    @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal,
-            R.id.iv_device_air})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.ctv_chain:
-                ToastUtils.show("仅向股东开放");
-                break;
-            case R.id.ctv_map:
-                startToActivity(AirMapActivity.class);
-                break;
-            case R.id.ctv_device:
-                LoginInterceptor.interceptor(this, DeviceListActivity.class.getName(), null);
-                break;
-            case R.id.ctv_shop:
-//                ToastUtils.show("商城正在建设中，暂不开放");
-                startToActivity(StoreActivity.class);
-                break;
-            case R.id.ctv_personal:
-                startToActivity(PersonalCenterActivity.class);
-                break;
-            case R.id.iv_device_air:
-                startToActivity(AirNewActivity.class);
-//                startToActivity(TestActivity.class);
-                break;
-        }
-    }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import cc.xiaojiang.iotkit.account.IotKitAccountCallback;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.activity.weather.AirNewActivity;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.HttpResultFunc;
 import cc.xiaojiang.liangbo.http.LoginCarrier;
@@ -220,7 +221,7 @@ public class LoginActivity extends BaseActivity {
                     EventBus.getDefault().post(new LoginEvent(LoginEvent
                             .CODE_LOGIN));
                 } else {
-                    startToActivity(MainActivity.class);
+                    startToActivity(AirNewActivity.class);
                 }
                 ToastUtils.show("登录成功");
                 finish();

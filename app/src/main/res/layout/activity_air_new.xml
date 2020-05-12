@@ -49,6 +49,105 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_air_new" />
+    <cc.xiaojiang.liangbo.view.MainMenuLayout
+        android:id="@+id/view_main_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_menu_horizontal"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="24dp">
+
+            <cc.xiaojiang.liangbo.view.CommonTextView
+                android:id="@+id/ctv_map"
+                style="@style/homeTextStyle"
+                android:layout_height="wrap_content"
+                android:paddingBottom="6dp"
+                android:paddingEnd="24dp"
+                android:paddingStart="36dp"
+                android:paddingTop="6dp"
+                android:text="地图"
+                app:icon_src_normal="@drawable/home_map" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <cc.xiaojiang.liangbo.view.CommonTextView
+                android:id="@+id/ctv_shop"
+                style="@style/homeTextStyle"
+                android:layout_height="wrap_content"
+                android:paddingBottom="6dp"
+                android:paddingEnd="32dp"
+                android:paddingStart="24dp"
+                android:paddingTop="6dp"
+                android:text="商城"
+                app:icon_src_normal="@drawable/home_mall" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_menu_vertical"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <cc.xiaojiang.liangbo.view.CommonTextView
+                android:id="@+id/ctv_chain"
+                style="@style/homeTextStyle"
+                android:layout_width="match_parent"
+                android:paddingBottom="24dp"
+                android:paddingTop="32dp"
+                android:text="区块链"
+                app:icon_src_normal="@drawable/home_block_chain" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <cc.xiaojiang.liangbo.view.CommonTextView
+                android:id="@+id/ctv_device"
+                style="@style/homeTextStyle"
+                android:layout_width="match_parent"
+                android:paddingBottom="24dp"
+                android:paddingTop="24dp"
+                android:text="设备"
+                app:icon_src_normal="@drawable/home_equipment" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <cc.xiaojiang.liangbo.view.CommonTextView
+                android:id="@+id/ctv_personal"
+                style="@style/homeTextStyle"
+                android:layout_width="match_parent"
+                android:paddingBottom="24dp"
+                android:paddingTop="24dp"
+                android:text="个人"
+                app:icon_src_normal="@drawable/home_personal" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_main_menu"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/index_liangbo_icon"
+            app:elevation="2dp" />
+
+    </cc.xiaojiang.liangbo.view.MainMenuLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

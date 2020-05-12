@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import cc.xiaojiang.iotkit.account.IotKitAccountManager;
 import cc.xiaojiang.liangbo.R;
+import cc.xiaojiang.liangbo.activity.weather.AirNewActivity;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.utils.AccountUtils;
 
@@ -19,7 +20,7 @@ public class SplashActivity extends BaseActivity {
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, AirNewActivity.class));
             finish();
             if (AccountUtils.isLogin()) {
                 IotKitAccountManager.getInstance().login(null);

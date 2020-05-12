@@ -24,6 +24,7 @@
         android:id="@+id/iv_device_air"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:visibility="gone"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
         android:src="@drawable/index_air_icon"
@@ -33,6 +34,7 @@
         android:id="@+id/view_main_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp">
 

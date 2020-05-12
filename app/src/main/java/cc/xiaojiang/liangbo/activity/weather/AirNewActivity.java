@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,8 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +35,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cc.xiaojiang.liangbo.R;
 import cc.xiaojiang.liangbo.WeatherIcon;
+import cc.xiaojiang.liangbo.activity.AirMapActivity;
+import cc.xiaojiang.liangbo.activity.DeviceListActivity;
+import cc.xiaojiang.liangbo.activity.MainActivity;
+import cc.xiaojiang.liangbo.activity.PersonalCenterActivity;
 import cc.xiaojiang.liangbo.activity.ShareAirActivity;
+import cc.xiaojiang.liangbo.activity.StoreActivity;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
 import cc.xiaojiang.liangbo.http.MyObserver;
@@ -47,9 +49,7 @@ import cc.xiaojiang.liangbo.model.event.ShareBitmapEvent;
 import cc.xiaojiang.liangbo.model.eventbus.MessageCitySwitch;
 import cc.xiaojiang.liangbo.model.http.CityIdModel;
 import cc.xiaojiang.liangbo.model.http.HomeNewWeatherModel;
-import cc.xiaojiang.liangbo.model.realm.WeatherCityCodeRealm;
 import cc.xiaojiang.liangbo.utils.DateUtils;
-import cc.xiaojiang.liangbo.utils.GetJsonDataUtil;
 import cc.xiaojiang.liangbo.utils.LocationClient;
 import cc.xiaojiang.liangbo.utils.RxUtils;
 import cc.xiaojiang.liangbo.utils.ScreenShotUtils;
@@ -58,6 +58,8 @@ import cc.xiaojiang.liangbo.utils.ToastUtils;
 import cc.xiaojiang.liangbo.utils.WeatherUtils;
 import cc.xiaojiang.liangbo.utils.constant.Constant;
 import cc.xiaojiang.liangbo.view.AirIndicator;
+import cc.xiaojiang.liangbo.view.CommonTextView;
+import cn.sharesdk.wechat.utils.WXImageObject;
 import io.realm.Realm;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -146,6 +148,21 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
     Toolbar mToolbar;
     @BindView(R.id.srl_air_new_content)
     SwipeRefreshLayout mSrlAirNewContent;
+    @BindView(R.id.linearLayout3)
+    LinearLayout linearLayout3;
+    @BindView(R.id.ctv_map)
+    CommonTextView ctvMap;
+    @BindView(R.id.ctv_shop)
+    CommonTextView ctvShop;
+    @BindView(R.id.ctv_chain)
+    CommonTextView ctvChain;
+    @BindView(R.id.ctv_device)
+    CommonTextView ctvDevice;
+    @BindView(R.id.ctv_personal)
+    CommonTextView ctvPersonal;
+    @BindView(R.id.iv_main_menu)
+    ImageView ivMainMenu;
+
 
     private String mMyLocation;
     private LocationClient mLocationClient;
@@ -395,9 +412,9 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
                             .subscribe(new MyObserver<CityIdModel>() {
                                 @Override
                                 public void onSucceed(CityIdModel cityIdModel) {
-                                    if (cityIdModel!=null){
-                                        getNewWeather(cityIdModel.getCityId(),LOCATION);
-                                    }else {
+                                    if (cityIdModel != null) {
+                                        getNewWeather(cityIdModel.getCityId(), LOCATION);
+                                    } else {
                                         ToastUtils.show("城市暂时不支持");
                                     }
                                 }
@@ -494,5 +511,36 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     public void onRefresh() {
         AirNewActivityPermissionsDispatcher.requestMyLocationWithPermissionCheck(this);
+    }
+
+    @OnClick({R.id.ctv_chain, R.id.ctv_map, R.id.ctv_device, R.id.ctv_shop, R.id.ctv_personal})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ctv_chain:
+                startToActivity(MainActivity.class);
+                break;
+            case R.id.ctv_map:
+                startToActivity(AirMapActivity.class);
+                break;
+            case R.id.ctv_device:
+                LoginInterceptor.interceptor(this, DeviceListActivity.class.getName(), null);
+                break;
+            case R.id.ctv_shop:
+                startToWeixin();
+                break;
+            case R.id.ctv_personal:
+                startToActivity(PersonalCenterActivity.class);
+                break;
+        }
+    }
+
+    private void startToWeixin() {
+//        String appId = "wxd930ea5d5a258f4f"; // 填应用AppId
+//        IWXAPI api = WXImageObject.createWXAPI(th, appId);
+//        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
+//        req.userName = "gh_d43f693ca31f"; // 填小程序原始id
+//        req.path = path;                  //拉起小程序页面的可带参路径，不填默认拉起小程序首页
+//        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
+//        api.sendReq(req);
     }
 }
