@@ -77,7 +77,7 @@ public class PersonalCenterActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void getUser() {
-        DbUtils.setAccessToken("");
+//        DbUtils.setAccessToken("");
         RetrofitHelper.getService().userInfo()
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(bindToLifecycle())

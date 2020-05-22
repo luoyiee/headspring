@@ -7,6 +7,8 @@ import android.support.multidex.MultiDex;
 import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.xjiangiot.lib.common.base.Base;
 import com.xjiangiot.lib.common.base.BaseApplication;
@@ -27,6 +29,8 @@ public class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         instance = this;
         IotKit.init(this, new IotKitAccountImpl(), false);
         if (!BuildConfig.DEBUG) {

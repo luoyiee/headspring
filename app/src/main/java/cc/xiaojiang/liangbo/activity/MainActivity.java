@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     RecyclerView mRvMain;
     @BindView(R.id.srl_main)
     SwipeRefreshLayout mSrlMain;
-    private boolean isMenuHide = false;
+
     private int mDy;
     private Runnable mMenuShowRunnable;
     private Handler mHandler = new Handler();
@@ -60,7 +60,6 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         mTvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         mUserId = DbUtils.getUserId();
         initRecycleView();
@@ -106,20 +105,20 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 mDy = dy;
-                if (dy > 0) {
-                    // scrolling up
-                    hideMenu();
-                } else {
-                    // scrolling down
-                    showMenu();
-                }
+//                if (dy > 0) {
+//                    // scrolling up
+//                    hideMenu();
+//                } else {
+//                    // scrolling down
+//                    showMenu();
+//                }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (mDy > 0 && newState == SCROLL_STATE_IDLE) {
-                    mMenuShowRunnable = () -> showMenu();
-                    mHandler.postDelayed(mMenuShowRunnable, ANIM_TIME);
+//                    mMenuShowRunnable = () -> showMenu();
+//                    mHandler.postDelayed(mMenuShowRunnable, ANIM_TIME);
                 }
             }
         });
@@ -131,36 +130,9 @@ public class MainActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         return R.layout.activity_main;
     }
 
-    private void showMenu() {
-        if (!isMenuHide) {
-            return;
-        }
-        startAnim();
-        isMenuHide = false;
-    }
 
-    private void hideMenu() {
-        if (isMenuHide) {
-            return;
-        }
-        if (viewMainMenu.isMenuOpen()) {
-            viewMainMenu.closeMenu();
-        }
-        startAnim();
-        isMenuHide = true;
-    }
 
-    public void startAnim() {
-        int translationX = isMenuHide ? 0 : ScreenUtils.dip2px(this, 72);
-        final AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator leftAnimator = ObjectAnimator.ofFloat(mIvDeviceAir, "translationX",
-                -translationX);
-        ObjectAnimator rightAnimator = ObjectAnimator.ofFloat(viewMainMenu, "translationX",
-                translationX);
-        animatorSet.playTogether(leftAnimator, rightAnimator);
-        animatorSet.setDuration(ANIM_TIME);
-        animatorSet.start();
-    }
+
 
 
     @Override

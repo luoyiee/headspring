@@ -1,10 +1,15 @@
 package cc.xiaojiang.liangbo.activity.weather;
 
 import android.Manifest;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.zxing.oned.rss.AbstractRSSReader;
 import com.orhanobut.logger.Logger;
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xjiangiot.lib.common.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,7 +51,6 @@ import cc.xiaojiang.liangbo.activity.DeviceListActivity;
 import cc.xiaojiang.liangbo.activity.MainActivity;
 import cc.xiaojiang.liangbo.activity.PersonalCenterActivity;
 import cc.xiaojiang.liangbo.activity.ShareAirActivity;
-import cc.xiaojiang.liangbo.activity.StoreActivity;
 import cc.xiaojiang.liangbo.base.BaseActivity;
 import cc.xiaojiang.liangbo.http.LoginInterceptor;
 import cc.xiaojiang.liangbo.http.MyObserver;
@@ -59,7 +69,7 @@ import cc.xiaojiang.liangbo.utils.WeatherUtils;
 import cc.xiaojiang.liangbo.utils.constant.Constant;
 import cc.xiaojiang.liangbo.view.AirIndicator;
 import cc.xiaojiang.liangbo.view.CommonTextView;
-import cn.sharesdk.wechat.utils.WXImageObject;
+import cc.xiaojiang.liangbo.view.MainMenuLayout;
 import io.realm.Realm;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -67,6 +77,8 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
+
+import static cc.xiaojiang.liangbo.view.MainMenuLayout.ANIM_TIME;
 
 @RuntimePermissions
 public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -162,17 +174,89 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
     CommonTextView ctvPersonal;
     @BindView(R.id.iv_main_menu)
     ImageView ivMainMenu;
+    @BindView(R.id.view_main_menu)
+    MainMenuLayout viewMainMenu;
 
 
     private String mMyLocation;
     private LocationClient mLocationClient;
     private Realm mRealm;
+    private IWXAPI api;
+    private boolean isMenuHide = false;
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg.what == 1) {
+                int scrollY = mSvAirNewContent.getScrollY();
+                if (scrollY == (int) msg.obj) {
+                    LogUtils.d(TAG, "stop");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showMenu();
+                        }
+                    }, ANIM_TIME);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+
         EventBus.getDefault().register(this);
         init();
+        mSvAirNewContent.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2,
+                                       int i3) {
+                LogUtils.e(TAG, "ss" + (i3 - i1));
+                Message message = new Message();
+                message.what = 1;
+                message.obj = i1;
+                handler.sendMessageDelayed(message, 100);
+                if ((i3 - i1) > 0) {
+                    //下滑
+                    showMenu();
+                } else {
+                    //上滑
+                    hideMenu();
+
+                }
+            }
+        });
+    }
+
+    private void showMenu() {
+        if (!isMenuHide) {
+            return;
+        }
+        startAnim();
+        isMenuHide = false;
+    }
+
+    private void hideMenu() {
+        if (isMenuHide) {
+            return;
+        }
+        if (viewMainMenu.isMenuOpen()) {
+            viewMainMenu.closeMenu();
+        }
+        startAnim();
+        isMenuHide = true;
+    }
+
+    public void startAnim() {
+        int translationX = isMenuHide ? 0 : ScreenUtils.dip2px(this, 72);
+        final AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator rightAnimator = ObjectAnimator.ofFloat(viewMainMenu, "translationX",
+                translationX);
+        animatorSet.playTogether(rightAnimator);
+        animatorSet.setDuration(ANIM_TIME);
+        animatorSet.start();
     }
 
     private void showPupWindow() {
@@ -535,12 +619,15 @@ public class AirNewActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void startToWeixin() {
-//        String appId = "wxd930ea5d5a258f4f"; // 填应用AppId
-//        IWXAPI api = WXImageObject.createWXAPI(th, appId);
-//        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
-//        req.userName = "gh_d43f693ca31f"; // 填小程序原始id
-//        req.path = path;                  //拉起小程序页面的可带参路径，不填默认拉起小程序首页
-//        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
-//        api.sendReq(req);
+        String appId = "wxcb9058ed93e26360"; // 填应用AppId
+        api = WXAPIFactory.createWXAPI(this, appId, false);
+        api.registerApp(appId);
+        if (!api.isWXAppInstalled()) {
+            ToastUtils.show("请安装微信");
+            return;
+        }
+        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
+        req.userName = "gh_814574060176"; // 填小程序原始id
+        api.sendReq(req);
     }
 }

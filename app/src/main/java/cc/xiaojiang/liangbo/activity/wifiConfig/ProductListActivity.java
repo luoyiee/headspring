@@ -82,7 +82,14 @@ public class ProductListActivity extends BaseActivity implements BaseQuickAdapte
         IotKitDeviceManager.getInstance().productList(new IotKitHttpCallback<List<Product>>() {
             @Override
             public void onSuccess(List<Product> data) {
-                mProductAdapter.setNewData(data);
+                List<Product> products = new ArrayList<>();
+                for (Product product : data) {
+                    if (!("7uu446".equals(product.getProductKey()) || "uqq794".equals(product.getProductKey()))) {
+                        //过滤DY系列、空智子三代
+                        products.add(product);
+                    }
+                }
+                mProductAdapter.setNewData(products);
             }
 
             @Override

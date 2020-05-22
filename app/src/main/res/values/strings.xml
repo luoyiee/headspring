@@ -3,6 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_main">消息</string>
     <string name="title_activity_login">登陆</string>
     <string name="title_activity_register">注册</string>
     <string name="title_activity_air_knowledge">空气知识</string>
