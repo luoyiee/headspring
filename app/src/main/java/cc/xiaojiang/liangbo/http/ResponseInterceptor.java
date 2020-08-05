@@ -25,6 +25,7 @@ import cc.xiaojiang.liangbo.base.MyApplication;
 import cc.xiaojiang.liangbo.http.model.BaseModel;
 import cc.xiaojiang.liangbo.model.http.LoginModel;
 import cc.xiaojiang.liangbo.model.http.RefreshTokenModel;
+import cc.xiaojiang.liangbo.utils.AccountUtils;
 import cc.xiaojiang.liangbo.utils.DbUtils;
 import cc.xiaojiang.liangbo.utils.SignUtils;
 import io.reactivex.Observable;
@@ -73,39 +74,9 @@ public class ResponseInterceptor implements Interceptor {
 
         //刷新token
         Response response = chain.proceed(request);
-        if (response.code() == 401) {
+        if (response.code() == 401 || response.code() == 403) {
             Logger.d("code: " + response.code());
-            final retrofit2.Response<BaseModel<RefreshTokenModel>> execute =
-                    RetrofitHelper.getService().refreshToken().execute();
-            if (execute.code() == 200 && execute.body() != null) {
-                final BaseModel<RefreshTokenModel> body = execute.body();
-                if (body != null) {
-                    RefreshTokenModel refreshTokenModel = body.getData();
-                    DbUtils.setAccessToken(refreshTokenModel.getAccessToken());
-                    DbUtils.setRefreshToken(refreshTokenModel.getRefreshToken());
-                    Request newRequest = request.newBuilder()
-                            .header(ACCESS_TOKEN, DbUtils.getAccessToken())  //添加新的token
-                            .build();
-                    //重新发起请求，此时是新的token
-                    return chain.proceed(newRequest);
-                } else {
-                    IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
-                        @Override
-                        public void onCompleted(boolean isSucceed, String msg) {
-                            logout();
-                        }
-                    });
-                }
-            } else {
-                IotKitAccountManager.getInstance().logout(new IotKitAccountCallback() {
-                    @Override
-                    public void onCompleted(boolean isSucceed, String msg) {
-                        logout();
-                    }
-                });
-            }
-
-            // TODO: 2018/10/12 token刷新
+            logout();
         }
         return response;
     }
@@ -171,12 +142,7 @@ public class ResponseInterceptor implements Interceptor {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        DbUtils.clear();
-                        Intent intent = new Intent(MyApplication.getInstance(), LoginActivity
-                                .class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent
-                                .FLAG_ACTIVITY_NEW_TASK);
-                        MyApplication.getInstance().getApplicationContext().startActivity(intent);
+                        AccountUtils.logout();
                     }
                 });
     }

@@ -8,8 +8,8 @@ android {
         applicationId "cc.xiaojiang.liangbo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 70
-        versionName "1.1.5_beta1"
+        versionCode 72
+        versionName "1.1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

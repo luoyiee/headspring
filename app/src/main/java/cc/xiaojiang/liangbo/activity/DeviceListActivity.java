@@ -136,8 +136,6 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
             public void onFailure(String msg) {
                 Logger.d("查询设备失败，deviceId=" + device.getDeviceId());
             }
-
-
         });
     }
 

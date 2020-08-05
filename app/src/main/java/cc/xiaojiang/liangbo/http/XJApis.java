@@ -40,7 +40,7 @@ public interface XJApis {
     Observable<BaseModel<Object>> feedback(@Body FeedbackBody feedbackBody);
 
     @POST(HttpUrl.REFRESH)
-    Call<BaseModel<RefreshTokenModel>> refreshToken();
+    Observable<BaseModel<RefreshTokenModel>> refreshToken();
 
     @GET(HttpUrl.AIR)
     Observable<BaseModel<List<AqiModel>>> getAqi(@Query("level") int level,
